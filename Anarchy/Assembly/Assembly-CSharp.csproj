@@ -1,0 +1,731 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFF16F95-8AF6-41B2-9FD1-5F82FEAA3E61}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AoTTG</RootNamespace>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
+    <DefineConstants>TRACE;EVENTSYSTEMTEST;PUBLIC;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
+    <DefineConstants>TRACE;EVENTSYSTEMTEST</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-UnityScript, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Assembly-UnityScript.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-UnityScript-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Assembly-UnityScript-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang, Version=2.0.9.5, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=2.0.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\Assemblies\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>..\..\..\..\Attack on Titan v04.01.2015\AttackOnTitan_04012015_Data\Managed\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityScript.Lang, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\UnityScript.Lang.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
+    <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
+    <Compile Include="Anarchy\UI\LoadingMapScreen.cs" />
+    <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
+    <Compile Include="Anarchy\VoiceChat\VCManager.cs" />
+    <Compile Include="AoTTG\AbnormalType.cs" />
+    <Compile Include="Photon\ActorProperties.cs" />
+    <Compile Include="Xffect\Affector.cs" />
+    <Compile Include="AoTTG\Triggers\AHSSShotGunCollider.cs" />
+    <Compile Include="Anarchy\AnarchyAssets.cs" />
+    <Compile Include="Anarchy\AnarchyExtensions.cs" />
+    <Compile Include="Anarchy\AnarchyManager.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ChatCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ChatCommandHandler.cs" />
+    <Compile Include="Anarchy\Commands\Chat\DaylightChangeCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\KickCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\PauseCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\PMCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ResetKDCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\RestartCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ReviveCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\RoomSettingCommands.cs" />
+    <Compile Include="Anarchy\Commands\Chat\SpectateCommand.cs" />
+    <Compile Include="Anarchy\Commands\ICommand.cs" />
+    <Compile Include="Anarchy\Configuration\BoolSetting.cs" />
+    <Compile Include="Anarchy\Configuration\FloatSetting.cs" />
+    <Compile Include="Anarchy\Configuration\GameModeSetting.cs" />
+    <Compile Include="Anarchy\Configuration\IntSetting.cs" />
+    <Compile Include="Anarchy\Configuration\ISetting.cs" />
+    <Compile Include="Anarchy\Configuration\KeySetting.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\CityPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\CustomMapPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\ForestPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\HumanSkinPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\ServerPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\SkinPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\SkyboxPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Presets\TitanSkinPreset.cs" />
+    <Compile Include="Anarchy\Configuration\Setting.cs" />
+    <Compile Include="Anarchy\Configuration\Settings.cs" />
+    <Compile Include="Anarchy\Configuration\SkinSettings.cs" />
+    <Compile Include="Anarchy\Configuration\Storage\AnarchyStorage.cs" />
+    <Compile Include="Anarchy\Configuration\Storage\IDataStorage.cs" />
+    <Compile Include="Anarchy\Configuration\Storage\PrefStorage.cs" />
+    <Compile Include="Anarchy\Configuration\StringSetting.cs" />
+    <Compile Include="Anarchy\Configuration\UserSetting.cs" />
+    <Compile Include="Anarchy\Configuration\VideoSettings.cs" />
+    <Compile Include="Anarchy\GameModes.cs" />
+    <Compile Include="Anarchy\InputCodes.cs" />
+    <Compile Include="Anarchy\InputManager.cs" />
+    <Compile Include="Anarchy\InputPos\InputCannon.cs" />
+    <Compile Include="Anarchy\InputPos\InputHorse.cs" />
+    <Compile Include="Anarchy\InputPos\InputRebinds.cs" />
+    <Compile Include="Anarchy\InputPos\InputTitan.cs" />
+    <Compile Include="Anarchy\IO\ConfigFile.cs" />
+    <Compile Include="Anarchy\IO\File.cs" />
+    <Compile Include="Anarchy\IO\FileManager.cs" />
+    <Compile Include="Anarchy\IO\LogFile.cs" />
+    <Compile Include="Anarchy\Localization\Language.cs" />
+    <Compile Include="Anarchy\Localization\Locale.cs" />
+    <Compile Include="Anarchy\Network\Antis.cs" />
+    <Compile Include="Anarchy\Network\Discord\DiscordManager.cs" />
+    <Compile Include="Anarchy\Network\Discord\DiscordRPC.cs" />
+    <Compile Include="Anarchy\Network\Events\Event101.cs" />
+    <Compile Include="Anarchy\Network\Events\Event226.cs" />
+    <Compile Include="Anarchy\Network\Events\EventCloseConnection.cs" />
+    <Compile Include="Anarchy\Network\Events\EventDestroy.cs" />
+    <Compile Include="Anarchy\Network\Events\EventDestroyAll.cs" />
+    <Compile Include="Anarchy\Network\Events\EventDI.cs" />
+    <Compile Include="Anarchy\Network\Events\EventJoin.cs" />
+    <Compile Include="Anarchy\Network\Events\EventLeave.cs" />
+    <Compile Include="Anarchy\Network\Events\EventMCSwitch.cs" />
+    <Compile Include="Anarchy\Network\Events\EventOSR.cs" />
+    <Compile Include="Anarchy\Network\Events\EventPropertires.cs" />
+    <Compile Include="Anarchy\Network\Events\EventRoast.cs" />
+    <Compile Include="Anarchy\Network\Events\EventRoomListUpdate.cs" />
+    <Compile Include="Anarchy\Network\Events\EventRoomListUpdate1.cs" />
+    <Compile Include="Anarchy\Network\Events\EventRPC.cs" />
+    <Compile Include="Anarchy\Network\Events\INetworkEvent.cs" />
+    <Compile Include="Anarchy\Network\NetworkManager.cs" />
+    <Compile Include="Anarchy\Network\NetworkSettings.cs" />
+    <Compile Include="Anarchy\Notification.cs" />
+    <Compile Include="Anarchy\OrderedDictionary.cs" />
+    <Compile Include="Anarchy\Skins\Humans\HumanParts.cs" />
+    <Compile Include="Anarchy\Skins\Humans\HumanSkin.cs" />
+    <Compile Include="Anarchy\Skins\Maps\CitySkin.cs" />
+    <Compile Include="Anarchy\Skins\Maps\CustomMapSkin.cs" />
+    <Compile Include="Anarchy\Skins\Maps\ForestSkin.cs" />
+    <Compile Include="Anarchy\Skins\Maps\LevelSkin.cs" />
+    <Compile Include="Anarchy\Skins\Skin.cs" />
+    <Compile Include="Anarchy\Skins\SkinElement.cs" />
+    <Compile Include="Anarchy\Skins\Titans\AnnieSkin.cs" />
+    <Compile Include="Anarchy\Skins\Titans\ColossalSkin.cs" />
+    <Compile Include="Anarchy\Skins\Titans\ErenSkin.cs" />
+    <Compile Include="Anarchy\Skins\Titans\TitanParts.cs" />
+    <Compile Include="Anarchy\Skins\Titans\TitanSkin.cs" />
+    <Compile Include="Anarchy\Skins\Titans\TitanSkinHair.cs" />
+    <Compile Include="Anarchy\UI\Animation\Animation.cs" />
+    <Compile Include="Anarchy\UI\Animation\CenterAnimation.cs" />
+    <Compile Include="Anarchy\UI\Animation\AngleAnimation.cs" />
+    <Compile Include="Anarchy\UI\Animation\NoneAnimation.cs" />
+    <Compile Include="Anarchy\UI\Background.cs" />
+    <Compile Include="Anarchy\UI\BackgroundOnStart.cs" />
+    <Compile Include="Anarchy\UI\Chat.cs" />
+    <Compile Include="Anarchy\UI\Log.cs" />
+    <Compile Include="Anarchy\UI\Panels\CustomPanel.cs" />
+    <Compile Include="Anarchy\UI\ElementType.cs" />
+    <Compile Include="Anarchy\UI\Panels\DebugPanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\GameModesPanel.cs" />
+    <Compile Include="Anarchy\UI\GUI.cs" />
+    <Compile Include="Anarchy\UI\GUIBase.cs" />
+    <Compile Include="Anarchy\UI\GUILayout.cs" />
+    <Compile Include="Anarchy\UI\GUIPageAttribute.cs" />
+    <Compile Include="Anarchy\UI\GUIPageType.cs" />
+    <Compile Include="Anarchy\UI\GUIPanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\PausePanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\PauseWindow.cs" />
+    <Compile Include="Anarchy\UI\Panels\ProfilePanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\SettingsPanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\SkinsPanel.cs" />
+    <Compile Include="Anarchy\UI\Textures.cs" />
+    <Compile Include="Anarchy\UI\Helper.cs" />
+    <Compile Include="Anarchy\UI\Style.cs" />
+    <Compile Include="Anarchy\UI\LoadScreen.cs" />
+    <Compile Include="Anarchy\UI\Panels\PanelMain.cs" />
+    <Compile Include="Anarchy\UI\Panels\ServerListPanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\SinglePanel.cs" />
+    <Compile Include="Anarchy\UI\SmartRect.cs" />
+    <Compile Include="Anarchy\UI\UIBase.cs" />
+    <Compile Include="Anarchy\UI\UIManager.cs" />
+    <Compile Include="Anarchy\User.cs" />
+    <Compile Include="RC\Cannon.cs" />
+    <Compile Include="RC\CannonBall.cs" />
+    <Compile Include="RC\CannonPropRegion.cs" />
+    <Compile Include="RC\CannonValues.cs" />
+    <Compile Include="RC\CatchDestroy.cs" />
+    <Compile Include="AoTTG\ClothFactory.cs" />
+    <Compile Include="AoTTG\GameLogic\CTFightLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\EndlessLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\GameLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\KillTitanLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\PVPCaptureLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\PVPLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\RacingLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\Round.cs" />
+    <Compile Include="AoTTG\GameLogic\SurviveLogic.cs" />
+    <Compile Include="AoTTG\GameLogic\TrostLogic.cs" />
+    <Compile Include="RC\Minimap.cs" />
+    <Compile Include="RC\RCRegionLabel.cs" />
+    <Compile Include="NGUI\UI\AnimatedAlpha.cs" />
+    <Compile Include="NGUI\AnimatedColor.cs" />
+    <Compile Include="NGUI\Internal\ActiveAnimation.cs" />
+    <Compile Include="NGUI\Direction.cs" />
+    <Compile Include="NGUI\DisableCondition.cs" />
+    <Compile Include="NGUI\EnableCondition.cs" />
+    <Compile Include="NGUI\Trigger.cs" />
+    <Compile Include="Xffect\AttractionForceAffector.cs" />
+    <Compile Include="Photon\AuthenticationValues.cs" />
+    <Compile Include="NGUI\BetterList.cs" />
+    <Compile Include="Xffect\BillboardScript.cs" />
+    <Compile Include="AoTTG\BloodSplatterScript.cs" />
+    <Compile Include="NGUI\Internal\BMFont.cs" />
+    <Compile Include="NGUI\Internal\BMGlyph.cs" />
+    <Compile Include="NGUI\Internal\BMSymbol.cs" />
+    <Compile Include="AoTTG\Triggers\BodyPushBox.cs" />
+    <Compile Include="AoTTG\BodyParts.cs" />
+    <Compile Include="RC\Bomb.cs" />
+    <Compile Include="RC\BombExplode.cs" />
+    <Compile Include="AoTTG\BottomType.cs" />
+    <Compile Include="Optimization\RoomInformation.cs" />
+    <Compile Include="AoTTG\ParentFollow.cs" />
+    <Compile Include="RC\RCGeneralEffect.cs" />
+    <Compile Include="VanillaUI\BtnSSNext.cs" />
+    <Compile Include="VanillaUI\BtnSSPrev.cs" />
+    <Compile Include="VanillaUI\BTN_BackToMain.cs" />
+    <Compile Include="VanillaUI\BTN_ChangePassword.cs" />
+    <Compile Include="VanillaUI\BTN_choose_human.cs" />
+    <Compile Include="VanillaUI\BTN_choose_titan.cs" />
+    <Compile Include="VanillaUI\BTN_Connect_To_Server_On_List.cs" />
+    <Compile Include="VanillaUI\Btn_CreateLanGame.cs" />
+    <Compile Include="VanillaUI\BTN_Create_Game.cs" />
+    <Compile Include="VanillaUI\BTN_Enter_PWD.cs" />
+    <Compile Include="VanillaUI\BTN_FORGET_PASSWORD.cs" />
+    <Compile Include="VanillaUI\BTN_LEADERBOARD.cs" />
+    <Compile Include="VanillaUI\BTN_LEADERBOARD_QUIT.cs" />
+    <Compile Include="VanillaUI\BTN_leave_lobby.cs" />
+    <Compile Include="VanillaUI\BTN_LOAD_CC.cs" />
+    <Compile Include="VanillaUI\BTN_LOGIN.cs" />
+    <Compile Include="VanillaUI\BTN_PAUSE_MENU_CONTINUE.cs" />
+    <Compile Include="VanillaUI\BTN_PAUSE_MENU_QUIT.cs" />
+    <Compile Include="VanillaUI\BTN_QUICKMATCH.cs" />
+    <Compile Include="VanillaUI\BTN_RefreshList.cs" />
+    <Compile Include="VanillaUI\BTN_REGISTER.cs" />
+    <Compile Include="VanillaUI\BTN_RESULT_TO_MAIN.cs" />
+    <Compile Include="VanillaUI\BTN_rotate_character.cs" />
+    <Compile Include="VanillaUI\BTN_SAVE_CC.cs" />
+    <Compile Include="VanillaUI\BTN_save_snapshot.cs" />
+    <Compile Include="VanillaUI\BTN_ServerUS.cs" />
+    <Compile Include="VanillaUI\BTN_Server_ASIA.cs" />
+    <Compile Include="VanillaUI\BTN_Server_EU.cs" />
+    <Compile Include="VanillaUI\BTN_Server_JPN.cs" />
+    <Compile Include="VanillaUI\BTN_Server_List_PgDn.cs" />
+    <Compile Include="VanillaUI\BTN_Server_List_PgUp.cs" />
+    <Compile Include="VanillaUI\BTN_SetDefault.cs" />
+    <Compile Include="VanillaUI\BTN_SET_GUILD_NAME.cs" />
+    <Compile Include="VanillaUI\BTN_SIGNOUT.cs" />
+    <Compile Include="VanillaUI\BTN_SSR_Down.cs" />
+    <Compile Include="VanillaUI\BTN_SSR_up.cs" />
+    <Compile Include="VanillaUI\BTN_START_MULTI_SERVER.cs" />
+    <Compile Include="VanillaUI\BTN_START_SINGLE_GAMEPLAY.cs" />
+    <Compile Include="VanillaUI\BTN_ToCredit.cs" />
+    <Compile Include="VanillaUI\BTN_ToJoin.cs" />
+    <Compile Include="VanillaUI\BTN_ToLAN.cs" />
+    <Compile Include="VanillaUI\BTN_ToOption.cs" />
+    <Compile Include="VanillaUI\BTN_toPublicServer.cs" />
+    <Compile Include="VanillaUI\BTN_ToServer.cs" />
+    <Compile Include="VanillaUI\BTN_toSingleSet.cs" />
+    <Compile Include="VanillaUI\Btn_TO_CC.cs" />
+    <Compile Include="VanillaUI\BTN_TO_LOGIN.cs" />
+    <Compile Include="VanillaUI\Btn_to_Main_from_CC.cs" />
+    <Compile Include="VanillaUI\BTN_TO_REGISTER.cs" />
+    <Compile Include="VanillaUI\BTN_To_SSR.cs" />
+    <Compile Include="AoTTG\Buff.cs" />
+    <Compile Include="AoTTG\Bullet.cs" />
+    <Compile Include="AoTTG\ButtonImageFitText.cs" />
+    <Compile Include="AoTTG\ButtonTextEffect.cs" />
+    <Compile Include="NGUI\Internal\ByteReader.cs" />
+    <Compile Include="Xffect\CameraFacingBillboard.cs" />
+    <Compile Include="AoTTG\CameraForLeftEye.cs" />
+    <Compile Include="AoTTG\CameraShake.cs" />
+    <Compile Include="AoTTG\CameraType.cs" />
+    <Compile Include="VanillaUI\CB_cameraTilt.cs" />
+    <Compile Include="VanillaUI\CB_invertMouseY.cs" />
+    <Compile Include="VanillaUI\ChangeQuality.cs" />
+    <Compile Include="AoTTG\CharacterCreateAnimationControl.cs" />
+    <Compile Include="AoTTG\CharacterCreationComponent.cs" />
+    <Compile Include="AoTTG\CharacterMaterials.cs" />
+    <Compile Include="AoTTG\CharacterStatComponent.cs" />
+    <Compile Include="NGUI\Examples\ChatInput.cs" />
+    <Compile Include="VanillaUI\CheckBoxCamera.cs" />
+    <Compile Include="VanillaUI\CheckBoxCostume.cs" />
+    <Compile Include="VanillaUI\CheckBoxEnableSS.cs" />
+    <Compile Include="VanillaUI\CheckBoxShowSSInGame.cs" />
+    <Compile Include="AoTTG\Triggers\CheckHitGround.cs" />
+    <Compile Include="AoTTG\CheckPointState.cs" />
+    <Compile Include="AoTTG\ClickToMove.cs" />
+    <Compile Include="Photon\CloudRegionCode.cs" />
+    <Compile Include="AoTTG\CLZF2.cs" />
+    <Compile Include="Xffect\ColorAffector.cs" />
+    <Compile Include="AoTTG\ColorSet.cs" />
+    <Compile Include="Xffect\COLOR_GRADUAL_TYPE.cs" />
+    <Compile Include="AoTTG\COLOSSAL_TITAN.cs" />
+    <Compile Include="CompressString\StringCompressor.cs" />
+    <Compile Include="Photon\ConnectAndJoinRandom.cs" />
+    <Compile Include="Photon\ConnectionState.cs" />
+    <Compile Include="AoTTG\CostumeConeveter.cs" />
+    <Compile Include="AoTTG\CostumeHair.cs" />
+    <Compile Include="AoTTG\CreatePart.cs" />
+    <Compile Include="AoTTG\CreateStat.cs" />
+    <Compile Include="AoTTG\CubeCollector.cs" />
+    <Compile Include="Photon\CustomAuthenticationType.cs" />
+    <Compile Include="AoTTG\CustomCharacterManager.cs" />
+    <Compile Include="AoTTG\CustomTypes.cs" />
+    <Compile Include="AoTTG\custom_inputs.cs" />
+    <Compile Include="AoTTG\DayLight.cs" />
+    <Compile Include="AoTTG\DaylightChange.cs" />
+    <Compile Include="Photon\DisconnectCause.cs" />
+    <Compile Include="AoTTG\DIVISION.cs" />
+    <Compile Include="AoTTG\DownloadTexture.cs" />
+    <Compile Include="NGUI\Examples\DragDropContainer.cs" />
+    <Compile Include="NGUI\Examples\DragDropItem.cs" />
+    <Compile Include="NGUI\Examples\DragDropRoot.cs" />
+    <Compile Include="NGUI\Examples\DragDropSurface.cs" />
+    <Compile Include="Xffect\EanAnimation.cs" />
+    <Compile Include="Xffect\EanFile.cs" />
+    <Compile Include="Xffect\EanFrame.cs" />
+    <Compile Include="Xffect\EffectController.cs" />
+    <Compile Include="Xffect\EffectLayer.cs" />
+    <Compile Include="Xffect\EffectNode.cs" />
+    <Compile Include="Xffect\Emitter.cs" />
+    <Compile Include="AoTTG\EMITTYPE.cs" />
+    <Compile Include="AoTTG\Triggers\EnemyCheckCollider.cs" />
+    <Compile Include="AoTTG\EnemyfxIDcontainer.cs" />
+    <Compile Include="NGUI\Examples\EquipItems.cs" />
+    <Compile Include="NGUI\Examples\EquipRandomItem.cs" />
+    <Compile Include="Photon\ErrorCode.cs" />
+    <Compile Include="Photon\EventCaching.cs" />
+    <Compile Include="Photon\EventCode.cs" />
+    <Compile Include="AoTTG\Extensions.cs" />
+    <Compile Include="AoTTG\FEMALE_TITAN.cs" />
+    <Compile Include="AoTTG\FengColor.cs" />
+    <Compile Include="AoTTG\FengCustomInputs.cs" />
+    <Compile Include="AoTTG\FengGameManagerMKII.cs" />
+    <Compile Include="AoTTG\FengMath.cs" />
+    <Compile Include="AoTTG\FlareMovement.cs" />
+    <Compile Include="Photon\FriendInfo.cs" />
+    <Compile Include="AoTTG\GameMode.cs" />
+    <Compile Include="AoTTG\GameObjectExtensions.cs" />
+    <Compile Include="AoTTG\GameProperties.cs" />
+    <Compile Include="Camera-Control\GameType.cs" />
+    <Compile Include="AoTTG\Group.cs" />
+    <Compile Include="AoTTG\HERO.cs" />
+    <Compile Include="AoTTG\HeroCostume.cs" />
+    <Compile Include="AoTTG\HeroStat.cs" />
+    <Compile Include="AoTTG\HERO_DEAD_BODY_SETUP.cs" />
+    <Compile Include="AoTTG\HERO_ON_MENU.cs" />
+    <Compile Include="AoTTG\HERO_SETUP.cs" />
+    <Compile Include="AoTTG\HeroState.cs" />
+    <Compile Include="AoTTG\HintType.cs" />
+    <Compile Include="AoTTG\HitBox.cs" />
+    <Compile Include="AoTTG\Horse.cs" />
+    <Compile Include="AoTTG\IComparerPVPchkPtID.cs" />
+    <Compile Include="AoTTG\IComparerRacingResult.cs" />
+    <Compile Include="NGUI\Internal\IgnoreTimeScale.cs" />
+    <Compile Include="AoTTG\InputCode.cs" />
+    <Compile Include="AoTTG\InputToEvent.cs" />
+    <Compile Include="AoTTG\InRoomChat.cs" />
+    <Compile Include="AoTTG\InRoomRoundTimer.cs" />
+    <Compile Include="NGUI\Examples\InvAttachmentPoint.cs" />
+    <Compile Include="NGUI\InvBaseItem.cs" />
+    <Compile Include="NGUI\Examples\InvDatabase.cs" />
+    <Compile Include="NGUI\Examples\InvEquipment.cs" />
+    <Compile Include="NGUI\InvGameItem.cs" />
+    <Compile Include="NGUI\InvStat.cs" />
+    <Compile Include="AoTTG\IN_GAME_MAIN_CAMERA.cs" />
+    <Compile Include="Photon\IPunObservable.cs" />
+    <Compile Include="Tween\iTween.cs" />
+    <Compile Include="Xffect\JetAffector.cs" />
+    <Compile Include="Photon\JoinType.cs" />
+    <Compile Include="AoTTG\KickState.cs" />
+    <Compile Include="AoTTG\KillInfoComponent.cs" />
+    <Compile Include="NGUI\Examples\LagPosition.cs" />
+    <Compile Include="NGUI\Examples\LagRotation.cs" />
+    <Compile Include="AoTTG\Language.cs" />
+    <Compile Include="VanillaUI\LanguageChangeListener.cs" />
+    <Compile Include="NGUI\Interaction\LanguageSelection.cs" />
+    <Compile Include="AoTTG\Triggers\LevelBottom.cs" />
+    <Compile Include="AoTTG\LevelInfo.cs" />
+    <Compile Include="AoTTG\LevelMovingBrick.cs" />
+    <Compile Include="AoTTG\Triggers\LevelTeleport.cs" />
+    <Compile Include="AoTTG\Triggers\LevelTriggerCheckPoint.cs" />
+    <Compile Include="AoTTG\Triggers\LevelTriggerGas.cs" />
+    <Compile Include="AoTTG\Triggers\LevelTriggerHint.cs" />
+    <Compile Include="AoTTG\Triggers\LevelTriggerRacingEnd.cs" />
+    <Compile Include="Xffect\LinearForceAffector.cs" />
+    <Compile Include="Photon\LoadbalancingPeer.cs" />
+    <Compile Include="NGUI\Examples\LoadLevelOnClick.cs" />
+    <Compile Include="Photon\LobbyType.cs" />
+    <Compile Include="NGUI\Internal\Localization\Localization.cs" />
+    <Compile Include="AoTTG\LoginFengKAI.cs" />
+    <Compile Include="NGUI\Examples\LookAtTarget.cs" />
+    <Compile Include="Photon\ManualPhotonViewAllocator.cs" />
+    <Compile Include="AoTTG\MapNameChange.cs" />
+    <Compile Include="Photon\MatchmakingMode.cs" />
+    <Compile Include="Camera-Control\MaxCamera.cs" />
+    <Compile Include="AoTTG\MoveByKeys.cs" />
+    <Compile Include="AoTTG\MovementUpdate.cs" />
+    <Compile Include="Tween\MoveSample.cs" />
+    <Compile Include="Photon\NetworkingPeer.cs" />
+    <Compile Include="NGUI\Internal\NGUIDebug.cs" />
+    <Compile Include="NGUI\NGUIMath.cs" />
+    <Compile Include="NGUI\NGUITools.cs" />
+    <Compile Include="Photon\OnAwakeUsePhotonView.cs" />
+    <Compile Include="Photon\OnClickDestroy.cs" />
+    <Compile Include="Photon\OnClickInstantiate.cs" />
+    <Compile Include="Photon\OnClickLoadSomething.cs" />
+    <Compile Include="Photon\OnJoinedInstantiate.cs" />
+    <Compile Include="Photon\OnSerializeRigidBody.cs" />
+    <Compile Include="Photon\OnSerializeTransform.cs" />
+    <Compile Include="Photon\OnStartDelete.cs" />
+    <Compile Include="Photon\OperationCode.cs" />
+    <Compile Include="Optimization\AOTEvent.cs" />
+    <Compile Include="Optimization\AOTEventArgs.cs" />
+    <Compile Include="Optimization\Caching\Bases\CharacterBase.cs" />
+    <Compile Include="Optimization\Caching\Bases\HeroBase.cs" />
+    <Compile Include="Optimization\Caching\Bases\TitanBase.cs" />
+    <Compile Include="Optimization\Caching\CacheGameObject.cs" />
+    <Compile Include="Optimization\Caching\CacheResources.cs" />
+    <Compile Include="Optimization\Caching\Colors.cs" />
+    <Compile Include="Optimization\Caching\Layers.cs" />
+    <Compile Include="Optimization\Caching\Pool.cs" />
+    <Compile Include="Optimization\Caching\PoolableObject.cs" />
+    <Compile Include="Optimization\Caching\PoolObject.cs" />
+    <Compile Include="Optimization\Caching\RespawnPositions.cs" />
+    <Compile Include="Optimization\Caching\SpriteCache.cs" />
+    <Compile Include="Optimization\Caching\Vectors.cs" />
+    <Compile Include="RC\CustomLevel.cs" />
+    <Compile Include="Optimization\FPSCounter.cs" />
+    <Compile Include="Optimization\Labels.cs" />
+    <Compile Include="Optimization\PlayerList.cs" />
+    <Compile Include="RC\RCManager.cs" />
+    <Compile Include="Optimization\TitanTrigger.cs" />
+    <Compile Include="Xffect\ORIPOINT.cs" />
+    <Compile Include="VanillaUI\PanelCredits.cs" />
+    <Compile Include="VanillaUI\PanelEnterGame.cs" />
+    <Compile Include="VanillaUI\PanelGroupManager.cs" />
+    <Compile Include="VanillaUI\PanelJoinPrivate.cs" />
+    <Compile Include="VanillaUI\PanelLoginGroupManager.cs" />
+    <Compile Include="VanillaUI\PanelMain.cs" />
+    <Compile Include="VanillaUI\PanelMultiJoin.cs" />
+    <Compile Include="VanillaUI\PanelMultiJoinPWD.cs" />
+    <Compile Include="VanillaUI\PanelMultiSet.cs" />
+    <Compile Include="VanillaUI\PanelMultiStart.cs" />
+    <Compile Include="VanillaUI\PanelMultiWait.cs" />
+    <Compile Include="VanillaUI\PanelOption.cs" />
+    <Compile Include="VanillaUI\PanelResult.cs" />
+    <Compile Include="VanillaUI\PanelServerList.cs" />
+    <Compile Include="VanillaUI\PanelSingleSet.cs" />
+    <Compile Include="NGUI\Examples\PanWithMouse.cs" />
+    <Compile Include="Photon\ParameterCode.cs" />
+    <Compile Include="AoTTG\ParticleScaling.cs" />
+    <Compile Include="AoTTG\PBitStream.cs" />
+    <Compile Include="Photon\PeerState.cs" />
+    <Compile Include="Photon\PhotonHandler.cs" />
+    <Compile Include="Photon\PhotonLagSimulationGui.cs" />
+    <Compile Include="Photon\PhotonLogLevel.cs" />
+    <Compile Include="Photon\PhotonMessageInfo.cs" />
+    <Compile Include="Photon\PhotonNetwork.cs" />
+    <Compile Include="Photon\PhotonNetworkingMessage.cs" />
+    <Compile Include="Photon\PhotonPlayer.cs" />
+    <Compile Include="Photon\PhotonPlayerProperty.cs" />
+    <Compile Include="Photon\PhotonStatsGui.cs" />
+    <Compile Include="Photon\PhotonStream.cs" />
+    <Compile Include="Photon\PhotonTargets.cs" />
+    <Compile Include="Photon\PhotonView.cs" />
+    <Compile Include="Photon\MonoBehaviour.cs" />
+    <Compile Include="Photon\PickupItem.cs" />
+    <Compile Include="Photon\PickupItemSimple.cs" />
+    <Compile Include="Photon\PickupItemSyncer.cs" />
+    <Compile Include="Camera-Control\PlanetMouseOrbit.cs" />
+    <Compile Include="Photon\PlayerInfoPHOTON.cs" />
+    <Compile Include="NGUI\Examples\PlayIdleAnimations.cs" />
+    <Compile Include="AoTTG\PointedAtGameObjectInfo.cs" />
+    <Compile Include="VanillaUI\PopListCamera.cs" />
+    <Compile Include="VanillaUI\PopuplistCharacterSelection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Photon\PunEvent.cs" />
+    <Compile Include="Photon\PunPlayerScores.cs" />
+    <Compile Include="Photon\PunTeams.cs" />
+    <Compile Include="AoTTG\PVPcheckPoint.cs" />
+    <Compile Include="AoTTG\PVPchkPtPreset.cs" />
+    <Compile Include="AoTTG\QuitOnEscapeOrBack.cs" />
+    <Compile Include="AoTTG\Triggers\RacingCheckpointTrigger.cs" />
+    <Compile Include="RC\RacingKillTrigger.cs" />
+    <Compile Include="AoTTG\RacingResult.cs" />
+    <Compile Include="Photon\RaiseEventOptions.cs" />
+    <Compile Include="AoTTG\RandomHouse.cs" />
+    <Compile Include="RC\RCAction.cs" />
+    <Compile Include="RC\RCActionHelper.cs" />
+    <Compile Include="RC\RCCondition.cs" />
+    <Compile Include="RC\RCEvent.cs" />
+    <Compile Include="RC\RCRegion.cs" />
+    <Compile Include="Photon\ReceiverGroup.cs" />
+    <Compile Include="Photon\Region.cs" />
+    <Compile Include="RC\RegionTrigger.cs" />
+    <Compile Include="AoTTG\RespawnMode.cs" />
+    <Compile Include="Xffect\RibbonTrail.cs" />
+    <Compile Include="AoTTG\RockScript.cs" />
+    <Compile Include="AoTTG\RockThrow.cs" />
+    <Compile Include="Photon\Room.cs" />
+    <Compile Include="Photon\RoomInfo.cs" />
+    <Compile Include="Photon\RoomOptions.cs" />
+    <Compile Include="Xffect\RotateAffector.cs" />
+    <Compile Include="Tween\RotateSample.cs" />
+    <Compile Include="Xffect\RSTYPE.cs" />
+    <Compile Include="Tween\SampleInfo.cs" />
+    <Compile Include="Xffect\ScaleAffector.cs" />
+    <Compile Include="AoTTG\ScoreExtensions.cs" />
+    <Compile Include="AoTTG\SelfDestroy.cs" />
+    <Compile Include="Photon\ServerConnection.cs" />
+    <Compile Include="Photon\ServerSettings.cs" />
+    <Compile Include="Photon\ServerTime.cs" />
+    <Compile Include="NGUI\Examples\SetColorOnSelection.cs" />
+    <Compile Include="AoTTG\SettingReciveInput.cs" />
+    <Compile Include="AoTTG\Sex.cs" />
+    <Compile Include="NGUI\Examples\ShaderQuality.cs" />
+    <Compile Include="Photon\ShowInfoOfPlayer.cs" />
+    <Compile Include="AoTTG\SimpleAES.cs" />
+    <Compile Include="VanillaUI\SliderCameraDist.cs" />
+    <Compile Include="VanillaUI\SliderMouseSensitivity.cs" />
+    <Compile Include="Photon\SmoothSyncMovement.cs" />
+    <Compile Include="Photon\SmoothSyncMovement2.cs" />
+    <Compile Include="Photon\SmoothSyncMovement3.cs" />
+    <Compile Include="AoTTG\SnapShotReview.cs" />
+    <Compile Include="AoTTG\SnapShotSaves.cs" />
+    <Compile Include="AoTTG\SpectatorMovement.cs" />
+    <Compile Include="NGUI\Examples\Spin.cs" />
+    <Compile Include="NGUI\Examples\SpinWithMouse.cs" />
+    <Compile Include="NGUI\Internal\SpringPanel.cs" />
+    <Compile Include="NGUI\Tween\SpringPosition.cs" />
+    <Compile Include="Xffect\Sprite.cs" />
+    <Compile Include="AoTTG\STEREO_3D_TYPE.cs" />
+    <Compile Include="Xffect\STransform.cs" />
+    <Compile Include="uGUI\StyledComboBox.cs" />
+    <Compile Include="uGUI\StyledComboBoxPrefab.cs" />
+    <Compile Include="uGUI\StyledItem.cs" />
+    <Compile Include="uGUI\StyledItemButtonImageText.cs" />
+    <Compile Include="AoTTG\StylishComponent.cs" />
+    <Compile Include="AoTTG\STYPE.cs" />
+    <Compile Include="AoTTG\supplyCheck.cs" />
+    <Compile Include="Photon\SupportLogger.cs" />
+    <Compile Include="Photon\SupportLogging.cs" />
+    <Compile Include="AoTTG\SynchronizeLights.cs" />
+    <Compile Include="AoTTG\TeamExtensions.cs" />
+    <Compile Include="AoTTG\TestDontDestroyOnLoad.cs" />
+    <Compile Include="AoTTG\TestStyledComboBox.cs" />
+    <Compile Include="AoTTG\Test_CSharp.cs" />
+    <Compile Include="AoTTG\TITAN.cs" />
+    <Compile Include="AoTTG\TitanSpawner.cs" />
+    <Compile Include="AoTTG\TitanState.cs" />
+    <Compile Include="AoTTG\TITAN_CONTROLLER.cs" />
+    <Compile Include="AoTTG\TITAN_EREN.cs" />
+    <Compile Include="AoTTG\TITAN_SETUP.cs" />
+    <Compile Include="AoTTG\Triggers\TriggerColliderWeapon.cs" />
+    <Compile Include="NGUI\Tween\TweenAlpha.cs" />
+    <Compile Include="NGUI\Tween\TweenColor.cs" />
+    <Compile Include="NGUI\Tween\TweenFOV.cs" />
+    <Compile Include="NGUI\Tween\TweenOrthoSize.cs" />
+    <Compile Include="NGUI\Tween\TweenPosition.cs" />
+    <Compile Include="NGUI\Tween\TweenRotation.cs" />
+    <Compile Include="NGUI\Tween\TweenScale.cs" />
+    <Compile Include="NGUI\Tween\TweenTransform.cs" />
+    <Compile Include="NGUI\Tween\TweenVolume.cs" />
+    <Compile Include="Photon\TypedLobby.cs" />
+    <Compile Include="NGUI\Examples\TypewriterEffect.cs" />
+    <Compile Include="NGUI\UIadjustment.cs" />
+    <Compile Include="NGUI\UI\UIAnchor.cs" />
+    <Compile Include="NGUI\UI\UIAtlas.cs" />
+    <Compile Include="NGUI\Interaction\UIButton.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonActivate.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonColor.cs" />
+    <Compile Include="NGUI\UIButtonKeyBinding.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonKeys.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonMessage.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonOffset.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonPlayAnimation.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonRotation.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonScale.cs" />
+    <Compile Include="NGUI\Interaction\UIButtonSound.cs" />
+    <Compile Include="NGUI\UIButtonTween.cs" />
+    <Compile Include="NGUI\UI\UICamera.cs" />
+    <Compile Include="NGUI\Interaction\UICenterOnChild.cs" />
+    <Compile Include="NGUI\Interaction\UICheckbox.cs" />
+    <Compile Include="NGUI\Interaction\UICheckboxControlledComponent.cs" />
+    <Compile Include="NGUI\Interaction\UICheckboxControlledObject.cs" />
+    <Compile Include="NGUI\Examples\UICursor.cs" />
+    <Compile Include="NGUI\Interaction\UIDragCamera.cs" />
+    <Compile Include="NGUI\Interaction\UIDraggableCamera.cs" />
+    <Compile Include="NGUI\Interaction\UIDraggablePanel.cs" />
+    <Compile Include="NGUI\Interaction\UIDragObject.cs" />
+    <Compile Include="NGUI\Interaction\UIDragPanelContents.cs" />
+    <Compile Include="NGUI\Internal\UIDrawCall.cs" />
+    <Compile Include="NGUI\Examples\UIEquipmentSlot.cs" />
+    <Compile Include="NGUI\Internal\UIEventListener.cs" />
+    <Compile Include="NGUI\UIFilledSprite.cs" />
+    <Compile Include="NGUI\UI\UIFont.cs" />
+    <Compile Include="NGUI\Interaction\UIForwardEvents.cs" />
+    <Compile Include="NGUI\UIGeometry.cs" />
+    <Compile Include="NGUI\Interaction\UIGrid.cs" />
+    <Compile Include="NGUI\UI\UIImageButton.cs" />
+    <Compile Include="NGUI\UI\UIInput.cs" />
+    <Compile Include="NGUI\UI\UIInputSaved.cs" />
+    <Compile Include="NGUI\Interaction\UIInputValidator.cs" />
+    <Compile Include="NGUI\UIItemSlot.cs" />
+    <Compile Include="NGUI\Examples\UIItemStorage.cs" />
+    <Compile Include="NGUI\UI\UILabel.cs" />
+    <Compile Include="NGUI\UI\UILocalize.cs" />
+    <Compile Include="AoTTG\UIMainReferences.cs" />
+    <Compile Include="NGUI\UI\UIOrthoCamera.cs" />
+    <Compile Include="NGUI\UI\UIPanel.cs" />
+    <Compile Include="NGUI\Interaction\UIPopupList.cs" />
+    <Compile Include="NGUI\UIReferArray.cs" />
+    <Compile Include="NGUI\UI\UIRoot.cs" />
+    <Compile Include="NGUI\Interaction\UISavedOption.cs" />
+    <Compile Include="NGUI\Interaction\UIScrollBar.cs" />
+    <Compile Include="NGUI\UISlicedSprite.cs" />
+    <Compile Include="NGUI\Interaction\UISlider.cs" />
+    <Compile Include="NGUI\Examples\UISliderColors.cs" />
+    <Compile Include="NGUI\Interaction\UISoundVolume.cs" />
+    <Compile Include="NGUI\UI\UISprite.cs" />
+    <Compile Include="NGUI\UI\UISpriteAnimation.cs" />
+    <Compile Include="NGUI\Examples\UIStorageSlot.cs" />
+    <Compile Include="NGUI\UI\UIStretch.cs" />
+    <Compile Include="NGUI\Interaction\UITable.cs" />
+    <Compile Include="NGUI\UI\UITextList.cs" />
+    <Compile Include="NGUI\UITexture.cs" />
+    <Compile Include="NGUI\UITiledSprite.cs" />
+    <Compile Include="NGUI\UI\UITooltip.cs" />
+    <Compile Include="NGUI\UITweener.cs" />
+    <Compile Include="NGUI\UI\UIViewport.cs" />
+    <Compile Include="NGUI\Internal\UIWidget.cs" />
+    <Compile Include="AoTTG\UNIFORM_TYPE.cs" />
+    <Compile Include="NGUI\Internal\UpdateManager.cs" />
+    <Compile Include="Xffect\UVAffector.cs" />
+    <Compile Include="Xffect\UVAnimation.cs" />
+    <Compile Include="Xffect\VertexPool.cs" />
+    <Compile Include="Photon\ViewSynchronization.cs" />
+    <Compile Include="Xffect\VortexAffector.cs" />
+    <Compile Include="Photon\WebRpcResponse.cs" />
+    <Compile Include="NGUI\Examples\WindowAutoYaw.cs" />
+    <Compile Include="NGUI\Examples\WindowDragTilt.cs" />
+    <Compile Include="Xffect\Xffect.cs" />
+    <Compile Include="Xffect\XffectCache.cs" />
+    <Compile Include="Xffect\Spline.cs" />
+    <Compile Include="Xffect\SplineControlPoint.cs" />
+    <Compile Include="Xffect\XWeaponTrail.cs" />
+    <Compile Include="Xffect\XWeaponTrailDemo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
+      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
+      <Name>Photon3Unity3D</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="AoTTG\packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
