@@ -8,7 +8,7 @@ namespace GameLogic
 {
     internal class GameLogic
     {
-        protected const float UpdateInterval = 0.1f;
+        public const float UpdateInterval = 0.1f;
 
         public readonly Anarchy.Localization.Locale Lang;
         internal protected float MyRespawnTime;
@@ -359,7 +359,7 @@ namespace GameLogic
         protected virtual void UpdateLabels()
         {
             Labels.Center = string.Empty;
-            if (Round.IsWinning)
+            if (Round.IsWinning && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {
@@ -370,7 +370,7 @@ namespace GameLogic
                     Labels.Center = Lang.Format("humanitySingleWin", Anarchy.InputManager.Settings[InputCode.Restart].ToString()) + "\n\n";
                 }
             }
-            else if (Round.IsLosing)
+            else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {

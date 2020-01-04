@@ -21,6 +21,7 @@ namespace Anarchy.Commands.Chat
             if (args[0].ToLower() == "all")
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", PhotonTargets.All, new object[0]);
+                SendLocalizedText("revivedAll", null);
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.Others, new object[] { English["revivedAll"], string.Empty });
                 chatMessage = Lang["revivedAll"];
                 return true;
@@ -39,7 +40,7 @@ namespace Anarchy.Commands.Chat
                     continue;
                 }
                 PhotonNetwork.networkingPeer.OpRaiseEvent(200, HashRevive, true, new RaiseEventOptions { TargetActors = new int[] { target.ID } });
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", target, new object[] { English["revived"], string.Empty });
+                SendLocalizedText(target, "revived", null);
                 if(chatMessage.Length > 0)
                 {
                     chatMessage += "\n";

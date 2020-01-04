@@ -125,6 +125,18 @@ namespace Anarchy.Configuration
             }
         }
 
+        public bool State
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                state = value;
+            }
+        }
+
         public GameModeSetting(string key) : this(key, -1, null, null) { }
 
         public GameModeSetting(string key, int sel) : this(key, sel, null, null) { }

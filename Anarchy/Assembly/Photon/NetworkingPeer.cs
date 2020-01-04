@@ -88,6 +88,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             this.rpcShortcuts[str] = i;
         }
         base.SerializationProtocolType = Anarchy.Network.NetworkSettings.SerializationProtocol;
+        base.ReuseEventInstance = true; //Well it doesn't change anything yet so
         this.State = global::PeerState.PeerCreated;
     }
 

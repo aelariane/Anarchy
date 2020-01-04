@@ -111,7 +111,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                             {
                                 int num2 = (int)((IN_GAME_MAIN_CAMERA.MainR.velocity - component2.transform.root.rigidbody.velocity).magnitude * 10f * this.scoreMulti);
                                 num2 = Mathf.Max(10, num2);
-                                FengGameManagerMKII.FGM.netShowDamage(num2);
+                                FengGameManagerMKII.FGM.netShowDamage(num2, new PhotonMessageInfo());
                                 if ((float)num2 > component2.transform.root.GetComponent<TITAN>().myLevel * 100f)
                                 {
                                     component2.transform.root.GetComponent<TITAN>().die();

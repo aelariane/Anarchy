@@ -692,7 +692,7 @@ namespace RC
         {
             if (currentLevel != string.Empty)
             {
-                WaitForSeconds awaiter = new WaitForSeconds(0.25f);
+                WaitForSeconds awaiter = new WaitForSeconds(0.375f);
                 List<PhotonPlayer> targets = new List<PhotonPlayer>();
                 foreach (PhotonPlayer player in PhotonNetwork.playerList)
                 {
@@ -743,7 +743,7 @@ namespace RC
         {
             if (RCManager.RCEvents.ContainsKey("OnUpdate"))
             {
-                updateTime -= 0.2f;
+                updateTime -= GameLogic.GameLogic.UpdateInterval;
                 if (updateTime > 0f) return;
                 ((RCEvent)RCManager.RCEvents["OnUpdate"]).checkEvent();
                 updateTime = 1f;
@@ -2038,35 +2038,6 @@ namespace RC
             return new RCEvent(condition, sentTrueActions, eventClass, eventType);
         }
 
-        public static IEnumerator SendRPCToPlayer(PhotonPlayer player)
-        {
-            if (currentLevel != string.Empty)
-            {
-                WaitForSeconds awaiter =  new WaitForSeconds(0.25f);
-                for (int i = 0; i < levelCache.Count; i++)
-                {
-                    if (player.Properties["currentLevel"] != null && currentLevel != string.Empty && player.Properties["currentLevel"] as string == currentLevel)
-                    { 
-                        if (i == 0)
-                        {
-                            FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { new string[] { "loadcached" } });
-                        }
-                    }
-                    else
-                    {
-                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { levelCache[i] });
-                    }
-                    yield return awaiter;
-                }
-            }
-            else
-            {
-                FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { new string[] { "loadempty" } });
-                customLevelLoaded = true;
-            }
-            yield break;
-        }
-
         public static RCActionHelper returnHelper(string str)
         {
             string[] strArray = str.Split(new char[]
@@ -2427,6 +2398,35 @@ namespace RC
                 return;
             }
             customLevelClient(content, true);
+        }
+
+        public static IEnumerator SendRPCToPlayer(PhotonPlayer player)
+        {
+            if (currentLevel != string.Empty)
+            {
+                WaitForSeconds awaiter = new WaitForSeconds(0.375f);
+                for (int i = 0; i < levelCache.Count; i++)
+                {
+                    if (player.Properties["currentLevel"] != null && currentLevel != string.Empty && player.Properties["currentLevel"] as string == currentLevel)
+                    {
+                        if (i == 0)
+                        {
+                            FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { new string[] { "loadcached" } });
+                        }
+                    }
+                    else
+                    {
+                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { levelCache[i] });
+                    }
+                    yield return awaiter;
+                }
+            }
+            else
+            {
+                FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", player, new object[] { new string[] { "loadempty" } });
+                customLevelLoaded = true;
+            }
+            yield break;
         }
 
         public static void SpawnPlayerCustomMap()

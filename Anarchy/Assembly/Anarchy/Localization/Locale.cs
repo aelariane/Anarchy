@@ -8,6 +8,7 @@ namespace Anarchy.Localization
         public const string Extension = ".lang";
 
         public readonly string Element;
+        public readonly string MyLanguage;
         private Dictionary<string, string> localizedText = new Dictionary<string, string>();
         private readonly Dictionary<string, string[]> localizedTextArrayCache = new Dictionary<string, string[]>();
         private readonly object locker = new object();
@@ -39,6 +40,7 @@ namespace Anarchy.Localization
             {
                 FormatColors();
             }
+            MyLanguage = Language.SelectedLanguage;
             Language.AddLocale(this);
         }
 
@@ -47,6 +49,7 @@ namespace Anarchy.Localization
             Formateable = format;
             Separator = separator;
             Element = element;
+            MyLanguage = lang;
             Path = Language.Path + lang + "/" + Element + Extension;
             Load();
             if (format)

@@ -28,6 +28,7 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("revive", new ReviveCommand());
             allCommands.Add("spectate", new SpectateCommand());
             allCommands.Add("leave", new LeaveCommand());
+            allCommands.Add("asoracing", new ASORacingCommand());
         }
 
         private void NotFound(string name)

@@ -26,7 +26,7 @@ namespace Anarchy.Commands.Chat
                 chatMessage = Lang["resetkdAll"];
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    FengGameManagerMKII.FGM.BasePV.RPC("RPC", PhotonTargets.Others, new object[] { chatMessage, "" });
+                    SendLocalizedText("resetkdAll", null);
                 }
                 return true;
             }

@@ -59,7 +59,14 @@ namespace Anarchy.UI
             if(Button(right, locale["random"], true))
             {
                 int pickId = Random.Range(0, allNames.Length);
-                Pick(pickId, allNames[pickId]);
+                if (filter.Length > 0)
+                {
+                    PickByName(allNames[pickId], -1);
+                }
+                else
+                {
+                    Pick(pickId, allNames[pickId]);
+                }
             }
             right.ResetX();
             filter = TextField(right, filter, locale["filter"], Style.LabelOffset, true);
@@ -75,7 +82,14 @@ namespace Anarchy.UI
             {
                 if (Button(scrollRect, allNames[i], (i != allNames.Length - 1)))
                 {
-                    Pick(i, allNames[i]);
+                    if (filter.Length == 0)
+                    {
+                        Pick(i, allNames[i]);
+                    }
+                    else
+                    {
+                        PickByName(allNames[i], 0);
+                    }
                 }
             }
             EndScrollView();
@@ -89,6 +103,15 @@ namespace Anarchy.UI
                 id = Random.Range(0, files.Length);
             }
             return System.IO.File.ReadAllText(files[id]);
+        }
+
+        private string LoadByName(string name, string path)
+        {
+            if(System.IO.File.Exists(path + name + ".txt"))
+            {
+                return System.IO.File.ReadAllText(path + name + ".txt");
+            }
+            return string.Empty;
         }
 
         private string[] LoadFiles(string path)
@@ -223,6 +246,30 @@ namespace Anarchy.UI
             }
         }
 
+        private void PickByName(string name, int id)
+        {
+            if (pageSelection == CustomLogicPage)
+            {
+                CustomLevel.currentScriptLogic = LoadByName(name, LogicsPath);
+                if (CustomLevel.currentScriptLogic == string.Empty)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                CustomLevel.currentScript = LoadByName(name, MapsPath);
+                if(CustomLevel.currentScript == string.Empty)
+                {
+                    return;
+                }
+            }
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            {
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")} {(id == -1 ? "(Random)" : "")}: <b>{name}</b>", "" });
+            }
+        }
+
         public override void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -253,6 +300,11 @@ namespace Anarchy.UI
                 }
                 filterUpdate = 0f;
             }
+        }
+
+        protected override void OnAnyPageEnabled()
+        {
+            filter = string.Empty;
         }
 
         public override void OnUpdateScaling()

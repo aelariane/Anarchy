@@ -70,6 +70,10 @@ namespace GameLogic
         {
             if (Multiplayer && !PhotonNetwork.IsMasterClient)
             {
+                if(FengGameManagerMKII.FGM.LocalRacingResult.Length <= 0)
+                {
+                    return string.Empty;
+                }
                 return "<color=#" + User.MainColor.ToValue() + ">" + FengGameManagerMKII.FGM.LocalRacingResult.ToHTMLFormat() + "</color>\n";
             }
             if(finishers.Count == 0)
@@ -215,7 +219,7 @@ namespace GameLogic
             {
                 topCenter = Lang["racingWaiting"] + "\n";
                 center = "";
-                if (Multiplayer && finishers.Count > 0)
+                if (Multiplayer && RoundsCount > 1 && GetFinishers().Length > 0)
                 {
                     center += Lang["racingLastResult"] + "\n";
                     center += GetFinishers();

@@ -25,11 +25,11 @@ namespace GameLogic
         {
             Labels.Center = string.Empty;
             Labels.TopCenter = string.Empty;
-            if (Round.IsWinning)
+            if (Round.IsWinning && Round.GameEndCD >= 0f)
             {
                 Labels.Center = Lang.Format("humanityWin", Round.GameEndCD.ToString("F0")) + "\n\n";
             }
-            else if (Round.IsLosing)
+            else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
                 Labels.Center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
             }

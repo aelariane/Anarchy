@@ -29,7 +29,7 @@ namespace Anarchy.Network.Events
 
         public bool Handle()
         {
-            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveRoom();
             return true;
         }
 

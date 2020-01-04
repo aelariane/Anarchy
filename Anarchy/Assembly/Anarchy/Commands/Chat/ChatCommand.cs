@@ -79,9 +79,17 @@ namespace Anarchy.Commands.Chat
             }
         }
 
+
         public static void SendLocalizedText(string key, string[] args)
         {
-            FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", PhotonTargets.AnarchyUsersOthers, new object[] { "ChatCommands", key, args });
+            UI.Chat.SendLocalizedText("ChatCommands", key, args);
+        }
+        public static void SendLocalizedText(PhotonPlayer target, string key, string[] args)
+        {
+            if (target != null)
+            {
+                UI.Chat.SendLocalizedText(target, "ChatCommands", key, args);
+            }
         }
     }
 }

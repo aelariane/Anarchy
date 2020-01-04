@@ -51,7 +51,7 @@ namespace Anarchy.Localization
             {
                 foreach(Locale loc in allLocales)
                 {
-                    if(loc.Element == name)
+                    if(loc.Element == name && loc.MyLanguage == SelectedLanguage)
                     {
                         return loc;
                     }

@@ -25,7 +25,7 @@
             }
             chatMessage = Lang["pause" + value.ToString()];
             FengGameManagerMKII.FGM.BasePV.RPC("pauseRPC", PhotonTargets.All, new object[] { value });
-            FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.Others, new object[] { sendString, string.Empty });
+            SendLocalizedText("pause" + value.ToString(), null);
             return true;
         }
     }

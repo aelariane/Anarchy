@@ -205,6 +205,13 @@ namespace Anarchy.UI
             right = null;
             newProfile = null;
             Localization.Language.UpdateFormats();
+            if (PhotonNetwork.inRoom)
+            {
+                var hash = new ExitGames.Client.Photon.Hashtable();
+                hash.Add(PhotonPlayerProperty.name, User.Name.Value);
+                hash.Add(PhotonPlayerProperty.guildName, User.AllGuildNames);
+                PhotonNetwork.player.SetCustomProperties(hash);
+            }
         }
 
         protected override void OnPanelEnable()

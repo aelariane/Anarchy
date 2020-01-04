@@ -446,26 +446,32 @@ namespace Anarchy.UI
             var curr = Event.current;
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
             {
-                set.Value = KeyCode.LeftShift;
+                set.SetValue(KeyCode.LeftShift);
                 rebindWait = false;
                 waitSetting = null;
                 return;
             }
             else if (Input.GetKey(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
-                set.Value = KeyCode.RightShift;
+                set.SetValue(KeyCode.RightShift);
                 rebindWait = false;
                 waitSetting = null;
                 return;
             }
+            if(Input.GetAxis("Mouse ScrollWheel") != 0f)
+            {
+                set.SetAsAxis(Input.GetAxis("Mouse ScrollWheel") > 0f);
+                rebindWait = false;
+                waitSetting = null;
+            }
             if ((Input.anyKey || curr.functionKey) && curr.keyCode != KeyCode.None)
             {
-                set.Value = curr.keyCode;
+                set.SetValue(curr.keyCode);
                 for (int i = 0; i < 7; i++)
                 {
                     if (Input.GetKeyDown(KeyCode.Mouse0 + i))
                     {
-                        set.Value = (KeyCode)(KeyCode.Mouse0 + i);
+                        set.SetValue((KeyCode.Mouse0 + i));
                         waitSetting = null;
                         rebindWait = false;
                         return;
@@ -479,7 +485,7 @@ namespace Anarchy.UI
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0 + i))
                 {
-                    set.Value = (KeyCode)(KeyCode.Mouse0 + i);
+                    set.SetValue((KeyCode.Mouse0 + i));
                     waitSetting = null;
                     rebindWait = false;
                     return;

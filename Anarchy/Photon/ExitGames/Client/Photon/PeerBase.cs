@@ -327,12 +327,12 @@ namespace ExitGames.Client.Photon
             this.networkSimulationSettings.LostPackagesIn = 0;
             this.networkSimulationSettings.LostPackagesOut = 0;
             LinkedList<SimulationItem> netSimListOutgoing = this.NetSimListOutgoing;
-            lock (netSimListOutgoing);
+            lock (netSimListOutgoing)
             {
                 this.NetSimListOutgoing.Clear();
             }
             LinkedList<SimulationItem> netSimListIncoming = this.NetSimListIncoming;
-            lock (netSimListIncoming);
+            lock (netSimListIncoming)
             {
                 this.NetSimListIncoming.Clear();
             }
@@ -569,6 +569,10 @@ namespace ExitGames.Client.Photon
             int num = 0;
             switch (b3)
             {
+                case 1:
+                    this.InitCallback();
+                    break;
+
                 case 3:
                     {
                         OperationResponse operationResponse = this.SerializationProtocol.DeserializeOperationResponse(stream);
@@ -584,8 +588,10 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
+
                 case 4:
                     {
+
                         EventData eventData = this.SerializationProtocol.DeserializeEventData(stream, this.reusableEventData);
                         if (this.TrafficStatsEnabled)
                         {
@@ -603,9 +609,7 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
-                case 1:
-                    this.InitCallback();
-                    break;
+
                 case 7:
                     {
                         OperationResponse operationResponse = this.SerializationProtocol.DeserializeOperationResponse(stream);
@@ -636,6 +640,7 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
+
                 case 8:
                     {
                         object obj = this.SerializationProtocol.DeserializeMessage(stream);
@@ -650,6 +655,7 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
+
                 case 9:
                     {
                         if (this.TrafficStatsEnabled)

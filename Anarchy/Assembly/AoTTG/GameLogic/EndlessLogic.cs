@@ -37,7 +37,7 @@ namespace GameLogic
         {
             Labels.Center = string.Empty;
             Labels.TopCenter = string.Empty;
-            if (Round.IsWinning)
+            if (Round.IsWinning && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {
@@ -48,7 +48,7 @@ namespace GameLogic
                     Labels.Center = Lang.Format("humanitySingleWin", Anarchy.InputManager.Settings[InputCode.Restart].ToString());
                 }
             }
-            else if (Round.IsLosing)
+            else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {

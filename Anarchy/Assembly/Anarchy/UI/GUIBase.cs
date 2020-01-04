@@ -177,6 +177,7 @@ namespace Anarchy.UI
 
         internal MovieTexture LoadVideo(string namebase, string ext)
         {
+            MovieTexture tex;
             string name = namebase;
             bool error = false;
             if (ext == string.Empty)
@@ -196,13 +197,24 @@ namespace Anarchy.UI
                 return null;
             }
             string path = Directory + name;
+            Debug.Log(path);
             WWW www = new WWW("file://" + path);
             if (!File.Exists(path))
             {
                 Debug.LogError($"File what you are trying to load doesnt't exist: \"{path}\"");
                 return null;
             }
-            return www.movie;
+            if (www.texture == null)
+            {
+                Debug.LogError($"Null texture");
+                www.Dispose();
+                GC.SuppressFinalize(www);
+                return null;
+            }
+            tex = www.movie;
+            www.Dispose();
+            GC.SuppressFinalize(www);
+            return tex;
         }
 
         public Texture2D LoadTexture(string namebase, string ext)

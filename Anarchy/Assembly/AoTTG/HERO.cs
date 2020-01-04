@@ -88,7 +88,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     private float originVM;
     private bool QHold;
     private float reelAxis = 0f;
-    private bool needCheckReelAxis = true;
     private string reloadAnimation = string.Empty;
     private bool rightArmAim;
     private int rightBulletLeft = 7;
@@ -1720,9 +1719,9 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     }
 
     [RPC]
-    private void killObject()
+    private void killObject(PhotonMessageInfo info)
     {
-        UnityEngine.Object.Destroy(baseG);
+        Anarchy.UI.Log.AddLineRaw($"HERO.killObjectRPC by ID {info.Sender.ID}", Anarchy.UI.MsgType.Warning);
     }
 
     private void launchLeftRope(RaycastHit hit, bool single, int mode = 0)
@@ -3388,7 +3387,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     [RPC]
     public void loadskinRPC(int horse, string urls, PhotonMessageInfo info = null)
     {
-        if (info != null && BasePV != null && (BasePV.owner.ID != info.Sender.ID || !Antis.IsValidSkinURL(urls, 13, info.Sender.ID)))
+        if (info != null && BasePV != null && (BasePV.owner.ID != info.Sender.ID || !Antis.IsValidSkinURL(ref urls, 13, info.Sender.ID)))
         {
             return;
         }

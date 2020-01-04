@@ -42,10 +42,9 @@ namespace Anarchy.Commands.Chat
                 if (send.Length > 0)
                     send += "\n";
                 chatMessage += string.Format(Lang["kickSuccess"], new object[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
-                send += string.Format(English["kickSuccess"], new object[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
+                SendLocalizedText("kickSuccess", new string[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
                 PhotonNetwork.CloseConnection(target);
             }
-            FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.Others, new object[] { send, string.Empty });
             return true;
         }
     }

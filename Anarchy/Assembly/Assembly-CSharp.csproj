@@ -109,9 +109,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Anarchy\Commands\Chat\ASORacingCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
     <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
-    <Compile Include="Anarchy\UI\LoadingMapScreen.cs" />
+    <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
     <Compile Include="Anarchy\VoiceChat\VCManager.cs" />
     <Compile Include="AoTTG\AbnormalType.cs" />
@@ -210,10 +211,10 @@
     <Compile Include="Anarchy\UI\Animation\CenterAnimation.cs" />
     <Compile Include="Anarchy\UI\Animation\AngleAnimation.cs" />
     <Compile Include="Anarchy\UI\Animation\NoneAnimation.cs" />
-    <Compile Include="Anarchy\UI\Background.cs" />
-    <Compile Include="Anarchy\UI\BackgroundOnStart.cs" />
-    <Compile Include="Anarchy\UI\Chat.cs" />
-    <Compile Include="Anarchy\UI\Log.cs" />
+    <Compile Include="Anarchy\UI\Render\Background.cs" />
+    <Compile Include="Anarchy\UI\Render\BackgroundOnStart.cs" />
+    <Compile Include="Anarchy\UI\Render\Chat.cs" />
+    <Compile Include="Anarchy\UI\Render\Log.cs" />
     <Compile Include="Anarchy\UI\Panels\CustomPanel.cs" />
     <Compile Include="Anarchy\UI\ElementType.cs" />
     <Compile Include="Anarchy\UI\Panels\DebugPanel.cs" />
@@ -232,7 +233,7 @@
     <Compile Include="Anarchy\UI\Textures.cs" />
     <Compile Include="Anarchy\UI\Helper.cs" />
     <Compile Include="Anarchy\UI\Style.cs" />
-    <Compile Include="Anarchy\UI\LoadScreen.cs" />
+    <Compile Include="Anarchy\UI\Render\LoadScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\PanelMain.cs" />
     <Compile Include="Anarchy\UI\Panels\ServerListPanel.cs" />
     <Compile Include="Anarchy\UI\Panels\SinglePanel.cs" />

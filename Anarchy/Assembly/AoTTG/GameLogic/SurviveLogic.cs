@@ -124,7 +124,7 @@ namespace GameLogic
             {
                 Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.SingleKills.ToString(), FengGameManagerMKII.FGM.SingleMax.ToString(), FengGameManagerMKII.FGM.SingleTotal.ToString());
             }
-            if (Round.IsWinning)
+            if (Round.IsWinning && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {
@@ -135,7 +135,7 @@ namespace GameLogic
                     center = Lang.Format("surviveSingleWin", Round.Wave.ToString(), Anarchy.InputManager.Settings[InputCode.Restart].ToString());
                 }
             }
-            else if (Round.IsLosing)
+            else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
                 if (Multiplayer)
                 {

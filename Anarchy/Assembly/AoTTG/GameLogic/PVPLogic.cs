@@ -82,11 +82,11 @@ namespace GameLogic
         protected override void UpdateLabels()
         {
             string center = "";
-            if (Round.IsWinning)
+            if (Round.IsWinning && Round.GameEndCD >= 0f)
             {
                 center = Lang.Format("pvpWin", teamWinner.ToString(), Round.GameEndCD.ToString("F0")) + "\n\n";
             }
-            else if (Round.IsLosing)
+            else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
                 center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
             }
