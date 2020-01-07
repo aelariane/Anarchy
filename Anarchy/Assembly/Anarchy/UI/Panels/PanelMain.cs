@@ -8,6 +8,8 @@ namespace Anarchy.UI
         private Rect profileRect = new Rect(Style.ScreenWidth - 300f, 0f, 300f, 20f);
         private SmartRect rect;
         private GUIStyle style;
+        private int enabledPanel = -1;
+        private GUIBase[] allUsedPanels;
 
         public PanelMain() : base(nameof(PanelMain), 1)
         {
@@ -38,8 +40,21 @@ namespace Anarchy.UI
             obj.Enable();
         }
 
+        private int CheckActivePanel()
+        {
+            for(int i = 0; i < allUsedPanels.Length; i++)
+            {
+                if (allUsedPanels[i].Active)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         protected internal override void Draw()
         {
+            enabledPanel = CheckActivePanel();
             if(GUI.Button(profileRect, locale["profile"] + " <b>" + User.ProfileName + "</b>"))
             {
                 CheckEnabled(AnarchyManager.ProfilePanel, new GUIBase[] { AnarchyManager.SinglePanel, AnarchyManager.ServerList, AnarchyManager.SettingsPanel });
@@ -59,8 +74,11 @@ namespace Anarchy.UI
             }
             if (Button("custom_characters"))
             {
-                Application.LoadLevel("characterCreation");
-                return;
+                if(enabledPanel < 0)
+                {
+                    Application.LoadLevel("characterCreation");
+                    return;
+                }
             }
             if (Button("exit"))
             {
@@ -72,6 +90,7 @@ namespace Anarchy.UI
         {
             rect = null;
             style = null;
+            allUsedPanels = null;
             AnarchyManager.ProfilePanel.DisableImmediate();
             AnarchyManager.SinglePanel.DisableImmediate();
             AnarchyManager.SettingsPanel.DisableImmediate();
@@ -80,11 +99,12 @@ namespace Anarchy.UI
 
         protected override void OnEnable()
         {
-            profileRect = new Rect(Style.ScreenWidth - 300f, 0f, 300f, 20f);
-            rect = new SmartRect(new Rect(Style.ScreenWidth - 440f, Style.ScreenHeight - 400f, 435f, 60f), 0f, 20f);
-            style = Helper.CreateStyle(TextAnchor.MiddleRight, FontStyle.Normal, 43, true, new Color[] { white, orange, yellow, white, white, white });
+            profileRect = new Rect(Style.ScreenWidth - new AutoScaleFloat(300f), 0f, new AutoScaleFloat(300f), new AutoScaleFloat(20f));
+            rect = new SmartRect(new Rect(Style.ScreenWidth - new AutoScaleFloat(396f), Style.ScreenHeight - new AutoScaleFloat(360f), new AutoScaleFloat(400f), new AutoScaleFloat(54f)), 0f, new AutoScaleFloat(18f));
+            style = Helper.CreateStyle(TextAnchor.MiddleRight, FontStyle.Normal, Mathf.RoundToInt(new AutoScaleFloat(35)), true, new Color[] { white, orange, yellow, white, white, white });
             style.normal.background = style.hover.background = style.active.background = EmptyTexture;
             style.font = AnarchyAssets.Load<Font>(Style.FontName);
+            allUsedPanels = new GUIBase[] { AnarchyManager.ProfilePanel, AnarchyManager.SinglePanel, AnarchyManager.ServerList, AnarchyManager.SettingsPanel };
 
         }
 
