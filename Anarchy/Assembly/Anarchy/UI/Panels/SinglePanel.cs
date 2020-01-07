@@ -116,5 +116,14 @@ namespace Anarchy.UI
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
+
+        public override void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Disable();
+                return;
+            }
+        }
     }
 }

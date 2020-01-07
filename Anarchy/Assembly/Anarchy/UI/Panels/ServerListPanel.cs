@@ -605,6 +605,11 @@ namespace Anarchy.UI
 
         public override void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Disable();
+                return;
+            }
             if (!connected)
                 return;
             timeToUpdate -= Time.deltaTime;
