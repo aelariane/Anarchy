@@ -57,8 +57,12 @@ namespace GameLogic
                 }
                 doorsDestroyed = false;
             };
-            StartTime = IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? 5f : 20f;
-            RestartTime = 20f;
+            StartTime = IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? 5f : 20f; 
+            if (GameModes.ASORacing.Enabled)
+            {
+                CustomRestartTime = true;
+                RestartTime = 999f;
+            }
         }
 
         public RacingLogic(GameLogic logic) : this()
