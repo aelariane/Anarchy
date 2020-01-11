@@ -1,36 +1,99 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using UnityEngine;
 
 public class PhotonPlayer
 {
-    //
+    private static List<PhotonPlayer> anarchyUsersList = new List<PhotonPlayer>();
+    private static List<PhotonPlayer> rcUsersList = new List<PhotonPlayer>();
+    private static List<PhotonPlayer> vanillaUsersList = new List<PhotonPlayer>();
+    private static List<PhotonPlayer> notAnarchyUsersList = new List<PhotonPlayer>();
+
+    private static PhotonPlayer[] anarchyUsersArray= new PhotonPlayer[0];
+    private static PhotonPlayer[] rcUsersArray = new PhotonPlayer[0];
+    private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
+    private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
+
     private string _nameField = string.Empty;
+    private bool anarchySync = false;
+    public readonly int ID;
     public readonly bool IsLocal;
+    private bool rcSync = false;
 
-    public bool IsMuted { get; set; }
-
-    public float Volume { get; set; }
-
-    public void Mute()
+    public bool Anarchy
     {
-        IsMuted = true;
-    }
-
-    public void Unmute()
-    {
-        IsMuted = false;
+        get => anarchySync;
+        set
+        {
+            if (!anarchySync && value)
+            {
+                anarchySync = true;
+                rcSync = true;
+                if (!anarchyUsersList.Contains(this))
+                {
+                    if (!IsLocal)
+                    {
+                        anarchyUsersList.Add(this);
+                        anarchyUsersArray = anarchyUsersList.ToArray();
+                    }
+                }
+                if (notAnarchyUsersList.Contains(this))
+                {
+                    notAnarchyUsersList.Remove(this);
+                    notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+                }
+                if (vanillaUsersList.Contains(this))
+                {
+                    vanillaUsersList.Remove(this);
+                    vanillaUsersArray = vanillaUsersList.ToArray();
+                }
+            }
+        }
     }
 
     public bool HasVoice { get; set; }
 
-    public bool Anarchy { get; set; }
+    public bool IsMuted { get; set; }
 
     public bool RCIgnored { get; set; }
+
+    public bool RCSync
+    {
+        get => rcSync;
+        private set
+        {
+            if (!rcSync && value)
+            {
+                rcSync = true;
+                if (vanillaUsersList.Contains(this))
+                {
+                    vanillaUsersList.Remove(this);
+                    rcUsersList.Add(this);
+                    vanillaUsersArray = vanillaUsersList.ToArray();
+                    rcUsersArray = rcUsersList.ToArray();
+                }
+            }
+        }
+    }
+
+    public float Volume { get; set; }
+
+    static PhotonPlayer()
+    {
+        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
+    }
 
     public PhotonPlayer(bool isLocal, int actorID, string name)
     {
         Properties = new Hashtable();
         this.IsLocal = isLocal;
+        if (!isLocal)
+        {
+            vanillaUsersList.Add(this);
+            vanillaUsersArray = vanillaUsersList.ToArray();
+            notAnarchyUsersList.Add(this);
+            notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+        }
         ID = actorID;
         _nameField = name;
         if (isLocal)
@@ -44,6 +107,13 @@ public class PhotonPlayer
     {
         Properties = new Hashtable();
         this.IsLocal = isLocal;
+        if (!isLocal)
+        {
+            vanillaUsersList.Add(this);
+            vanillaUsersArray = vanillaUsersList.ToArray();
+            notAnarchyUsersList.Add(this);
+            notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+        }
         ID = actorID;
         InternalCacheProperties(properties);
         if (isLocal)
@@ -53,7 +123,6 @@ public class PhotonPlayer
         }
     }
 
-    //Methods
     public override bool Equals(object p) => (p as PhotonPlayer)?.ID == ID;
 
     public static PhotonPlayer Find(int ID)
@@ -62,18 +131,80 @@ public class PhotonPlayer
         return player;
     }
 
-    public static int[] GetAnarchyUserIDs()
+    public static PhotonPlayer[] GetAnarchyUsers()
     {
-        System.Collections.Generic.List<int> result = new System.Collections.Generic.List<int>();
-        foreach (PhotonPlayer player in PhotonNetwork.playerList)
+        return anarchyUsersArray;
+    }
+
+    public static PhotonPlayer[] GetNotAnarchyUsers()
+    {
+        return notAnarchyUsersArray;
+    }
+
+    public static PhotonPlayer[] GetRCUsers()
+    {
+        return rcUsersArray;
+    }
+
+    public static PhotonPlayer[] GetVanillaUsers()
+    {
+        return vanillaUsersArray;
+    }
+
+    public static int[] GetAnarchyUsersID()
+    {
+        int[] result = new int[anarchyUsersArray.Length];
+        if(result.Length <= 0)
         {
-            if (player.IsLocal || !player.Anarchy)
-            {
-                continue;
-            }
-            result.Add(player.ID);
+            return result;
         }
-        return result.ToArray();
+        for(int i = 0; i < result.Length; i++)
+        {
+            result[i] = anarchyUsersArray[i].ID;
+        }
+        return result;
+    }
+
+    public static int[] GetNotAnarchyUsersID()
+    {
+        int[] result = new int[notAnarchyUsersArray.Length];
+        if (result.Length <= 0)
+        {
+            return result;
+        }
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = notAnarchyUsersArray[i].ID;
+        }
+        return result;
+    }
+
+    public static int[] GetRCUsersID()
+    {
+        int[] result = new int[rcUsersArray.Length];
+        if (result.Length <= 0)
+        {
+            return result;
+        }
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = rcUsersArray[i].ID;
+        }
+        return result;
+    }
+
+    public static int[] GetVanillaUsersID()
+    {
+        int[] result = new int[vanillaUsersArray.Length];
+        if (result.Length <= 0)
+        {
+            return result;
+        }
+        for (int i = 0; i < result.Length; i++)
+        {
+            result[i] = vanillaUsersArray[i].ID;
+        }
+        return result;
     }
 
     public override int GetHashCode() => ID;
@@ -112,7 +243,12 @@ public class PhotonPlayer
             Debug.LogError("ERROR You should never change PhotonPlayer IDs!");
             return;
         }
-        ID = newID;
+        var info = this.GetType().GetField(nameof(ID), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        if (info != null)
+        {
+            info.SetValue(this, (object)newID);
+        }
+
     }
 
     internal void InternalCacheProperties(Hashtable properties)
@@ -121,12 +257,33 @@ public class PhotonPlayer
         {
             return;
         }
+        if (properties.ContainsKey("RCteam") && !RCSync)
+        {
+            RCSync = true;
+        }
         if (properties.ContainsKey(byte.MaxValue))
         {
             this._nameField = (string)properties[byte.MaxValue];
         }
         this.Properties.MergeStringKeys(properties);
         this.Properties.StripKeysWithNullValues();
+    }
+
+    public void Mute()
+    {
+        IsMuted = true;
+    }
+
+    private static void OnLeftRoom(Optimization.AOTEventArgs args)
+    {
+        anarchyUsersList.Clear();
+        anarchyUsersArray = anarchyUsersList.ToArray();
+        rcUsersList.Clear();
+        rcUsersArray = rcUsersList.ToArray();
+        vanillaUsersList.Clear();
+        vanillaUsersArray = vanillaUsersList.ToArray();
+        notAnarchyUsersList.Clear();
+        notAnarchyUsersArray = notAnarchyUsersList.ToArray();
     }
 
     public bool RemoveProperty(string property)
@@ -163,7 +320,11 @@ public class PhotonPlayer
         return $"#{this.ID:00} '{_nameField}' {this.Properties.ToStringFull()}";
     }
 
-    //Properties
+    public void Unmute()
+    {
+        IsMuted = false;
+    }
+
     public Hashtable AllProperties
     {
         get
@@ -227,7 +388,6 @@ public class PhotonPlayer
         }
     }
 
-    public int ID { get; private set; }
 
     public bool IsMasterClient => NetworkingPeer.mMasterClient.ID == ID;
 
@@ -380,7 +540,7 @@ public class PhotonPlayer
     {
         get
         {
-            if(Properties == null || !(Properties[PhotonPlayerProperty.team] is int team))
+            if (Properties == null || !(Properties[PhotonPlayerProperty.team] is int team))
             {
                 return 1;
             }

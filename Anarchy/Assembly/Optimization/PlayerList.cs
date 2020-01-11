@@ -15,7 +15,7 @@ namespace Optimization
             var bld = new StringBuilder();
             bld.Append($"[FFFFFF]# {player.ID} ");
             bld.Append(player.IsLocal ? "[FFCC00]>>[-] " : "");
-            bld.Append(player.Anarchy ? "[0099AA][A][-] ": "");
+            bld.Append(player.Anarchy ? "[00BBCC][A][-] ": (player.RCSync ? "[9999FF][RC][-] " : "[CCCCDD][V][-] "));
             bld.Append(player.RCIgnored ? "[FF0000][IGNORED] [-]" : string.Empty);
             bld.Append(player.IsMasterClient ? "[MC] " : "");
             bld.Append(player.Dead ? $"[{ColorSet.color_red}]*dead* " : "");

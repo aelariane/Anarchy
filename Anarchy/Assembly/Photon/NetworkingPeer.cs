@@ -1323,7 +1323,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             case PhotonTargets.AnarchyUsers:
                 {
-                    int[] ids = PhotonPlayer.GetAnarchyUserIDs();
+                    int[] ids = PhotonPlayer.GetAnarchyUsersID();
                     if (ids.Length <= 0)
                     {
                         ExecuteRPC(customEventContent, mLocalActor);
@@ -1336,7 +1336,40 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             case PhotonTargets.AnarchyUsersOthers:
                 {
-                    int[] ids = PhotonPlayer.GetAnarchyUserIDs();
+                    int[] ids = PhotonPlayer.GetAnarchyUsersID();
+                    if (ids.Length <= 0)
+                    {
+                        return;
+                    }
+                    options = new RaiseEventOptions() { TargetActors = ids };
+                }
+                break;
+
+            case PhotonTargets.NotAnarchy:
+                {
+                    int[] ids = PhotonPlayer.GetNotAnarchyUsersID();
+                    if(ids.Length <= 0)
+                    {
+                        return;
+                    }
+                    options = new RaiseEventOptions() { TargetActors = ids };
+                }
+                break;
+
+            case PhotonTargets.RCUsers:
+                {
+                    int[] ids = PhotonPlayer.GetRCUsersID();
+                    if (ids.Length <= 0)
+                    {
+                        return;
+                    }
+                    options = new RaiseEventOptions() { TargetActors = ids };
+                }
+                break;
+
+            case PhotonTargets.VanillaUsers:
+                {
+                    int[] ids = PhotonPlayer.GetVanillaUsersID();
                     if (ids.Length <= 0)
                     {
                         return;
@@ -1347,7 +1380,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
             case PhotonTargets.AnarchyUsersBuffered:
             case PhotonTargets.AnarchyUsersOthersBuffered:
-                throw new NotImplementedException($"Enum \"{target.ToString()}\" is not implemented yet");
+                throw new NotImplementedException($"PhotonTargets enum element: \"{target.ToString()}\" is not implemented yet");
 
             default:
                 Debug.Log($"Unsupported target enum \"{target.ToString()}\"");
