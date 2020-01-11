@@ -1,0 +1,149 @@
+﻿#Main window
+title:Paramètres
+buttons:General,Video,Effets,Touches,Mod,Abilitées
+abilityNames:Bombes
+btnBack:Retour
+
+#General page
+game:<b>Jeu</b>
+sensivity:Sensibilité[{0}]
+distance:Distance[{0}]
+moreDistance:Plus de distance[{0}]
+snapshots:<b>Snapshots</b>
+snapshotsEnabled:Snapshots:
+snapshotsShow:Montrer en jeu:
+snapshotsDmg:Dommage minimum:
+minimap:Carte:
+gameFeed:Suivi de jeu RC:
+inverty:Inverser l'axe Y:
+staticFOV:FOV statique:
+fovValue:Valeur du FOV[{0}]
+
+others:<b>Autres</b>
+speedometer:Compteur:
+speedometerTypes:Vitesse,Dommage
+bodylean:Pencher le corps lors du vol:
+
+audio:<b>Audio</b>
+overallAudio:Volume[{0}]
+
+#Video page
+
+graphics:<b>Graphismes</b>
+vsync:V-Sync:
+mipmap:Mipmapping:
+texturesQuality:Qualité des textures
+texturesLevels:Haute,Moyenne,Faible,Très faible
+quality:Qualité générale[{0}]
+
+advancedVideo:<b>Paramètres avancés</b>
+drawDistance:Distance d'affichage[{0}]
+occlusion:Utiliser l'occlusion culling:
+aniso:Filtre anisotropique
+anisoLevels:Désactivé,Activé,Activé de force
+antiAliasing:Anti-Aliasing:
+antiAliasings:Désactivé,2x,4x,8x
+bWeight:Blend Weight:
+blendWeights:1,2,4
+lodBias:LOD Bias[{0}]
+maxLOD:Max LOD[{0}]
+shadows:<b>Ombres</b>
+useShadows:Utiliser les ombres:
+shadowCascade:Cascades
+shadowCascades:1,2,4
+shadowDist:Distance[{0}]
+shadowProjection:Projection:
+shadowProjections:CloseFit,StableFit
+shadowNote:<color=yellow>Note: Les ombres fonctionnent seulement avec une qualitée >= 0.17</color>
+
+#Effects page
+effects:<b>Effets</b>
+windEffect:Effet de vent:
+bladeTrails:Effet de trainé:
+blur:Flou:
+tilt:Camera tilt:
+
+#Rebinds page
+buttonsRebinds:Humain,Titan,Cheval,Cannon
+waiting:En attente...
+mainRebinds:<b>Principales touches</b>
+rebinds:<b>Touches</b>
+
+#Anarchy page
+modMenu:Style,Nom animé,Chat et console
+
+#Anarchy/Style
+hudScale:Mise à l'échelle du HUD[{0}]:
+guiAutoScale:Utiliser l'auto mise à l'échelle pour les GUI:
+guiScaleWarning:<color=red><b>Changer ces valeurs peuvent <i>détruire</i> ton affichage.</b></color>
+guiScaleWarning1:<color=yellow>Vous avez été prévenu.</color>
+windowOffset:<b>Fenêtre & position</b>
+windowHeight:Taille de la fenêtre:
+windowWidth:Largeur de la fenêtre:
+windowBottomOffset:Position bas de fenêtre:
+windowSideOffset:Position côté de fenêtre
+windowTopOffset:Position haut de fenêtre:
+labelOffset:Position du label:
+labelOffsetSlider:Position du label slider:
+bigLabelOffset:Position du gros label:
+Others:<b>Autres</b>
+fontSize:Taille de la police:
+height:Tailles des éléments:
+horizontalMargin:Distance horizontale entre les élements:
+verticalMargin:Distance verticale entre les élements:
+labelSpace:Label espace:
+
+styleColors:<b>Configuration des couleurs</b>
+fontName:Police d'écriture:
+background:Couleur du fond:
+backgroundTransparency:Transparence du fond:
+normal:Normal
+hover:Survolé
+active:Activé
+onNormal:On Normal
+onHover:On Hover
+onActive:On Active
+vector:Vecteur
+color:Couleur
+text:Texte
+useVectors:Utiliser la position des vecteurs en tant que couleur:
+
+#Anarchy/Chat and Console
+chat:<b>Chat</b>
+chatBack:Fond du chat:
+chatBackVal:Transparence[{0}]
+chatCount:Nombre de message dans le chat:
+chatSize:Taille des messages:
+chatWidth:Largeur du chat:
+chatUseCustomSpace:Utiliser un espacement personnalisé
+chatSpaceUp:Haut:
+chatSpaceDown:Bas:
+chatSpaceLeft:Gauche:
+chatSpaceRight:Droite:
+
+console:<b>Console</b>
+consoleBack:Fond de la console:
+consoleBackVal:Transparence[{0}]
+consoleCount:Nombre de message dans la console:
+consoleSize:Taille des messages:
+consoleWidth:Largeur de la console:
+consoleUseCustomSpace:Utiliser un espacement personnalisé
+consoleSpaceUp:Haut:
+consoleSpaceDown:Bas:
+consoleSpaceLeft:Gauche:
+consoleSpaceRight:Droite:
+
+#Abilities
+
+#Abilities/Bombs
+bombStats:<b>Statistiques des bombes</b>
+bombRad:Portée d'explosion {0}:
+bombCd:Raffraichissement {0}:
+bombSpeed:Vitesse {0}:
+bombRange:Portée {0}:
+bombName:Nom de la bombe:
+bombColor:<b>Couleur de bombe</b>
+bombColorR:Couleur rouge:
+bombColorG:Couleur verte:
+bombColorB:Couleur bleu:
+bombColorA:Transparence:

@@ -1,0 +1,75 @@
+﻿title:Impostazioni gioco
+selections:Titani,PvP,Misc
+btnClose:Chiudi
+
+#Titans
+
+titancState:Quantità titani:
+titancInt0:Quantità:
+
+waveModeOnState:Titani spawnati per ondata:
+waveModeOnInt0:Quantità:
+
+spawnModeState:Percentuale di spawn:
+spawnModeFloat0:Normale:
+spawnModeFloat1:Anomalo:
+spawnModeFloat2:Jumper:
+spawnModeFloat3:Crawler:
+spawnModeFloat4:Punk:
+
+sizeModeState:Dimensioni titani:
+sizeModeFloat0:Dimensione minima:
+sizeModeFloat1:Dimensione massima:
+
+healthModeState:Vita titani:
+healthModeSelection:Fissa,Scalata
+healthModeInt0:Vita minima:
+healthModeInt1:Vita massima:
+
+damageState:Danno minimo:
+damageInt0:Danno:
+
+explodeState:Esplosione titano:
+explodeInt0:Raggio:
+
+rockState:Disattiva lancio roccia punk:
+
+#PVP
+bombState:Modalità Bombe:
+
+pointState:Punteggio Massimo:
+pointInt0:Punteggio Massimo
+
+teamState:Modalità squadre:
+teamSelection:A caso,Per Dimensione,Per Abilità
+
+infectionState:Modalità Infezione:
+infectionInt0:Titani iniziali:
+
+friendlyState:Modalità amichevole:
+
+pvpState:Sword/AHSS PVP mode:
+pvpSelection:Squadre,FFA
+
+ahssReloadState:Disattiva ricarica AHSS in aria:
+
+deadlycannonsState:Cannoni uccidono umani
+
+#Misc
+maxwaveState:Ondate massime:
+maxwaveInt0:Ondate:
+
+punkWavesState:Disattiva punks ogni 5 ondate
+
+globalDisableMinimapState:Disattiva minimappa per tutti:
+
+endlessState:Respawn infinito:
+endlessInt0:Tempo respawn(int):
+
+erenState:Autokicka titano eren:
+
+horseState:Permetti cavalli:
+
+motd:Messaggio del giorno
+
+asoracingState:ASO(infinito) racing:

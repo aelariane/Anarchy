@@ -1,0 +1,14 @@
+﻿title:Кастом
+selection:Кастом карта,Кастом логика
+gameTypes:1 Раунд,Волны,ПвП,Гонка,Кастом
+spawnCap:Количество титанов:
+gameMode:Режим:
+mapScript:Скрипт карты
+logicScript:Скрипт логики
+btnClear:Очистить
+btnClose:Закрыть
+random:Случайно
+update:Обновить список
+picker0:Выбор карты
+picker1:Выбор логики
+filter:Поиск:

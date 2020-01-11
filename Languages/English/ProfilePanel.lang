@@ -1,0 +1,47 @@
+﻿title:Profile panel
+profile:Profile:
+profileSel:<b>Profile selection</b>
+allProfiles:<b>All profiles</b>
+btnAdd:Create new
+btnCopy:Copy from current
+btnRemove:Delete
+btnAdvanced:Advanced Settings
+btnBack:Back
+btnPreview:Preview
+btnToMain:Main Settings
+mainSettings:<b>Main Settings</b>
+name:Name:
+guildName:Guildname:
+guildName2:Guildname 2:
+guildName3:Guildname 3:
+chatName:Chatname:
+mainColor:Main color:
+subColor:Second color:
+titans:<b>Titan names</b>
+titan:Titan:
+aberrant:Aberrant:
+jumper:Jumper:
+crawler:Crawler:
+punk:Punk:
+preview:Preview
+note:<color=yellow>//Note: You can have <b>15</b> profiles.</color>
+killTriggers:<b>Kill triggers</b>
+akinaTrigger:Akina:
+forestTrigger:Forest Lava:
+racingTrigger:RC Racing:
+chatFormat:Chat format:
+chatFormatSend:Chat send format
+chatPMFormat:PM format:
+chatPMFormatSend:PM send format
+suicide:Suicide:
+diename:Death:
+dieStyle:Death format:
+raceFinish:Race name:
+restart:Restart message
+mcswitch:Masterclient switch message
+wave:Wave format:
+advancedHead:<b>Advanced settings</b>
+chatSettings:<b>Chat settings</b>
+others:<b>Other settings</b>
+previews:Main,Advanced
+previewColors:<b><color=#{0}>MainColor</color> and <color=#{1}>SubColor</color></b>

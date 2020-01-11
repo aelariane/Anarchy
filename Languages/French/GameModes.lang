@@ -1,0 +1,77 @@
+﻿enabled:activé
+disabled:désactivé
+
+#Titans
+titancInfoEnabled:<color=#$maincolor$>Nombre de titan à faire apparaître [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+titancInfoDisabled:<color=#$maincolor$>Nombre de titan à faire apparaître <color=#$dColor$>désactivé</color></color>
+
+punkWavesInfoEnabled:<color=#$maincolor$>Punk toutes les 5 vagues <color=#$eColor$>activé</color></color>
+punkWavesInfoDisabled:<color=#$maincolor$>Punk toutes les 5 vagues <color=#$dColor$>désactivé</color></color>
+
+rockInfoEnabled:<color=#$maincolor$>Les punks ne lance pas de rocher <color=#$eColor$>activé</color></color>
+rockInfoDisabled:<color=#$maincolor$>Les punks ne lance pas de rocher <color=#$dColor$>désactivé</color></color>
+
+explodeInfoEnabled:<color=#$maincolor$>Explosion de titan [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+explodeInfoDisabled:<color=#$maincolor$>Explosion de titan <color=#$dColor$>désactivé</color></color>
+
+healthModeInfoEnabled:<color=#$maincolor$>Santé du titan [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> à <color=#$subcolor$>{2}</color>] <color=#$eColor$>activé</color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Santé du titan <color=#$dColor$>désactivé</color></color>
+healthModeSelection:Fixé,Echelonné
+
+damageInfoEnabled:<color=#$maincolor$>Minimum de dommages sur la nuque [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+damageInfoDisabled:<color=#$maincolor$>Minimum de dommages sur la nuque <color=#$dColor$>désactivé</color></color>
+
+sizeModeInfoEnabled:<color=#$maincolor$>Taille des titans [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>] <color=#$eColor$>activé</color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Taille des titans <color=#$dColor$>désactivé</color></color>
+
+spawnModeInfoEnabled:<color=#$maincolor$>Taux d'apparition des titans <color=#$eColor$>activé</color>\n[N: <color=#$subcolor$>{0}</color>, A: <color=#$subcolor$>{1}</color>, J: <color=#$subcolor$>{2}</color>, C: <color=#$subcolor$>{3}</color>, P: <color=#$subcolor$>{4}</color>]</color>
+spawnModeInfoDisabled:<color=#$maincolor$>Taux d'apparition des titans <color=#$dColor$>désactivé</color></color>
+
+waveModeOnInfoEnabled:<color=#$maincolor$>Nombre de titan à faire apparaître par vagues [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Nombre de titan à faire apparaître par vagues <color=#$dColor$>désactivé</color></color>
+
+#PvP
+bombInfoEnabled:<color=#$maincolor$>Mode bombe <color=#$eColor$>activé</color></color>
+bombInfoDisabled:<color=#$maincolor$>Mode bombe <color=#$dColor$>désactivé</color></color>
+
+ahssReloadInfoEnabled:<color=#$maincolor$>Les AHSS ne peuvent pas recharger dans les air <color=#$eColor$>activé</color></color>
+ahssReloadInfoDisabled:<color=#$maincolor$>Les AHSS ne peuvent pas recharger dans les air <color=#$dColor$>désactivé</color></color>
+
+teamInfoEnabled:<color=#$maincolor$>Mode équipe [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+teamInfoDisabled:<color=#$maincolor$>Mode équipee <color=#$dColor$>désactivé</color></color>
+teamSelection:Pas trié,Verouillé par taille,Verouillé par compétence
+
+infectionInfoEnabled:<color=#$maincolor$>Mode infection <color=#$eColor$>activé</color></color>
+infectionInfoDisabled:<color=#$maincolor$>Mode infection <color=#$dColor$>désactivé</color></color>
+
+pointInfoEnabled:<color=#$maincolor$>Limite de points [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+pointInfoDisabled:<color=#$maincolor$>Limite de points <color=#$dColor$>désactivé</color></color>
+
+friendlyInfoEnabled:<color=#$maincolor$>PVP Mode amical <color=#$eColor$>activé</color></color>
+friendlyInfoDisabled:<color=#$maincolor$>PVP Mode amical <color=#$dColor$>désactivé</color></color>
+
+pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>désactivé</color></color>
+pvpSelection:Mélée générale,Basé sur équipe
+
+#Misc
+endlessInfoEnabled:<color=#$maincolor$>Temps de réaparition [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+endlessInfoDisabled:<color=#$maincolor$>Temps de réaparition <color=#$dColor$>désactivé</color></color>
+
+maxwaveInfoEnabled:<color=#$maincolor$>Vague maximum [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
+maxwaveInfoDisabled:<color=#$maincolor$>Vague maximum <color=#$dColor$>désactivé</color></color>
+
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Désactiver la minimap pour tout le monde <color=#$eColor$>activé</color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Désactiver la minimap pour tout le monde <color=#$dColor$>désactivé</color></color>
+
+horseInfoEnabled:<color=#$maincolor$>Chevaux <color=#$eColor$>activé</color></color>
+horseInfoDisabled:<color=#$maincolor$>Chevaux <color=#$dColor$>désactivé</color></color>
+
+erenInfoEnabled:<color=#$maincolor$>Anti-Eren <color=#$eColor$>activé</color></color>
+erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>désactivé</color></color>
+
+deadlycannonsInfoEnabled:<color=#$maincolor$>Mode cannons mortels <color=#$eColor$>activé</color></color>
+deadlycannonsInfoDisabled:<color=#$maincolor$>Mode cannons mortels <color=#$dColor$>désactivé</color></color>
+
+asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>activé</color></color>
+asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>désactivé</color></color>

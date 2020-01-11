@@ -1,0 +1,149 @@
+﻿#Main window
+title:Impostazioni
+buttons:Principale,Video,Effеtti,Comandi,Mod,Abilità
+abilityNames:Bombe
+btnBack:Indietro
+
+#General page
+game:<b>Gioco</b>
+sensivity:Sensibilità[{0}]
+distance:Distanza[{0}]
+moreDistance:Ulteriore distanza[{0}]
+snapshots:<b>Snapshots</b>
+snapshotsEnabled:Snapshots:
+snapshotsShow:Mostra durante il gioco:
+snapshotsDmg:Danno minimo:
+minimap:Minimappa:
+gameFeed:Feed del gioco:
+inverty:Invertire Asse Y:
+staticFOV:Static FOV:
+fovValue:Valore FOV[{0}]
+
+others:<b>Altro</b>
+speedometer:Speedometer:
+speedometerTypes:Velocità,Danno
+bodylean:Inclinazione del corpo:
+
+audio:<b>Audio</b>
+overallAudio:Volume[{0}]
+
+#Video page
+
+graphics:<b>Grafica</b>
+vsync:Vsync:
+mipmap:Mipmapping:
+texturesQuality:Qualità delle textures
+texturesLevels:Alta,Media,Bassa,Minima
+quality:Qualità complessiva[{0}]
+
+advancedVideo:<b>Impostazioni avanzate</b>
+drawDistance:Regola Distanza[{0}]
+occlusion:Occlusion culling:
+aniso:Filtro anisotropico
+anisoLevels:Disattivato,Attivato,Forzato
+antiAliasing:Anti-Aliasing:
+antiAliasings:Spento,2x,4x,8x
+bWeight:Blend Weight:
+blendWeights:Uno,Due,Quattro
+lodBias:LOD Bias[{0}]
+maxLOD:Max LOD[{0}]
+shadows:<b>Ombre</b>
+useShadows:Usa Ombre:
+shadowCascade:Cascades
+shadowCascades:1,2,4
+shadowDist:Distanza[{0}]
+shadowProjection:Proiezione:
+shadowProjections:Vicino,Stabile
+shadowNote:<color=yellow>Nota: Le ombre funzionano con qualità >= 0.17</color>
+
+#Effects page
+effects:<b>Effetti</b>
+windEffect:Effetto vento:
+bladeTrails:Blade trails:
+blur:Blur:
+tilt:Inclinazione camera:
+
+#Rebinds page
+buttonsRebinds:Umano,Titano,Cavallo,Cannone
+waiting:Aspettando...
+mainRebinds:<b>Inputs principali</b>
+rebinds:<b>Comandi</b>
+
+#Anarchy page
+modMenu:Stile,Animazione nome,Chat e Console
+
+#Anarchy/Style
+hudScale:Ridimensiona HUD[{0}]:
+guiAutoScale:Auto-ridimensiona GUI:
+guiScaleWarning:<color=red><b>Cambiare questi valori può <i>FOTTERE</i> il tuo UI.</b></color>
+guiScaleWarning1:<color=yellow>Sei stato avvisato.</color>
+windowOffset:<b>Finestra & Deviazione</b>
+windowHeight:Altezza della finestra:
+windowWidth:Larghezza della finestra:
+windowBottomOffset:Fondo finestra deviazione:
+windowSideOffset:Lato finestra deviazione:
+windowTopOffset:Top finestra deviazione:
+labelOffset:Label deviazione:
+labelOffsetSlider:Label slider deviazione:
+bigLabelOffset:Grande label deviazione:
+Others:<b>Altro</b>
+fontSize:Dimensione font:
+height:Altezza elementi UI:
+horizontalMargin:Distanza orizzontale tra gli elementi:
+verticalMargin:Distanza verticale tra gli elementi:
+labelSpace:Spazio label:
+
+styleColors:<b>Configurazione colori</b>
+fontName:Nome font:
+background:Colore sfondo:
+backgroundTransparency:Trasparenza sfondo:
+normal:Normal
+hover:Hover
+active:Active
+onNormal:On Normal
+onHover:On Hover
+onActive:On Active
+vector:Vector
+color:Colore
+text:Testo
+useVectors:Vettoriale deviazione dei colori:
+
+#Anarchy/Chat and Console
+chat:<b>Chat</b>
+chatBack:Sfondo:
+chatBackVal:Trasparenza[{0}]
+chatCount:Limite messaggi:
+chatSize:Dimensione messaggi:
+chatWidth:Larghezza chat:
+chatUseCustomSpace:Usa spazio personalizzato
+chatSpaceUp:Sopra:
+chatSpaceDown:Sotto:
+chatSpaceLeft:Sinistra:
+chatSpaceRight:Destra:
+
+console:<b>Console</b>
+consoleBack:Sfondo:
+consoleBackVal:Trasparenza[{0}]
+consoleCount:Quantità messaggi:
+consoleSize:Dimensione messaggi:
+consoleWidth:Larghezza console:
+consoleUseCustomSpace:Usa spazio personalizzato:
+consoleSpaceUp:Sopra:
+consoleSpaceDown:Sotto:
+consoleSpaceLeft:Sinistra:
+consoleSpaceRight:Destra:
+
+#Abilities
+
+#Abilities/Bombs
+bombStats:<b>Stats bombe</b>
+bombRad:Raggio {0}:
+bombCd:Ricarica {0}:
+bombSpeed:Velocità {0}:
+bombRange:Portata {0}:
+bombName:Bomb name:
+bombColor:<b>Colori bombe</b>
+bombColorR:Rosso:
+bombColorG:Verde:
+bombColorB:Blu:
+bombColorA:Trasparenza:

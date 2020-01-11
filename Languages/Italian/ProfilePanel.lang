@@ -1,0 +1,47 @@
+﻿title:Pannello di Profilo
+profile:Profilo:
+profileSel:<b>Selezione profilo</b>
+allProfiles:<b>Tutti i profili</b>
+btnAdd:Crea nuovo
+btnCopy:Copia dal corrente
+btnRemove:Elimina
+btnAdvanced:Impostazioni avanzate
+btnBack:Indietro
+btnPreview:Anteprima
+btnToMain:Impostazioni principali
+mainSettings:<b>Impostazioni Principali</b>
+name:Nome:
+guildName:Gilda:
+guildName2:Gilda 2:
+guildName3:Gilda 3:
+chatName:Nome chat:
+mainColor:Colore principale:
+subColor:Secondo colore:
+titans:<b>Nomi titani</b>
+titan:Titano:
+aberrant:Anomalo:
+jumper:Jumper:
+crawler:Crawler:
+punk:Punk:
+preview:Anteprima
+note:<color=yellow>//Nota: Puoi avere <b>15</b> profili.</color>
+killTriggers:<b>Trigger uccisione</b>
+akinaTrigger:Akina:
+forestTrigger:Forest Lava:
+racingTrigger:RC Racing:
+chatFormat:Chat formato:
+chatFormatSend:Spedisci chat formato
+chatPMFormat:PM formato:
+chatPMFormatSend:spedisci PM formato
+suicide:Suicidio:
+diename:Morte:
+dieStyle:Morte formato:
+raceFinish:fine Gara:
+restart:messaggio Restart
+mcswitch:Masterclient cambiato messaggio
+wave:Onda formato:
+advancedHead:<b>Impostazioni avanzate</b>
+chatSettings:<b>Impostazioni chat</b>
+others:<b>Altre impostazioni</b>
+previews:Principale,Avanzato
+previewColors:<b><color=#{0}>Colore principale</color> e <color=#{1}>Colore secondario</color></b>

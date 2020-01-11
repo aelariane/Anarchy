@@ -1,0 +1,14 @@
+﻿title:Personnalisation
+selection:Personnalisation carte,Personnalisation logique
+gameTypes:1 Manche,Vagues,PvP,Course,Personnalisé
+spawnCap:Titan spawn cup:
+gameMode:Mode de jeu:
+mapScript:Script carte
+logicScript:Script logique
+btnClear:Effacer
+btnClose:Fermer
+random:Aléatoire
+update:Mettre à jour la liste
+picker0:Sélectionneur de carte
+picker1:Sélectionneur de logique
+filter:Filtre

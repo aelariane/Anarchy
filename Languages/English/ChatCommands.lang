@@ -1,0 +1,49 @@
+﻿#Errors
+cmdNotFound:<color=red>Command <color=yellow>"{0}"</color> not found</color>
+errMC:<color=red>Error: Not masterclient</color>
+errArg:<color=red>Error ({0}): Invlaid arguments</color>
+errPM:<color=red>Error: cannot send message to ID {0} (Player not found)</color>
+pauseErr:<color=red>Error: Game is already paused</color>
+unpauseErr:<color=red>Error: Game is not paused</color>
+
+#Kick
+kickIgnore:<color=red>Ignore kicking ID {0} (Player not found)</color>
+kickSuccess:<color=#$maincolor$>Player [{0}] {1} kicked!</color>
+
+#PM
+pmSetID:<color=#$maincolor$>Player [<color=#$subcolor$>{0}</color>] set as PM target</color>
+pmSent:<color=#$maincolor$>Sent PM to ID <color=$subcolor$>{0}</color> (<color=#$subcolor$>{1}</color>)</color>
+
+#Restart
+restartMessage:<color=#$maincolor$>Masterclient has restarted the game</color>
+
+#Room commands
+errRoom:<color=red>Error: room command <color=yellow>"{0}"</color> not found</color>
+roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>seconds add to time</color>
+roomMax:<color=#$maincolor$>Max players set to <color=#$subcolor$>{0}</color></color>
+
+#Pause
+pauseTrue:<color=#$maincolor$>Masterclient has paused the game</color>
+pauseFalse:<color=#$maincolor$>Masterclient has unpased the game</color>
+
+#DaylightChange
+daylightChange:<color=#$maincolor$>Daylight changed to <color=#$subcolor$>{0}</color></color>
+
+#ResetKD
+resetkdLocal:<color=#$maincolor$>Your stats have been reset.</color>
+resetkdAll:<color=#$maincolor$>All stats have been reset.</color>
+resetkdPlayer:<color=#$maincolor$>Player's [{0}] {1} properties have been reset.</color>
+
+#Revive
+revived:<color=#$maincolor$>You have been revived.</color>
+revivedAll:<color=#$subcolor$>All</color><color=#$maincolor$> player have been revived.</color>
+playerRevived:<color=#$maincolor$>Player [{0}] has been revived.</color>
+
+#Spectate
+specModeEnter:<color=#$maincolor$>You entered spectatore mode</color>
+specModeQuit:<color=#$maincolor$>You left spectator mode</color>
+
+#Aso racing
+notRacingMode:<color=red>Error: Not racing mode</color>
+asoraceTrue:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>enabled</color> after restart</color>
+asoraceFalse:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>disabled</color> after restart</color>

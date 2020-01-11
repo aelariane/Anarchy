@@ -1,0 +1,47 @@
+﻿title:Painel de Perfil
+profile:Perfil:
+profileSel:<b>Seleção de Perfil</b>
+allProfiles:<b>Todos os Perfis</b>
+btnAdd:Criar novo
+btnCopy:Copiar do atual
+btnRemove:Deletar
+btnAdvanced:Configurações Avançadas
+btnBack:Voltar
+btnPreview:Prévia
+btnToMain:Configurações Principais
+mainSettings:<b>Configurações Principais</b>
+name:Nome:
+guildName:Nome de Guilda
+guildName2:Nome de Guilda 2:
+guildName3:Nome de Guilda 3:
+chatName:Nome do Chat:
+mainColor:Cor Principal:
+subColor:Cor Secundária:
+titans:<b>Nomes dos Titãs</b>
+titan:Titã:
+aberrant:Titã Anormal:
+jumper:Titã Saltador:
+crawler:Titã Engatinhador:
+punk:Titã Punk:
+preview:Prévia
+note:<color=yellow>//Nota: Você pode ter <b>15</b> perfis.</color>
+killTriggers:<b>Gatilhos de morte</b>
+akinaTrigger:Akina:
+forestTrigger:Forest Lava:
+racingTrigger:Corrida RC:
+chatFormat:Formato de Chat:
+chatFormatSend:Envio formato de Chat
+chatPMFormat:Formato das PM's:
+chatPMFormatSend:Formato de envio das PM's
+suicide:Suicídio:
+diename:Morte:
+dieStyle:Formato de Morte:
+raceFinish:Nome da Corrida:
+restart:Mensagem de Reinício
+mcswitch:Mensagem de mudança de Masterclient
+wave:Formato da onda(waves):
+advancedHead:<b>Configurações Avançadas</b>
+chatSettings:<b>Configurações de Chat</b>
+others:<b>Outras Configurações</b>
+previews:Principal,Avançado
+previewColors:<b><color=#{0}>Cor Principal</color> e <color=#{1}>Cor Secundária</color></b>

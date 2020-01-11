@@ -1,0 +1,75 @@
+﻿title:Paramètres de la partie
+selections:Titan,PvP,Divers
+btnClose:Fermer
+
+#Titans
+
+titancState:Nombre de titans:
+titancInt0:Quantité:
+
+waveModeOnState:Nombre de titans/vagues:
+waveModeOnInt0:Quantité:
+
+spawnModeState:Taux d'apparition des titans:
+spawnModeFloat0:Normal:
+spawnModeFloat1:Aberrant:
+spawnModeFloat2:Jumper:
+spawnModeFloat3:Crawler:
+spawnModeFloat4:Punk:
+
+sizeModeState:Mode taille de titans customisé:
+sizeModeFloat0:Taille minimum:
+sizeModeFloat1:Taille maximum:
+
+healthModeState:Mode point de vie sur titan:
+healthModeSelection:Fixé,Echelonné
+healthModeInt0:Vie minimum:
+healthModeInt1:Vie maximum:
+
+damageState:Mode dommage:
+damageInt0:Dommage minimum:
+
+explodeState:Mode explosion titan:
+explodeInt0:Portée:
+
+rockState:Désactiver le lancer de pierres:
+
+#PVP
+bombState:Mode bombe:
+
+pointState:Mode point:
+pointInt0:Points maximum
+
+teamState:Mode équipe:
+teamSelection:Pas de tri,Taille,Compétence
+
+infectionState:Mode infection:
+infectionInt0:Nombre de titans au début:
+
+friendlyState:Mode amical:
+
+pvpState:Mode épée/AHSS PVP:
+pvpSelection:Equipe,Mélée générale
+
+ahssReloadState:AHSS désactivé air reload:
+
+deadlycannonsState:Cannons tuent les humains
+
+#Misc
+maxwaveState:Vague maximum:
+maxwaveInt0:Vague:
+
+punkWavesState:Désactiver punk toutes les 5 vagues
+
+globalDisableMinimapState:Désactiver minimap pour tout le monde:
+
+endlessState:Temps de réapparation:
+endlessInt0:Temps de réapparation(entier):
+
+erenState:Autokick Titan-Eren:
+
+horseState:Autorisé les chevaux:
+
+motd:Message du jour
+
+asoracingState:ASO(Sans fin) racing:

@@ -1,0 +1,45 @@
+﻿title:Список серверов
+btnList:К списку
+btnBack:Назад
+btnSettings:Настройки
+btnCreation:Создать комнату
+btnOffline:Играть оффлайн
+btnStart:Создать
+regions:США,Европа,Азия,Япония
+connected:Подключен к
+connecting:Подключение к
+notConnected:Не подключен
+filter:Фильтр:
+players:Кол-во игроков:
+ping:Пинг:
+settingsTitle:Настройки сети
+roomCreationTitle:Создание комнаты
+servers:Публичный,РК привет,Кастом
+roomSettings:Настройки комнаты
+roomName:Имя комнаты:
+pwd:Пароль:
+maxPlayers:Количество игроков:
+time:Время сервера:
+difficulity:Сложность
+difficulities:Нормальная,Сложная,Аномальная
+dayLight:Время дня
+dayLights:День,Вечер,Ночь
+mapSelection:Выбор карты
+preferedRegion:<color=red>Предпочитаемый регион</color>
+preferedRegionDesc:Автоматически подключается к региону при открытии списка серверов
+connectionProtocol:<color=red>Протокол соединения</color>
+connectionProtocolDescUDP:<b>UDP</b> лучший протокол для игры
+connectionProtocolDescTCP:<b>TCP</b> более стабилен чем UDP, но требует <color=orange><b>большую</b></color> скорость интернета
+connectionProtocolDescWS:<b>WebSockets</b> самый стабильный, но требует <color=red><b>ещё большую</b></color> скорость интернета
+serializationProtocol:Протокол сериализации:
+settingsDesc:<color=yellow>Прим. Изменения вступят в силу после перезапуска игры.</color>
+settingsOthers:<color=red>Остальное</color>
+presets:<color=red>Пресеты</color>
+presetName:Имя пресета:
+presetAdd:Добавить
+presetRemove:Удалить
+presetNote:<color=yellow>Прим. Скроллится при кол-ве 5+</color>
+advancedSettings:Расширенные настройки
+customServer:Кастом сервер:
+joinRoom:Попробовать присоединиться
+pwdRequest:Веедите пароль

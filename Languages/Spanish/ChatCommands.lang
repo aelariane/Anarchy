@@ -1,0 +1,46 @@
+﻿#Errors
+cmdNotFound:<color=red>Comando <color=yellow>"{0}"</color> no encontrado</color>
+errMC:<color=red>Error: No cliente principal</color>
+errArg:<color=red>Error ({0}): Argumentos inválidos</color>
+errPM:<color=red>Error: No se puede enviar un mensaje a ID {0} (Jugador no encontrado)</color>
+pauseErr:<color=red>Error: El juego ya está en pausa</color>
+unpauseErr:<color=red>Error: El juego no está en pausa</color>
+
+#Kick
+kickIgnore:<color=red>Ignorar ID {0} (Jugador no encontrado)</color>
+kickSuccess:<color=#$maincolor$>Jugador [{0}] {1} expulsado!</color>
+
+#PM
+pmSetID:<color=#$maincolor$>Jugador[<color=#$subcolor$>{0}</color>] establecido como objetivo PM</color>
+pmSent:<color=#$maincolor$>PM enviado a ID<color=$subcolor$>{0}</color> (<color=#$subcolor$>{1}</color>)</color>
+
+#Room commands
+errRoom:<color=red>Error: comando de sala <color=yellow>"{0}"</color> no encontrado</color>
+roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>segundos agregados al tiempo</color>
+roomMax:<color=#$maincolor$>Max jugadores establecidos en <color=#$subcolor$>{0}</color></color>
+
+#Pause
+pauseTrue:<color=#$maincolor$>Cliente principal ha pausado el juego</color>
+pauseFalse:<color=#$maincolor$>Cliente principal ha dejado de pausar el juego</color>
+
+#DaylightChange
+daylightChange:<color=#$maincolor$>La luz del día cambió a<color=#$subcolor$>{0}</color></color>
+
+#ResetKD
+resetkdLocal:<color=#$maincolor$>Tus estadísticas se han restablecido</color>
+resetkdAll:<color=#$maincolor$>Todas las estadísticas han sido restablecidas</color>
+resetkdPlayer:<color=#$maincolor$>Jugadores [{0}] {1} tenían sus propiedades restablecidas</color>
+
+#Revive
+revived:<color=#$maincolor$>Has sido revivido.</color>
+revivedAll:<color=#$subcolor$>Todos los</color><color=#$maincolor$> jugadores han sido revividos.</color>
+playerRevived:<color=#$maincolor$>Jugador [{0}] ha sido revivido</color>
+
+#Spectate
+specModeEnter:<color=#$maincolor$>Entras en modo espectador</color>
+specModeQuit:<color=#$maincolor$>Dejas el modo espectador</color>
+
+#Aso racing
+notRacingMode:<color=red>Error: Not racing mode</color>
+asoraceTrue:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>enabled</color> after restart</color>
+asoraceFalse:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>disabled</color> after restart</color>

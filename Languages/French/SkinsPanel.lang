@@ -1,0 +1,53 @@
+﻿title:Skins
+skinSelection:Humain,Titan,Cité,Forêt,Ciel,Carte perso
+btnClose:Fermer
+
+btnAdd:Ajouter
+btnCopy:Copier
+btnDelete:Supprimer
+name:Nom:
+set:Set
+setName:Set <color=yellow>"{0}"</color>
+
+skinStateSelection:Désactivé,Activé,Local
+skyboxDesc:Désactivé ciel customisé sur Cité/forest skins
+#Human skins
+humanLabels:Cheval,Cheveux,Yeux,Lunettes,Face,Skin,Costume,Cape,3DMG Gauche,3DMG Droit,Gas,Capuche,Trainée
+sets:Sets disponibles
+
+#Titan sets
+titanHair:Cheveux 
+titanEye:Yeux 
+titanBody:Corps 
+annie:Annie
+eren:Eren
+colossal:Colossal
+#Level sets
+ground:Sol
+linkedBox:Ciel lié: {0}
+
+#Cité
+gate:Portail
+wall:Mur
+house:Maison
+houses:Maisons
+
+#Forest
+tree:Arbre
+trees:Arbres
+trunk:Tronc
+trunks:Troncs
+leave:Leaf
+leaves:Leaves
+forestRandomize:Randomiser les pairs:
+
+#Skybox sets
+skyboxState:Skins ciel:
+btnLinkCity:Lien à la carte cité set <color=yellow>{0}</color>
+btnLinkForest:Lien à la carte forêt set <color=yellow>{0}</color>
+skyboxFront:Ciel devant
+skyboxBack:Ciel derrière
+skyboxLeft:Ciel gauche
+skyboxRight:Ciel droit
+skyboxUp:Ciel haut
+skyboxDown:Ciel bas

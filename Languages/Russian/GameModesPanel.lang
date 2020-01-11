@@ -1,0 +1,75 @@
+﻿title:Игровые настройки
+selections:Титаны,ПвП,Остальное
+btnClose:Закрыть
+
+#Titans
+
+titancState:Кол-во титанов:
+titancInt0:Количество:
+
+waveModeOnState:Кол-во титанов за волну:
+waveModeOnInt0:Количество:
+
+spawnModeState:Шанс спавна:
+spawnModeFloat0:Нормальные:
+spawnModeFloat1:Аберранты:
+spawnModeFloat2:Джамперы:
+spawnModeFloat3:Ползуны:
+spawnModeFloat4:Панки:
+
+sizeModeState:Размер титанов:
+sizeModeFloat0:Мин. размер:
+sizeModeFloat1:Мак. размер:
+
+healthModeState:Здоровье титанов:
+healthModeSelection:Фикс.,Скалируемое
+healthModeInt0:Мин. Здоровье:
+healthModeInt1:Макс. Здорове:
+
+damageState:Минимальный урон:
+damageInt0:Урон:
+
+explodeState:Взрывающиеся титаны:
+explodeInt0:Радиус взрыва:
+
+rockState:Выключить метание камня:
+
+#PVP
+bombState:Режим бомб:
+
+pointState:Режим очков:
+pointInt0:Максимум очков:
+
+teamState:Командный режим:
+teamSelection:Без сорт.,Размер-блок,Скилл-блок
+
+infectionState:Режим инфекции:
+infectionInt0:Начальное кол-во титанов:
+
+friendlyState:Мирный режим:
+
+pvpState:Мечники/AHSS ПвП:
+pvpSelection:Команды,ФФА
+
+ahssReloadState:Откл. перезарядку AHSS  в воздухе:
+
+deadlycannonsState:Пушки убивают людей
+
+#Misc
+maxwaveState:Максимум волн:
+maxwaveInt0:Волна:
+
+punkWavesState:Панки на каждой 5 волне
+
+globalDisableMinimapState:Глобально выключить карту:
+
+endlessState:Бесконечный респавн:
+endlessInt0:Время (целое):
+
+erenState:Автокик Эрена-титана:
+
+horseState:Разрешить лошадей:
+
+motd:Сообщение дня
+
+asoracingState:АСО(Бесконечная) гонка:

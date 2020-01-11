@@ -1,0 +1,43 @@
+﻿#Without args/global
+welcome:<color=#$maincolor$>[Bienvenue]</color>
+
+#Errors
+falseRestart:Faux restart
+restartGameByClient:restartGameByClient RPC
+
+#Player related
+playerConnected:<color=#$maincolor$>Joueur [{0}] {1} s'est connecté</color>
+playerLeft:<color=#$maincolor$>Joueur [{0}] {1} à quitté</color>
+ignoredRC:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> ignoré par le MC</color>
+playerKicked:<color=#$subcolor$>[{0}) <color=#$maincolor$>{1}</color> kické]</color>
+banPlayer:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> banni.</color>
+banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> banni (<color=#$subcolor$>{1}</color>)</color>
+
+#RPC
+RPCerror:<color=#$maincolor$>RPC invalide[<color=#$subcolor>{1}</color>] l'ID: <color=#$subcolor$>{0}</color></color>
+invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL</color>
+invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link</color>
+
+#Events errors
+eventName:<color=#$maincolor$>Event <color=#$subcolor$>{0}</color>:</color>
+notMC:<color=#$maincolor$>Pas masterclient</color>
+invalidParamsCount:<color=#$maincolor$>Nombre de paramètres invalide[<color=#$subcolor$>{0}</color>]</color>
+nullError:<color=#$maincolor$>Paramètres null</color>
+notHashtable:<color=#$maincolor$>Les données ne sont pas de type hashtable</color>
+notHashOrNull:<color=#$maincolor$>Pas hashtable ou null</color>
+invalidKey:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] invalide</color>
+missingKey:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] manquante</color>
+missOrInvalidKey:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] manquante ou invalide</color>
+invalidKeyArgd:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] invalide ({1})</color>
+missingKeyArgd:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] manquante ({1})</color>
+missOrInvalidKeyArgd:<color=#$maincolor$>Clé [<color=#$subcolor$>{0}</color>] manquante ou invalide ({1})</color>
+senderMustBeNull:<color=#$maincolor$>L'envoyeur doit être null</color>
+byteKey:byte[{0}]
+
+mcSteal:<color=#$maincolor$>Vol du masterclient</color>
+failedInstantiate:<color=#$maincolor$>Impossible de charger la ressource <color=#$subcolor$>{0}</color></color>
+roastEvent:<color=#$maincolor$>Roast</color>
+missRpcName:<color=#$maincolor$>Nom de RPC manquant</color>
+bothNameKes:<color=#$maincolor$>Les données contiennent les deux noms de clés</color>
+outOfListRPC:<color=#$maincolor$>Clé [<color=#$subcolor>{0}</color>] est en dehors d'RPClist</color>
+nullRpcName:<color=#$maincolor$>Nom du RPC null</color>

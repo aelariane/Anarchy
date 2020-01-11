@@ -1,0 +1,14 @@
+﻿title:Character selection
+character:Character Selection
+characters:Mikasa,Levi,Armin,Marco,Jean,Eren,Petra,Sasha,Set 1,Set 2,Set 3 
+camera:Camera Selection
+stats:Hero stats
+speed:Ground speed: <color=yellow>{0}</color>
+acceleration:Gas acceleration: <color=yellow>{0}</color>
+gas:Gas reserve: <color=yellow>{0}</color>
+blade:Blades durability: <color=yellow>{0}</color>
+humanStart:Play as <b>Soldier</b>
+ahssStart:Play as <b><color=red>AHSS</color></b>
+titanStart:Play as <b><color=red>Titan</color></b>
+back:Back
+avatar:<b>Character avatar</b>

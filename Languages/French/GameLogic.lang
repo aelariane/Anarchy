@@ -1,0 +1,36 @@
+﻿#Overall
+respawnTime:<color=#$maincolor$>Respawn in <color=#$subcolor$>{0}</color> seconds</color>
+pressToJoin:<color=#$maincolor$>Press <color=#$subcolor$>{0}</color> to join game.</color>
+singleState:<color=#$maincolor$>Kills: <color=#$maincolor$>{0}</color>\nMax Damage: <color=#$maincolor$>{1}</color>\nTotal Damage: <color=#$maincolor$>{2}</color></color>
+titans:<color=#$maincolor$>Titans Left: <color=#$subcolor$>{0}</color></color>
+time:<color=#$maincolor$>Time: <color=#$subcolor$>{0}</color></color>
+wave:<color=#$maincolor$>Wave: <color=#$subcolor$>{0}</color></color>
+
+#Racing
+racingWaiting:<color=#$maincolor$>Waiting...</color>
+racingLastResult:<color=#$maincolor$>Last round</color>
+racingResult:<color=#$maincolor$>Result</color>
+racingPlayerResult:<color=#$maincolor$>Rank <color=#$subcolor$>{0}</color>: {1} (<color=#$subcolor$>{2}</color>)</color>
+racingPlayerResultSingle:<color=#$maincolor$>You finished with time <color=#$subcolor$>{0}</color>!\nPress <color=#$subcolor$>{1}</color> to Restart</color>
+playerFinished:<color=#$maincolor$>Player {0} finished with time <color=#$subcolor$>{1}</color>!</color>
+racingRemaining:<color=#$maincolor$>Race start in <color=#$subcolor$>{0}</color></color>
+speedLabel:<color=#$maincolor$>Current speed: <color=#$subcolor$>{0}</color>\nMax speed: <color=#$subcolor$>{1}</color></color>
+racingRestart:<color=#$maincolor$>Restart in <color=#$subcolor$>{0}</color></color>
+
+#Survive mode
+surviveSingleFail:<color=#$maincolor$>Survive <color=#$subcolor$>{0}</color> Waves.\nPress <color=#$subcolor$>{1}</color> to Restart</color>
+surviveFail:<color=#$maincolor$>Survive <color=#$subcolor$>{0}</color> Waves.\nGame Restart in <color=#$subcolor$>{1}</color> to s</color>
+surviveWin:<color=#$maincolor$>Survive All Waves.\nGame Restart in <color=#$subcolor$>{1}</color> to s</color>
+surviveSingleWin:<color=#$maincolor$>Survive All Waves.\nPress <color=#$subcolor$>{1}</color> to Restart</color>
+
+#PVP
+pvpWin:<color=#$maincolor$>Team <color=#$subcolor$>{0}</color>!\nGame Restart in <color=#$subcolor$>{1}</color> s</color>
+
+#Others
+humanitySingleFail:<color=#$maincolor$>Humanity Fail.\nPress <color=#$subcolor$>{0}</color> to Restart</color>
+humanityFail:<color=#$maincolor$>Humanity Fail.\nGame Restart in <color=#$subcolor$>{0}</color> s</color>
+humanityWin:<color=#$maincolor$>Humanity win.\nGame Restart in <color=#$subcolor$>{0}</color> s</color>
+humanitySingleWin:<color=#$maincolor$>Humanity win.\nPress <color=#$subcolor$>{0}</color> to Restart</color>
+
+#CT Fight
+colossalInfo:<color=#$maincolor$>Defeat the Colossal Titan.\nPrevent abnormal titan from running to the north gate!</color>

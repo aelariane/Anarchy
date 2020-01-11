@@ -1,0 +1,77 @@
+﻿enabled:enabled
+disabled:disabled
+
+#Titans
+titancInfoEnabled:<color=#$maincolor$>Custom titan spawn amount [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+titancInfoDisabled:<color=#$maincolor$>Custom titan spawn amount <color=#$dColor$>disabled</color></color>
+
+punkWavesInfoEnabled:<color=#$maincolor$>Punk override every 5 waves <color=#$eColor$>enabled</color></color>
+punkWavesInfoDisabled:<color=#$maincolor$>Punk override every 5 waves <color=#$dColor$>disabled</color></color>
+
+rockInfoEnabled:<color=#$maincolor$>No punk rock throwing <color=#$eColor$>enabled</color></color>
+rockInfoDisabled:<color=#$maincolor$>No punk rock throwing <color=#$dColor$>disabled</color></color>
+
+explodeInfoEnabled:<color=#$maincolor$>Titan explode mode [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+explodeInfoDisabled:<color=#$maincolor$>Titan explode mode <color=#$dColor$>disabled</color></color>
+
+healthModeInfoEnabled:<color=#$maincolor$>Titan health [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> to <color=#$subcolor$>{2}</color>] <color=#$eColor$>enabled</color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Titan health <color=#$dColor$>disabled</color></color>
+healthModeSelection:Fixed,Scaled
+
+damageInfoEnabled:<color=#$maincolor$>Nape minimum damage [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+damageInfoDisabled:<color=#$maincolor$>Nape minimum damage <color=#$dColor$>disabled</color></color>
+
+sizeModeInfoEnabled:<color=#$maincolor$>Custom titan size [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>] <color=#$eColor$>enabled</color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Custom titan size <color=#$dColor$>disabled</color></color>
+
+spawnModeInfoEnabled:<color=#$maincolor$>Custom spawn rate <color=#$eColor$>enabled</color>\n[N: <color=#$subcolor$>{0}</color>, A: <color=#$subcolor$>{1}</color>, J: <color=#$subcolor$>{2}</color>, C: <color=#$subcolor$>{3}</color>, P: <color=#$subcolor$>{4}</color>]</color>
+spawnModeInfoDisabled:<color=#$maincolor$>Custom spawn rate <color=#$dColor$>disabled</color></color>
+
+waveModeOnInfoEnabled:<color=#$maincolor$>Custom wave titan spawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Custom wave titan spawn <color=#$dColor$>disabled</color></color>
+
+#PvP
+bombInfoEnabled:<color=#$maincolor$>Bomb mode <color=#$eColor$>enabled</color></color>
+bombInfoDisabled:<color=#$maincolor$>Bomb mode <color=#$dColor$>disabled</color></color>
+
+ahssReloadInfoEnabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$eColor$>enabled</color></color>
+ahssReloadInfoDisabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$dColor$>disabled</color></color>
+
+teamInfoEnabled:<color=#$maincolor$>Team mode [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+teamInfoDisabled:<color=#$maincolor$>Team mode <color=#$dColor$>disabled</color></color>
+teamSelection:No sort,Locked by size,Locked by skill
+
+infectionInfoEnabled:<color=#$maincolor$>Infection mode <color=#$eColor$>enabled</color></color>
+infectionInfoDisabled:<color=#$maincolor$>Infection mode <color=#$dColor$>disabled</color></color>
+
+pointInfoEnabled:<color=#$maincolor$>Point limit [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+pointInfoDisabled:<color=#$maincolor$>Point limit <color=#$dColor$>disabled</color></color>
+
+friendlyInfoEnabled:<color=#$maincolor$>PVP Friendly mode <color=#$eColor$>enabled</color></color>
+friendlyInfoDisabled:<color=#$maincolor$>PVP Friendly mode <color=#$dColor$>disabled</color></color>
+
+pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>disabled</color></color>
+pvpSelection:FFA,Team-Based
+
+#Misc
+endlessInfoEnabled:<color=#$maincolor$>Endless respawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+endlessInfoDisabled:<color=#$maincolor$>Endless respawn <color=#$dColor$>disabled</color></color>
+
+maxwaveInfoEnabled:<color=#$maincolor$>Max wave [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
+maxwaveInfoDisabled:<color=#$maincolor$>Max wave <color=#$dColor$>disabled</color></color>
+
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Global minimap disable <color=#$eColor$>enabled</color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Global minimap disable <color=#$dColor$>disabled</color></color>
+
+horseInfoEnabled:<color=#$maincolor$>Horses <color=#$eColor$>enabled</color></color>
+horseInfoDisabled:<color=#$maincolor$>Horses <color=#$dColor$>disabled</color></color>
+
+erenInfoEnabled:<color=#$maincolor$>Anti-Eren <color=#$eColor$>enabled</color></color>
+erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>disabled</color></color>
+
+deadlycannonsInfoEnabled:<color=#$maincolor$>Deadly cannons mode <color=#$eColor$>enabled</color></color>
+deadlycannonsInfoDisabled:<color=#$maincolor$>Deadly cannons mode <color=#$dColor$>disabled</color></color>
+
+asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка <color=#CCFFCC>включена</color></color>
+asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка <color=#FFAACC>выключена</color></color>

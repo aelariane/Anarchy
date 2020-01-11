@@ -1,0 +1,43 @@
+﻿#Without args/global
+welcome:<color=#$maincolor$>[Добро пожаловать]</color>
+
+#Errors
+falseRestart:Ложный рестарт
+restartGameByClient:restartGameByClient RPC
+
+#Player related
+playerConnected:<color=#$maincolor$>Игрок [{0}] {1} подключился</color>
+playerLeft:<color=#$maincolor$>Игрок [{0}] {1} вышел</color>
+ignoredRC:<color=red>Игрок [{0}] {1} заигнорен хостом.</color>
+playerKicked:<color=#$subcolor$>[{0}) <color=#$maincolor$>{1}</color> кикнут]</color>
+banPlayer:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен.</color>
+banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен (<color=#$subcolor$>{1}</color>)</color>
+
+#RPC
+RPCerror:<color=#$maincolor$>Invalid RPC[<color=#$subcolor>{1}</color>] by ID: <color=#$subcolor$>{0}</color></color>
+invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> неправильная ссылка на скин</color>
+invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> неизвестная ссылка на скин</color>
+
+#Events errors
+eventName:<color=#$maincolor$>Event <color=#$subcolor$>{0}</color>:</color>
+notMC:<color=#$maincolor$>Not masterclient</color>
+invalidParamsCount:<color=#$maincolor$>Invalid params count[<color=#$subcolor$>{0}</color>]</color>
+nullError:<color=#$maincolor$>Null parameters</color>
+notHashtable:<color=#$maincolor$>Data is not hashtable</color>
+notHashOrNull:<color=#$maincolor$>Not hashtable or null</color>
+invalidKey:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] invalid</color>
+missingKey:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] missing</color>
+missOrInvalidKey:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] missing or invalid</color>
+invalidKeyArgd:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] invalid ({1})</color>
+missingKeyArgd:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] missing ({1})</color>
+missOrInvalidKeyArgd:<color=#$maincolor$>Key [<color=#$subcolor$>{0}</color>] missing or invalid ({1})</color>
+senderMustBeNull:<color=#$maincolor$>Sender must be null</color>
+byteKey:byte[{0}]
+
+mcSteal:<color=#$maincolor$>Masterclient stealing</color>
+failedInstantiate:<color=#$maincolor$>Failed to load resource <color=#$subcolor$>{0}</color></color>
+roastEvent:<color=#$maincolor$>Sent roast event</color>
+missRpcName:<color=#$maincolor$>Missing RPC Name</color>
+bothNameKes:<color=#$maincolor$>Data contains both name keys</color>
+outOfListRPC:<color=#$maincolor$>Key [<color=#$subcolor>{0}</color>] is out of RPC list</color>
+nullRpcName:<color=#$maincolor$>Null RPC Name</color>

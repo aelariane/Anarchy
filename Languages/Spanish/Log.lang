@@ -1,0 +1,43 @@
+﻿#Without args/global
+welcome:<color=#$maincolor$>[¡Bienvenido!]</color>
+
+#Errors
+falseRestart:Falso reinicio
+restartGameByClient:restartGameByClient RPC
+
+#Player related
+playerConnected:<color=#$maincolor$>[<color=#$subcolor$>{0}</color>) <color=#$subcolor$>{1}</color> conectado]</color>
+playerLeft:<color=#$maincolor$>[<color=#$subcolor$>{0}</color>) <color=#$subcolor$>{1}</color> desconectado]</color>
+ignoredRC:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> ignorado por MC</color>
+playerKicked:<color=#$subcolor$>[{0}) <color=#$maincolor$>{1}</color> expulsado]</color>
+banPlayer:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> prohibido.</color>
+banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> prohibido (<color=#$subcolor$>{1}</color>)</color>
+
+#RPC
+RPCerror:<color=#$maincolor$>Inválido RPC[<color=#$subcolor>{1}</color>] por ID: <color=#$subcolor$>{0}</color></color>
+invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL</color>
+invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link</color>
+
+#Events errors
+eventName:<color=#$maincolor$>Evento <color=#$subcolor$>{0}</color>:</color>
+notMC:<color=#$maincolor$>No cliente principal</color>
+invalidParamsCount:<color=#$maincolor$>Cuenta de parámetros inválidos[<color=#$subcolor$>{0}</color>]</color>
+nullError:<color=#$maincolor$>Parámetros nulos</color>
+notHashtable:<color=#$maincolor$>Los datos no son hashtable</color>
+notHashOrNull:<color=#$maincolor$>No hashtable o nulo</color>
+invalidKey:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] inválida</color>
+missingKey:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] desaparecida</color>
+missOrInvalidKey:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] desaparecida o inválida</color>
+invalidKeyArgd:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] inválida ({1})</color>
+missingKeyArgd:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] desaparecida ({1})</color>
+missOrInvalidKeyArgd:<color=#$maincolor$>Llave [<color=#$subcolor$>{0}</color>] desaparecida o inválida ({1})</color>
+senderMustBeNull:<color=#$maincolor$>El remitente debe ser nulo</color>
+byteKey:byte[{0}]
+
+mcSteal:<color=#$maincolor$>Robo de lo Cliente Principal</color>
+failedInstantiate:<color=#$maincolor$>Error al cargar el recurso <color=#$subcolor$>{0}</color></color>
+roastEvent:<color=#$maincolor$>Evento roast enviado</color>
+missRpcName:<color=#$maincolor$>Falta el nombre de RPC</color>
+bothNameKes:<color=#$maincolor$>Los datos contienen ambas claves de nombre</color>
+outOfListRPC:<color=#$maincolor$>Llave [<color=#$subcolor>{0}</color>] está fuera de la lista RPC</color>
+nullRpcName:<color=#$maincolor$>Nombre de RPC nulo</color>

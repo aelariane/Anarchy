@@ -1,0 +1,47 @@
+﻿title:Профиль
+profile:Профиль:
+profileSel:<b>Выбор профиля</b>
+allProfiles:<b>Все профили</b>
+btnAdd:Создать новый
+btnCopy:Скопировать с текущего
+btnRemove:Удалить
+btnAdvanced:Продвинутые настройки
+btnBack:Назад
+btnPreview:Предпросмотр
+btnToMain:Основные настройки
+mainSettings:<b>Основные настройки</b>
+name:Имя:
+guildName:Гильдия:
+guildName2:Гильдия 2:
+guildName3:Гильдия 3:
+chatName:Чат имя:
+mainColor:Основной Цвет:
+subColor:Доп. Цвет:
+titans:<b>Имена титанов</b>
+titan:Титан:
+aberrant:Аберрант:
+jumper:Прыгун:
+crawler:Ползун:
+punk:Панк:
+preview:Предпросмотр
+note:<color=yellow>//Прим. Можно иметь до <b>15</b> профилей.</color>
+killTriggers:<b>Триггеры убийства</b>
+akinaTrigger:Акина:
+forestTrigger:Лесная лава:
+racingTrigger:Гоночный:
+chatFormat:Формат чата:
+chatFormatSend:Формат отправки чата
+chatPMFormat:Формат ЛС:
+chatPMFormatSend:Формат отправки ЛС
+suicide:Суицид:
+diename:Смерть:
+dieStyle:Формат смерти:
+raceFinish:Гоночное имя:
+restart:Сообщение рестарта
+mcswitch:Сообщение смены хоста
+wave:Формат волны:
+advancedHead:<b>Продвинутые настройки</b>
+chatSettings:<b>Настройки чата</b>
+others:<b>Остальные настройки</b>
+previews:Основные,Продвинутые
+previewColors:<b><color=#{0}>Основной</color> и <color=#{1}>Дополнительный</color></b> цвета
