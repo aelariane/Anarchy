@@ -693,30 +693,37 @@ namespace RC
             if (currentLevel != string.Empty)
             {
                 WaitForSeconds awaiter = new WaitForSeconds(0.375f);
-                List<PhotonPlayer> targets = new List<PhotonPlayer>();
+                List<PhotonPlayer> cached = new List<PhotonPlayer>();
+                List<PhotonPlayer> send = new List<PhotonPlayer>();
                 foreach (PhotonPlayer player in PhotonNetwork.playerList)
                 {
-                    if (!player.IsLocal)
+                    if (player.IsLocal)
                     {
-                        targets.Add(player);
+                        continue;
+                    }
+                    if (player.CurrentLevel == currentLevel)
+                    {
+                        cached.Add(player);
+                    }
+                    else
+                    {
+                        send.Add(player);
                     }
                 }
-                for(int i = 0; i < targets.Count; i++)
+                if (cached.Count > 0)
                 {
-                    if(targets[i].Properties["currentLevel"] != null && currentLevel != string.Empty && targets[i].CurrentLevel == currentLevel)
+                    for (int i = 0; i < cached.Count; i++)
                     {
-                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", targets[i], new object[] { new string[] { "loadcached" } });
-                        targets.RemoveAt(i);
+                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", cached[i], new object[] { new string[] { "loadcached" } });
                     }
                 }
-                if(targets.Count <= 0)
+                if(send.Count > 0)
                 {
-                    yield break;
-                }
-                for (int i = 0; i < levelCache.Count; i++)
-                {
-                    FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", targets.ToArray(), new object[] { levelCache[i] });
-                    yield return awaiter;
+                    for (int i = 0; i < levelCache.Count; i++)
+                    {
+                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", send.ToArray(), new object[] { levelCache[i] });
+                        yield return awaiter;
+                    }
                 }
             }
             else
@@ -2407,7 +2414,7 @@ namespace RC
                 WaitForSeconds awaiter = new WaitForSeconds(0.375f);
                 for (int i = 0; i < levelCache.Count; i++)
                 {
-                    if (player.Properties["currentLevel"] != null && currentLevel != string.Empty && player.Properties["currentLevel"] as string == currentLevel)
+                    if (player.Properties["currentLevel"] != null && currentLevel != string.Empty && player.CurrentLevel == currentLevel)
                     {
                         if (i == 0)
                         {
@@ -2434,7 +2441,7 @@ namespace RC
             if (!FengGameManagerMKII.FGM.NeedChooseSide && IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
             {
                 IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
-                if (!PhotonNetwork.player.IsTitan)
+                if (!PhotonNetwork.player.IsTitan && PhotonNetwork.player.Dead)
                 {
                     FengGameManagerMKII.FGM.SpawnPlayer(FengGameManagerMKII.FGM.myLastHero);
                 }
@@ -2454,7 +2461,7 @@ namespace RC
         public static IEnumerator unloadAssetsE(float time)
         {
             yield return new WaitForSeconds(time);
-            //Resources.UnloadUnusedAssets();
+            Resources.UnloadUnusedAssets();
             unloading = false;
             yield break;
         }
