@@ -1485,7 +1485,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             GameModes.Load();
             GameModes.ForceChange();
-            this.RestartGame(true);
+            this.RestartGame(true, false);
         }
     }
 
@@ -1514,7 +1514,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             {
                 StartCoroutine(CustomLevel.SendRPCToPlayer(args.Player));
             }
-            GameModes.SendRPCToPlayer(args.Player);
+            StartCoroutine(GameModes.SendRPCToPlayer(args.Player));
         }
     }
 
@@ -1639,14 +1639,15 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         this.titans.Remove(titan);
     }
 
-    public void RestartGame(bool masterclientSwitched = false)
+    public void RestartGame(bool masterclientSwitched, bool restartManually)
     {
-        if (this.gameTimesUp)
+        if (this.gameTimesUp || Logic.Restarting)
         {
             return;
         }
         GameModes.OnRestart();
         this.checkpoint = null;
+        Logic.Restarting = true;
         Logic.RoundTime = 0f;
         Logic.MyRespawnTime = 0f;
         foreach (var info in killInfoList)
@@ -1665,7 +1666,10 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         else
         {
-            this.SendChatContentInfo(User.MsgRestart);
+            if (!restartManually && User.MsgRestart.Length > 0)
+            { 
+                this.SendChatContentInfo(User.MsgRestart); 
+            }
         }
         GameModes.SendRPC();
     }
