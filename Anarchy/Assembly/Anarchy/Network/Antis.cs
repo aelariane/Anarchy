@@ -11,12 +11,13 @@ namespace Anarchy.Network
 
         private static string[] ValidLinks = new string[]
         {
-            "i.imgur.com", "imgur.com", "discordapp", "postimg", "aotcorehome.files.wordpress", "deviantart", "wmpics.pics", "puu.sh"
+            "i.imgur.com", "imgur.com", "discordapp.com", "postimg", "aotcorehome.files", "deviantart", "wmpics.pics", "puu.sh", "pp.userapi.com",
+            "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-.userapi.com", "images.ourclipart.com", "pictureshack.ru"
         };
 
-        internal static bool IsValidURL(string url)
+        internal static bool IsValidURL(string url, out Uri uri)
         {
-            return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult != null && uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            return Uri.TryCreate(url, UriKind.Absolute, out uri) && (uri != null && uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
         }
 
         internal static bool IsValidSkinURL(ref string all_parts, int length, int ID)
@@ -30,25 +31,27 @@ namespace Anarchy.Network
             {
                 return false;   
             }
+            Uri uri = null;
             for (int i = 0; i < urls.Length; i++)
             {
                 var url = urls[i];
-                if (url.IsNullOrWhiteSpace() || url.Trim().ToLower().Contains("transparent") || url.ToLower().StartsWith("file:///"))
+                if (url.IsNullOrWhiteSpace() || url.ToLower().Contains("transparent") || url.ToLower().StartsWith("file:///"))
                 {
                     continue;
                 }
+                url = url.Trim();
                 if(!url.StartsWith("https://") && !url.StartsWith("http://"))
                 {
-                    url = "https://" + url;
+                    url = "http://" + url;
                 }
-                if (!IsValidURL(url))
+                if (!IsValidURL(url, out uri))
                 {
-                    Log.AddLine("invalidSkinUrl", MsgType.Error, ID.ToString());
+                    Log.AddLine("invalidSkinUrl", MsgType.Error, ID.ToString(), url);
                     urls[i] = string.Empty;
                 }
-                else if (!ValidLinks.Any(url.Contains))
+                else if (!ValidLinks.Any(uri.Host.Contains))
                 {
-                    Log.AddLine("invalidSkinLink", MsgType.Error, ID.ToString());
+                    Log.AddLine("invalidSkinLink", MsgType.Error, ID.ToString(), url);
                     urls[i] = string.Empty;
                 }
             }
