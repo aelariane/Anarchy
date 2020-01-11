@@ -580,7 +580,7 @@ public class RCAction
                             RCManager.playerVariables.Clear();
                             RCManager.titanVariables.Clear();
                         }
-                        FengGameManagerMKII.FGM.RestartGame(false);
+                        FengGameManagerMKII.FGM.RestartGame(false, false);
                         return;
                     default:
                         return;
