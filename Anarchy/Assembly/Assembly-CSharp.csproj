@@ -111,12 +111,14 @@
   <ItemGroup>
     <Compile Include="Anarchy\Commands\Chat\ASORacingCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
+    <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
     <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
     <Compile Include="Anarchy\VoiceChat\VCManager.cs" />
     <Compile Include="AoTTG\AbnormalType.cs" />
     <Compile Include="Photon\ActorProperties.cs" />
+    <Compile Include="Photon\ModInfo.cs" />
     <Compile Include="Xffect\Affector.cs" />
     <Compile Include="AoTTG\Triggers\AHSSShotGunCollider.cs" />
     <Compile Include="Anarchy\AnarchyAssets.cs" />
