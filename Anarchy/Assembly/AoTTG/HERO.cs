@@ -1458,7 +1458,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         if (flag2 || flag3)
         {
             this.baseR.AddForce(-this.baseR.velocity, ForceMode.VelocityChange);
-            reelAxis = Input.GetAxis("Mouse ScrollWheel") * 5555f;
             if (InputManager.IsInputRebindHolding((int)InputRebinds.ReelIn))
             {
                 reelAxis = -1f;
@@ -1467,9 +1466,12 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             {
                 reelAxis = 1f;
             }
+            else
+            {
+                reelAxis = Input.GetAxis("Mouse ScrollWheel") * 5555f;
+            }
             float idk = 1.53938f * (1f + Mathf.Clamp(reelAxis, -0.8f, 0.8f));
             reelAxis = 0f;
-            //needCheckReelAxis = true;
             this.baseR.velocity = Vector3.RotateTowards(current, this.baseR.velocity, idk, idk).normalized * (this.currentSpeed + 0.1f);
         }
         if (this.State == HeroState.Attack && (this.attackAnimation == "attack5" || this.attackAnimation == "special_petra") && baseA[this.attackAnimation].normalizedTime > 0.4f && !this.attackMove)
@@ -5008,6 +5010,62 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.showSkillCD();
         this.ShowFlareCD();
         this.ShowAimUI();
+        float checkAxis = Input.GetAxis("Mouse ScrollWheel");
+        if(checkAxis != 0f)
+        {
+            bool flag2 = false;
+            bool flag3 = false;
+            if (this.isLaunchLeft && this.bulletLeft != null && bulletLeft.IsHooked())
+            {
+                this.isLeftHandHooked = true;
+                Vector3 vector5 = bulletLeft.baseT.position - baseT.position;
+                vector5.Normalize();
+                vector5 *= 10f;
+                if (!this.isLaunchRight)
+                {
+                    vector5 *= 2f;
+                }
+                if (Vector3.Angle(baseR.velocity, vector5) > 90f && InputManager.IsInput[InputCode.Gas])
+                {
+                    flag2 = true;
+                }
+            }
+            if (this.isLaunchRight && this.bulletRight != null && this.bulletRight.IsHooked())
+            {
+                this.isRightHandHooked = true;
+                Vector3 vector6 = bulletRight.baseT.position - this.baseT.position;
+                vector6.Normalize();
+                vector6 *= 10f;
+                if (!this.isLaunchLeft)
+                {
+                    vector6 *= 2f;
+                }
+                if (Vector3.Angle(baseR.velocity, vector6) > 90f && InputManager.IsInput[InputCode.Gas])
+                {
+                    flag3 = true;
+                }
+            }
+            Vector3 current = Vectors.zero;
+            if (flag2 && flag3)
+            {
+                current = (this.bulletRight.baseT.position + this.bulletLeft.baseT.position) * 0.5f - this.baseT.position;
+            }
+            else if (flag2 && !flag3)
+            {
+                current = this.bulletLeft.baseT.position - this.baseT.position;
+            }
+            else if (flag3 && !flag2)
+            {
+                current = this.bulletRight.baseT.position - this.baseT.position;
+            }
+            if (flag2 || flag3)
+            {
+                this.baseR.AddForce(-this.baseR.velocity, ForceMode.VelocityChange);
+                float idk = 1.53938f * (1f + Mathf.Clamp(checkAxis > 0 ? 1f : -1f, -0.8f, 0.8f));
+                reelAxis = 0f;
+                this.baseR.velocity = Vector3.RotateTowards(current, this.baseR.velocity, idk, idk).normalized * (this.currentSpeed + 0.1f);
+            }
+        }
     }
 
 
