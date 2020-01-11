@@ -73,3 +73,15 @@ horseState:Permitir cavalos:
 motd:Mensagem do dia!
 
 asoracingState:Corrida ASO(Infinita):
+
+startTimeState:Usar tempo customizado de inicializacao:
+startTimeInt0:Tempo antes da corrida comecar:
+
+restartOnFinishersState:Reinicio automatico do jogo quando X pessoas acabarem:
+restartOnFinishersInt0:Jogadores finalizados para reiniciar:
+
+racingTimeLimitState:Reinicio automatico do jogo apos o tempo limite:
+racingTimeLimitInt0:Tempo limite:
+
+racingRestartTimeState:Tempo de reinicio customizado:
+racingRestartTimeInt0:Tempo para reiniciar:

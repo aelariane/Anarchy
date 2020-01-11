@@ -75,3 +75,16 @@ deadlycannonsInfoDisabled:<color=#$maincolor$>Modo de cañones mortales <color=#
 
 asoracingInfoEnabled:<color=#$maincolor$>ASO Carreras <color=#$eColor$>habilitada</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Carreras <color=#$dColor$>deshabilitada</color></color>
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Tiempo de inicio de carrera personalizada, establecida en <color=#$subcolor$>{0}</color></color> 
+startTimeInfoDisabled:<color=#$maincolor$>Tiempo de inicio personalizado <color=#$dColor$>deshabilitada</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>El juego se reiniciara despues de que <color=#$subcolor$>{0}</color> jugadores hayan terminado</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Reiniciar despues de finalizar el modo de conteo de jugadores <color=#$dColor$>deshabilitado</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Tiempo limite de la carrera <color=#$eColor$>habilitado</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Tiempo limite de la carrera <color=#$dColor$>deshabilitado</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Tiempo de reinicio de la carrera establecido en <color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$Tiempo de reinicio de la carrera <color=#$dColor$>deshabilitado</color></color> 

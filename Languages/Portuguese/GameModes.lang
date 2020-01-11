@@ -75,3 +75,16 @@ deadlycannonsInfoDisabled:<color=#$maincolor$>Modo canhões mortais <color=#$dCo
 
 asoracingInfoEnabled:<color=#$maincolor$>Corrida ASO <color=#$eColor$>ativado</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>Corrida ASO <color=#$dColor$>desativado</color></color>
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Tempo de inicio customizado da corrida, definido para <color=#$maincolor$>{0}</color></color>
+startTimeInfoDisabled:<color=#$maincolor$>Tempo de inicio customizado <color=#$dColor$>desabilitado</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>O jogo sera reiniciado apos <color=#$subcolor$>{0}</color> jogadores terminarem.</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Reinicio apos o modo de contagem dos jogadores finalizados <color=#$dColor$>desabilitado</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Tempo limite da corrida <color=#$eColor$>habilitado</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Tempo limite da corrida <color=#$dColor$>desabilitado</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Tempo de reinicio da corrida definido para <color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Tempo de reinicio da corrida <color=#$dColor$>desabilitado</color></color> 

@@ -19,6 +19,9 @@ errRoom:<color=red>Error: comando de sala <color=yellow>"{0}"</color> no encontr
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>segundos agregados al tiempo</color>
 roomMax:<color=#$maincolor$>Max jugadores establecidos en <color=#$subcolor$>{0}</color></color>
 
+#Restart
+restartMessage:<color=#$maincolor$>Masterclient reinicio el juego</color>
+
 #Pause
 pauseTrue:<color=#$maincolor$>Cliente principal ha pausado el juego</color>
 pauseFalse:<color=#$maincolor$>Cliente principal ha dejado de pausar el juego</color>
