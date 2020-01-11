@@ -120,7 +120,7 @@ namespace Anarchy.UI
         {
             locale.FormatColors();
             var cache = LogWidth * (Style.WindowWidth / 700f);
-            position = new Rect(Style.ScreenWidth - cache, Style.ScreenHeight - 500, cache, 470f);
+            position = new Rect(Style.ScreenWidth - cache, Style.ScreenHeight - 500f, cache, 470f);
             LogStyle = new GUIStyle(Style.Label);
             if (UseBackground)
             {

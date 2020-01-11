@@ -37,8 +37,9 @@ namespace Anarchy.UI
             left.Reset();
             right.Reset();
             rect.Reset();
-            rect.MoveOffsetX(120f);
-            rect.width -= 120f;
+            float offset = new AutoScaleFloat(120f);
+            rect.MoveOffsetX(offset);
+            rect.width -= offset;
             pageSelection = SelectionGrid(rect, pageSelection, selections, selections.Length, true);
             rect.ResetX();
 

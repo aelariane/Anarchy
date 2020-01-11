@@ -24,8 +24,9 @@ namespace Anarchy.UI
         {
             rect.Reset();
             Box(BoxPosition, locale["title"]);
-            rect.MoveOffsetX(120f);
-            rect.width -= 120f;
+            float offset = new AutoScaleFloat(120f);
+            rect.MoveOffsetX(offset);
+            rect.width -= offset;
             pageSelection = SelectionGrid(rect, pageSelection, modeSelection, modeSelection.Length);
             rect.ResetX();
             rect.MoveToEndY(BoxPosition, Style.Height);
@@ -54,6 +55,16 @@ namespace Anarchy.UI
             GameModes.MinimapDisable.Draw(right, locale);
             right.MoveY();
             GameModes.AllowHorses.Draw(right, locale);
+            right.MoveY();
+            GameModes.ASORacing.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingStartTime.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingFinishersRestart.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingTimeLimit.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingRestartTime.Draw(right, locale);
         }
 
         protected override void OnPanelDisable()
