@@ -73,3 +73,16 @@ horseState:Permetti cavalli:
 motd:Messaggio del giorno
 
 asoracingState:ASO(infinito) racing:
+
+#Racing
+startTimeState:Usa il proprio tempo d'inizio:
+startTimeInt0:Tempo prima della gara:
+
+restartOnFinishersState:Riavvio a X persone che hanno finito:
+restartOnFinishersInt0:Numero arrivati:
+
+racingTimeLimitState:Riavvio del gioco al tempo limite:
+racingTimeLimitInt0:Tempo limite:
+
+racingRestartTimeState:Proprio tempo di riavvio:
+racingRestartTimeInt0:Tempo per riavviare:

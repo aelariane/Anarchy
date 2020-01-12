@@ -19,6 +19,9 @@ errRoom:<color=red>Errore: Commando stanza <color=yellow>"{0}"</color> non trova
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>secondi addati al tempo</color>
 roomMax:<color=#$maincolor$>Giocatori massimi impostato a <color=#$subcolor$>{0}</color></color>
 
+#Restart
+restartMessage:<color=#$maincolor$>Masterclient ha riavviato il gioco</color>
+
 #Pause
 pauseTrue:<color=#$maincolor$>Masterclient ha messo il gioco in pausa</color>
 pauseFalse:<color=#$maincolor$>Masterclient ha ripreso il gioco</color>

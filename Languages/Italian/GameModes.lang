@@ -75,3 +75,17 @@ deadlycannonsInfoDisabled:<color=#$maincolor$>Cannoni uccidono umani <color=#$dC
 
 asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>attivato</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>disattivato</color></color>
+
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Proprio tempo d'inizio gara su <color=#$subcolor$>{0}</color></color> 
+startTimeInfoDisabled:<color=#$maincolor$>Proprio tempo d'inizio gara <color=#$dColor$>disattivato</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>Gioco si riavvierà dopo <color=#$subcolor$>{0}</color> giocatori avranno finito</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Riavvio al numero di arrivati <color=#$dColor$>disattivato</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Limite tempo gara <color=#$eColor$>attivato</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Limite tempo gara <color=#$dColor$>disattivato</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Tempo di riavvio gara su<color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Tempo di riavvio gara <color=#$dColor$>disattivato</color></color> 
