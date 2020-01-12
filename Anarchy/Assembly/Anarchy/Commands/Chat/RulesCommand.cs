@@ -15,7 +15,7 @@ namespace Anarchy.Commands.Chat
         public override bool Execute(string[] args)
         {
             string toAdd = GameModes.GetGameModesInfo();
-            if(toAdd.Length > 0)
+            if (toAdd.Length > 0)
             {
                 UI.Chat.Add(toAdd);
             }

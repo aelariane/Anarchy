@@ -21,7 +21,7 @@ namespace Anarchy.Network
             {
                 return;
             }
-            if(reason != string.Empty)
+            if (reason != string.Empty)
             {
                 //TODO: Make banlist and localize
                 UI.Chat.Add($"Player {player.ID} autobanned. Reason: {reason}");
@@ -75,30 +75,6 @@ namespace Anarchy.Network
             all_parts = string.Join(",", urls);
             return true;
         }
-
-        //public static bool CheckEventProperties(Hashtable hash, PhotonPlayer sender, int key)
-        //{
-        //    NetworkingPeer peer = PhotonNetwork.networkingPeer;
-        //    if (hash == null || hash.Count <= 0)
-        //    {
-        //        return false;
-        //    }
-        //    CheckUnusualProperties(hash, sender);
-        //    PhotonPlayer player = PhotonPlayer.Find(key);
-        //    if (player == null)
-        //    {
-        //        return false;
-        //    }
-        //    if (player.IsLocal)
-        //    {
-        //    }
-        //    return true;
-        //}
-
-        //private static void CheckUnusualProperties(Hashtable hash, PhotonPlayer sender)
-        //{
-
-        //}
     }
 }
 

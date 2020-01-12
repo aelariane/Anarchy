@@ -8,6 +8,7 @@ namespace Anarchy
 {
     internal class AnarchyManager : MonoBehaviour
     {
+
         //In case you want to make your mod synchronizeable with public anarchy version
         //Note: Anarchy sync with current public version will work if
         //1. AnarchyVersion equals to public's mod AnarchyVersion

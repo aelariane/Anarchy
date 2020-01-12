@@ -9,7 +9,6 @@ namespace Anarchy.Configuration
         private static List<ISetting> allSettings;
         private static object locker = new object();
         public static IDataStorage Storage;
-
         public static BoolSetting InvertY = new BoolSetting("InvertY", false);
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);
         public static BoolSetting SnapshotsInGame = new BoolSetting("SnapshotsInGame", false);
