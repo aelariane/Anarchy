@@ -1374,6 +1374,14 @@ public static class PhotonNetwork
         networkingPeer.OpRaiseEvent(200, hash, true, options);
     }
 
+    public static void SendChekInfo(PhotonPlayer target)
+    {
+        if (target != null)
+        {
+            FengGameManagerMKII.FGM.BasePV.RPC("SetAnarchyMod", target, new object[] { Anarchy.AnarchyManager.CustomVersion, Anarchy.AnarchyManager.FullAnarchySync, Anarchy.AnarchyManager.CustomName, Anarchy.AnarchyManager.AnarchyVersion.ToString() });
+        }
+    }
+
     public static void SendOutgoingCommands()
     {
         if (!VerifyCanUseNetwork())

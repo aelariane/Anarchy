@@ -20,7 +20,9 @@ public class PhotonPlayer
     public readonly bool IsLocal;
     private bool rcSync = false;
 
-    public bool Anarchy
+    public string ModName { get; set; } = "[CCCCCC][V]";
+
+    public bool AnarchySync
     {
         get => anarchySync;
         set
@@ -47,6 +49,18 @@ public class PhotonPlayer
                     vanillaUsersList.Remove(this);
                     vanillaUsersArray = vanillaUsersList.ToArray();
                 }
+                ModName = "[00BBCC][A]";
+            }
+            else if(anarchySync && !value && !IsLocal)
+            {
+                anarchySync = false;
+                if (anarchyUsersList.Contains(this))
+                {
+                    anarchyUsersList.Remove(this);
+                    anarchyUsersArray = anarchyUsersList.ToArray();
+                }
+                rcSync = false;
+                RCSync = true;
             }
         }
     }
@@ -68,10 +82,14 @@ public class PhotonPlayer
                 if (vanillaUsersList.Contains(this))
                 {
                     vanillaUsersList.Remove(this);
-                    rcUsersList.Add(this);
                     vanillaUsersArray = vanillaUsersList.ToArray();
+                }
+                if (!rcUsersList.Contains(this))
+                {
+                    rcUsersList.Add(this);
                     rcUsersArray = rcUsersList.ToArray();
                 }
+                ModName = "[9999FF][RC]";
             }
         }
     }
@@ -98,8 +116,11 @@ public class PhotonPlayer
         _nameField = name;
         if (isLocal)
         {
-            Anarchy = true;
+            AnarchySync = true;
             HasVoice = true;
+            if (Anarchy.AnarchyManager.CustomVersion)
+            {                ModName = $"[00BBCC][A[CCCCDD]({(Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
+            }
         }
     }
 
@@ -118,8 +139,12 @@ public class PhotonPlayer
         InternalCacheProperties(properties);
         if (isLocal)
         {
-            Anarchy = true;
+            AnarchySync = true;
             HasVoice = true;
+            if (Anarchy.AnarchyManager.CustomVersion)
+            {
+                ModName = $"[00BBCC][A[CCCCDD]({(Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
+            }
         }
     }
 
