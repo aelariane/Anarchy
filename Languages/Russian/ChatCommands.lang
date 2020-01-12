@@ -19,6 +19,9 @@ pmSent:<color=#$maincolor$>ЛС отправлено игроку <color=$subcol
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>секунд добавлено к времени</color>
 roomMax:<color=#$maincolor$>Количество игроков изменено на <color=#$subcolor$>{0}</color></color>
 
+#Restart
+restartMessage:<color=#$maincolor$>Хост рестартнул игру!</color>
+
 #Pause
 pauseTrue:<color=#$maincolor$>Хост поставил игру на паузу</color>
 pauseFalse:<color=#$maincolor$>Хост снял игру с паузы</color>

@@ -73,3 +73,15 @@ horseState:Разрешить лошадей:
 motd:Сообщение дня
 
 asoracingState:АСО(Бесконечная) гонка:
+
+startTimeState:Кастомный таймер перед гонкой:
+startTimeInt0:Время перед стартом
+
+restartOnFinishersState:Рестарт после Х финишировавших игроков:
+restartOnFinishersInt0:Финишировавших для рестарта:
+
+racingTimeLimitState:Авторестарт по лимиту времени:
+racingTimeLimitInt0:Лимит:
+
+racingRestartTimeState:Кастомное время до рестарта после финиша:
+racingRestartTimeInt0:Время до рестарта:
