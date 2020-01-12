@@ -1,0 +1,49 @@
+﻿#Errors
+cmdNotFound:<color=red>Команда <color=yellow>"{0}"</color> не существует</color>
+errMC:<color=red>Ошибка: Вы не хост</color>
+errArg:<color=red>Ошика ({0}): Неправильные аргументы</color>
+errPM:<color=red>Ошибка: Невозможно отправить ЛС игроку {0} (Игрок не найден)</color>
+pauseErr:<color=red>Ошибка: Игра уже на паузе</color>
+unpauseErr:<color=red>Ошибка: Игра не на паузе</color>
+errRoom:<color=red>Error: room command <color=yellow>"{0}"</color> not found</color>
+
+#Kick
+kickIgnore:<color=red>Игнорирование игрока {0} (Игрок не найден)</color>
+kickSuccess:<color=#$maincolor$>Игрок [{0}] {1} кикнут!<color>
+
+#PM
+pmSetID:<color=#$maincolor$>Игрок [<color=#$subcolor$>{0}</color>] теперь цель ЛС</color>
+pmSent:<color=#$maincolor$>ЛС отправлено игроку <color=$subcolor$>{0}</color> (<color=#$subcolor$>{1}</color>)</color>
+
+#Room commands
+roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>секунд добавлено к времени</color>
+roomMax:<color=#$maincolor$>Количество игроков изменено на <color=#$subcolor$>{0}</color></color>
+
+#Restart
+restartMessage:<color=#$maincolor$>Хост рестартнул игру!</color>
+
+#Pause
+pauseTrue:<color=#$maincolor$>Хост поставил игру на паузу</color>
+pauseFalse:<color=#$maincolor$>Хост снял игру с паузы</color>
+
+#DaylightChange
+daylightChange:<color=#$maincolor$>Время дня изменено на <color=#$subcolor$>{0}</color></color>
+
+#ResetKD
+resetkdLocal:<color=#$maincolor$>Ваши статы сброшены.</color>
+resetkdAll:<color=#$maincolor$>Все статы сброшены.</color>
+resetkdPlayer:<color=#$maincolor$>Статы игрока [{0}] {1} сброшены.</color>
+
+#Revive
+revived:<color=#$maincolor$>Вы были воскрешены.</color>
+revivedAll:<color=#$subcolor$>Все</color><color=#$maincolor$> игроки были воскрешены.</color>
+playerRevived:<color=#$maincolor$>Игрок [{0}] был восрешен.</color>
+
+#Spectate
+specModeEnter:<color=#$maincolor$>Вы вошли в режим наблюдения</color>
+specModeQuit:<color=#$maincolor$>Вы вышли из режима наблюдения</color>
+
+#Aso racing
+notRacingMode:<color=red>Ошибка: Вы не в гоночном режиме</color>
+asoraceTrue:<color=#$maincolor$>Бесконечная гонка будет <color=#$subcolor$>включена</color> после рестарта</color>
+asoraceFalse:<color=#$maincolor$>Бесконечная гонка будет <color=#$subcolor$>выключена</color> после рестарта</color>

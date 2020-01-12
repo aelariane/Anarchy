@@ -4,13 +4,14 @@
     {
         public RestartCommand() : base("restart", true, true, false)
         {
-
         }
 
         public override bool Execute(string[] args)
         {
-            FengGameManagerMKII.FGM.RestartGame();
-            return false;
+            FengGameManagerMKII.FGM.RestartGame(false, true);
+            chatMessage = Lang["restartMessage"];
+            SendLocalizedText("restartMessage", null);
+            return true;
         }
     }
 }

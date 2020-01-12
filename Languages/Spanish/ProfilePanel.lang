@@ -1,0 +1,47 @@
+﻿title:Panel de perfil
+profile:Perfil:
+profileSel:<b>Selección de perfil</b>
+allProfiles:<b>Todos los perfiles</b>
+btnAdd:Crear nuevo
+btnCopy:Copiar de actual
+btnRemove:Eliminar
+btnAdvanced:Ajustes avanzados
+btnBack:Atrás
+btnPreview:Vista previa
+btnToMain:Ajustes principales
+mainSettings:<b>Ajustes principales</b>
+name:Nombre:
+guildName:Nombre del gremio:
+guildName2:Nombre del gremio 2:
+guildName3:Nombre del gremio 3:
+chatName:Nombre del chat:
+mainColor:Color principal:
+subColor:Color Secundaria:
+titans:<b>Nombres de titán</b>
+titan:Titán:
+aberrant:Aberrant:
+jumper:Jumper:
+crawler:Crawler:
+punk:Punk:
+preview:Previa
+note:<color=yellow>//Nota: puede tener <b> 15 </b> perfiles.</color>
+killTriggers:<b>Desencadenantes de muerte</b>
+akinaTrigger:Akina:
+forestTrigger:Forest Lava:
+racingTrigger:RC Carreras:
+chatFormat:Formato del Chat:
+chatFormatSend:Formato de envío de chat
+chatPMFormat:Formato del PM:
+chatPMFormatSend:Formato de envío de PM
+suicide:Suicidio:
+diename:Muerte:
+dieStyle:Formato de muerte:
+raceFinish:Nombre de la carrera:
+restart:Mensaje de reinicio
+mcswitch:Mensaje de cambio de cliente principal
+wave:Formato de la ola:
+advancedHead:<b>Ajustes avanzados</b>
+chatSettings:<b>Configuraciones de chat</b>
+others:<b>Otros ajustes</b>
+previews:Principal, avanzado
+previewColors:<b><color=#{0}>Color Principal</color> y <color=#{1}>Color Secundaria</color></b>

@@ -12,10 +12,6 @@ namespace GameLogic
 
         public PVPLogic() : base()
         {
-            OnRestart += () =>
-            {
-                teamWinner = 0;
-            };
         }
 
         public PVPLogic(GameLogic logic) : this()
@@ -58,6 +54,11 @@ namespace GameLogic
         {
             base.OnRequireStatus();
             FengGameManagerMKII.FGM.BasePV.RPC("refreshPVPStatus_AHSS", PhotonTargets.Others, new object[] { Scores });
+        }
+
+        protected override void OnRestart()
+        {
+            teamWinner = 0;
         }
 
         public override void OnSomeOneIsDead(int id)

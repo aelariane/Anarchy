@@ -1,0 +1,14 @@
+﻿title:Custom
+selection:Mappa custom,Logica custom
+gameTypes:1 Round,Ondate,PvP,Racing,Custom
+spawnCap:Titan spawn cup:
+gameMode:Modalità:
+mapScript:Mappa script
+logicScript:Logica script
+btnClear:Pulisci
+btnClose:Chiudi
+random:Random
+update:Aggiorna lista
+picker0:Scegli mappa
+picker1:Scegli logica
+filter:Filter:

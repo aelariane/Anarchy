@@ -43,7 +43,7 @@ namespace Anarchy.Commands.Chat
                     send += "\n";
                 chatMessage += string.Format(Lang["kickSuccess"], new object[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
                 SendLocalizedText("kickSuccess", new string[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
-                PhotonNetwork.CloseConnection(target);
+                Network.Antis.Kick(target, ban, string.Empty);
             }
             return true;
         }

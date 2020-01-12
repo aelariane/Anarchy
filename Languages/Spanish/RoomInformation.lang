@@ -1,0 +1,12 @@
+﻿time:Tiempo: <color=#$subcolor$>{0}</color>
+abnormal:Anormal
+hard:Difícil
+normal:Normal
+training:Entrenamiento
+wave:Ola: <color=#$subcolor$>{0}</color>
+cameraChange:Camera[<color=#$subcolor$>{0}</color>]: <color=#$subcolor$>{1}</color>
+room:Sala: <color=#$subcolor$>{0}</color>
+slots:Slots <color=#$subcolor$>{0}</color>/<color=#$subcolor$>{1}</color>
+fps:FPS: <color=#$subcolor$>{0}</color>
+score:Humanidad <color=#$subcolor$>{0}</color> || Titanes <color=#$subcolor$>{1}</color>
+

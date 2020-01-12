@@ -1,0 +1,87 @@
+﻿title:Game Settings
+selections:Titan,PvP,Misc
+btnClose:Close
+
+#Titans
+
+titancState:Custom titan amount:
+titancInt0:Amount:
+
+waveModeOnState:Custom titan/wave amount:
+waveModeOnInt0:Amount:
+
+spawnModeState:Custom spawn rate:
+spawnModeFloat0:Normal:
+spawnModeFloat1:Aberrant:
+spawnModeFloat2:Jumper:
+spawnModeFloat3:Crawler:
+spawnModeFloat4:Punk:
+
+sizeModeState:Titan size mode:
+sizeModeFloat0:Minimal size:
+sizeModeFloat1:Maximum size:
+
+healthModeState:Titan health mode:
+healthModeSelection:Fixed,Scaled
+healthModeInt0:Minimal health:
+healthModeInt1:Maximum health:
+
+damageState:Damage mode:
+damageInt0:Damage:
+
+explodeState:Titan explode mode:
+explodeInt0:Radius:
+
+rockState:Disable rock throwing:
+
+#PVP
+bombState:Bomb mode:
+
+pointState:Point mode:
+pointInt0:Maximum points
+
+teamState:Team mode:
+teamSelection:No Sort,Size-Lock,Skill-Lock
+
+infectionState:Infection mode:
+infectionInt0:Starting titans:
+
+friendlyState:Frindly mode:
+
+pvpState:Sword/AHSS PVP mode:
+pvpSelection:Teams,FFA
+
+ahssReloadState:Disable AHSS Air-reloading:
+
+deadlycannonsState:Cannons kill humans
+
+#Misc
+maxwaveState:Maxmimum wave:
+maxwaveInt0:Wave:
+
+punkWavesState:Disable punks every 5 waves
+
+globalDisableMinimapState:Global minimap disable:
+
+endlessState:Endless respawn:
+endlessInt0:Respawn time(int):
+
+erenState:Autokick Eren titan:
+
+horseState:Allow horses:
+
+motd:Message of the day
+
+asoracingState:ASO(Endless) racing:
+
+startTimeState:Use custom start time:
+startTimeInt0:Time before race starts:
+
+restartOnFinishersState:Autorestart game on X people finished:
+restartOnFinishersInt0:Finishes to restart:
+
+racingTimeLimitState:Autorestart game after time limit:
+racingTimeLimitInt0:Time limit:
+
+racingRestartTimeState:Custom restart time:
+racingRestartTimeInt0:Time to restart:

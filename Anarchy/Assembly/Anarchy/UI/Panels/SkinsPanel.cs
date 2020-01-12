@@ -149,8 +149,8 @@ namespace Anarchy.UI
         {
             rect.Reset();
             Box(BoxPosition, locale["title"]);
-            rect.MoveOffsetX(120f);
-            rect.width -= 120f;
+            rect.MoveOffsetX(new AutoScaleFloat(120f));
+            rect.width -= new AutoScaleFloat(120f);
             pageSelection = SelectionGrid(rect, pageSelection, skinTypeSelection, skinTypeSelection.Length);
 
             right.Reset();

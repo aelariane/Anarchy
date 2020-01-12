@@ -24,7 +24,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     private IN_GAME_MAIN_CAMERA mainCamera;
     public string myLastHero;
     private string myLastRespawnTag = "";
-    private PlayerList playerList;
+    internal PlayerList playerList;
     private RoomInformation roomInformation = new RoomInformation();
     private ArrayList racingResult;
     internal List<TITAN> titans;
@@ -86,7 +86,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void ChatLocalized(string file, string key, string[] args, PhotonMessageInfo info)
     {
-        if (!info.Sender.Anarchy)
+        if (!info.Sender.AnarchySync)
         {
             Log.AddLine("notAnarchyUser", MsgType.Error, "RPC", nameof(ChatLocalized), info.Sender.ID.ToString());
             return;
@@ -257,12 +257,13 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             int checkID = info.TimeInt - 1000000;
             checkID *= -1;
-            if(checkID == info.Sender.ID)
+            if (checkID == info.Sender.ID)
             {
-                if (!info.Sender.Anarchy)
+                if (!info.Sender.AnarchySync)
                 {
-                    info.Sender.Anarchy = true;
+                    info.Sender.AnarchySync = true;
                     playerList.Update();
+                    PhotonNetwork.SendChekInfo(info.Sender);
                 }
             }
         }
@@ -792,6 +793,37 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
     }
 
+    //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
+    //Ru: Не трогать это. НИКОГДА. Во избежание ошибок с вашей стороны и стороны других.
+    [RPC]
+    private void SetAnarchyMod(bool isCustom, bool useSync, string customName, string version, PhotonMessageInfo info)
+    {
+        if (info.Sender.AnarchySync)
+        {
+            if (isCustom)
+            {
+                string customNameShow = customName == string.Empty ? "Cus" : customName;
+                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
+                playerList.Update();
+                if (!AnarchyManager.CustomVersion)
+                {
+                    info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
+                }
+                else
+                {
+                    info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
+                }
+                return;
+            }
+            if (version == AnarchyManager.AnarchyVersion.ToString())
+            {
+                return;
+            }
+            info.Sender.AnarchySync = false;
+        }
+    }
+
+
     [RPC]
     private void setMasterRC()
     {
@@ -1128,7 +1160,8 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         if (ID < 0)
         {
-            //Newest cyan detection
+            string ver = ID.ToString().Replace("-", "");
+            info.Sender.ModName = $"[00FFFF][Cyan[CCCCDD]({ver[0]}.{ver[1]}.{ver[2]})[-]]";
         }
     }
 
@@ -1485,7 +1518,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             GameModes.Load();
             GameModes.ForceChange();
-            this.RestartGame(true);
+            this.RestartGame(true, false);
         }
     }
 
@@ -1506,15 +1539,33 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void OnPhotonPlayerConnected(AOTEventArgs args)
     {
-        Log.AddLine("playerConnected", MsgType.Info, args.Player.ID.ToString(), args.Player.UIName.ToHTMLFormat());
+        StartCoroutine(OnPhotonPlayerConnectedE(args.Player));
+    }
+
+    private IEnumerator OnPhotonPlayerConnectedE(PhotonPlayer player)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (AnarchyManager.PauseWindow.Active)
+            {
+                BasePV.RPC("pauseRPC", player, new object[] { true });
+            }
+            if (Level.Name.StartsWith("Custom"))
+            {
+                StartCoroutine(CustomLevel.SendRPCToPlayer(player));
+            }
+        }
+        WaitForSeconds awaiter = new WaitForSeconds(0.25f);
+        yield return awaiter;
+        if (player.Properties[PhotonPlayerProperty.name] == null)
+        {
+            yield return awaiter;
+        }
+        Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
         playerList?.Update();
         if (PhotonNetwork.IsMasterClient)
         {
-            if (Level.Name.StartsWith("Custom"))
-            {
-                StartCoroutine(CustomLevel.SendRPCToPlayer(args.Player));
-            }
-            GameModes.SendRPCToPlayer(args.Player);
+            GameModes.SendRPCToPlayer(player);
         }
     }
 
@@ -1639,14 +1690,15 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         this.titans.Remove(titan);
     }
 
-    public void RestartGame(bool masterclientSwitched = false)
+    public void RestartGame(bool masterclientSwitched, bool restartManually)
     {
-        if (this.gameTimesUp)
+        if (this.gameTimesUp || Logic.Restarting)
         {
             return;
         }
         GameModes.OnRestart();
         this.checkpoint = null;
+        Logic.Restarting = true;
         Logic.RoundTime = 0f;
         Logic.MyRespawnTime = 0f;
         foreach (var info in killInfoList)
@@ -1665,7 +1717,10 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         else
         {
-            this.SendChatContentInfo(User.MsgRestart);
+            if (!restartManually && User.MsgRestart.Length > 0)
+            { 
+                this.SendChatContentInfo(User.MsgRestart); 
+            }
         }
         GameModes.SendRPC();
     }

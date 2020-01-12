@@ -1,0 +1,12 @@
+﻿time:Время: <color=#$subcolor$>{0}</color>
+abnormal:Аномальный
+hard:Сложный
+normal:Нормал
+training:Тренировка
+wave:волна: <color=#$subcolor$>{0}</color>
+cameraChange:Камера[<color=#$subcolor$>{0}</color>]: <color=#$subcolor$>{1}</color>
+room:Комната: <color=#$subcolor$>{0}</color>
+slots:Слоты <color=#$subcolor$>{0}</color>/<color=#$subcolor$>{1}</color>
+fps:ФПС: <color=#$subcolor$>{0}</color>
+score:Человечество <color=#$subcolor$>{0}</color> || Титаны <color=#$subcolor$>{1}</color>
+

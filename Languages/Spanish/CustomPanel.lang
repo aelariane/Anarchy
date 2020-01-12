@@ -1,0 +1,14 @@
+﻿title:Personalizado
+selection:mapa personalizado, lógica personalizada
+gameTypes:1 ronda, waves, PvP, carreras, personalizado
+spawnCap:Titan spawn cup:
+gameMode:Game mode:
+mapScript:Script de mapa
+logicScript:Secuencia de comandos lógica
+btnClear:Borra
+btnClose:Cerra
+random:Aleatorio
+update:Actualizar lista
+picker0:Selector de mapas
+picker1:Selector de lógica
+filter:Filtro:

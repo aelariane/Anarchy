@@ -1,0 +1,56 @@
+﻿title:Skins
+skinSelection:Umano,Titano,Città,Foresta,Skybox,Custom mappa
+btnClose:Chiudi
+
+btnAdd:Aggiungi
+btnCopy:Copia
+btnDelete:Elimina
+name:Nome:
+set:Set
+setName:Set <color=yellow>"{0}"</color>
+
+skinStateSelection:Disattivato,Attivato,Locale
+skyboxDesc:Disabilita custom skybox sulle skin di città/foresta
+#Human skins
+humanLabels:Cavallo:,Capelli,Occhi,Occhiali,Faccia,Pelle,Costume,Mantello,Sinistro 3DMG,Destro 3DMG,Gas,Cappuccio,Trail
+sets:Sets disponibili
+
+#Titan sets
+titanHair:Capelli
+titanEye:Occhi
+titanBody:Corpo 
+annie:Annie
+eren:Eren
+colossal:Colossale
+
+#Level sets
+ground:Pavimento
+linkedBox:Skybox allegato: {0}
+
+#City
+gate:Cancello
+wall:Muro
+house:Edificio
+houses:Edifici
+
+#Forest
+tree:Albero
+trees:Alberi
+trunk:Tronco
+trunks:Tronchi
+leave:Foglia
+leaves:Foglie
+forestRandomize:Coppie randomizzate:
+
+#Skybox sets
+skyboxState:Skins di skybox:
+btnLinkCity:Allega al set città <color=yellow>{0}</color>
+btnLinkForest:Allega al set foresta <color=yellow>{0}</color>
+skyboxFront:Skybox Fronte
+skyboxBack:Skybox Dietro
+skyboxLeft:Skybox Sinistra
+skyboxRight:Skybox Destra
+skyboxUp:Skybox Sopra 
+skyboxDown:Skybox Sotto
+
+#Custom map sets

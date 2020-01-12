@@ -12,7 +12,6 @@ namespace GameLogic
 
         public readonly Anarchy.Localization.Locale Lang;
         internal protected float MyRespawnTime;
-        protected event Action OnRestart;
         public readonly Round Round;
         private float timeToUpdate;
 
@@ -24,6 +23,7 @@ namespace GameLogic
         public float RoundTime { get => Round.Time; set => Round.Time = value; }
         public int HumanScore { get; set; }
         public int TitanScore { get; set; }
+        public bool Restarting { get; set; } = false;
         public float ServerTimeBase { get; set; }
         public bool Stop { get; private set; } = false;
 
@@ -33,7 +33,6 @@ namespace GameLogic
             Lang = new Anarchy.Localization.Locale("GameLogic", true, ',');
             Lang.Load();
             Round = new Round();
-            OnRestart = () => { };
         }
 
         public GameLogic(GameLogic logic) : this()
@@ -157,7 +156,12 @@ namespace GameLogic
             Round.Reset();
             Lang.Reload();
             RoundsCount++;
-            OnRestart?.Invoke();
+            OnRestart();
+            Restarting = false;
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            {
+                OnRequireStatus();
+            }
         }
 
         protected virtual void OnGameWin() { }
@@ -197,7 +201,7 @@ namespace GameLogic
                         }
                         if (Round.GameEndCD <= 0f)
                         {
-                            FengGameManagerMKII.FGM.RestartGame(false);
+                            FengGameManagerMKII.FGM.RestartGame(false, false);
                         }
                     }
                 }
@@ -215,6 +219,11 @@ namespace GameLogic
             TitanScore = score2;
             Round.Time = time1;
             ServerTime = ServerTimeBase - time2;
+        }
+
+        protected virtual void OnRestart()
+        {
+
         }
 
         public virtual void OnRequireStatus()
@@ -265,9 +274,9 @@ namespace GameLogic
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                CustomLevel.OnUpdate();
                 if (CustomLevel.logicLoaded)
                 {
+                    CustomLevel.OnUpdate();
                     for (int i = 0; i < CustomLevel.titanSpawners.Count; i++)
                     {
                         var item = CustomLevel.titanSpawners[i];

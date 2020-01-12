@@ -784,6 +784,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
                 Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             }
             this.needSetHUD = true;
+            Anarchy.UI.UIManager.UpdateGUIScaling();
             Minimap.OnScreenResolutionChanged();
         }
         if (InputManager.IsInputDown[InputCode.Restart])

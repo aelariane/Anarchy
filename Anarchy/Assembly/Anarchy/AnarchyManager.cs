@@ -1,13 +1,28 @@
-﻿using Anarchy.Configuration;
+﻿using System;
+using Anarchy.Configuration;
 using Anarchy.UI;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Anarchy
 {
     internal class AnarchyManager : MonoBehaviour
     {
+
+        //In case you want to make your mod synchronizeable with public anarchy version
+        //Note: Anarchy sync with current public version will work if
+        //1. AnarchyVersion equals to public's mod AnarchyVersion
+        //2. CustomVersion turned to true AND FullAnarchySync turned to true AND CustomName not equals string.Empty or ""
+        //All of 3 of them should math this rule to have sync with current public version
+
+        //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
+
+        //And AnarchyVersion should match as well in ANY case if you want any kind of sync
+        public static Version AnarchyVersion = new Version("0.7.6.0");
+        public static readonly string CustomName = string.Empty;
+        public static readonly bool CustomVersion = true;
+        public static readonly bool FullAnarchySync = false;
+
         public static Background Background;
         public static UI.PanelMain MainMenu;
         public static PausePanel Pause;

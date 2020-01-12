@@ -1,0 +1,49 @@
+﻿#Erreurs
+cmdNotFound:<color=red>Commande <color=yellow>"{0}"</color> non trouvée</color>
+errMC:<color=red>Erreur: Pas masterclient</color>
+errArg:<color=red>Erreur ({0}): arguments invalides</color>
+errPM:<color=red>Erreur: Impossible d'envoyer le message à l'ID {0} (Joueur non présent)</color>
+pauseErr:<color=red>Erreur: Le jeu est déjà en pause</color>
+unpauseErr:<color=red>Erreur: Le jeu n'est pas en pause</color>
+
+#Kick
+kickIgnore:<color=red>Impossible de kick l'ID {0}</color> (Joueur non présent)
+kickSuccess:<color=#$maincolor$>Joueur [{0}] {1} kické!
+
+#PM
+pmSetID:<color=#$maincolor$>Joueur [<color=#$subcolor$>{0}</color>] sélectionné pour MP</color>
+pmSent:<color=#$maincolor$>MP envoyé à l'ID <color=$subcolor$>{0}</color> (<color=#$subcolor$>{1}</color>)</color>
+
+#Room commands
+errRoom:<color=red>Erreur: Commande pour le serveur <color=yellow>"{0}"</color> non trouvé</color>
+roomTime:<color=#$maincolor$>{0}</color> <color=#$subcolor$>secondes ajoutés au temps</color>
+roomMax:<color=#$maincolor$>Nombre de joueurs maximum mis à <color=#$subcolor$>{0}</color></color>
+
+#Restart
+restartMessage:<color=#$maincolor$>Masterclient a redémarré la partie</color>
+
+#Pause
+pauseTrue:<color=#$maincolor$>Le Masterclient a mis la partie en pause</color>
+pauseFalse:<color=#$maincolor$>Le Masterclient a enlevé la pause</color>
+
+#DaylightChange
+daylightChange:<color=#$maincolor$>Lumière changée à <color=#$subcolor$>{0}</color></color>
+
+#ResetKD
+resetkdLocal:<color=#$maincolor$>Toutes tes statistiques on été réinitialisé.</color>
+resetkdAll:<color=#$maincolor$>Toutes les statistiques on été réinitialisé.</color>
+resetkdPlayer:<color=#$maincolor$>Les statistiques du joueur [{0}] {1} ont été réinitialisé.</color>
+
+#Revive
+revived:<color=#$maincolor$>Tu as été réanimé.</color>
+revivedAll:<color=#$subcolor$>Tout</color><color=#$maincolor$> les joueurs ont été réanimé.</color>
+playerRevived:<color=#$maincolor$>Le joueur [{0}] a été réanimé.</color>
+
+#Spectate
+specModeEnter:<color=#$maincolor$>Tu es entré dans le mode spectateur.</color>
+specModeQuit:<color=#$maincolor$>Tu as quitté le mode spectateur.</color>#Aso racing
+
+#Aso racing
+notRacingMode:<color=red>Error: Not racing mode</color>
+asoraceTrue:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>enabled</color> after restart</color>
+asoraceFalse:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>disabled</color> after restart</color>

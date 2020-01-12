@@ -22,7 +22,6 @@ namespace Anarchy.Commands.Chat
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", PhotonTargets.All, new object[0]);
                 SendLocalizedText("revivedAll", null);
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.Others, new object[] { English["revivedAll"], string.Empty });
                 chatMessage = Lang["revivedAll"];
                 return true;
             }

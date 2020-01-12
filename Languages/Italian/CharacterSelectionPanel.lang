@@ -1,0 +1,14 @@
+﻿title:Scelta del personaggio
+character:Scelta del personaggio
+characters:Mikasa,Levi,Armin,Marco,Jean,Eren,Petra,Sasha,Set 1,Set 2,Set 3 
+camera:Selezione Camera
+stats:Statistiche Personaggio
+speed:Velocità per terra: <color=yellow>{0}</color>
+acceleration:Accelerazione gas: <color=yellow>{0}</color>
+gas:Riserve gas: <color=yellow>{0}</color>
+blade:Durabilità spade: <color=yellow>{0}</color>
+humanStart:Gioca come <b>Soldato</b>
+ahssStart:Gioca come <b><color=red>AHSS</color></b>
+titanStart:Gioca come <b><color=red>Titano</color></b>
+back:Indietro
+avatar:<b>Avatar del personaggio</b>

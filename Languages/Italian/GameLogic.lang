@@ -1,0 +1,36 @@
+﻿#Overall
+respawnTime:<color=#$maincolor$>Respawn in <color=#$subcolor$>{0}</color> secondi</color>
+pressToJoin:<color=#$maincolor$>Premi <color=#$subcolor$>{0}</color> per unirti al gioco.</color>
+singleState:<color=#$maincolor$>Uccisioni: <color=#$maincolor$>{0}</color>\nDanno Massimo: <color=#$maincolor$>{1}</color>\nDanno Totale: <color=#$maincolor$>{2}</color></color>
+titans:<color=#$maincolor$>Titani Rimasti: <color=#$subcolor$>{0}</color></color>
+time:<color=#$maincolor$>Tempo: <color=#$subcolor$>{0}</color></color>
+wave:<color=#$maincolor$>Ondata: <color=#$subcolor$>{0}</color></color>
+
+#Racing
+racingWaiting:<color=#$maincolor$>Aspettando...</color>
+racingLastResult:<color=#$maincolor$>Ultimo round</color>
+racingResult:<color=#$maincolor$>Risultato</color>
+racingPlayerResult:<color=#$maincolor$>Rank <color=#$subcolor$>{0}</color>: {1} (<color=#$subcolor$>{2}</color>)</color>
+racingPlayerResultSingle:<color=#$maincolor$>Hai finito col tempo <color=#$subcolor$>{0}</color>!\nPremi <color=#$subcolor$>{1}</color> per Ricominciare</color>
+playerFinished:<color=#$maincolor$>Giocatore {0} finito col tempo <color=#$subcolor$>{1}</color>!</color>
+racingRemaining:<color=#$maincolor$>Gara comincia in <color=#$subcolor$>{0}</color></color>
+speedLabel:<color=#$maincolor$>Velocità attuale: <color=#$subcolor$>{0}</color>\nVelocità massima: <color=#$subcolor$>{1}</color></color>
+racingRestart:<color=#$maincolor$>Restart in <color=#$subcolor$>{0}</color></color>
+
+#Survive mode
+surviveSingleFail:<color=#$maincolor$>Sopravvivi per <color=#$subcolor$>{0}</color> Ondate.\nPremi <color=#$subcolor$>{1}</color> per Ricominciare</color>
+surviveFail:<color=#$maincolor$>Sopravvivi per <color=#$subcolor$>{0}</color> Ondate.\nGioco ricomincia in <color=#$subcolor$>{1}</color> s</color>
+surviveWin:<color=#$maincolor$>Sopravvivi tutte le Ondate.\nGioco ricomincia in <color=#$subcolor$>{1}</color> s</color>
+surviveSingleWin:<color=#$maincolor$>Sopravvivi tutte le Ondate.\nPremi <color=#$subcolor$>{1}</color> per Ricominciare</color>
+
+#PVP
+pvpWin:<color=#$maincolor$>Squadra <color=#$subcolor$>{0}</color>!\nGioco ricomincia in <color=#$subcolor$>{1}</color> s</color>
+
+#Others
+humanitySingleFail:<color=#$maincolor$>Umanità ha fallito\nPremi <color=#$subcolor$>{0}</color> per Ricominciare</color>
+humanityFail:<color=#$maincolor$>Umanità ha fallito.\nGioco ricomincia in <color=#$subcolor$>{0}</color> s</color>
+humanityWin:<color=#$maincolor$>Umanità ha vinto.\nGioco ricomincia in <color=#$subcolor$>{0}</color> s</color>
+humanitySingleWin:<color=#$maincolor$>Umanità ha vinto.\nPremi <color=#$subcolor$>{0}</color> per Ricominciare</color>
+
+#CT Fight
+colossalInfo:<color=#$maincolor$>Sconfiggi il Titano Colossale.\nPrevieni che i titani anomali raggiungano il cancello nord!</color>

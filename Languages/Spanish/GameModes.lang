@@ -1,0 +1,90 @@
+﻿enabled:habilitado
+disabled:deshabilitado
+
+#Titans
+titancInfoEnabled:<color=#$maincolor$>Cantidad de generación de titán personalizada [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+titancInfoDisabled:<color=#$maincolor$>Cantidad de generación de titán personalizada <color=#$dColor$>deshabilitada</color></color>
+
+punkWavesInfoEnabled:<color=#$maincolor$>Punk anula cada 5 ondas <color=#$eColor$>habilitada</color></color>
+punkWavesInfoDisabled:<color=#$maincolor$>Punk anula cada 5 ondas  <color=#$dColor$>deshabilitada</color></color>
+
+rockInfoEnabled:<color=#$maincolor$>No lanzar punk piedra <color=#$eColor$>habilitada</color></color>
+rockInfoDisabled:<color=#$maincolor$>No lanzar punk piedra <color=#$dColor$>deshabilitada</color></color>
+
+explodeInfoEnabled:<color=#$maincolor$>Titan explota en modo [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+explodeInfoDisabled:<color=#$maincolor$>Titan explota en modo <color=#$dColor$>deshabilitada</color></color>
+
+healthModeInfoEnabled:<color=#$maincolor$>Salud del titán [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> a <color=#$subcolor$>{2}</color>] <color=#$eColor$>habilitada</color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Salud del titán <color=#$dColor$>deshabilitada</color></color>
+healthModeSelection:Fixed,Scaled
+
+damageInfoEnabled:<color=#$maincolor$>Daño mínimo en la nuca [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+damageInfoDisabled:<color=#$maincolor$>Daño mínimo en la nuca <color=#$dColor$>deshabilitada</color></color>
+
+sizeModeInfoEnabled:<color=#$maincolor$>Tamaño de titán personalizado [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>] <color=#$eColor$>habilitada</color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Tamaño de titán personalizado <color=#$dColor$>deshabilitada</color></color>
+
+spawnModeInfoEnabled:<color=#$maincolor$>Tasa de generación personalizada <color=#$eColor$>habilitada</color>\n[N: <color=#$subcolor$>{0}</color>, A: <color=#$subcolor$>{1}</color>, J: <color=#$subcolor$>{2}</color>, C: <color=#$subcolor$>{3}</color>, P: <color=#$subcolor$>{4}</color>]</color>
+spawnModeInfoDisabled:<color=#$maincolor$>Tasa de generación personalizada <color=#$dColor$>deshabilitada</color></color>
+
+waveModeOnInfoEnabled:<color=#$maincolor$>Aparecimiento de titán ola personalizado [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Aparecimiento de titán ola personalizado <color=#$dColor$>deshabilitada</color></color>
+
+#PvP
+bombInfoEnabled:<color=#$maincolor$>Modo bomba <color=#$eColor$>habilitada</color></color>
+bombInfoDisabled:<color=#$maincolor$>Modo bomba <color=#$dColor$>deshabilitada</color></color>
+
+ahssReloadInfoEnabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$eColor$>habilitada</color></color>
+ahssReloadInfoDisabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$dColor$>deshabilitada</color></color>
+
+teamInfoEnabled:<color=#$maincolor$>Modo de equipo [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+teamInfoDisabled:<color=#$maincolor$>Modo de equipo <color=#$dColor$>deshabilitada</color></color>
+teamSelection:Sin clasificación, Bloqueado por tamaño, Bloqueado por habilidad
+
+infectionInfoEnabled:<color=#$maincolor$>Modo de infección <color=#$eColor$>habilitada</color></color>
+infectionInfoDisabled:<color=#$maincolor$>Modo de infección <color=#$dColor$>deshabilitada</color></color>
+
+pointInfoEnabled:<color=#$maincolor$>Límite de puntos [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+pointInfoDisabled:<color=#$maincolor$>Límite de puntos <color=#$dColor$>deshabilitada</color></color>
+
+friendlyInfoEnabled:<color=#$maincolor$>Modo amigable PVP <color=#$eColor$>habilitada</color></color>
+friendlyInfoDisabled:<color=#$maincolor$>Modo amigable PVP <color=#$dColor$>deshabilitada</color></color>
+
+pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>deshabilitada</color></color>
+pvpSelection:FFA,En equipo
+
+#Misc
+endlessInfoEnabled:<color=#$maincolor$>Reaparecer sin fin [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+endlessInfoDisabled:<color=#$maincolor$>Reaparecer sin fin <color=#$dColor$>deshabilitada</color></color>
+
+maxwaveInfoEnabled:<color=#$maincolor$>Max ola [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
+maxwaveInfoDisabled:<color=#$maincolor$>Max ola <color=#$dColor$>deshabilitada</color></color>
+
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Desactivar minimapa global <color=#$eColor$>habilitada</color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Desactivar minimapa global <color=#$dColor$>deshabilitada</color></color>
+
+horseInfoEnabled:<color=#$maincolor$>Caballos <color=#$eColor$>habilitada</color></color>
+horseInfoDisabled:<color=#$maincolor$>Caballos <color=#$dColor$>deshabilitada</color></color>
+
+erenInfoEnabled:<color=#$maincolor$>Anti-Eren <color=#$eColor$>habilitada</color></color>
+erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>deshabilitada</color></color>
+
+deadlycannonsInfoEnabled:<color=#$maincolor$>Modo de cañones mortales <color=#$eColor$>habilitada</color></color>
+deadlycannonsInfoDisabled:<color=#$maincolor$>Modo de cañones mortales <color=#$dColor$>deshabilitada</color></color>
+
+asoracingInfoEnabled:<color=#$maincolor$>ASO Carreras <color=#$eColor$>habilitada</color></color>
+asoracingInfoDisabled:<color=#$maincolor$>ASO Carreras <color=#$dColor$>deshabilitada</color></color>
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Tiempo de inicio de carrera personalizada, establecida en <color=#$subcolor$>{0}</color></color> 
+startTimeInfoDisabled:<color=#$maincolor$>Tiempo de inicio personalizado <color=#$dColor$>deshabilitada</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>El juego se reiniciara despues de que <color=#$subcolor$>{0}</color> jugadores hayan terminado</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Reiniciar despues de finalizar el modo de conteo de jugadores <color=#$dColor$>deshabilitado</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Tiempo limite de la carrera <color=#$eColor$>habilitado</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Tiempo limite de la carrera <color=#$dColor$>deshabilitado</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Tiempo de reinicio de la carrera establecido en <color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$Tiempo de reinicio de la carrera <color=#$dColor$>deshabilitado</color></color> 

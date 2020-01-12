@@ -5,7 +5,7 @@ namespace Anarchy.UI
 {
     internal sealed class PanelMain : GUIBase
     {
-        private Rect profileRect = new Rect(Style.ScreenWidth - 300f, 0f, 300f, 20f);
+        private Rect profileRect;
         private SmartRect rect;
         private GUIStyle style;
         private int enabledPanel = -1;
@@ -24,12 +24,12 @@ namespace Anarchy.UI
 
         private void CheckEnabled(GUIBase obj, GUIBase[] toCheck)
         {
-            if(obj.Active)
+            if (obj.Active)
             {
                 obj.Disable();
                 return;
             }
-            for(int i = 0; i < toCheck.Length; i++)
+            for (int i = 0; i < toCheck.Length; i++)
             {
                 if (toCheck[i].Active)
                 {
@@ -42,7 +42,7 @@ namespace Anarchy.UI
 
         private int CheckActivePanel()
         {
-            for(int i = 0; i < allUsedPanels.Length; i++)
+            for (int i = 0; i < allUsedPanels.Length; i++)
             {
                 if (allUsedPanels[i].Active)
                 {
@@ -55,7 +55,7 @@ namespace Anarchy.UI
         protected internal override void Draw()
         {
             enabledPanel = CheckActivePanel();
-            if(GUI.Button(profileRect, locale["profile"] + " <b>" + User.ProfileName + "</b>"))
+            if (GUI.Button(profileRect, locale["profile"] + " <b>" + User.ProfileName + "</b>"))
             {
                 CheckEnabled(AnarchyManager.ProfilePanel, new GUIBase[] { AnarchyManager.SinglePanel, AnarchyManager.ServerList, AnarchyManager.SettingsPanel });
             }
@@ -74,7 +74,7 @@ namespace Anarchy.UI
             }
             if (Button("custom_characters"))
             {
-                if(enabledPanel < 0)
+                if (enabledPanel < 0)
                 {
                     Application.LoadLevel("characterCreation");
                     return;

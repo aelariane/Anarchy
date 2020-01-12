@@ -1,0 +1,149 @@
+﻿#Main window
+title:Settings
+buttons:General,Video,Effects,Rebinds,Mod,Abilities
+abilityNames:Bombs
+btnBack:Back
+
+#General page
+game:<b>Game</b>
+sensivity:Sensivity[{0}]
+distance:Distance[{0}]
+moreDistance:More distance[{0}]
+snapshots:<b>Snapshots</b>
+snapshotsEnabled:Snapshots:
+snapshotsShow:Show in game:
+snapshotsDmg:Minimum damage:
+minimap:Minimap:
+gameFeed:RC's Game feed:
+inverty:Invert Y Axis:
+staticFOV:Static FOV:
+fovValue:FOV Value[{0}]
+
+others:<b>Others</b>
+speedometer:Speedometer:
+speedometerTypes:Speed,Damage
+bodylean:Hero body leaning:
+
+audio:<b>Audio</b>
+overallAudio:Volume[{0}]
+
+#Video page
+
+graphics:<b>Graphics</b>
+vsync:Vertical syncronization:
+mipmap:Mipmapping:
+texturesQuality:Textures quality
+texturesLevels:High,Medium,Low,Ultra low
+quality:Overall quality[{0}]
+
+advancedVideo:<b>Advanced settings</b>
+drawDistance:DrawDistance[{0}]
+occlusion:Use occlusion culling:
+aniso:Anisotropic filtering
+anisoLevels:Disabled,Enabled,Force Enabled
+antiAliasing:Anti-Aliasing:
+antiAliasings:Off,2x,4x,8x
+bWeight:Blend Weight:
+blendWeights:One,Two,Four
+lodBias:LOD Bias[{0}]
+maxLOD:Max LOD[{0}]
+shadows:<b>Shadows</b>
+useShadows:Use shadows:
+shadowCascade:Cascades
+shadowCascades:1,2,4
+shadowDist:Distance[{0}]
+shadowProjection:Projection:
+shadowProjections:CloseFit,StableFit
+shadowNote:<color=yellow>Note: Shadows works on quality >= 0.17</color>
+
+#Effects page
+effects:<b>Effects</b>
+windEffect:Wind effect:
+bladeTrails:Blade trails:
+blur:Blur:
+tilt:Camera tilt:
+
+#Rebinds page
+buttonsRebinds:Human,Titan,Horse,Cannon
+waiting:Waiting...
+mainRebinds:<b>Main Inputs</b>
+rebinds:<b>Rebinds</b>
+
+#Anarchy page
+modMenu:Style,Name animation,Chat and Console
+
+#Anarchy/Style
+hudScale:HUD Scaling[{0}]:
+guiAutoScale:Use GUI auto scaling:
+guiScaleWarning:<color=red><b>Changing these values can <i>FUCK UP</i> you UI.</b></color>
+guiScaleWarning1:<color=yellow>You have been warned.</color>
+windowOffset:<b>Window & Offset</b>
+windowHeight:Window height:
+windowWidth:Window width:
+windowBottomOffset:Bottom window offset:
+windowSideOffset:Side window offset:
+windowTopOffset:Top window offset:
+labelOffset:Label offset:
+labelOffsetSlider:Label slider offset:
+bigLabelOffset:Big label offset:
+Others:<b>Others</b>
+fontSize:Font size:
+height:Height of UI element:
+horizontalMargin:Horizontal distance between elements:
+verticalMargin:Vertical distance between elements:
+labelSpace:Space label:
+
+styleColors:<b>Colors configuration</b>
+fontName:Font name:
+background:Background color:
+backgroundTransparency:Background transparency:
+normal:Normal
+hover:Hover
+active:Active
+onNormal:On Normal
+onHover:On Hover
+onActive:On Active
+vector:Vector
+color:Color
+text:Text
+useVectors:Use vectors color offset:
+
+#Anarchy/Chat and Console
+chat:<b>Chat</b>
+chatBack:Chat background:
+chatBackVal:Transparency[{0}]
+chatCount:Chat message count:
+chatSize:Chat message size:
+chatWidth:Chat width:
+chatUseCustomSpace:Use custom space
+chatSpaceUp:Up:
+chatSpaceDown:Down:
+chatSpaceLeft:Left:
+chatSpaceRight:Right:
+
+console:<b>Console</b>
+consoleBack:Console background:
+consoleBackVal:Transparency[{0}]
+consoleCount:Console message count:
+consoleSize:Console message size:
+consoleWidth:Console width:
+consoleUseCustomSpace:Use custom space
+consoleSpaceUp:Up:
+consoleSpaceDown:Down:
+consoleSpaceLeft:Left:
+consoleSpaceRight:Right:
+
+#Abilities
+
+#Abilities/Bombs
+bombStats:<b>Bomb stats</b>
+bombRad:Radius {0}:
+bombCd:Cooldown {0}:
+bombSpeed:Speed {0}:
+bombRange:Range {0}:
+bombName:Bomb name:
+bombColor:<b>Bomb color</b>
+bombColorR:Red color:
+bombColorG:Green color:
+bombColorB:Blue color:
+bombColorA:Transparency:

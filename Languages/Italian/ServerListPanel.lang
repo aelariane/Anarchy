@@ -1,0 +1,45 @@
+﻿title:ServerList
+btnList:Alla lista
+btnBack:Indietro
+btnSettings:Impostazioni
+btnCreation:Crea stanza
+btnOffline:Gioca offline
+btnStart:Crea
+regions:USA,Europa,Asia,Giappone
+connected:Connesso a
+connecting:Connesso a
+notConnected:Non connesso
+filter:Parole chiave:
+players:Giocatori massimi:
+ping:Ping:
+settingsTitle:Impostazioni networking
+roomCreationTitle:Creazione stanza
+servers:Pubblico,RC Privato,Personalizzato
+roomSettings:Impostazioni stanza
+roomName:Nome stanza:
+pwd:Password:
+maxPlayers:Giocatori massimi:
+time:Tempo:
+difficulity:Difficoltà
+difficulities:Normale,Difficile,Estremo
+dayLight:Tempo della giornata
+dayLights:Giorno,Sera,Notte
+mapSelection:Selezione Mappa
+preferedRegion:<color=red>Regione preferita</color>
+preferedRegionDesc:Connettere automaticamente alla regione selezionata quando la serverlist è aperta
+connectionProtocol:<color=red>Protocollo di connessione</color>
+connectionProtocolDescUDP:<b>UDP</b> è il migliore protocollo per il gioco, ma non stabile
+connectionProtocolDescTCP:<b>TCP</b> è più stabile di UDP, ma richiede <color=orange><b>più</b></color> scambio dei dati
+connectionProtocolDescWS:<b>WebSockets</b> è il protocollo più stabile ma richiede <color=red><b>enorme</b></color> scambio dei dati. 
+serializationProtocol:Serializzazione protocollo:
+settingsDesc:<color=yellow>Note: Cambiamenti saranno applicati al restart.</color>
+settingsOthers:<color=red>Altre Impostazioni</color>
+presets:<color=red>Presets</color>
+presetName:Nome preset:
+presetAdd:Aggiungi
+presetRemove:Rimuovi
+presetNote:<color=yellow>Nota: Scrollabile con 5+ presets</color>
+advancedSettings:Impostazioni avanzate
+customServer:Custom server:
+joinRoom:Unisciti alla partita
+pwdRequest:Enter password

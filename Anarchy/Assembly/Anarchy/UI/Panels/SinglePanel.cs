@@ -45,8 +45,8 @@ namespace Anarchy.UI
             SelectionGrid(left, dayLightSelection, dayLightList, 3, true);
             LabelCenter(left, locale["camera"], true);
             SelectionGrid(left, Settings.CameraMode, cameraList, 4, true);
-            left.MoveToEndY(BoxPosition, 30f);
-            left.height = 30f;
+            left.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
+            left.height = new AutoScaleFloat(30f);
             if (Button(left, locale["start"], true))
             {
                 OnButtonStartClick();
@@ -61,10 +61,10 @@ namespace Anarchy.UI
             LabelCenter(right, locale["character"], true);
             SelectionGrid(right, costumeSelection, costumeList, 3, true);
             SelectionGrid(right, characterSelection, characterList, 1, true);
-            right.MoveToEndY(BoxPosition, 30f);
-            right.MoveOffsetX(150f);
-            right.height = 30f;
-            if(Button(right, locale["back"], false))
+            right.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
+            right.MoveOffsetX(new AutoScaleFloat(150f));
+            right.height = new AutoScaleFloat(30f);
+            if (Button(right, locale["back"], false))
             {
                 Disable();
                 return;

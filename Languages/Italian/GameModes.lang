@@ -1,0 +1,91 @@
+﻿enabled:attivato
+disabled:disattivato
+
+#Titans
+titancInfoEnabled:<color=#$maincolor$>Quantità titani [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+titancInfoDisabled:<color=#$maincolor$>Quantità titani <color=#$dColor$>disattivato</color></color>
+
+punkWavesInfoEnabled:<color=#$maincolor$>Punk non spawnano ogni 5 ondate <color=#$eColor$>attivato</color></color>
+punkWavesInfoDisabled:<color=#$maincolor$>Punk non spawnano ogni 5 ondate <color=#$dColor$>disattivato</color></color>
+
+rockInfoEnabled:<color=#$maincolor$>Punks non lanciano rocce <color=#$eColor$>attivato</color></color>
+rockInfoDisabled:<color=#$maincolor$>Punks non lanciano rocce<color=#$dColor$>disattivato</color></color>
+
+explodeInfoEnabled:<color=#$maincolor$>Titani esplosivi [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivati</color></color>
+explodeInfoDisabled:<color=#$maincolor$>Titan esplosivi <color=#$dColor$>disattivati</color></color>
+
+healthModeInfoEnabled:<color=#$maincolor$>Vita titano [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> to <color=#$subcolor$>{2}</color>] <color=#$eColor$>attivata</color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Vita titano <color=#$dColor$>disattivata</color></color>
+healthModeSelection:Fissato,Scalato
+
+damageInfoEnabled:<color=#$maincolor$>Danno minimo [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+damageInfoDisabled:<color=#$maincolor$>Danno minimo <color=#$dColor$>disattivato</color></color>
+
+sizeModeInfoEnabled:<color=#$maincolor$>Dimensione titano [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>] <color=#$eColor$>attivata</color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Dimensione titano <color=#$dColor$>disattivata</color></color>
+
+spawnModeInfoEnabled:<color=#$maincolor$>Percentuale di spawn <color=#$eColor$>attivata</color>\n[N: <color=#$subcolor$>{0}</color>, A: <color=#$subcolor$>{1}</color>, J: <color=#$subcolor$>{2}</color>, C: <color=#$subcolor$>{3}</color>, P: <color=#$subcolor$>{4}</color>]</color>
+spawnModeInfoDisabled:<color=#$maincolor$>Percentuale di spawn <color=#$dColor$>disattivata</color></color>
+
+waveModeOnInfoEnabled:<color=#$maincolor$>Quantità titani per ondata [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivata</color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Quantità titani per ondata  <color=#$dColor$>disattivata</color></color>
+
+#PvP
+bombInfoEnabled:<color=#$maincolor$>Modalità bombe <color=#$eColor$>attivata</color></color>
+bombInfoDisabled:<color=#$maincolor$>Modalità bombe <color=#$dColor$>disattivata</color></color>
+
+ahssReloadInfoEnabled:<color=#$maincolor$>Anti ricarica in aria di AHSS<color=#$eColor$>attivata</color></color>
+ahssReloadInfoDisabled:<color=#$maincolor$>Anti ricarica in aria di AHSS<color=#$dColor$>disattivata</color></color>
+
+teamInfoEnabled:<color=#$maincolor$>Modalità squadre [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivata</color></color>
+teamInfoDisabled:<color=#$maincolor$>Modalità squadre <color=#$dColor$>disattivata</color></color>
+teamSelection:Casuale,Per Dimensione,Per Abilità
+
+infectionInfoEnabled:<color=#$maincolor$>Modalità infezione <color=#$eColor$>attivata</color></color>
+infectionInfoDisabled:<color=#$maincolor$>Modalità infezione <color=#$dColor$>disattivata</color></color>
+
+pointInfoEnabled:<color=#$maincolor$>Punteggio limite [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+pointInfoDisabled:<color=#$maincolor$>Punteggio limite <color=#$dColor$>disattivato</color></color>
+
+friendlyInfoEnabled:<color=#$maincolor$>PVP Amichevole <color=#$eColor$>attivato</color></color>
+friendlyInfoDisabled:<color=#$maincolor$>PVP Amichevole <color=#$dColor$>disattivato</color></color>
+
+pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>disattivato</color></color>
+pvpSelection:FFA,Team-Based
+
+#Misc
+endlessInfoEnabled:<color=#$maincolor$>Infinito respawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+endlessInfoDisabled:<color=#$maincolor$>Infinito respawn <color=#$dColor$>disattivato</color></color>
+
+maxwaveInfoEnabled:<color=#$maincolor$>Ondata massima [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
+maxwaveInfoDisabled:<color=#$maincolor$>Ondata massima <color=#$dColor$>disattivato</color></color>
+
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Minimappa globale rimossa <color=#$eColor$>attivato</color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Minimappa globale rimossa <color=#$dColor$>disattivato</color></color>
+
+horseInfoEnabled:<color=#$maincolor$>Cavalli <color=#$eColor$>attivati</color></color>
+horseInfoDisabled:<color=#$maincolor$>Cavalli <color=#$dColor$>disattivati</color></color>
+
+erenInfoEnabled:<color=#$maincolor$>Anti-Eren titano <color=#$eColor$>attivato</color></color>
+erenInfoDisabled:<color=#$maincolor$>Anti-Eren titano <color=#$dColor$>disattivato</color></color>
+
+deadlycannonsInfoEnabled:<color=#$maincolor$>Cannoni uccidono umani <color=#$eColor$>attivato</color></color>
+deadlycannonsInfoDisabled:<color=#$maincolor$>Cannoni uccidono umani <color=#$dColor$>disattivato</color></color>
+
+asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>attivato</color></color>
+asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>disattivato</color></color>
+
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Proprio tempo d'inizio gara su <color=#$subcolor$>{0}</color></color> 
+startTimeInfoDisabled:<color=#$maincolor$>Proprio tempo d'inizio gara <color=#$dColor$>disattivato</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>Gioco si riavvierà dopo <color=#$subcolor$>{0}</color> giocatori avranno finito</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Riavvio al numero di arrivati <color=#$dColor$>disattivato</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Limite tempo gara <color=#$eColor$>attivato</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Limite tempo gara <color=#$dColor$>disattivato</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Tempo di riavvio gara su<color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Tempo di riavvio gara <color=#$dColor$>disattivato</color></color> 

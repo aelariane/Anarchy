@@ -20,7 +20,7 @@
                     }
                     PhotonNetwork.room.maxPlayers = max;
                     chatMessage = Lang.Format("roomMax", max.ToString());
-                    SendLocalizedText("roomTime", new string[] { max.ToString() });
+                    SendLocalizedText("roomMax", new string[] { max.ToString() });
                     break;
 
                 case "time":

@@ -71,7 +71,7 @@ namespace Anarchy.UI
         {
             if (oldRegion == region && customServer == oldCustomServer)
                 return;
-            if(customServer <= 1)
+            if (customServer <= 1)
             {
                 UIMainReferences.ConnectField = CustomServers[customServer];
             }
@@ -106,9 +106,9 @@ namespace Anarchy.UI
             serverTime = null;
             password = null;
             maxPlayers = null;
-            if(presets != null && presets.Count > 0)
+            if (presets != null && presets.Count > 0)
             {
-                foreach(ServerPreset set in presets)
+                foreach (ServerPreset set in presets)
                 {
                     set.Save();
                 }
@@ -170,7 +170,7 @@ namespace Anarchy.UI
                 }
             }
             newPresetName = "Set " + (presets.Count + 1);
-            if(sets.Length > 0)
+            if (sets.Length > 0)
             {
                 newPresetName = sets[sets.Length - 1].Name;
             }
@@ -242,7 +242,7 @@ namespace Anarchy.UI
             NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnReceivedRoomListUpdate, OnReceivedRoomListUpdate);
             connected = false;
             roomToJoin = null;
-            if(!disconnectByJoin && PhotonNetwork.connected)
+            if (!disconnectByJoin && PhotonNetwork.connected)
             {
                 PhotonNetwork.Disconnect();
             }
@@ -288,7 +288,7 @@ namespace Anarchy.UI
             pwdRect.Reset();
             LabelCenter(pwdRect, locale["pwdRequest"], true);
             pwdInput = TextField(pwdRect, pwdInput, string.Empty, 0f, true);
-            if(Button(pwdRect, locale["joinRoom"], true))
+            if (Button(pwdRect, locale["joinRoom"], true))
             {
                 if (roomToJoin == null || !roomToJoin.IsCorrectPassword(pwdInput))
                 {
@@ -301,7 +301,7 @@ namespace Anarchy.UI
                     DisableImmediate();
                 }
             }
-            else if(Button(pwdRect, locale["btnBack"], false))
+            else if (Button(pwdRect, locale["btnBack"], false))
             {
                 pageSelection = ServerListPage;
             }
@@ -339,7 +339,7 @@ namespace Anarchy.UI
             LabelCenter(left, locale["dayLight"], true);
             daylight = SelectionGrid(left, daylight, daylights, daylights.Length, true);
 
-            if(Button(left, locale["advancedSettings"], true))
+            if (Button(left, locale["advancedSettings"], true))
             {
 
             }
@@ -349,7 +349,7 @@ namespace Anarchy.UI
             Label(left, locale["presetNote"], true);
             newPresetName = TextField(left, newPresetName, locale["presetName"], Style.LabelOffset, true);
             left.width = (left.DefaultWidth - Style.HorizontalMargin) / 2f;
-            if(Button(left, locale["presetAdd"], false))
+            if (Button(left, locale["presetAdd"], false))
             {
                 ServerPreset set = new ServerPreset(newPresetName);
                 ExportPreset(set);
@@ -358,14 +358,14 @@ namespace Anarchy.UI
                 set.Save();
             }
             left.MoveX();
-            if(Button(left, locale["presetRemove"], true))
+            if (Button(left, locale["presetRemove"], true))
             {
-                if(presets.Count > 0)
+                if (presets.Count > 0)
                 {
                     ServerPreset selected = null;
-                    for(int i = 0; i < presets.Count; i++)
+                    for (int i = 0; i < presets.Count; i++)
                     {
-                        if(presets[i].Name == newPresetName)
+                        if (presets[i].Name == newPresetName)
                         {
                             selected = presets[i];
                         }
@@ -385,15 +385,15 @@ namespace Anarchy.UI
                 }
             }
             left.ResetX();
-            if(presets.Count > 0)
+            if (presets.Count > 0)
             {
                 presetArea.y = left.y;
                 presetRect.Reset();
                 presetScroll = BeginScrollView(presetArea, presetScroll, presetView);
                 {
-                    for(int i = 0; i < presets.Count; i++)
+                    for (int i = 0; i < presets.Count; i++)
                     {
-                        if(Button(presetRect, presets[i].Name, true))
+                        if (Button(presetRect, presets[i].Name, true))
                         {
                             ServerPreset selected = presets[i];
                             ImportPreset(selected);
@@ -405,7 +405,7 @@ namespace Anarchy.UI
 
             left.MoveToEndY(BoxPosition, Style.Height);
             left.width = left.DefaultWidth / 2f - Style.HorizontalMargin;
-            if(Button(left, locale["btnCreation"], false))
+            if (Button(left, locale["btnCreation"], false))
             {
                 disconnectByJoin = true;
                 string[] args = new string[]
@@ -456,16 +456,16 @@ namespace Anarchy.UI
             LabelCenter(right, locale["mapSelection"], true);
             mapSelection = SelectionGrid(right, mapSelection, maps, 1);
             right.MoveToEndY(BoxPosition, Style.Height);
-            right.MoveToEndX(BoxPosition, 240f + Style.HorizontalMargin);
-            right.width = 120f;
-            if(Button(right, locale["btnSettings"], false))
+            right.MoveToEndX(BoxPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
+            right.width = new AutoScaleFloat(120f);
+            if (Button(right, locale["btnSettings"], false))
             {
                 connected = false;
                 pageSelection = SettingsPage;
                 return;
             }
             right.MoveX();
-            if(Button(right, locale["btnList"], false))
+            if (Button(right, locale["btnList"], false))
             {
                 connected = PhotonNetwork.connected;
                 if (connected)
@@ -486,7 +486,7 @@ namespace Anarchy.UI
             Label(rect, locale["customServer"], false);
             float offset = ((scrollArea.width - (Style.HorizontalMargin * 3)) / 4f) + Style.HorizontalMargin;
             rect.MoveOffsetX(offset);
-            rect.width -= (100f - Style.HorizontalMargin);
+            rect.width -= (new AutoScaleFloat(100f) - Style.HorizontalMargin);
             float txt = offset + rect.width;
             customServer = SelectionGrid(rect, customServer, customServers, customServers.Length, false);
 
@@ -503,11 +503,11 @@ namespace Anarchy.UI
             scrollRect.Reset();
             scrollArea.y = rect.y;
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
-            if(connected)
+            if (connected)
             {
-                foreach(var room in roomList)
+                foreach (var room in roomList)
                 {
-                    if(Button(scrollRect, room.UIName.ToHTMLFormat(), true) && room.playerCount != room.maxPlayers)
+                    if (Button(scrollRect, room.UIName.ToHTMLFormat(), true) && room.playerCount != room.maxPlayers)
                     {
                         if (room.HasPassword)
                         {
@@ -528,23 +528,23 @@ namespace Anarchy.UI
             EndScrollView();
 
             rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.width = 170f;
-            if(Button(rect, locale["btnCreation"], false))
+            rect.width = new AutoScaleFloat(170f);
+            if (Button(rect, locale["btnCreation"], false))
             {
                 pageSelection = CreationPage;
                 connected = false;
                 return;
             }
-            rect.MoveX(5f, true);
-            if(Button(rect, locale["btnSettings"], false))
+            rect.MoveX(new AutoScaleFloat(5f), true);
+            if (Button(rect, locale["btnSettings"], false))
             {
                 pageSelection = SettingsPage;
                 connected = false;
                 return;
             }
-            rect.width = 120f;
-            rect.MoveToEndX(BoxPosition, 120f);
-            if(Button(rect, locale["btnBack"]))
+            rect.width = new AutoScaleFloat(120f);
+            rect.MoveToEndX(BoxPosition, new AutoScaleFloat(120f));
+            if (Button(rect, locale["btnBack"]))
             {
                 Disable();
                 return;
@@ -574,15 +574,15 @@ namespace Anarchy.UI
             rect.ResetX();
             rect.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
             Label(rect, locale["settingsDesc"], true);
-            rect.MoveToEndX(BoxPosition, 240f + Style.HorizontalMargin);
-            rect.width = 120f;
-            if(Button(rect, locale["btnCreation"], false))
+            rect.MoveToEndX(BoxPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
+            rect.width = new AutoScaleFloat(120f);
+            if (Button(rect, locale["btnCreation"], false))
             {
                 pageSelection = CreationPage;
                 return;
             }
             rect.MoveX();
-            if(Button(rect, locale["btnList"], true))
+            if (Button(rect, locale["btnList"], true))
             {
                 connected = PhotonNetwork.connected;
                 if (connected)
@@ -613,7 +613,7 @@ namespace Anarchy.UI
             if (!connected)
                 return;
             timeToUpdate -= Time.deltaTime;
-            if(timeToUpdate <= 0f)
+            if (timeToUpdate <= 0f)
             {
                 UpdateRoomList();
                 timeToUpdate = UpdateTime;

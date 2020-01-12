@@ -87,6 +87,10 @@ namespace Anarchy
         {
             get
             {
+                if(RestartMessage.Value.Length <= 0)
+                {
+                    return string.Empty;
+                }
                 return RestartMessage.Value.Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$chatName$", ChatName.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
             }
         }

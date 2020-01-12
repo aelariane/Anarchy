@@ -1,0 +1,149 @@
+﻿#Main window
+title:Configurações
+buttons:Geral,Vídeo,Efeitos,Teclas de Acesso,Mod,Habilidades
+abilityNames:Bombas
+btnBack:Voltar
+
+#General page
+game:<b>Jogo</b>
+sensivity:Sensitividade[{0}]
+distance:Distância[{0}]
+moreDistance:Mais distância[{0}]
+snapshots:<b>Capturas de tela</b>
+snapshotsEnabled:Capturas de tela:
+snapshotsShow:Mostrar dentro do jogo:
+snapshotsDmg:Dano Mín para mostrar:
+minimap:Mini mapa:
+gameFeed:Feedback de jogo RC:
+inverty:Inverter Eixo Y:
+staticFOV:FOV(Campo de visão) Estático:
+fovValue:Valor do FOV[{0}]
+
+others:<b>Outros</b>
+speedometer:Velocímetro:
+speedometerTypes:Velocidade,Dano
+bodylean:Inclinação(leaning) corpo do Hero(personagem):
+
+audio:<b>Áudio</b>
+overallAudio:Volume[{0}]
+
+#Video page
+
+graphics:<b>Gráficos</b>
+vsync:Sincronização Vertical:
+mipmap:Mipmapping:
+texturesQuality:Qualidade das texturas
+texturesLevels:Alto,Médio,Baixo,Ultra baixo
+quality:Qualidade Geral[{0}]
+
+advancedVideo:<b>COnfigurações Gerais</b>
+drawDistance:Distância de Visualização[{0}]
+occlusion:Utilizar culling de oclusão:
+aniso:Filtro Anisotrópico
+anisoLevels:Desabilitado,Habilitado,Forçar Habilitade
+antiAliasing:Anti Serrilhado(Anti-Aliasing):
+antiAliasings:Desligado,2x,4x,8x
+bWeight:Mistura de Pesos(Blend Weight):
+blendWeights:Um,Dois,Quatro
+lodBias:LOD(Nível de Detalhe) Bias[{0}]
+maxLOD:LOD Máx[{0}]
+shadows:<b>Sombras</b>
+useShadows:Usar Sombras:
+shadowCascade:Cascatas
+shadowCascades:1,2,4
+shadowDist:Distância[{0}]
+shadowProjection:Projeção:
+shadowProjections:AlinharPerto,AlinharEstável
+shadowNote:<color=yellow>Nota: Sombras funcionam em qualidade >= 0.17</color>
+
+#Effects page
+effects:<b>Efeitos</b>
+windEffect:Efeito de Vento:
+bladeTrails:Efeito(trail) das espadas:
+blur:Desfoque de Movimento:
+tilt:Inclinação de Câmera:
+
+#Rebinds page
+buttonsRebinds:Humano,Titã,Cavalo,Canhão
+waiting:Esperando...
+mainRebinds:<b>Entradas de Tecla Principais</b>
+rebinds:<b>Entradas de Tecla</b>
+
+#Anarchy page
+modMenu:Estilo,Nome Animado,Chat e Console
+
+#Anarchy/Style
+hudScale:Escala do HUD[{0}]:
+guiAutoScale:Usar auto escala de GUI:
+guiScaleWarning:<color=red><b>Mudar esses valores podem <i>atrapalhar</i> sua UI.</b></color>
+guiScaleWarning1:<color=yellow>Você foi avisado.</color>
+windowOffset:<b>Janela & Posicionamento</b>
+windowHeight:Altura da Janela:
+windowWidth:Largura da Janela:
+windowBottomOffset:Posicionamento da janela inferior:
+windowSideOffset:Posicionamento da janela lateral:
+windowTopOffset:Posicionamento da janela superior:
+labelOffset:Posicionamento da label:
+labelOffsetSlider:Deslizador do posicionamento da label:
+bigLabelOffset:Posicionamento da label grande:
+Others:<b>Outros</b>
+fontSize:Tamanho da fonte:
+height:Altura dos elementos da UI:
+horizontalMargin:Distância horizontal entre os elementos:
+verticalMargin:Distância vertical entre os elementos:
+labelSpace:Espaçamento da label:
+
+styleColors:<b>Configuração das cores</b>
+fontName:Nome da fonte:
+background:Cor do fundo:
+backgroundTransparency:Transparência do fundo:
+normal:Normal
+hover:Hover
+active:Ativo
+onNormal:Durante a Normal
+onHover:Durante Hover
+onActive:Durante Ativar
+vector:Vetor
+color:Cor
+text:Texto
+useVectors:Usar posicionamento dos vetores de cor:
+
+#Anarchy/Chat and Console
+chat:<b>Chat</b>
+chatBack:Fundo do Chat:
+chatBackVal:Transparência[{0}]
+chatCount:Número de mensagens do chat:
+chatSize:Tamanho de mensagens do chat:
+chatWidth:Largura do Chat:
+chatUseCustomSpace:Usar espaçamento customizado
+chatSpaceUp:Acima:
+chatSpaceDown:Abaixo:
+chatSpaceLeft:Esquerda:
+chatSpaceRight:Direita:
+
+console:<b>Console</b>
+consoleBack:Fundo do Console:
+consoleBackVal:Transparência[{0}]
+consoleCount:Número de mensagens do console:
+consoleSize:Tamanho de mensagens do console:
+consoleWidth:Largura do console:
+consoleUseCustomSpace:Usar espaçamento customizado
+consoleSpaceUp:Acima:
+consoleSpaceDown:Abaixo:
+consoleSpaceLeft:Esquerda:
+consoleSpaceRight:Direita:
+
+#Abilities
+
+#Abilities/Bombs
+bombStats:<b>Status da Bomba</b>
+bombRad:Tamanho {0}:
+bombCd:Tempo de Espera {0}:
+bombSpeed:Velocidade {0}:
+bombRange:Alcance {0}:
+bombName:Nome da Bomba:
+bombColor:<b>Cor da Bomba</b>
+bombColorR:Cor Vermelha:
+bombColorG:Cor Verde:
+bombColorB:Cor Azul:
+bombColorA:Transparência(Alpha):

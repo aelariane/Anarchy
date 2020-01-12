@@ -1,0 +1,57 @@
+﻿title:Скины
+skinSelection:Человек,Титаны,Город,Лес,Небо,Кастом
+btnClose:Закрыть
+
+btnAdd:Добавить
+btnCopy:Копировать
+btnDelete:Удалить
+name:Имя:
+set:Сет
+setName:Сет <color=yellow>"{0}"</color>
+
+skinStateSelection:Выкл,Вкл,Локально
+skyboxDesc:Включает скины неба в городе/лесу
+sets:Доступные сеты
+
+#Human skins
+humanLabels:Лошадь,Волосы,Глаза,Очки,Лицо,Кожа,Костюм,Накидка,Левый привод,Правый привод,Газ,Худи,След клинков
+
+#Titan sets
+titanHair:Волосы 
+titanEye:Глаза  
+titanBody:Тело  
+annie:Энни
+eren:Эрен
+colossal:Колосс
+
+#Level sets
+ground:Земля
+linkedBox:Закреплённый скин неба: {0}
+
+#City
+gate:Ворота
+wall:Стена
+house:Дом 
+houses:Дома
+
+#Forest
+tree:Дерево 
+trees:Деревья
+trunk:Ствол 
+trunks:Стволы 
+leave:Листья 
+leaves:Листва
+forestRandomize:Случайные пары:
+
+#Skybox sets
+skyboxState:Скин неба:
+btnLinkCity:Прикрепить к скину города <color=yellow>{0}</color>
+btnLinkForest:Прикрепить к скину леса <color=yellow>{0}</color>
+skyboxFront:Фронт
+skyboxBack:Зад
+skyboxLeft:Лево
+skyboxRight:Право
+skyboxUp:Верх
+skyboxDown:Низ
+
+#Custom map sets

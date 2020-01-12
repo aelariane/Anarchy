@@ -11,11 +11,11 @@ namespace Anarchy.Configuration
     {
         private const char Separator = ',';
 
-        public delegate void StateChanged(bool state);
+        public delegate void StateChanged(GameModeSetting sender, bool state, bool received);
         private delegate void GameModeSettingDraw(SmartRect rect, Locale locale);
 
-        private static Locale english;
-        private static Locale lang;
+        private static readonly Locale english;
+        private static readonly Locale lang;
 
         private readonly GameModeSettingDraw draw;
         private readonly float[] floats = null;
@@ -32,7 +32,7 @@ namespace Anarchy.Configuration
         private readonly string saveKey;
         private int selection = -1;
         private bool state;
-        public event StateChanged OnStateChanged = (val) => { };
+        private StateChanged onStateChanged  = (set, val, received) => { };
 
         public bool Enabled
         {
@@ -182,6 +182,7 @@ namespace Anarchy.Configuration
             }
             Load();
             Apply();
+            AddCallback(RCSettingCallback);
         }
 
         static GameModeSetting()
@@ -191,6 +192,30 @@ namespace Anarchy.Configuration
             english.Reload();
             lang = new Locale("GameModes", true);
             lang.Reload();
+        }
+
+        public GameModeSetting AddCallback(StateChanged callback)
+        {
+            if(onStateChanged == null)
+            {
+                onStateChanged = callback;
+                return this;
+            }
+            onStateChanged += callback;
+            return this;
+        }
+
+        public static void RCSettingCallback(GameModeSetting set, bool state, bool received)
+        {
+            if (PhotonNetwork.IsMasterClient && !received)
+            {
+                PhotonPlayer[] targets = PhotonPlayer.GetVanillaUsers();
+                if (targets.Length <= 0)
+                {
+                    return;
+                }
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", targets, new object[] { set.ToString(false), string.Empty });
+            }
         }
 
         public void Apply()
@@ -231,6 +256,7 @@ namespace Anarchy.Configuration
                     oldIntegers[i] = integers[i];
                 }
             }
+            onStateChanged(this, state, false);
         }
 
         public void ApplyReceived()
@@ -255,6 +281,7 @@ namespace Anarchy.Configuration
                     oldIntegers[i] = integers[i];
                 }
             }
+            onStateChanged(this, state, true);
         }
 
         public void Draw(SmartRect rect, Locale locale)
@@ -449,6 +476,16 @@ namespace Anarchy.Configuration
             }
         }
 
+        public GameModeSetting RemoveCallback(StateChanged callback)
+        {
+            if (onStateChanged == null)
+            {
+                return this;
+            }
+            onStateChanged -= callback;
+            return this;
+        }
+
         public override string ToString()
         {
             List<object> args = new List<object>();
@@ -471,6 +508,22 @@ namespace Anarchy.Configuration
                 }
             }
             string format = english.Get(key + "Info" + (state ? "Enabled" : "Disabled")).Replace(@"\n", System.Environment.NewLine);
+            if (state)
+            {
+                if(GameModes.EnabledColor.Value.Length != 6)
+                {
+                    GameModes.EnabledColor.Value = "CCFFCC";
+                }
+                format = format.Replace("$eColor$", GameModes.EnabledColor.Value);
+            }
+            else
+            {
+                if (GameModes.DisabledColor.Value.Length != 6)
+                {
+                    GameModes.DisabledColor.Value = "FFAACC";
+                }
+                format = format.Replace("$dColor$", GameModes.DisabledColor.Value);
+            }
             return string.Format(format, args.ToArray());
         }
 
@@ -497,6 +550,22 @@ namespace Anarchy.Configuration
                 }
             }
             string format = loc.Get(key + "Info" + (state ? "Enabled" : "Disabled")).Replace(@"\n", System.Environment.NewLine);
+            if (state)
+            {
+                if (GameModes.EnabledColor.Value.Length != 6)
+                {
+                    GameModes.EnabledColor.Value = "CCFFCC";
+                }
+                format = format.Replace("$eColor$", GameModes.EnabledColor.Value);
+            }
+            else
+            {
+                if (GameModes.DisabledColor.Value.Length != 6)
+                {
+                    GameModes.DisabledColor.Value = "FFAACC";
+                }
+                format = format.Replace("$dColor$", GameModes.DisabledColor.Value);
+            }
             return string.Format(format, args.ToArray());
         }
 

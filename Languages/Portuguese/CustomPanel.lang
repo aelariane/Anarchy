@@ -1,0 +1,14 @@
+﻿title:Customizado
+selection:Mapa Customizado,Lógica Customizado
+gameTypes:1 Rodadas,Ondas,PvP,Corrida,Customizado
+spawnCap:Aparecimento de Titãs:
+gameMode:Tipo de Jogo:
+mapScript:Script do Mapa
+logicScript:Lógica do Mapa
+btnClear:Limpar
+btnClose:Fechar
+random:Aleatório
+update:Atualizar Lista
+picker0:Escolhedor de Mapas
+picker1:Escolhedor de Lógica
+filter:Filter:

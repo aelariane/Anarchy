@@ -10,5 +10,8 @@
     AnarchyUsers,
     AnarchyUsersOthers,
     AnarchyUsersBuffered,
-    AnarchyUsersOthersBuffered
+    AnarchyUsersOthersBuffered,
+    NotAnarchy,
+    RCUsers,
+    VanillaUsers
 }

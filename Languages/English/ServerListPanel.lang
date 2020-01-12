@@ -1,0 +1,45 @@
+﻿title:ServerList
+btnList:To list
+btnBack:Back
+btnSettings:Settings
+btnCreation:Create room
+btnOffline:Play offline
+btnStart:Create
+regions:USA,Europe,Asia,Japan
+connected:Connected to
+connecting:Conneting to
+notConnected:Not connected
+filter:Keywords:
+players:Players count:
+ping:Ping:
+settingsTitle:Network settings
+roomCreationTitle:Room creation
+servers:Public,RC Private,Custom
+roomSettings:Room settings
+roomName:Room name:
+pwd:Password:
+maxPlayers:Players count:
+time:Server time:
+difficulity:Difficulity
+difficulities:Normal,Hard,Abnormal
+dayLight:Daylight
+dayLights:Day,Dawn,Night
+mapSelection:Map selection
+preferedRegion:<color=red>Prefered region</color>
+preferedRegionDesc:Auto connects to selected region on serverlist open
+connectionProtocol:<color=red>Connection protocol</color>
+connectionProtocolDescUDP:<b>UDP</b> is the best protocol for game, but not stable
+connectionProtocolDescTCP:<b>TCP</b> is more stable then UDP, but requires <color=orange><b>more</b></color> data exchange
+connectionProtocolDescWS:<b>WebSockets</b> is the most stable protocol, but required <color=red><b>huge</b></color> data exchange. 
+serializationProtocol:Serialization Protocol:
+settingsDesc:<color=yellow>Note: Changes will be applied after restart.</color>
+settingsOthers:<color=red>Other settings</color>
+presets:<color=red>Presets</color>
+presetName:Preset name:
+presetAdd:Add
+presetRemove:Remove
+presetNote:<color=yellow>Note: Scrollable at 5+ presets</color>
+advancedSettings:Advanced settings
+customServer:Custom server:
+joinRoom:Try to join room
+pwdRequest:Enter password

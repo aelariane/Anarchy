@@ -1,0 +1,87 @@
+﻿title:Configurações de Jogo
+selections:Titã,PvP,Utilitário,Bombas
+btnClose:Fechar
+
+#Titans
+
+titancState:Quantidade Customizada de titãs:
+titancInt0:Quantidade:
+
+waveModeOnState:Customização da quantidade titã/onda:
+waveModeOnInt0:Quantidade:
+
+spawnModeState:Quantidade Customizada de nascimento:
+spawnModeFloat0:Normal:
+spawnModeFloat1:Aberrant:
+spawnModeFloat2:Jumper:
+spawnModeFloat3:Crawler:
+spawnModeFloat4:Punk:
+
+sizeModeState:Modo de tamanho dos titãs:
+sizeModeFloat0:Tamanho Mín:
+sizeModeFloat1:Tamanho Máx:
+
+healthModeState:Modo de vida dos Titãs:
+healthModeSelection:Fixado,Escalado
+healthModeInt0:Vida Mín:
+healthModeInt1:Vida Máx:
+
+damageState:Modo de Dano:
+damageInt0:Dano:
+
+explodeState:Modo titã explosivo:
+explodeInt0:Alcance:
+
+rockState:Desabilitar arremesso de rocha:
+
+#PVP
+bombState:Modo de Bomba:
+
+pointState:Modo de Pontos:
+pointInt0:Pontos Máx
+
+teamState:Modo de Equipe:
+teamSelection:Sem escolha,Travado por Tamanho,Travado por Habilidade
+
+infectionState:Modo Infecção:
+infectionInt0:Titãs Iniciais:
+
+friendlyState:Modo Amigável:
+
+pvpState:Modo Espada/AHSS PVP:
+pvpSelection:Equipes,FFA
+
+ahssReloadState:Desabilitar Recarregamento-Aéreo AHSS:
+
+deadlycannonsState:Canhões matam humanos
+
+#Misc
+maxwaveState:Onda Máx:
+maxwaveInt0:Onda:
+
+punkWavesState:Desabilitar punks a cada 5 ondas
+
+globalDisableMinimapState:Minimapa global desabilitado:
+
+endlessState:Renascimento Infinito:
+endlessInt0:Tempo para renascer(int):
+
+erenState:Auto-kickar Eren titã:
+
+horseState:Permitir cavalos:
+
+motd:Mensagem do dia!
+
+asoracingState:Corrida ASO(Infinita):
+
+startTimeState:Usar tempo customizado de inicializacao:
+startTimeInt0:Tempo antes da corrida comecar:
+
+restartOnFinishersState:Reinicio automatico do jogo quando X pessoas acabarem:
+restartOnFinishersInt0:Jogadores finalizados para reiniciar:
+
+racingTimeLimitState:Reinicio automatico do jogo apos o tempo limite:
+racingTimeLimitInt0:Tempo limite:
+
+racingRestartTimeState:Tempo de reinicio customizado:
+racingRestartTimeInt0:Tempo para reiniciar:

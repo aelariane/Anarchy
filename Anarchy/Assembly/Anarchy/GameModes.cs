@@ -3,11 +3,15 @@ using System.Text;
 using Anarchy.Configuration;
 using Anarchy.UI;
 using ExitGames.Client.Photon;
+using GameLogic;
 
 namespace Anarchy
 {
     public class GameModes
     {
+        public static StringSetting DisabledColor = new StringSetting(nameof(EnabledColor), "CCFFCC");
+        public static StringSetting EnabledColor = new StringSetting(nameof(EnabledColor), "FFAACC");
+
         private static List<GameModeSetting> allGameSettings;
         private static Hashtable oldHash = new Hashtable();
         private static Hashtable infection = new Hashtable();
@@ -37,8 +41,14 @@ namespace Anarchy
         public static readonly GameModeSetting KickEren = new GameModeSetting("eren");
         public static readonly GameModeSetting AllowHorses = new GameModeSetting("horse");
         public static readonly StringSetting MOTD = new StringSetting("motd", string.Empty);
-        public static readonly GameModeSetting ASORacing = new GameModeSetting("asoracing");
-        public static bool AsoRacing;
+
+        public static readonly AnarchyGameModeSetting RacingStartTime = (AnarchyGameModeSetting)new AnarchyGameModeSetting("startTime,startTimeValue", new int[] { 20 }).AddCallback(RacingLogic.StartTimeCheck);
+        public static readonly AnarchyGameModeSetting RacingFinishersRestart = new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new int[] { 5 });
+        public static readonly AnarchyGameModeSetting RacingTimeLimit = new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new int[] { 500 });
+        public static readonly AnarchyGameModeSetting RacingRestartTime = (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new int[] { 999 }).RemoveCallback(AnarchyGameModeSetting.AnarchySettingCallback).AddCallback(RacingLogic.RestartTimeCheck);
+        public static readonly GameModeSetting ASORacing = new GameModeSetting("asoracing").AddCallback(RacingLogic.ASORacingCheck);
+
+
 
         public static void AddSetting(GameModeSetting set)
         {
@@ -171,6 +181,13 @@ namespace Anarchy
             }
         }
 
+        public static void EndlessMode(int ID)
+        {
+            if (!EndlessRespawn.Enabled)
+                return;
+            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
+        }
+
         public static void ForceChange()
         {
             foreach(GameModeSetting set in allGameSettings)
@@ -179,11 +196,23 @@ namespace Anarchy
             }
         }
 
-        public static void EndlessMode(int ID)
+        public static string GetGameModesInfo()
         {
-            if (!EndlessRespawn.Enabled)
-                return;
-            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
+            StringBuilder bld = new StringBuilder();
+            int count = 0;
+            foreach (GameModeSetting set in allGameSettings)
+            {
+                if (set.Enabled)
+                {
+                    bld.Append((count > 0 ? "\n" : string.Empty) + set.ToString(true));
+                    count++;
+                }
+            }
+            if (count == 0)
+            {
+                return string.Empty;
+            }
+            return bld.ToString();
         }
 
         public static void HandleRPC(Hashtable hash)
@@ -210,18 +239,6 @@ namespace Anarchy
                 if (count > 0)
                     bld.AppendLine(string.Empty);
                 bld.Append("MOTD: " + hash["motd"].ToString());
-            }
-            if(AsoRacing ^ ASORacing.Enabled)
-            {
-                AsoRacing = ASORacing.Enabled;
-                if(FengGameManagerMKII.FGM.Logic is GameLogic.RacingLogic log)
-                {
-                    log.CustomRestartTime = AsoRacing;
-                    if (AsoRacing)
-                    {
-                        log.RestartTime = 999f;
-                    }
-                }
             }
             oldHash = new Hashtable();
             Dictionary<object, object> clone = (Dictionary<object, object>)hash.Clone();
@@ -356,7 +373,13 @@ namespace Anarchy
                 }
                 if (set.HasChanged)
                 {
+                    bool oldstate = set.State;
                     set.Apply();
+                    if(oldstate != set.State && set.State == false)
+                    {
+                        set.Save();
+                        continue;
+                    }
                     set.WriteToHashtable(hash);
                     if (count > 0)
                         bld.AppendLine(string.Empty);
@@ -384,12 +407,9 @@ namespace Anarchy
 
         public static void SendRPCToPlayer(PhotonPlayer player)
         {
-            if (AnarchyManager.PauseWindow.Active)
-            {
-                FengGameManagerMKII.FGM.BasePV.RPC("pauseRPC", player, new object[] { true });
-            }
-            StringBuilder bld = new StringBuilder();
             Hashtable hash = new Hashtable();
+            string vanillaString = string.Empty;
+            string anarchyString = string.Empty;
             int count = 0;
             for (int i = 0; i < allGameSettings.Count; i++)
             {
@@ -398,11 +418,41 @@ namespace Anarchy
                 {
                     set.WriteToHashtable(hash);
                     count++;
+                    if(!player.AnarchySync && set is AnarchyGameModeSetting setting)
+                    {
+                        if(anarchyString.Length > 0)
+                        {
+                            anarchyString += "\n";
+                        }
+                        anarchyString += setting.ToString(false);
+                    }
+                    if (!player.RCSync)
+                    {
+                        if (vanillaString.Length > 0)
+                        {
+                            vanillaString += "\n";
+                        }
+                        vanillaString += set.ToString(false);
+                    }
                 }
             }
             if (count <= 0)
+            {
+                if(MOTD.Value.Length > 0)
+                {
+                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });
+                }
                 return;
+            }
             FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", player, new object[] { hash });
+            if (!player.RCSync)
+            {
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { vanillaString, string.Empty });
+            }
+            if (!player.AnarchySync)
+            {
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { anarchyString, string.Empty });
+            }
             if (MOTD.Value != string.Empty)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });

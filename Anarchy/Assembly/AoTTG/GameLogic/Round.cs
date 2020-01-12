@@ -1,4 +1,10 @@
-﻿namespace GameLogic
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+
+namespace GameLogic
 {
     internal class Round
     {
@@ -19,7 +25,7 @@
         {
             float time = UnityEngine.Time.deltaTime;
             Time += time;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && (IsWinning || IsLosing))
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && (IsWinning || IsLosing))
             {
                 GameEndCD -= time;
             }

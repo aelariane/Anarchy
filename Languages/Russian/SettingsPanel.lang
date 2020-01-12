@@ -1,0 +1,150 @@
+﻿#Main window
+title:Настройки
+buttons:Основные,Видео,Эффекты,Управление,Мод
+abilityNames:Бомбы
+btnBack:Назад
+
+#General page
+game:<b>Игра</b>
+sensivity:Чувств. мыши[{0}]
+distance:Дист. Камеры[{0}]
+moreDistance:Доп. Дистанция[{0}]
+snapshots:<b>Снапшоты</b>
+snapshotsEnabled:Использовать снапшоты:
+snapshotsShow:Показывать в игру:
+snapshotsDmg:Минимальный урон:
+gameFeed:РК Гейм фид:
+inverty:Инверт. ось Y:
+staticFOV:Статик. поле зрения:
+fovValue:Значение[{0}]
+minimap:Миникарта
+
+others:<b>Остальное</b>
+speedometer:Спидометр:
+speedometerTypes:Скорость,Урон
+bodylean:Наклон тела героя:
+
+audio:<b>Звук</b>
+overallAudio:Общ. громкость[{0}]
+
+#Video page
+
+graphics:<b>Графика</b>
+vsync:Вертикальная синхронизация:
+mipmap:Мипмаппинг:
+texturesQuality:Качество текстур
+texturesLevels:Лучш,Средн,Низк,Очень низк
+quality:Общее кач-во[{0}]
+
+advancedVideo:<b>Продвинутые настройки</b>
+drawDistance:Дист. Прорисовки[{0}]
+occlusion:Occlusion culling:
+aniso:Анизотропная Фильтрация
+anisoLevels:Выкл,Вкл,Принудительно
+antiAliasing:Анти-Алиасинг:
+antiAliasings:Выкл,2x,4x,8x
+bWeight:Кости моделей:
+blendWeights:1,2,4
+lodBias:LOD Bias[{0}]
+maxLOD:Max LOD[{0}]
+shadows:<b>Тени</b>
+useShadows:Использовать тени:
+shadowCascade:Каскады
+shadowCascades:1,2,4
+shadowDist:Дистанция[{0}]
+shadowProjection:Проекция:
+shadowProjections:Близко,Стабильно
+shadowNote:<color=yellow>Тени работают при кач-ве >= 0.17</color>
+
+#Effects page
+effects:<b>Эффекты</b>
+windEffect:Эффект ветра:
+bladeTrails:Следы мечей:
+blur:Размытие:
+tilt:Покачивание камеры:
+
+#Rebinds page
+buttonsRebinds:Человек,Титан,Лошадь,Пушка
+waiting:Ожидание...
+mainRebinds:<b>Основные</b>
+rebinds:<b>Дополнительные</b>
+
+
+#Anarchy page
+modMenu:Стиль,Аним. Имени,Чат и Консоль
+
+#Anarchy/Style
+hudScale:Размер интерфейса[{0}%]:
+guiAutoScale:Использовать автом. размер:
+guiScaleWarning:<color=red><b>Изменения этих полей может <i>СЛОМАТЬ</i> интерфейс.</b></color>
+guiScaleWarning1:<color=yellow>Вы предупреждены.</color>
+windowOffset:<b>Окно & Отступы</b>
+windowHeight:Высота окна:
+windowWidth:Ширина окна:
+windowBottomOffset:Отступ снизу:
+windowSideOffset:Отступ со сторон:
+windowTopOffset:Отступ сверху:
+labelOffset:Отступ лейбла:
+labelOffsetSlider:Отступ лейбла на слайдере:
+bigLabelOffset:"Большой" отступ лейбла:
+Others:<b>Остальное</b>
+fontSize:Размер шрифта:
+height:Высота элемента интерфейса:
+horizontalMargin:Горизонт. Дистанция между элементами:
+verticalMargin:Вертикал. Дистанция между элементами:
+labelSpace:Лейбл-отступ:
+
+styleColors:<b>Конфигурация цветов/стиля</b>
+fontName:Шрифт:
+background:Цвет фона:
+backgroundTransparency:Прозрачность фона:
+normal:Выкл-Норм.
+hover:Выкл-Наведён
+active:Выкл-Нажат
+onNormal:Вкл-Норм.
+onHover:Вкл-Наведён
+onActive:Вкл-Нажат
+vector:Вектор
+color:Фон
+text:Текст
+useVectors:Использовать векторные отступы цветов:
+
+#Anarchy/Chat and Console
+chat:<b>Чат</b>
+chatBack:Фон чата:
+chatBackVal:Прозрачность[{0}]
+chatCount:Кол-во сообщений:
+chatSize:Размер шрифта:
+chatWidth:Ширина чата:
+chatUseCustomSpace:Использовать кастомные отступы
+chatSpaceUp:Верх:
+chatSpaceDown:Низ:
+chatSpaceLeft:Лево:
+chatSpaceRight:Право:
+
+console:<b>Консоль</b>
+consoleBack:Фон чата:
+consoleBackVal:Прозрачность[{0}]
+consoleCount:Кол-во сообщений:
+consoleSize:Размер шрифта:
+consoleWidth:Ширина консоли:
+consoleUseCustomSpace:Использовать кастомные отступы
+consoleSpaceUp:Верх:
+consoleSpaceDown:Низ:
+consoleSpaceLeft:Лево:
+consoleSpaceRight:Право:
+
+#Abilities
+
+#Abilities/Bombs
+bombStats:<b>Статы бомбы/b>
+bombRad:Радиус {0}:
+bombCd:Перезарядка {0}:
+bombSpeed:Скорость {0}:
+bombRange:Дальность {0}:
+bombName:Имя бомбы:
+bombColor:<b>Цвет бомбы</b>
+bombColorR:Красный цвет:
+bombColorG:Зелёный цвет:
+bombColorB:Синий цвет:
+bombColorA:Прозрачность:

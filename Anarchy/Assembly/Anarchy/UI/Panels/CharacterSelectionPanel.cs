@@ -120,7 +120,7 @@ namespace Anarchy.UI
             }
             else
             {
-                FengGameManagerMKII.FGM.SpawnPlayerAt(character, "playerRespawn2");
+                FengGameManagerMKII.FGM.SpawnPlayerAt(character, FengGameManagerMKII.Level.Name.Contains("Custom") ? string.Empty : "playerRespawn2");
             }
             IN_GAME_MAIN_CAMERA.usingTitan = false;
             IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();

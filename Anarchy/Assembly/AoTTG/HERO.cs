@@ -300,7 +300,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     }
 
     private void bombInit()
-    {   
+    {
         this.skillCDDuration = this.skillCDLast;
         skillIDHUD = skillID;
         if (GameModes.BombMode.Enabled)
@@ -1006,13 +1006,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                         baseR.AddForce(-baseR.velocity * 2f, ForceMode.Acceleration);
                     }
                 }
-                if (!Settings.BodyLean.Value)
-                {
-                    this.facingDirection = Mathf.Atan2(vector3.x, vector3.z) * 57.29578f;
-                    Quaternion rotation = Quaternion.Euler(0f, this.facingDirection, 0f);
-                    this.baseT.rotation = rotation;
-                    this.baseR.rotation = rotation;
-                }
             }
             this.launchElapsedTimeL += Time.deltaTime;
             if (this.QHold && this.currentGas > 0f)
@@ -1056,13 +1049,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     {
                         baseR.AddForce(-baseR.velocity * 2f, ForceMode.Acceleration);
                     }
-                }
-                if (!Settings.BodyLean.Value)
-                {
-                    this.facingDirection = Mathf.Atan2(vector4.x, vector4.z) * 57.29578f;
-                    Quaternion rotation = Quaternion.Euler(0f, this.facingDirection, 0f);
-                    this.baseT.rotation = rotation;
-                    this.baseR.rotation = rotation;
                 }
             }
             this.launchElapsedTimeR += Time.deltaTime;
@@ -1458,7 +1444,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         if (flag2 || flag3)
         {
             this.baseR.AddForce(-this.baseR.velocity, ForceMode.VelocityChange);
-            reelAxis = Input.GetAxis("Mouse ScrollWheel") * 5555f;
             if (InputManager.IsInputRebindHolding((int)InputRebinds.ReelIn))
             {
                 reelAxis = -1f;
@@ -1467,9 +1452,12 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             {
                 reelAxis = 1f;
             }
+            else
+            {
+                reelAxis = Input.GetAxis("Mouse ScrollWheel") * 5555f;
+            }
             float idk = 1.53938f * (1f + Mathf.Clamp(reelAxis, -0.8f, 0.8f));
             reelAxis = 0f;
-            //needCheckReelAxis = true;
             this.baseR.velocity = Vector3.RotateTowards(current, this.baseR.velocity, idk, idk).normalized * (this.currentSpeed + 0.1f);
         }
         if (this.State == HeroState.Attack && (this.attackAnimation == "attack5" || this.attackAnimation == "special_petra") && baseA[this.attackAnimation].normalizedTime > 0.4f && !this.attackMove)
@@ -1576,10 +1564,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             }
         }
         this.setHookedPplDirection();
-        if (Settings.BodyLean.Value)
-        {
-            this.bodyLean();
-        }
+        this.bodyLean();
         if (!baseA.IsPlaying("attack3_2") && !baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra"))
         {
             baseR.rotation = Quaternion.Lerp(baseGT.rotation, this.targetRotation, 0.02f * 6f);
@@ -2663,7 +2648,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 GetComponent<SmoothSyncMovement>().PhotonCamera = true;
                 BasePV.RPC("SetMyPhotonCamera", PhotonTargets.OthersBuffered, new object[]
                 {
-                    Settings.CameraDistance.Value + Settings.CameraDistanceMore.Value + 0.3f
+                    Settings.CameraDistance.Value + 0.3f
                 });
             }
             spawned = true;
@@ -3306,25 +3291,22 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             this.falseAttack();
             this.idle();
-            if (Settings.BodyLean.Value)
+            if (this.Gunner)
             {
-                if (this.Gunner)
-                {
-                    this.crossFade("AHSS_hook_forward_both", 0.1f);
-                }
-                else if (left && !this.isRightHandHooked)
-                {
-                    this.crossFade("air_hook_l_just", 0.1f);
-                }
-                else if (!left && !this.isLeftHandHooked)
-                {
-                    this.crossFade("air_hook_r_just", 0.1f);
-                }
-                else
-                {
-                    this.crossFade("dash", 0.1f);
-                    baseA["dash"].time = 0f;
-                }
+                this.crossFade("AHSS_hook_forward_both", 0.1f);
+            }
+            else if (left && !this.isRightHandHooked)
+            {
+                this.crossFade("air_hook_l_just", 0.1f);
+            }
+            else if (!left && !this.isLeftHandHooked)
+            {
+                this.crossFade("air_hook_r_just", 0.1f);
+            }
+            else
+            {
+                this.crossFade("dash", 0.1f);
+                baseA["dash"].time = 0f;
             }
         }
         if (left)
@@ -4251,7 +4233,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                                     break;
 
                                 default:
-                                    if (Settings.BodyLean.Value && this.needLean)
+                                    if (this.needLean)
                                     {
                                         if (this.leanLeft)
                                         {
@@ -4273,7 +4255,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     }
                     else if (InputManager.IsInputDown[InputCode.Attack0])
                     {
-                        if (Settings.BodyLean.Value && this.needLean)
+                        if (this.needLean)
                         {
                             if (InputManager.IsInput[InputCode.Left])
                             {
@@ -5008,6 +4990,62 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.showSkillCD();
         this.ShowFlareCD();
         this.ShowAimUI();
+        float checkAxis = Input.GetAxis("Mouse ScrollWheel");
+        if (checkAxis != 0f)
+        {
+            bool flag2 = false;
+            bool flag3 = false;
+            if (this.isLaunchLeft && this.bulletLeft != null && bulletLeft.IsHooked())
+            {
+                this.isLeftHandHooked = true;
+                Vector3 vector5 = bulletLeft.baseT.position - baseT.position;
+                vector5.Normalize();
+                vector5 *= 10f;
+                if (!this.isLaunchRight)
+                {
+                    vector5 *= 2f;
+                }
+                if (Vector3.Angle(baseR.velocity, vector5) > 90f && InputManager.IsInput[InputCode.Gas])
+                {
+                    flag2 = true;
+                }
+            }
+            if (this.isLaunchRight && this.bulletRight != null && this.bulletRight.IsHooked())
+            {
+                this.isRightHandHooked = true;
+                Vector3 vector6 = bulletRight.baseT.position - this.baseT.position;
+                vector6.Normalize();
+                vector6 *= 10f;
+                if (!this.isLaunchLeft)
+                {
+                    vector6 *= 2f;
+                }
+                if (Vector3.Angle(baseR.velocity, vector6) > 90f && InputManager.IsInput[InputCode.Gas])
+                {
+                    flag3 = true;
+                }
+            }
+            Vector3 current = Vectors.zero;
+            if (flag2 && flag3)
+            {
+                current = (this.bulletRight.baseT.position + this.bulletLeft.baseT.position) * 0.5f - this.baseT.position;
+            }
+            else if (flag2 && !flag3)
+            {
+                current = this.bulletLeft.baseT.position - this.baseT.position;
+            }
+            else if (flag3 && !flag2)
+            {
+                current = this.bulletRight.baseT.position - this.baseT.position;
+            }
+            if (flag2 || flag3)
+            {
+                this.baseR.AddForce(-this.baseR.velocity, ForceMode.VelocityChange);
+                float idk = 1.53938f * (1f + Mathf.Clamp(checkAxis > 0 ? 1f : -1f, -0.8f, 0.8f));
+                reelAxis = 0f;
+                this.baseR.velocity = Vector3.RotateTowards(current, this.baseR.velocity, idk, idk).normalized * (this.currentSpeed + 0.1f);
+            }
+        }
     }
 
 

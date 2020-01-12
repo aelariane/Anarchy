@@ -1,0 +1,47 @@
+﻿title:Profil
+profile:Profil:
+profileSel:<b>Séléction du profil</b>
+allProfiles:<b>Tout les profils</b>
+btnAdd:Créer un nouveau profil
+btnCopy:Copier depuis séléction
+btnRemove:Supprimer
+btnAdvanced:Paramètres avancés
+btnBack:Retour
+btnPreview:Prévisualisation
+btnToMain:Paramètres principaux
+mainSettings:<b>Paramètres principaux</b>
+name:Nom:
+guildName:Nom de guilde:
+guildName2:Nom de guilde 2:
+guildName3:Nom de guilde 3:
+chatName:Nom dans le chat:
+mainColor:Couleur principale:
+subColor:Couleur secondaire:
+titans:<b>Nom des titans</b>
+titan:Titan:
+aberrant:Aberrant:
+jumper:Jumper:
+crawler:Crawler:
+punk:Punk:
+preview:Preview
+note:<color=yellow>//Note: Tu peux avoir <b>15</b> profils.</color>
+killTriggers:<b>Déclenchement des kills</b>
+akinaTrigger:Akina:
+forestTrigger:Forest Lava:
+racingTrigger:RC Racing:
+chatFormat:Format du chat:
+chatFormatSend:Format d'envoi du chat
+chatPMFormat:Format des MP:
+chatPMFormatSend:Format d'envoi des MP
+suicide:Suicide:
+diename:Mort:
+dieStyle:Format mort:
+raceFinish:Nom fini course:
+restart:Message restart
+mcswitch:Message quand le MC change
+wave:Format des vagues:
+advancedHead:<b>Paramètres avancés</b>
+chatSettings:<b>Paramètres chat</b>
+others:<b>Autres paramètres</b>
+previews:Principaux,Avancés
+previewColors:<b><color=#{0}>MainColor</color> et <color=#{1}>SubColor</color></b>
