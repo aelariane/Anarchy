@@ -86,7 +86,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void ChatLocalized(string file, string key, string[] args, PhotonMessageInfo info)
     {
-        if (!info.Sender.Anarchy)
+        if (!info.Sender.AnarchySync)
         {
             Log.AddLine("notAnarchyUser", MsgType.Error, "RPC", nameof(ChatLocalized), info.Sender.ID.ToString());
             return;
@@ -189,6 +189,36 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         CustomLevel.LoadSkin(link, info);
     }
 
+    //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
+    //Ru: Не трогать это. НИКОГДА. Во избежание ошибок с вашей стороны и стороны других.
+    [RPC]
+    private void SetAnarchyMod(bool isCustom, bool useSync, string customName, string version, PhotonMessageInfo info)
+    {
+        if (info.Sender.AnarchySync)
+        {
+            if (isCustom)
+            {
+                string customNameShow = customName == string.Empty ? "Cus" : customName;
+                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
+                playerList.Update();
+                if (!AnarchyManager.CustomVersion)
+                {
+                    info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
+                }
+                else
+                {
+                    info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
+                }
+                return;
+            }
+            if(version == AnarchyManager.AnarchyVersion.ToString())
+            {
+                return;
+            }
+            info.Sender.AnarchySync = false;
+        }
+    }
+
 
     [RPC]
     private void customlevelRPC(string[] content, PhotonMessageInfo info = null)
@@ -259,10 +289,11 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             checkID *= -1;
             if(checkID == info.Sender.ID)
             {
-                if (!info.Sender.Anarchy)
+                if (!info.Sender.AnarchySync)
                 {
-                    info.Sender.Anarchy = true;
+                    info.Sender.AnarchySync = true;
                     playerList.Update();
+                    PhotonNetwork.SendChekInfo(info.Sender);
                 }
             }
         }
@@ -1128,7 +1159,8 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         if (ID < 0)
         {
-            //Newest cyan detection
+            string ver = ID.ToString().Replace("-", "");
+            info.Sender.ModName = $"[00FFFF][Cyan[CCCCDD]({ver[0]}.{ver[1]}.{ver[2]})[-]]";
         }
     }
 
