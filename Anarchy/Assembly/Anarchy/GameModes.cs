@@ -181,6 +181,13 @@ namespace Anarchy
             }
         }
 
+        public static void EndlessMode(int ID)
+        {
+            if (!EndlessRespawn.Enabled)
+                return;
+            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
+        }
+
         public static void ForceChange()
         {
             foreach(GameModeSetting set in allGameSettings)
@@ -189,18 +196,11 @@ namespace Anarchy
             }
         }
 
-        public static void EndlessMode(int ID)
-        {
-            if (!EndlessRespawn.Enabled)
-                return;
-            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
-        }
-
         public static string GetGameModesInfo()
         {
             StringBuilder bld = new StringBuilder();
             int count = 0;
-            foreach(GameModeSetting set in allGameSettings)
+            foreach (GameModeSetting set in allGameSettings)
             {
                 if (set.Enabled)
                 {
@@ -208,12 +208,11 @@ namespace Anarchy
                     count++;
                 }
             }
-            if(count == 0)
+            if (count == 0)
             {
                 return string.Empty;
             }
             return bld.ToString();
-            
         }
 
         public static void HandleRPC(Hashtable hash)
@@ -406,21 +405,8 @@ namespace Anarchy
             }
         }
 
-        public static System.Collections.IEnumerator SendRPCToPlayer(PhotonPlayer player)
+        public static void SendRPCToPlayer(PhotonPlayer player)
         {
-            if (AnarchyManager.PauseWindow.Active)
-            {
-                FengGameManagerMKII.FGM.BasePV.RPC("pauseRPC", player, new object[] { true });
-            }
-            UnityEngine.WaitForSeconds awaiter = new UnityEngine.WaitForSeconds(0.5f);
-            yield return awaiter;
-            if (player.Properties[PhotonPlayerProperty.name] == null)
-            {
-                while (player.Properties[PhotonPlayerProperty.name] == null)
-                {
-                    yield return awaiter;
-                }
-            }
             Hashtable hash = new Hashtable();
             string vanillaString = string.Empty;
             string anarchyString = string.Empty;
@@ -456,7 +442,7 @@ namespace Anarchy
                 {
                     FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });
                 }
-                yield break;
+                return;
             }
             FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", player, new object[] { hash });
             if (!player.RCSync)
@@ -471,7 +457,6 @@ namespace Anarchy
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });
             }
-            yield break;
         }
     }
 }

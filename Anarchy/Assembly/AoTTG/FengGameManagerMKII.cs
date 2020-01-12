@@ -24,7 +24,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     private IN_GAME_MAIN_CAMERA mainCamera;
     public string myLastHero;
     private string myLastRespawnTag = "";
-    private PlayerList playerList;
+    internal PlayerList playerList;
     private RoomInformation roomInformation = new RoomInformation();
     private ArrayList racingResult;
     internal List<TITAN> titans;
@@ -189,36 +189,6 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         CustomLevel.LoadSkin(link, info);
     }
 
-    //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
-    //Ru: Не трогать это. НИКОГДА. Во избежание ошибок с вашей стороны и стороны других.
-    [RPC]
-    private void SetAnarchyMod(bool isCustom, bool useSync, string customName, string version, PhotonMessageInfo info)
-    {
-        if (info.Sender.AnarchySync)
-        {
-            if (isCustom)
-            {
-                string customNameShow = customName == string.Empty ? "Cus" : customName;
-                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
-                playerList.Update();
-                if (!AnarchyManager.CustomVersion)
-                {
-                    info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
-                }
-                else
-                {
-                    info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
-                }
-                return;
-            }
-            if(version == AnarchyManager.AnarchyVersion.ToString())
-            {
-                return;
-            }
-            info.Sender.AnarchySync = false;
-        }
-    }
-
 
     [RPC]
     private void customlevelRPC(string[] content, PhotonMessageInfo info = null)
@@ -287,7 +257,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             int checkID = info.TimeInt - 1000000;
             checkID *= -1;
-            if(checkID == info.Sender.ID)
+            if (checkID == info.Sender.ID)
             {
                 if (!info.Sender.AnarchySync)
                 {
@@ -822,6 +792,37 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             PhotonNetwork.LoadLevel(FengGameManagerMKII.Level.MapName);
         }
     }
+
+    //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
+    //Ru: Не трогать это. НИКОГДА. Во избежание ошибок с вашей стороны и стороны других.
+    [RPC]
+    private void SetAnarchyMod(bool isCustom, bool useSync, string customName, string version, PhotonMessageInfo info)
+    {
+        if (info.Sender.AnarchySync)
+        {
+            if (isCustom)
+            {
+                string customNameShow = customName == string.Empty ? "Cus" : customName;
+                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
+                playerList.Update();
+                if (!AnarchyManager.CustomVersion)
+                {
+                    info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
+                }
+                else
+                {
+                    info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
+                }
+                return;
+            }
+            if (version == AnarchyManager.AnarchyVersion.ToString())
+            {
+                return;
+            }
+            info.Sender.AnarchySync = false;
+        }
+    }
+
 
     [RPC]
     private void setMasterRC()
@@ -1538,15 +1539,33 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void OnPhotonPlayerConnected(AOTEventArgs args)
     {
-        Log.AddLine("playerConnected", MsgType.Info, args.Player.ID.ToString(), args.Player.UIName.ToHTMLFormat());
+        StartCoroutine(OnPhotonPlayerConnectedE(args.Player));
+    }
+
+    private IEnumerator OnPhotonPlayerConnectedE(PhotonPlayer player)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (AnarchyManager.PauseWindow.Active)
+            {
+                BasePV.RPC("pauseRPC", player, new object[] { true });
+            }
+            if (Level.Name.StartsWith("Custom"))
+            {
+                StartCoroutine(CustomLevel.SendRPCToPlayer(player));
+            }
+        }
+        WaitForSeconds awaiter = new WaitForSeconds(0.25f);
+        yield return awaiter;
+        if (player.Properties[PhotonPlayerProperty.name] == null)
+        {
+            yield return awaiter;
+        }
+        Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
         playerList?.Update();
         if (PhotonNetwork.IsMasterClient)
         {
-            if (Level.Name.StartsWith("Custom"))
-            {
-                StartCoroutine(CustomLevel.SendRPCToPlayer(args.Player));
-            }
-            StartCoroutine(GameModes.SendRPCToPlayer(args.Player));
+            GameModes.SendRPCToPlayer(player);
         }
     }
 
