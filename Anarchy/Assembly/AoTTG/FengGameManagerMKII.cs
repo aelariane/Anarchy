@@ -803,8 +803,6 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             if (isCustom)
             {
                 string customNameShow = customName == string.Empty ? "Cus" : customName;
-                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
-                playerList.Update();
                 if (!AnarchyManager.CustomVersion)
                 {
                     info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
@@ -813,6 +811,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 {
                     info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
                 }
+                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
                 return;
             }
             if (version == AnarchyManager.AnarchyVersion.ToString())
