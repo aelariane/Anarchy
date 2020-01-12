@@ -19,6 +19,9 @@ errRoom:<color=red>Erreur: Commande pour le serveur <color=yellow>"{0}"</color> 
 roomTime:<color=#$maincolor$>{0}</color> <color=#$subcolor$>secondes ajoutés au temps</color>
 roomMax:<color=#$maincolor$>Nombre de joueurs maximum mis à <color=#$subcolor$>{0}</color></color>
 
+#Restart
+restartMessage:<color=#$maincolor$>Masterclient a redémarré la partie</color>
+
 #Pause
 pauseTrue:<color=#$maincolor$>Le Masterclient a mis la partie en pause</color>
 pauseFalse:<color=#$maincolor$>Le Masterclient a enlevé la pause</color>

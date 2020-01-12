@@ -75,3 +75,17 @@ deadlycannonsInfoDisabled:<color=#$maincolor$>Mode cannons mortels <color=#$dCol
 
 asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>activé</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>désactivé</color></color>
+
+#Racing
+startTimeInfoEnabled:<color=#$maincolor$>Racing custom start time set to <color=#$subcolor$>{0}</color></color> 
+startTimeInfoDisabled:<color=#$maincolor$>Racing custom start time <color=#$dColor$>disabled</color></color> 
+
+restartOnFinishersInfoEnabled:<color=#$maincolor$>Game will restart after <color=#$subcolor$>{0}</color> players finish.</color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Restart on finishers count mode <color=#$dColor$>disabled</color></color>
+
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Racing time limit <color=#$eColor$>enabled</color> (<color=#$subcolor$>{0}</color>)</color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Racing time limit <color=#$dColor$>disabled</color></color>
+
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Racing restart time set to <color=#$subcolor$>{0}</color></color> 
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Racing restart time <color=#$dColor$>disabled</color></color> 
+

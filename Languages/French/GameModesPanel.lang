@@ -73,3 +73,15 @@ horseState:Autorisé les chevaux:
 motd:Message du jour
 
 asoracingState:ASO(Sans fin) racing:
+
+startTimeState:Début du temps custom utilisé :
+startTimeInt0:Temps avant que la race commence 
+
+restartOnFinishersState:Autoredémarrage de la game quand X personnes ont fini:
+restartOnFinishersInt0:Finishers to restart:
+
+racingTimeLimitState:Autoredémarrage de la game après le temps limité:
+racingTimeLimitInt0:Temps limité:
+
+racingRestartTimeState:Changement du temps de restart:
+racingRestartTimeInt0:Temps pour redémarrer:
