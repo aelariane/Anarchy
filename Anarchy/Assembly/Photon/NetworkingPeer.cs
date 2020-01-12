@@ -2158,7 +2158,15 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         }
         if (!curr.CheckData(photonEvent, sender, out string reason))
         {
-            Antis.Kick(sender, true, $"{Log.GetString("eventName", curr.Code.ToString())} {reason}");
+            if (PhotonNetwork.IsMasterClient)
+            {
+
+                Antis.Kick(sender, true, $"{Log.GetString("eventName", curr.Code.ToString())} {reason}");
+            }
+            else
+            {
+                Log.AddLineRaw($"{Log.GetString("eventName", curr.Code.ToString())} {reason} (ID: {sender.ID})", MsgType.Error);
+            }
             return;
         }
         if (!curr.Handle())
