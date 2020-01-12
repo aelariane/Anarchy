@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="Anarchy\Commands\Chat\ASORacingCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\RulesCommand.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
     <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
