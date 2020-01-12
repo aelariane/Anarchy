@@ -15,6 +15,25 @@ namespace Anarchy.Network
             "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-.userapi.com", "images.ourclipart.com", "pictureshack.ru"
         };
 
+        public static void Kick(PhotonPlayer player, bool ban, string reason = "")
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                return;
+            }
+            if(reason != string.Empty)
+            {
+                //TODO: Make banlist and localize
+                UI.Chat.Add($"Player {player.ID} autobanned. Reason: {reason}");
+            }
+            var data = new Hashtable();
+            data[(byte)0] = "hook";
+            data[(byte)6] = PhotonNetwork.networkingPeer.ServerTimeInMilliSeconds;
+            data[(byte)7] = 2;
+            PhotonNetwork.networkingPeer.OpRaiseEvent(202, data, true, new RaiseEventOptions() { TargetActors = new int[] { player.ID } });
+            PhotonNetwork.networkingPeer.OpRaiseEvent(203, null, true, new RaiseEventOptions() { TargetActors = new int[] { player.ID } });
+        }
+
         internal static bool IsValidURL(string url, out Uri uri)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out uri) && (uri != null && uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
@@ -46,12 +65,10 @@ namespace Anarchy.Network
                 }
                 if (!IsValidURL(url, out uri))
                 {
-                    Log.AddLine("invalidSkinUrl", MsgType.Error, ID.ToString(), url);
                     urls[i] = string.Empty;
                 }
                 else if (!ValidLinks.Any(uri.Host.Contains))
                 {
-                    Log.AddLine("invalidSkinLink", MsgType.Error, ID.ToString(), url);
                     urls[i] = string.Empty;
                 }
             }
