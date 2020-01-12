@@ -300,7 +300,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     }
 
     private void bombInit()
-    {   
+    {
         this.skillCDDuration = this.skillCDLast;
         skillIDHUD = skillID;
         if (GameModes.BombMode.Enabled)
@@ -4991,7 +4991,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.ShowFlareCD();
         this.ShowAimUI();
         float checkAxis = Input.GetAxis("Mouse ScrollWheel");
-        if(checkAxis != 0f)
+        if (checkAxis != 0f)
         {
             bool flag2 = false;
             bool flag3 = false;
