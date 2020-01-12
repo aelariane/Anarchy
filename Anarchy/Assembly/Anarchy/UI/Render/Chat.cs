@@ -179,7 +179,7 @@ namespace Anarchy.UI
         public static void SendLocalizedText(PhotonPlayer target, string file, string key, string[] args)
         {
             string[] sendArgs = args ?? new string[0];
-            if (!target.Anarchy)
+            if (!target.AnarchySync)
             {
                 Localization.Locale loc;
                 bool needClose = false;
@@ -217,7 +217,7 @@ namespace Anarchy.UI
             var targets = new List<PhotonPlayer>();
             foreach (PhotonPlayer player in PhotonNetwork.playerList)
             {
-                if (!player.Anarchy)
+                if (!player.AnarchySync)
                 {
                     targets.Add(player);
                 }
