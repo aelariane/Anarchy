@@ -1006,13 +1006,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                         baseR.AddForce(-baseR.velocity * 2f, ForceMode.Acceleration);
                     }
                 }
-                if (!Settings.BodyLean.Value)
-                {
-                    this.facingDirection = Mathf.Atan2(vector3.x, vector3.z) * 57.29578f;
-                    Quaternion rotation = Quaternion.Euler(0f, this.facingDirection, 0f);
-                    this.baseT.rotation = rotation;
-                    this.baseR.rotation = rotation;
-                }
             }
             this.launchElapsedTimeL += Time.deltaTime;
             if (this.QHold && this.currentGas > 0f)
@@ -1056,13 +1049,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     {
                         baseR.AddForce(-baseR.velocity * 2f, ForceMode.Acceleration);
                     }
-                }
-                if (!Settings.BodyLean.Value)
-                {
-                    this.facingDirection = Mathf.Atan2(vector4.x, vector4.z) * 57.29578f;
-                    Quaternion rotation = Quaternion.Euler(0f, this.facingDirection, 0f);
-                    this.baseT.rotation = rotation;
-                    this.baseR.rotation = rotation;
                 }
             }
             this.launchElapsedTimeR += Time.deltaTime;
@@ -1578,10 +1564,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             }
         }
         this.setHookedPplDirection();
-        if (Settings.BodyLean.Value)
-        {
-            this.bodyLean();
-        }
+        this.bodyLean();
         if (!baseA.IsPlaying("attack3_2") && !baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra"))
         {
             baseR.rotation = Quaternion.Lerp(baseGT.rotation, this.targetRotation, 0.02f * 6f);
@@ -2665,7 +2648,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 GetComponent<SmoothSyncMovement>().PhotonCamera = true;
                 BasePV.RPC("SetMyPhotonCamera", PhotonTargets.OthersBuffered, new object[]
                 {
-                    Settings.CameraDistance.Value + Settings.CameraDistanceMore.Value + 0.3f
+                    Settings.CameraDistance.Value + 0.3f
                 });
             }
             spawned = true;
@@ -3308,25 +3291,22 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             this.falseAttack();
             this.idle();
-            if (Settings.BodyLean.Value)
+            if (this.Gunner)
             {
-                if (this.Gunner)
-                {
-                    this.crossFade("AHSS_hook_forward_both", 0.1f);
-                }
-                else if (left && !this.isRightHandHooked)
-                {
-                    this.crossFade("air_hook_l_just", 0.1f);
-                }
-                else if (!left && !this.isLeftHandHooked)
-                {
-                    this.crossFade("air_hook_r_just", 0.1f);
-                }
-                else
-                {
-                    this.crossFade("dash", 0.1f);
-                    baseA["dash"].time = 0f;
-                }
+                this.crossFade("AHSS_hook_forward_both", 0.1f);
+            }
+            else if (left && !this.isRightHandHooked)
+            {
+                this.crossFade("air_hook_l_just", 0.1f);
+            }
+            else if (!left && !this.isLeftHandHooked)
+            {
+                this.crossFade("air_hook_r_just", 0.1f);
+            }
+            else
+            {
+                this.crossFade("dash", 0.1f);
+                baseA["dash"].time = 0f;
             }
         }
         if (left)
@@ -4253,7 +4233,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                                     break;
 
                                 default:
-                                    if (Settings.BodyLean.Value && this.needLean)
+                                    if (this.needLean)
                                     {
                                         if (this.leanLeft)
                                         {
@@ -4275,7 +4255,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     }
                     else if (InputManager.IsInputDown[InputCode.Attack0])
                     {
-                        if (Settings.BodyLean.Value && this.needLean)
+                        if (this.needLean)
                         {
                             if (InputManager.IsInput[InputCode.Left])
                             {

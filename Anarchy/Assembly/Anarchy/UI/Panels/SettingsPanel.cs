@@ -248,7 +248,6 @@ namespace Anarchy.UI
             ToggleButton(left, Settings.InvertY, locale["inverty"], true);
             HorizontalSlider(left, Settings.MouseSensivity, locale.Format("sensivity", (Settings.MouseSensivity.Value * 100f).ToString("F0") + "%"), 0.01f, 1f, Style.LabelOffsetSlider, true);
             HorizontalSlider(left, Settings.CameraDistance, locale.Format("distance", Settings.CameraDistance.Value.ToString("F2")), Style.LabelOffsetSlider, true);
-            HorizontalSlider(left, Settings.CameraDistanceMore, locale.Format("moreDistance", Settings.CameraDistanceMore.Value.ToString("F2")), Style.LabelOffsetSlider, true);
             ToggleButton(left, Settings.StaticFOVEnabled, locale["staticFOV"], true);
             if (Settings.StaticFOVEnabled.Value)
             {
@@ -277,7 +276,6 @@ namespace Anarchy.UI
             {
                 SelectionGrid(right, Settings.SpeedometerType, locale.GetArray("speedometerTypes"), 2, true);
             }
-            ToggleButton(right, Settings.BodyLean, locale["bodylean"], true);
 
         }
 
