@@ -196,6 +196,26 @@ namespace Anarchy
             FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
         }
 
+        public static string GetGameModesInfo()
+        {
+            StringBuilder bld = new StringBuilder();
+            int count = 0;
+            foreach(GameModeSetting set in allGameSettings)
+            {
+                if (set.Enabled)
+                {
+                    bld.Append((count > 0 ? "\n" : string.Empty) + set.ToString(true));
+                    count++;
+                }
+            }
+            if(count == 0)
+            {
+                return string.Empty;
+            }
+            return bld.ToString();
+            
+        }
+
         public static void HandleRPC(Hashtable hash)
         {
             if (oldHash.Equals(hash))
@@ -412,7 +432,7 @@ namespace Anarchy
                 {
                     set.WriteToHashtable(hash);
                     count++;
-                    if(!player.Anarchy && set is AnarchyGameModeSetting setting)
+                    if(!player.AnarchySync && set is AnarchyGameModeSetting setting)
                     {
                         if(anarchyString.Length > 0)
                         {
@@ -443,7 +463,7 @@ namespace Anarchy
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { vanillaString, string.Empty });
             }
-            if (!player.Anarchy)
+            if (!player.AnarchySync)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { anarchyString, string.Empty });
             }
