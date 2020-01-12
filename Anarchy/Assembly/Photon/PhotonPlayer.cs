@@ -9,7 +9,7 @@ public class PhotonPlayer
     private static List<PhotonPlayer> vanillaUsersList = new List<PhotonPlayer>();
     private static List<PhotonPlayer> notAnarchyUsersList = new List<PhotonPlayer>();
 
-    private static PhotonPlayer[] anarchyUsersArray= new PhotonPlayer[0];
+    private static PhotonPlayer[] anarchyUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] rcUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
@@ -19,8 +19,24 @@ public class PhotonPlayer
     public readonly int ID;
     public readonly bool IsLocal;
     private bool rcSync = false;
+    private string modName = "[CCCCCC][V]";
 
-    public string ModName { get; set; } = "[CCCCCC][V]";
+    public string ModName
+    {
+        get => modName;
+        set
+        {
+            if(value == null)
+            {
+                return;
+            }
+            modName = value;
+            if(FengGameManagerMKII.FGM && FengGameManagerMKII.FGM.playerList != null)
+            {
+                FengGameManagerMKII.FGM.playerList.Update();
+            }
+        }
+    }
 
     public bool AnarchySync
     {
@@ -51,7 +67,7 @@ public class PhotonPlayer
                 }
                 ModName = "[00BBCC][A]";
             }
-            else if(anarchySync && !value && !IsLocal)
+            else if (anarchySync && !value && !IsLocal)
             {
                 anarchySync = false;
                 if (anarchyUsersList.Contains(this))
@@ -118,8 +134,9 @@ public class PhotonPlayer
         {
             AnarchySync = true;
             HasVoice = true;
-            if (Anarchy.AnarchyManager.CustomVersion)
-            {                ModName = $"[00BBCC][A[CCCCDD]({(Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
+            if (global::Anarchy.AnarchyManager.CustomVersion)
+            {
+                ModName = $"[00BBCC][A[CCCCDD]({(global::Anarchy.AnarchyManager.CustomName != string.Empty ? global::Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
             }
         }
     }
@@ -141,9 +158,9 @@ public class PhotonPlayer
         {
             AnarchySync = true;
             HasVoice = true;
-            if (Anarchy.AnarchyManager.CustomVersion)
+            if (global::Anarchy.AnarchyManager.CustomVersion)
             {
-                ModName = $"[00BBCC][A[CCCCDD]({(Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
+                ModName = $"[00BBCC][A[CCCCDD]({(global::Anarchy.AnarchyManager.CustomName != string.Empty ? global::Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
             }
         }
     }
@@ -179,11 +196,11 @@ public class PhotonPlayer
     public static int[] GetAnarchyUsersID()
     {
         int[] result = new int[anarchyUsersArray.Length];
-        if(result.Length <= 0)
+        if (result.Length <= 0)
         {
             return result;
         }
-        for(int i = 0; i < result.Length; i++)
+        for (int i = 0; i < result.Length; i++)
         {
             result[i] = anarchyUsersArray[i].ID;
         }
