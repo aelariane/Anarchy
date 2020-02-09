@@ -5,6 +5,13 @@ welcome:<color=#$maincolor$>[Добро пожаловать]</color>
 falseRestart:Ложный рестарт
 restartGameByClient:restartGameByClient RPC
 
+
+changedName: <color=#$maincolor$><color=#$subcolor$>{0}</color> tried to change your name to (<color=#$subcolor$>{1}</color>)</color>
+invalidProperty:<color=#$maincolor$>Invalid property <color=#$subcolor$>"{0}"</color> by <color=#$subcolor$>{1}</color></color>
+instantiateSpam:<color=#$maincolor$>Spammed object <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
+rpcSpam:<color=#$maincolor$>Spammed RPC <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
+eventSpam:<color=#$maincolor$>Spammed event <color=#$subcolor$>{0}</color> by ID {1} <color=red>x{2}</color></color>
+
 #Player related
 playerConnected:<color=#$maincolor$>Игрок [{0}] {1} подключился</color>
 playerLeft:<color=#$maincolor$>Игрок [{0}] {1} вышел</color>

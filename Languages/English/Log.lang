@@ -5,6 +5,12 @@ welcome:<color=#$maincolor$>[Welcome]</color>
 falseRestart:False restart
 restartGameByClient:restartGameByClient RPC
 
+changedName: <color=#$maincolor$><color=#$subcolor$>{0}</color> tried to change your name to (<color=#$subcolor$>{1}</color>)</color>
+invalidProperty:<color=#$maincolor$>Invalid property <color=#$subcolor$>"{0}"</color> by <color=#$subcolor$>{1}</color></color>
+instantiateSpam:<color=#$maincolor$>Spammed object <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
+rpcSpam:<color=#$maincolor$>Spammed RPC <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
+eventSpam:<color=#$maincolor$>Spammed event <color=#$subcolor$>{0}</color> by ID {1} <color=red>x{2}</color></color>
+
 #Player related
 playerConnected:<color=#$maincolor$>[<color=#$subcolor$>{0}</color>) <color=#$subcolor$>{1}</color> connected]</color>
 playerLeft:<color=#$maincolor$>[<color=#$subcolor$>{0}</color>) <color=#$subcolor$>{1}</color> disconnected]</color>
@@ -15,8 +21,8 @@ banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> banned 
 
 #RPC
 RPCerror:<color=#$maincolor$>Invalid RPC[<color=#$subcolor>{1}</color>] by ID: <color=#$subcolor$>{0}</color></color>
-invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL(<color=#$subcolor$>{1}</color>)</color>
-invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link(<color=#$subcolor$>{1}</color>)</color>
+invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL</color>
+invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link</color>
 
 #Events errors
 eventName:<color=#$maincolor$>Event <color=#$subcolor$>{0}</color>:</color>
