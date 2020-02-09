@@ -8,6 +8,7 @@ namespace Anarchy.UI
         private const int MiscPage = 2;
         private const int PvPPage = 1;
         private const int TitansPage = 0;
+        private const int RacingPage = 3;
 
         private SmartRect left;
         private Rect pageRect;
@@ -54,17 +55,13 @@ namespace Anarchy.UI
             right.MoveY();
             GameModes.MinimapDisable.Draw(right, locale);
             right.MoveY();
+            GameModes.NoGuest.Draw(right, locale);
+            right.MoveY();
+            GameModes.AntiRevive.Draw(right, locale);
+            right.MoveY();
             GameModes.AllowHorses.Draw(right, locale);
             right.MoveY();
-            GameModes.ASORacing.Draw(right, locale);
-            right.MoveY();
-            GameModes.RacingStartTime.Draw(right, locale);
-            right.MoveY();
-            GameModes.RacingFinishersRestart.Draw(right, locale);
-            right.MoveY();
-            GameModes.RacingTimeLimit.Draw(right, locale);
-            right.MoveY();
-            GameModes.RacingRestartTime.Draw(right, locale);
+            GameModes.AFKKill.Draw(right, locale);
         }
 
         protected override void OnPanelDisable()
@@ -105,6 +102,22 @@ namespace Anarchy.UI
             GameModes.NoAHSSReload.Draw(right, locale);
             right.MoveY();
             GameModes.CannonsKillHumans.Draw(right, locale);
+        }
+
+        [GUIPage(RacingPage)]
+        private void RacingModes()
+        {
+            left.Reset();
+            GameModes.ASORacing.Draw(left, locale);
+            left.MoveY();
+            GameModes.RacingRestartTime.Draw(right, locale);
+
+            right.Reset();
+            GameModes.RacingStartTime.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingFinishersRestart.Draw(right, locale);
+            right.MoveY();
+            GameModes.RacingTimeLimit.Draw(left, locale);
         }
 
         [GUIPage(TitansPage)]

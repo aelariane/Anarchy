@@ -2,6 +2,8 @@
 
 public class HeroCostume
 {
+    public const int MaxStats = 400;
+
     private static bool inited;
     public static string[] body_casual_fa_texture;
     public static string[] body_casual_fb_texture;
@@ -731,12 +733,12 @@ public class HeroCostume
 
     public void Checkstat()
     {
-        int num = 0;
-        num += stat.Spd;
-        num += stat.Gas;
-        num += stat.Bla;
-        num += stat.Acl;
-        if (num > 455)
+        int allStats = 0;
+        allStats += stat.Spd;
+        allStats += stat.Gas;
+        allStats += stat.Bla;
+        allStats += stat.Acl;
+        if (allStats > MaxStats)
         {
             stat.Spd = (stat.Gas = (stat.Bla = (stat.Acl = 110)));
         }

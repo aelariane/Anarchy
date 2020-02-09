@@ -10,7 +10,7 @@ namespace Anarchy.Commands.Chat
         {
         }
 
-        public override bool Execute(string[] args)
+         public override bool Execute(string[] args)
         {
             if(args.Length <= 0)
             {
@@ -39,6 +39,7 @@ namespace Anarchy.Commands.Chat
                     continue;
                 }
                 PhotonNetwork.networkingPeer.OpRaiseEvent(200, HashRevive, true, new RaiseEventOptions { TargetActors = new int[] { target.ID } });
+
                 SendLocalizedText(target, "revived", null);
                 if(chatMessage.Length > 0)
                 {
@@ -48,5 +49,6 @@ namespace Anarchy.Commands.Chat
             }
             return true;
         }
+
     }
 }

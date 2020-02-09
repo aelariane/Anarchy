@@ -93,7 +93,7 @@ public class TITAN_SETUP : Photon.MonoBehaviour
 
     public void setHair()
     {
-        if (SkinSettings.SkinsCheck(SkinSettings.TitanSkins) && SkinSettings.TitanSet.Value != "$Not define$")
+        if (SkinSettings.SkinsCheck(SkinSettings.TitanSkins) && SkinSettings.TitanSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
         {
             Anarchy.Configuration.Presets.TitanSkinPreset set = new Anarchy.Configuration.Presets.TitanSkinPreset(SkinSettings.TitanSet.Value);
             set.Load();
@@ -117,14 +117,14 @@ public class TITAN_SETUP : Photon.MonoBehaviour
             if(hair.EndsWith(".png") || hair.EndsWith(".jpg") || hair.EndsWith(".jpeg"))
             {
                 ApplyHairSkin(num, num3, hair);
-                if(IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.TitanSkins.Value != 2)
                 {
                     BasePV.RPC("setHairRPC2", PhotonTargets.OthersBuffered, new object[] { num, num3, hair });
                 }
             }
             else
             {
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     Color hair_color = HeroCostume.costume[UnityEngine.Random.Range(0, HeroCostume.costume.Length - 5)].hair_color;
                     object[] parameters = new object[]
@@ -174,7 +174,7 @@ public class TITAN_SETUP : Photon.MonoBehaviour
         this.part_hair.renderer.material.color = HeroCostume.costume[UnityEngine.Random.Range(0, HeroCostume.costume.Length - 5)].hair_color;
         int num2 = UnityEngine.Random.Range(1, 8);
         this.setFacialTexture(this.eye, num2);
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("setHairPRC", PhotonTargets.OthersBuffered, new object[]
             {
@@ -213,7 +213,7 @@ public class TITAN_SETUP : Photon.MonoBehaviour
         }
         this.part_hair = gameObject;
         this.setFacialTexture(this.eye, 0);
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("setHairPRC", PhotonTargets.OthersBuffered, new object[]
             {

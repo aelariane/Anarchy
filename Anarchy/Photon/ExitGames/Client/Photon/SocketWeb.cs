@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine;
+using System.Threading;
 using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 namespace ExitGames.Client.Photon
@@ -44,24 +44,26 @@ namespace ExitGames.Client.Photon
             this.State = PhotonSocketState.Disconnected;
         }
 
-        GameObject websocketConnectionObject;
+        //GameObject websocketConnectionObject;
         public override bool Connect()
         {
             this.State = PhotonSocketState.Connecting;
 
-            if (this.websocketConnectionObject != null)
-            {
-                UnityEngine.Object.Destroy(this.websocketConnectionObject);
-            }
-
-            this.websocketConnectionObject = new GameObject("websocketConnectionObject");
-            MonoBehaviour mb = this.websocketConnectionObject.AddComponent<MonoBehaviourExt>();
-            this.websocketConnectionObject.hideFlags = HideFlags.HideInHierarchy;
-            UnityEngine.Object.DontDestroyOnLoad(this.websocketConnectionObject);
+            //if (this.websocketConnectionObject != null)
+            //{
+            //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
+            //}
+            //this.websocketConnectionObject = new GameObject("websocketConnectionObject");
+            //MonoBehaviour mb = this.websocketConnectionObject.AddComponent<MonoBehaviourExt>();
+            //this.websocketConnectionObject.hideFlags = HideFlags.HideInHierarchy;
+            //UnityEngine.Object.DontDestroyOnLoad(this.websocketConnectionObject);
             this.sock = new WebSocket(new Uri(this.ServerAddress), SerializationProtocol);
             this.sock.Connect();
-
-            mb.StartCoroutine(this.ReceiveLoop());
+            new Thread(new ThreadStart(this.ReceiveLoop))
+            {
+                IsBackground = true
+            }.Start();
+            //mb.StartCoroutine(this.ReceiveLoop());
             return true;
         }
 
@@ -91,10 +93,10 @@ namespace ExitGames.Client.Photon
                 }
             }
 
-            if (this.websocketConnectionObject != null)
-            {
-                UnityEngine.Object.Destroy(this.websocketConnectionObject);
-            }
+            //if (this.websocketConnectionObject != null)
+            //{
+            //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
+            //}
 
             this.State = PhotonSocketState.Disconnected;
             return true;
@@ -151,14 +153,14 @@ namespace ExitGames.Client.Photon
         internal const int TCP_HEADER_BYTES = 7;
         internal const int MSG_HEADER_BYTES = 2;
 
-        public IEnumerator ReceiveLoop()
+        public void ReceiveLoop()
         {
             //this.Listener.DebugReturn(DebugLevel.INFO, "ReceiveLoop()");
             if (this.sock != null)
             {
                 while (this.sock != null && !this.sock.Connected && this.sock.Error == null)
                 {
-                    yield return new WaitForRealSeconds(0.1f);
+                    Thread.Sleep(50);
                 }
 
                 if (this.sock != null)
@@ -193,8 +195,7 @@ namespace ExitGames.Client.Photon
                                     if (inBuff == null || inBuff.Length == 0)
                                     {
                                         // nothing received. wait a bit, try again
-                                        yield return new WaitForRealSeconds(0.02f);
-                                        continue;
+                                        Thread.Sleep(1);
                                     }
 
                                     if (this.ReportDebugOfLevel(DebugLevel.ALL))
@@ -230,7 +231,5 @@ namespace ExitGames.Client.Photon
 
             this.Disconnect();
         }
-
-        private class MonoBehaviourExt : MonoBehaviour { }
     }
 }

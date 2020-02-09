@@ -36,14 +36,14 @@ namespace Anarchy.Configuration.Presets
                 data[i] = TextField(rect, data[i], string.Empty, 0f, true);
             }
             rect.MoveY();
-            if(SkinSettings.CitySet.Value != "$Not define$")
+            if(SkinSettings.CitySet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 if (Button(rect, locale.Format("btnLinkCity", SkinSettings.CitySet.Value), true))
                 {
                     LinkToCitySet(SkinSettings.CitySet.Value);
                 }
             }
-            if (SkinSettings.ForestSet.Value != "$Not define$")
+            if (SkinSettings.ForestSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 if (Button(rect, locale.Format("btnLinkForest", SkinSettings.ForestSet.Value), true))
                 {

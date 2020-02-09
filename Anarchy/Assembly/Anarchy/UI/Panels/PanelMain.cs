@@ -17,6 +17,10 @@ namespace Anarchy.UI
 
         private bool Button(string key)
         {
+            if (rect == null)
+            {
+                return false;
+            }
             bool result = UnityEngine.GUI.Button(rect.ToRect(), locale.Get(key), style);
             rect.MoveY();
             return result;

@@ -24,12 +24,13 @@ namespace GameLogic
         {
             if (this.CheckIsTitanAllDie())
             {
+                GameModes.AntiReviveClear();
                 Round.Wave++;
-                if (FengGameManagerMKII.Level.RespawnMode == RespawnMode.NEWROUND && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (FengGameManagerMKII.Level.RespawnMode == RespawnMode.NEWROUND && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", PhotonTargets.All, new object[0]);
                 }
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     FengGameManagerMKII.FGM.SendChatContentInfo(User.Wave(Round.Wave));
                 }

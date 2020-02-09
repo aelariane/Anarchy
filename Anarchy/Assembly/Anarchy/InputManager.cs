@@ -92,42 +92,42 @@ namespace Anarchy
 
         public static bool IsInputRebind(int code)
         {
-            return RebindKeyCodes[code].IsPressed();
+            return RebindKeyCodes[code].IsKeyDown();
         }
 
         public static bool IsInputRebindHolding(int code)
         {
-            return RebindKeyCodes[code].IsHolding();
-        }
-
-        public static bool IsInputCannon(int code)
-        {
-            return CannonKeyCodes[code].IsPressed();
+            return RebindKeyCodes[code].IsKeyHolding();
         }
 
         public static bool IsInputCannonHolding(int code)
         {
-            return CannonKeyCodes[code].IsHolding();
+            return CannonKeyCodes[code].IsKeyHolding();
+        }
+
+        public static bool IsInputCannonDown(int code)
+        {
+            return CannonKeyCodes[code].IsKeyDown();
         }
 
         public static bool IsInputTitan(int code)
         {
-            return TitanKeyCodes[code].IsPressed();
+            return TitanKeyCodes[code].IsKeyDown();
         }
 
         public static bool IsInputTitanHolding(int code)
         {
-            return TitanKeyCodes[code].IsHolding();
+            return TitanKeyCodes[code].IsKeyHolding();
         }
 
         public static bool IsInputHorse(int code)
         {
-            return HorseKeyCodes[code].IsPressed();
+            return HorseKeyCodes[code].IsKeyDown();
         }
 
         public static bool IsInputHorseHolding(int code)
         {
-            return HorseKeyCodes[code].IsHolding();
+            return HorseKeyCodes[code].IsKeyHolding();
         }
 
         private void OnAdd()
@@ -145,8 +145,8 @@ namespace Anarchy
             for(int i = 0; i <  count; i++)
             {
                 KeySetting set = Settings[i];
-                IsInput[i] = set.IsHolding();
-                IsInputDown[i] = set.IsPressed();
+                IsInput[i] = set.IsKeyHolding();
+                IsInputDown[i] = set.IsKeyDown();
             }
         }
     }

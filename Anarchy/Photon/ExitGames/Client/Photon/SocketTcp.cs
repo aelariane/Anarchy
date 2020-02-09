@@ -267,7 +267,7 @@ namespace ExitGames.Client.Photon
 						{
 							try
 							{
-								num = this.sock.Receive(streamBuffer.GetBuffer(), streamBuffer.Position, num2 - i, SocketFlags.None);
+								num = this.sock.Receive(streamBuffer.GetBuffer(), streamBuffer.IntPosition, num2 - i, SocketFlags.None);
 							}
 							catch (SocketException ex2)
 							{
@@ -283,7 +283,7 @@ namespace ExitGames.Client.Photon
 								}
 								throw;
 							}
-							streamBuffer.Position += num;
+							streamBuffer.IntPosition += num;
 							i += num;
 							bool flag10 = num == 0;
 							if (flag10)
@@ -291,11 +291,11 @@ namespace ExitGames.Client.Photon
 								throw new SocketException(10054);
 							}
 						}
-						base.HandleReceivedDatagram(streamBuffer.ToArray(), streamBuffer.Length, false);
+						base.HandleReceivedDatagram(streamBuffer.ToArray(), streamBuffer.IntLength, false);
 						bool flag11 = base.ReportDebugOfLevel(DebugLevel.ALL);
 						if (flag11)
 						{
-							base.EnqueueDebugReturn(DebugLevel.ALL, "TCP < " + streamBuffer.Length + ((streamBuffer.Length == num2 + 2) ? " OK" : " BAD"));
+							base.EnqueueDebugReturn(DebugLevel.ALL, "TCP < " + streamBuffer.IntLength + ((streamBuffer.IntLength == num2 + 2) ? " OK" : " BAD"));
 						}
 					}
 				}

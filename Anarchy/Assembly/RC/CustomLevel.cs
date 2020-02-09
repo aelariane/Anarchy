@@ -692,7 +692,7 @@ namespace RC
         {
             if (currentLevel != string.Empty)
             {
-                WaitForSeconds awaiter = new WaitForSeconds(0.375f);
+                WaitForSeconds awaiter = new WaitForSeconds(0.25f);
                 List<PhotonPlayer> cached = new List<PhotonPlayer>();
                 List<PhotonPlayer> send = new List<PhotonPlayer>();
                 foreach (PhotonPlayer player in PhotonNetwork.playerList)
@@ -712,10 +712,7 @@ namespace RC
                 }
                 if (cached.Count > 0)
                 {
-                    for (int i = 0; i < cached.Count; i++)
-                    {
-                        FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", cached[i], new object[] { new string[] { "loadcached" } });
-                    }
+                    FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", cached.ToArray(), new object[] { new string[] { "loadcached" } });
                 }
                 if(send.Count > 0)
                 {
@@ -844,20 +841,38 @@ namespace RC
             RCManager.racingSpawnPoint = Vectors.zero;
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();
-            logicLoaded = true;
-            customLevelLoaded = true;
-            if (FengGameManagerMKII.Level.Name.StartsWith("Custom") && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            logicLoaded = false;
+            customLevelLoaded = FengGameManagerMKII.Level.Name.StartsWith("Custom") == false;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                updateTime = 1f;
+                if (oldScriptLogic != currentScriptLogic)
+                {
+                    RCManager.ClearAll();
+                    oldScriptLogic = currentScriptLogic;
+                    compileScript(currentScriptLogic);
+                    if (RCManager.RCEvents.ContainsKey("OnFirstLoad"))
+                    {
+                        ((RCEvent)RCManager.RCEvents["OnFirstLoad"]).checkEvent();
+                    }
+                }
+                logicLoaded = true;
+                if (RCManager.RCEvents.ContainsKey("OnRoundStart"))
+                {
+                    ((RCEvent)RCManager.RCEvents["OnRoundStart"]).checkEvent();
+                }
+            }
+            else
+            {
+                logicLoaded = true;
+            }
+            if (FengGameManagerMKII.Level.Name.StartsWith("Custom") && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 GameObject supplyGO = GameObject.Find("aot_supply");
                 if (supplyGO != null)
                 {
                     Minimap.TrackGameObjectOnMinimap(supplyGO, Color.white, false, true, Minimap.IconStyle.Supply);
                 }
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    logicLoaded = false;
-                }
-                customLevelLoaded = false;
                 new LoadingMapScreen().Enable();
                 GameObject[] array4 = GameObject.FindGameObjectsWithTag("playerRespawn");
                 for (int i = 0; i < array4.Length; i++)
@@ -876,7 +891,6 @@ namespace RC
                         obj2.renderer.material.mainTexture = ((Material)RCManager.Load("grass")).mainTexture;
                     }
                 }
-                updateTime = 1f;
                 RacingCP = new Stack<RacingCheckpointTrigger>();
                 racingDoors = new List<GameObject>();
                 RCManager.allowedToCannon = new Dictionary<int, CannonValues>();
@@ -884,7 +898,7 @@ namespace RC
                 {
                     if(SkinSettings.CustomSkins.Value == 2)
                     {
-                        if (SkinSettings.CustomMapSet.Value != "$Not define$")
+                        if (SkinSettings.CustomMapSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
                         {
                             var set = new CustomMapPreset(SkinSettings.CustomMapSet.Value);
                             set.Load();
@@ -894,28 +908,12 @@ namespace RC
                 }
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    logicLoaded = false;
-                    if (oldScriptLogic != currentScriptLogic)
-                    {
-                        RCManager.Clear();
-                        oldScriptLogic = currentScriptLogic;
-                        compileScript(currentScriptLogic);
-                        if (RCManager.RCEvents.ContainsKey("OnFirstLoad"))
-                        {
-                            ((RCEvent)RCManager.RCEvents["OnFirstLoad"]).checkEvent();
-                        }
-                    }
-                    logicLoaded = true;
-                    if (RCManager.RCEvents.ContainsKey("OnRoundStart"))
-                    {
-                        ((RCEvent)RCManager.RCEvents["OnRoundStart"]).checkEvent();
-                    }
-                    logicLoaded = true;
+                    
                     RCManager.SpawnCapCustom.Value = Math.Min(50, RCManager.SpawnCapCustom.Value);
                     string[] customSkin = new string[7] { "", "", "", "", "", "", "" };
-                    if (SkinSettings.CustomMapSet.Value != "$Not define$")
+                    if (SkinSettings.CustomMapSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
                     {
-                        if (SkinSettings.CustomSkins.Value > 0)
+                        if (SkinSettings.CustomSkins.Value == 1)
                         {
                             var set = new CustomMapPreset(SkinSettings.CustomMapSet.Value);
                             set.Load();
@@ -2411,7 +2409,7 @@ namespace RC
         {
             if (currentLevel != string.Empty)
             {
-                WaitForSeconds awaiter = new WaitForSeconds(0.375f);
+                WaitForSeconds awaiter = new WaitForSeconds(0.25f);
                 for (int i = 0; i < levelCache.Count; i++)
                 {
                     if (player.Properties["currentLevel"] != null && currentLevel != string.Empty && player.CurrentLevel == currentLevel)
@@ -2440,10 +2438,16 @@ namespace RC
         {
             if (!FengGameManagerMKII.FGM.NeedChooseSide && IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
             {
-                IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
-                if (!PhotonNetwork.player.IsTitan && PhotonNetwork.player.Dead)
+                if (PhotonNetwork.player.Dead)
                 {
-                    FengGameManagerMKII.FGM.SpawnPlayer(FengGameManagerMKII.FGM.myLastHero);
+                    if (!PhotonNetwork.player.IsTitan)
+                    {
+                        FengGameManagerMKII.FGM.SpawnPlayer(FengGameManagerMKII.FGM.myLastHero);
+                    }
+                    else
+                    {
+                        FengGameManagerMKII.FGM.SpawnNonAITitan("RANDOM");
+                    }
                 }
                 FengGameManagerMKII.FGM.ShowHUDInfoCenter(string.Empty);
             }

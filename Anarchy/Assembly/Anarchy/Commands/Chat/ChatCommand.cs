@@ -8,7 +8,7 @@ namespace Anarchy.Commands.Chat
         protected string logMessage = string.Empty;
         protected bool useChat = true;
         protected bool useLog = false;
-        public bool ReqiresMC { get; private set; }
+        public bool RequireMC { get; private set; }
 
         public static Localization.Locale English;
         public static Localization.Locale Lang;
@@ -24,7 +24,7 @@ namespace Anarchy.Commands.Chat
             CommandName = key;
             useChat = chat;
             useLog = log;
-            ReqiresMC = needmc;
+            RequireMC = needmc;
         }
 
         public abstract bool Execute(string[] args);

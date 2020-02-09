@@ -11,8 +11,8 @@ namespace Anarchy.Network
 
         private static string[] ValidLinks = new string[]
         {
-            "i.imgur.com", "imgur.com", "discordapp.com", "postimg", "aotcorehome.files", "deviantart", "wmpics.pics", "puu.sh", "pp.userapi.com",
-            "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-.userapi.com", "images.ourclipart.com", "pictureshack.ru"
+            "i.imgur.com", "imgur.com", "discordapp.com", "discordapp.net", "postimg", "aotcorehome.files", "deviantart", "wmpics.pics", "puu.sh", "pp.userapi.com",
+            "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-6.userapi.com", "images.ourclipart.com", "pictureshack.ru", "savepice.ru"
         };
 
         public static void Kick(PhotonPlayer player, bool ban, string reason = "")
@@ -21,6 +21,7 @@ namespace Anarchy.Network
             {
                 return;
             }
+            player.RCIgnored = true;
             if (reason != string.Empty)
             {
                 //TODO: Make banlist and localize
@@ -58,7 +59,7 @@ namespace Anarchy.Network
                 {
                     continue;
                 }
-                url = url.Trim();
+                url = url.TrimStart();
                 if(!url.StartsWith("https://") && !url.StartsWith("http://"))
                 {
                     url = "http://" + url;

@@ -1,5 +1,5 @@
 ﻿title:Paramètres de la partie
-selections:Titan,PvP,Divers
+selections:Titan,PvP,Divers,Racing
 btnClose:Fermer
 
 #Titans
@@ -72,6 +72,14 @@ horseState:Autorisé les chevaux:
 
 motd:Message du jour
 
+noGuestState:Anti-Guest:
+
+antiReviveState:Pas de réanimation abusive:
+
+afkKillState:Tuer les joueurs absent:
+afkKillInt0:Absent depuis:
+
+#Racing
 asoracingState:ASO(Sans fin) racing:
 
 startTimeState:Début du temps custom utilisé :

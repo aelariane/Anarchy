@@ -21,8 +21,8 @@ namespace Anarchy.Network.Events
         {
             reason = "";
             this.sender = sender;
-            key = (int)data[0xfd];
-            hash = data[0xfb] as Hashtable;
+            key = (int)data[ParameterCode.TargetActorNr];
+            hash = data[ParameterCode.Properties] as Hashtable;
             if(hash == null)
             {
                 reason += UI.Log.GetString("notHashOrNull");
@@ -34,20 +34,12 @@ namespace Anarchy.Network.Events
         public bool Handle()
         {
             if (key == 0)
-                PhotonNetwork.networkingPeer.ReadoutProperties(hash, null, -1);
-                //Antis.ReadoutPropertiesRoom(hash, sender);
+            {
+                PropertiesChecker.CheckRoomProperties(hash, sender);
+            }
             else
             {
-                PhotonNetwork.networkingPeer.ReadoutProperties(null, hash, key);
-                //Antis.ReadoutProperties(hash, key, sender);
-                //try
-                //{
-                //    Antis.ReadoutProperties(hash, key, sender);
-                //}
-                //catch
-                //{
-                //    FileLogger.AddLine("Exception: " + ExitGames.Client.Photon.SupportClass.DictionaryToString(hash) + "\nKey: " + key + "\nSender: " + sender);
-                //}
+                PropertiesChecker.CheckPlayersProperties(hash, key, sender);
             }
             return true;
         }

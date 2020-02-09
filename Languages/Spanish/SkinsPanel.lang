@@ -13,6 +13,7 @@ skinStateSelection:Deshabilitado, Habilitado, Local
 skyboxDesc:Skybox personalizado deshabilitado en skins de city / forest
 #Human skins
 humanLabels:Horse:,Hair,Eyes,Glass,Face,Skin,Costume,Cape,Left 3DMG,Right 3DMG,Gas,Hoodie,Trail
+disableCustomGas:Deshabilitar texturas de gas personalizadas:
 sets:Sets disponibles
 
 #Titan sets

@@ -57,7 +57,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
         this.attackChkOnce = false;
         this.sweepSmokeObject.GetComponent<ParticleSystem>().enableEmission = true;
         this.sweepSmokeObject.GetComponent<ParticleSystem>().Play();
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (FengGameManagerMKII.LAN)
             {
@@ -246,7 +246,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
         base.animation.CrossFade(aniName, time);
         if (!FengGameManagerMKII.LAN)
         {
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 BasePV.RPC("netCrossFade", PhotonTargets.Others, new object[]
                 {
@@ -312,7 +312,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                     hitHero.GetComponent<HERO>().die((hitHero.transform.position - position) * 15f * 4f, false);
                 }
             }
-            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 if (FengGameManagerMKII.LAN)
                 {
@@ -415,14 +415,14 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
     {
         if (SkinSettings.SkinsCheck(SkinSettings.TitanSkins))
         {
-            if(SkinSettings.TitanSet.Value != "$Not define$")
+            if(SkinSettings.TitanSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 TitanSkinPreset set = new TitanSkinPreset(SkinSettings.TitanSet.Value);
                 set.Load();
                 if (set.Colossal.IsImage())
                 {
                     StartCoroutine(LoadMySkin(set.Colossal));
-                    if(IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                    if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.TitanSkins.Value != 2)
                     {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { set.Colossal });
                     }
@@ -449,7 +449,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
     {
         this.neckSteamObject.GetComponent<ParticleSystem>().Stop();
         this.neckSteamObject.GetComponent<ParticleSystem>().Play();
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (FengGameManagerMKII.LAN)
             {
@@ -514,7 +514,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
         base.animation.Play(aniName);
         if (!FengGameManagerMKII.LAN)
         {
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 BasePV.RPC("netPlayAnimation", PhotonTargets.Others, new object[]
                 {
@@ -530,7 +530,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
         base.animation[aniName].normalizedTime = normalizedTime;
         if (!FengGameManagerMKII.LAN)
         {
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 BasePV.RPC("netPlayAnimationAt", PhotonTargets.Others, new object[]
                 {
@@ -544,7 +544,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
     private void playSound(string sndname)
     {
         this.playsoundRPC(sndname);
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (FengGameManagerMKII.LAN)
             {
@@ -681,7 +681,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             }
             this.lagMax = 150f + size * 3f;
             this.healthTime = Time.time;
-            if (NapeArmor > 0 && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (NapeArmor > 0 && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { NapeArmor, Mathf.RoundToInt(maxHealth) });
             }
@@ -741,7 +741,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
         {
             player.GetComponent<HERO>().blowAway(vector.normalized * d + Vectors.up * 1f);
         }
-        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
             player.GetComponent<HERO>().BasePV.RPC("blowAway", PhotonTargets.All, new object[]
             {
@@ -974,7 +974,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                         {
                             this.killPlayer(gameObject);
                         }
-                        if (gameObject.CompareTag("erenHitbox") && this.attackAnimation == "combo_3" && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && ((!FengGameManagerMKII.LAN) ? PhotonNetwork.IsMasterClient : Network.isServer))
+                        if (gameObject.CompareTag("erenHitbox") && this.attackAnimation == "combo_3" && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && ((!FengGameManagerMKII.LAN) ? PhotonNetwork.IsMasterClient : Network.isServer))
                         {
                             gameObject.transform.root.gameObject.GetComponent<TITAN_EREN>().hitByFTByServer(3);
                         }
@@ -993,7 +993,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     this.sweepSmokeObject.GetComponent<ParticleSystem>().enableEmission = false;
                     this.sweepSmokeObject.GetComponent<ParticleSystem>().Stop();
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (!FengGameManagerMKII.LAN)
                         {
@@ -1012,14 +1012,14 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                     this.attackChkOnce = true;
                     this.door_broken.SetActive(true);
                     this.door_closed.SetActive(false);
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (!FengGameManagerMKII.LAN)
                         {
                             BasePV.RPC("changeDoor", PhotonTargets.OthersBuffered, new object[0]);
                         }
                     }
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (FengGameManagerMKII.LAN)
                         {
@@ -1052,7 +1052,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     this.attackChkOnce = true;
                     GameObject gameObject3;
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (FengGameManagerMKII.LAN)
                         {
@@ -1085,7 +1085,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 if (!this.attackChkOnce && base.animation[this.actionName].normalizedTime >= this.attackCheckTime)
                 {
                     this.attackChkOnce = true;
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (FengGameManagerMKII.LAN)
                         {
@@ -1112,7 +1112,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 }
                 if (base.animation[this.actionName].normalizedTime >= 1f)
                 {
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
                         if (FengGameManagerMKII.LAN)
                         {

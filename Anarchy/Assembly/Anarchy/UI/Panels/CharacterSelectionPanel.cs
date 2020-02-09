@@ -136,6 +136,7 @@ namespace Anarchy.UI
 
         private void SpawnHero()
         {
+            CheckBoxCostume.costumeSet = costumeSelection.ToValue() + 1;
             FengGameManagerMKII.FGM.NeedChooseSide = false;
             if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
             {
@@ -217,7 +218,7 @@ namespace Anarchy.UI
             SmartRect[] init = Helper.GetSmartRects(BoxPosition, 2);
             left = init[0];
             right = init[1];
-            cameraList = new string[] { "ORIGINAL", "WOW", "TPS", "oldTPS" };
+            cameraList = new string[] { "ORIGINAL", "WOW", "TPS" };
             characterList = locale.GetArray("characters");
             costumeList = new string[] { "Cos1", "Cos2", "Cos3" };
             charactersList = new string[] { "Mikasa", "Levi", "Armin", "Marco", "Jean", "Eren", "Petra", "Sasha", "Set 1", "Set 2", "Set 3" };

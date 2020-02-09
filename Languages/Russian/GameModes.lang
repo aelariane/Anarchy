@@ -73,8 +73,18 @@ erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>disabled</color>
 deadlycannonsInfoEnabled:<color=#$maincolor$>Deadly cannons mode <color=#$eColor$>enabled</color></color>
 deadlycannonsInfoDisabled:<color=#$maincolor$>Deadly cannons mode <color=#$dColor$>disabled</color></color>
 
-asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка <color=#CCFFCC>включена</color></color>
-asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка <color=#FFAACC>выключена</color></color>
+
+noGuestInfoEnabled:<color=#$maincolor$>Анти-Гость <color=#$eColor$>включен</color></color>
+noGuestInfoDisabled:<color=#$maincolor$>Анти-Гость <color=#$dColor$>выключен</color></color>
+
+antiReviveInfoEnabled:<color=#$maincolor$>Анти-Респавн <color=#$eColor$>включен</color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Анти-Респавн <color=#$dColor$>выключен</color></color>
+
+afkKillInfoEnabled:<color=#$maincolor$>Убийство АФК игроков <color=#$eColor$>включено</color> (<color=#$subcolor$>{0} секунд</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>Убийство АФК игроков <color=#$dColor$>выключено</color></color>
+
+asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка <color=#eColor>включена</color></color>
+asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка <color=#dColor>выключена</color></color>
 
 #Racing
 startTimeInfoEnabled:<color=#$maincolor$>Racing custom start time set to <color=#$subcolor$>{0}</color></color> 

@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE;EVENTSYSTEMTEST;PUBLIC;</DefineConstants>
+    <DefineConstants>TRACE;EVENTSYSTEMTEST;PROTOCOL17</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE;EVENTSYSTEMTEST</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -110,9 +110,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Anarchy\Commands\Chat\ASORacingCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ClearCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\RulesCommand.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
+    <Compile Include="Anarchy\Network\ModNames.cs" />
+    <Compile Include="Anarchy\Network\PropertiesChecker.cs" />
     <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="AoTTG\AbnormalType.cs" />
     <Compile Include="Photon\ActorProperties.cs" />
     <Compile Include="Photon\ModInfo.cs" />
+    <Compile Include="Photon\RoomProperty.cs" />
     <Compile Include="Xffect\Affector.cs" />
     <Compile Include="AoTTG\Triggers\AHSSShotGunCollider.cs" />
     <Compile Include="Anarchy\AnarchyAssets.cs" />
@@ -189,7 +193,7 @@
     <Compile Include="Anarchy\Network\Events\EventPropertires.cs" />
     <Compile Include="Anarchy\Network\Events\EventRoast.cs" />
     <Compile Include="Anarchy\Network\Events\EventRoomListUpdate.cs" />
-    <Compile Include="Anarchy\Network\Events\EventRoomListUpdate1.cs" />
+    <Compile Include="Anarchy\Network\Events\EventRoomList.cs" />
     <Compile Include="Anarchy\Network\Events\EventRPC.cs" />
     <Compile Include="Anarchy\Network\Events\INetworkEvent.cs" />
     <Compile Include="Anarchy\Network\NetworkManager.cs" />
@@ -722,6 +726,10 @@
     <Compile Include="Xffect\XWeaponTrailDemo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Antis\Antis.csproj">
+      <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
+      <Name>Antis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
       <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
       <Name>Photon3Unity3D</Name>

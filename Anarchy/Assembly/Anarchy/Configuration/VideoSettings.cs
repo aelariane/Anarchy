@@ -82,6 +82,7 @@ namespace Anarchy.Configuration
                 QualitySettings.shadowCascades = 1;
                 QualitySettings.shadowProjection = UnityEngine.ShadowProjection.CloseFit;
             }
+            Settings.Apply();
         }
     }
 }

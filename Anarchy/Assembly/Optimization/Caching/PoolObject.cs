@@ -129,7 +129,7 @@ namespace Optimization.Caching
 
         public GameObject NetworkEnable(string name, Vector3 position, Quaternion rotation, int group = 0, object[] data = null, bool isSceneObject = false)
         {
-            if (IN_GAME_MAIN_CAMERA.GameType != GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType != GameType.MultiPlayer)
             {
                 Debug.LogError($"PoolObject.NetworkEnable(): Failed to NetworkEnable prefab, because GameType is not Multiplayer.");
                 return null;

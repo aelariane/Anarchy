@@ -42,7 +42,6 @@ public class MaxCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        Debug.Log("kk");
         if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftControl))
         {
             this.desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * (float)this.zoomRate * 0.125f * Mathf.Abs(this.desiredDistance);

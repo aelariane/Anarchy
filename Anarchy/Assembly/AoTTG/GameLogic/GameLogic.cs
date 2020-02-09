@@ -17,7 +17,7 @@ namespace GameLogic
 
         public float LifeTime { get; private set; }
         public GameMode Mode => IN_GAME_MAIN_CAMERA.GameMode;
-        public bool Multiplayer => IN_GAME_MAIN_CAMERA.GameType == GameType.Multi;
+        public bool Multiplayer => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer;
         public float ServerTime { get; set; }
         public int RoundsCount { get; private set; } = 1;
         public float RoundTime { get => Round.Time; set => Round.Time = value; }
@@ -157,8 +157,9 @@ namespace GameLogic
             Lang.Reload();
             RoundsCount++;
             OnRestart();
+            GameModes.AntiReviveClear();
             Restarting = false;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 OnRequireStatus();
             }
@@ -272,52 +273,55 @@ namespace GameLogic
 
         private void UpdateCustomLogic()
         {
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && !Restarting)
             {
+                CustomLevel.OnUpdate();
                 if (CustomLevel.logicLoaded)
                 {
-                    CustomLevel.OnUpdate();
                     for (int i = 0; i < CustomLevel.titanSpawners.Count; i++)
                     {
                         var item = CustomLevel.titanSpawners[i];
                         item.time -= UpdateInterval;
-                        if (item.name == "spawnannie")
+                        if (item.time < 0f && FengGameManagerMKII.Titans.Count + (FengGameManagerMKII.Annie != null ? 1 : 0) < Math.Min(RC.RCManager.SpawnCapCustom, 80))
                         {
-                            Optimization.Caching.Pool.NetworkEnable("FEMALE_TITAN", item.location, Quaternion.identity, 0);
-                        }
-                        else
-                        {
-                            TITAN tit = Optimization.Caching.Pool.NetworkEnable("TITAN_VER3.1", item.location, Quaternion.identity, 0).GetComponent<TITAN>();
-                            AbnormalType type = AbnormalType.Normal;
-                            switch (item.name)
+                            if (item.name == "spawnannie" && FengGameManagerMKII.Annie == null)
                             {
-                                case "spawnAbnormal":
-                                    type = AbnormalType.Aberrant;
-                                    break;
-
-                                case "spawnJumper":
-                                    type = AbnormalType.Jumper;
-                                    break;
-
-                                case "spawnCrawler":
-                                    type = AbnormalType.Crawler;
-                                    break;
-
-                                case "spawnPunk":
-                                    type = AbnormalType.Punk;
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                            tit.setAbnormalType(type, type == AbnormalType.Crawler);
-                            if (item.endless)
-                            {
-                                item.time = item.delay;
+                                Optimization.Caching.Pool.NetworkEnable("FEMALE_TITAN", item.location, Quaternion.identity, 0);
                             }
                             else
                             {
-                                CustomLevel.titanSpawners.Remove(item);
+                                TITAN tit = Optimization.Caching.Pool.NetworkEnable("TITAN_VER3.1", item.location, Quaternion.identity, 0).GetComponent<TITAN>();
+                                AbnormalType type = AbnormalType.Normal;
+                                switch (item.name)
+                                {
+                                    case "spawnAbnormal":
+                                        type = AbnormalType.Aberrant;
+                                        break;
+
+                                    case "spawnJumper":
+                                        type = AbnormalType.Jumper;
+                                        break;
+
+                                    case "spawnCrawler":
+                                        type = AbnormalType.Crawler;
+                                        break;
+
+                                    case "spawnPunk":
+                                        type = AbnormalType.Punk;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                                tit.setAbnormalType(type, type == AbnormalType.Crawler);
+                                if (item.endless)
+                                {
+                                    item.time = item.delay;
+                                }
+                                else
+                                {
+                                    CustomLevel.titanSpawners.Remove(item);
+                                }
                             }
                         }
                     }

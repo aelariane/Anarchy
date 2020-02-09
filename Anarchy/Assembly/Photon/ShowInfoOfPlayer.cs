@@ -66,7 +66,7 @@ public class ShowInfoOfPlayer : Photon.MonoBehaviour
         PhotonPlayer owner = BasePV.owner;
         if (owner != null)
         {
-            this.tm.text = ((!string.IsNullOrEmpty(owner.Name)) ? owner.Name : "n/a");
+            this.tm.text = ((!string.IsNullOrEmpty(owner.FriendName)) ? owner.FriendName : "n/a");
         }
         else if (BasePV.isSceneView)
         {

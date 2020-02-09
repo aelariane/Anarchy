@@ -38,7 +38,7 @@ namespace Anarchy.Configuration
         {
             get
             {
-                return oldState && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi;
+                return oldState && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer;
             }
         }
 

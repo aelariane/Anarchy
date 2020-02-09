@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Antis.Spam;
 using Anarchy.UI;
 using ExitGames.Client.Photon;
 using UnityEngine;
@@ -80,11 +81,7 @@ namespace Anarchy.Network.Events
                 reason += Log.GetString("nullRpcName");
                 return false;
             }
-            //if (Antis.RPCSpam(name, sender))
-            //{
-            //    reason += $"RPC Spam[{name}] <color=red>(x {sender.Spam[name].Second}</color>)";
-            //    return false;
-            //}
+            sender.RPCSpam.Count(name);
             if (!CheckKey(hash, 1, out prefix, true))
             {
                 reason += Log.GetString("invalidKey", "1");

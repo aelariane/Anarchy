@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace ExitGames.Client.Photon
 {
-    internal class TPeer : PeerBase
+    public class TPeer : PeerBase
     {
         internal const int TCP_HEADER_BYTES = 7;
 
@@ -195,7 +195,7 @@ namespace ExitGames.Client.Photon
                 {
                     base.TrafficStatsOutgoing.TotalPacketCount++;
                     base.TrafficStatsOutgoing.TotalCommandsInPackets++;
-                    base.TrafficStatsOutgoing.CountControlCommand(streamBuffer.Length);
+                    base.TrafficStatsOutgoing.CountControlCommand(streamBuffer.IntLength);
                 }
                 this.EnqueueMessageAsPayload(DeliveryMode.Reliable, streamBuffer, 0);
             }
@@ -260,7 +260,7 @@ namespace ExitGames.Client.Photon
                 for (int i = 0; i < this.outgoingStream.Count; i++)
                 {
                     StreamBuffer streamBuffer = this.outgoingStream[i];
-                    this.SendData(streamBuffer.GetBuffer(), streamBuffer.Length);
+                    this.SendData(streamBuffer.GetBuffer(), streamBuffer.IntLength);
                     PeerBase.MessageBufferPoolPut(streamBuffer);
                 }
                 this.outgoingStream.Clear();
@@ -343,7 +343,7 @@ namespace ExitGames.Client.Photon
             base.SerializationProtocol.SerializeOperationRequest(streamBuffer, opCode, parameters, false);
             if (encrypt)
             {
-                byte[] array = base.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.Length);
+                byte[] array = base.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.IntLength);
                 streamBuffer.SetLength(0L);
                 streamBuffer.Write(this.messageHeader, 0, this.messageHeader.Length);
                 streamBuffer.Write(array, 0, array.Length);
@@ -360,12 +360,12 @@ namespace ExitGames.Client.Photon
             if (this.DoFraming)
             {
                 int num = 1;
-                Protocol.Serialize(streamBuffer.Length, buffer, ref num);
+                Protocol.Serialize(streamBuffer.IntLength, buffer, ref num);
             }
             return streamBuffer;
         }
 
-        internal bool EnqueueMessageAsPayload(DeliveryMode deliveryMode, StreamBuffer opMessage, byte channelId)
+        public bool EnqueueMessageAsPayload(DeliveryMode deliveryMode, StreamBuffer opMessage, byte channelId)
         {
             if (opMessage == null)
             {
@@ -399,7 +399,7 @@ namespace ExitGames.Client.Photon
                 this.outgoingStream.Add(opMessage);
                 base.outgoingCommandsInStream++;
             }
-            int num = base.ByteCountLastOperation = opMessage.Length;
+            int num = base.ByteCountLastOperation = opMessage.IntLength;
             if (base.TrafficStatsEnabled)
             {
                 switch (deliveryMode)
@@ -433,9 +433,9 @@ namespace ExitGames.Client.Photon
             }, EgMessageType.InternalOperationRequest, sendOptions.Encrypt);
                 if (base.TrafficStatsEnabled)
                 {
-                    base.TrafficStatsOutgoing.CountControlCommand(streamBuffer.Length);
+                    base.TrafficStatsOutgoing.CountControlCommand(streamBuffer.IntLength);
                 }
-                this.SendData(streamBuffer.GetBuffer(), streamBuffer.Length);
+                this.SendData(streamBuffer.GetBuffer(), streamBuffer.IntLength);
                 PeerBase.MessageBufferPoolPut(streamBuffer);
             }
             else
@@ -450,7 +450,7 @@ namespace ExitGames.Client.Photon
             }
         }
 
-        internal void SendData(byte[] data, int length)
+        public void SendData(byte[] data, int length)
         {
             try
             {

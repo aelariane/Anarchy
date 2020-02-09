@@ -11,7 +11,7 @@ namespace Anarchy.Network
         public static readonly IntSetting ConnectionProtocol = new IntSetting("ConnectionProtocol", 0);
         public static readonly IntSetting PreferedRegion = new IntSetting("PrefRegion", 1);
         public static readonly string[] RegionAdresses = new string[] { "us", "eu", "asia", "jp" };
-        public static readonly IntSetting Protocol = new IntSetting("SerializationProtocol", 0);
+        public static readonly IntSetting Rejoin = new IntSetting(nameof(Rejoin), 0);
 
         public static ConnectionProtocol ConnectProtocol
         {
@@ -28,7 +28,7 @@ namespace Anarchy.Network
         {
             get
             {
-                return (SerializationProtocol)Protocol.Value;
+                return ExitGames.Client.Photon.SerializationProtocol.GpBinaryV16;
             }
         }
     }

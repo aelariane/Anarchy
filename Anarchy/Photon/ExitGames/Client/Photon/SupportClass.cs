@@ -207,6 +207,19 @@ namespace ExitGames.Client.Photon
 			return SupportClass.DictionaryToString(hash);
 		}
 
+        public static string StreamBufferToString(StreamBuffer buff)
+        {
+            StringBuilder bld = new StringBuilder();
+            bld.Append("StreamBuffer with length: " + buff.IntLength + "\n");
+            int length = buff.IntLength;
+            byte[] buffer = buff.GetBuffer();
+            for(int i =0; i < length; i++)
+            {
+                bld.Append(buffer[i].ToString() + "\n");
+            }
+            return bld.ToString();
+        }
+
 		public static string ByteArrayToString(byte[] list)
 		{
 			bool flag = list == null;

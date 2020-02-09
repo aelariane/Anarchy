@@ -271,6 +271,8 @@ namespace ExitGames.Client.Photon
             }
         }
 
+        public bool FullLogging { get; set; } = false;
+
         internal int CommandLogSize
         {
             get
@@ -308,7 +310,7 @@ namespace ExitGames.Client.Photon
             Queue<StreamBuffer> messageBufferPool = PeerBase.MessageBufferPool;
             lock (messageBufferPool)
             {
-                buff.Position = 0;
+                buff.IntPosition = 0;
                 buff.SetLength(0L);
                 PeerBase.MessageBufferPool.Enqueue(buff);
             }
@@ -368,7 +370,7 @@ namespace ExitGames.Client.Photon
             if (custom == null)
             {
                 byte[] array = new byte[41];
-                byte[] clientVersion = ExitGames.Client.Photon.Version.clientVersion;
+                byte[] clientVersion = Version.clientVersion;
                 array[0] = 243;
                 array[1] = 0;
                 array[2] = this.SerializationProtocol.VersionBytes[0];
@@ -490,7 +492,7 @@ namespace ExitGames.Client.Photon
             }
             if (encrypt)
             {
-                byte[] array2 = this.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.Length);
+                byte[] array2 = this.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.IntLength);
                 streamBuffer.SetLength(0L);
                 streamBuffer.Write(messageHeader, 0, messageHeader.Length);
                 streamBuffer.Write(array2, 0, array2.Length);
@@ -504,7 +506,7 @@ namespace ExitGames.Client.Photon
             if (writeLength)
             {
                 int num = 1;
-                Protocol.Serialize(streamBuffer.Length, buffer, ref num);
+                Protocol.Serialize(streamBuffer.IntLength, buffer, ref num);
             }
             return streamBuffer;
         }
@@ -522,15 +524,15 @@ namespace ExitGames.Client.Photon
 
         internal virtual bool DeserializeMessageAndCallback(StreamBuffer stream)
         {
-            if (stream.Length < 2)
+            if (stream.IntLength < 2)
             {
                 if ((int)this.debugOut >= 1)
                 {
-                    this.Listener.DebugReturn(DebugLevel.ERROR, "Incoming UDP data too short! " + stream.Length);
+                    this.Listener.DebugReturn(DebugLevel.ERROR, "Incoming UDP data too short! " + stream.IntLength);
                 }
                 return false;
             }
-            byte b = stream.ReadByte();
+            byte b = stream.ReadByteAsByte();
             if (b != 243 && b != 253)
             {
                 if ((int)this.debugOut >= 1)
@@ -539,7 +541,7 @@ namespace ExitGames.Client.Photon
                 }
                 return false;
             }
-            byte b2 = stream.ReadByte();
+            byte b2 = stream.ReadByteAsByte();
             byte b3 = (byte)(b2 & 0x7F);
             bool flag = (b2 & 0x80) > 0;
             if (b3 != 1)
@@ -548,7 +550,7 @@ namespace ExitGames.Client.Photon
                 {
                     if (flag)
                     {
-                        byte[] buf = this.CryptoProvider.Decrypt(stream.GetBuffer(), 2, stream.Length - 2);
+                        byte[] buf = this.CryptoProvider.Decrypt(stream.GetBuffer(), 2, stream.IntLength - 2);
                         stream = new StreamBuffer(buf);
                     }
                     else
@@ -566,13 +568,13 @@ namespace ExitGames.Client.Photon
                     return false;
                 }
             }
+            if (FullLogging)
+            {
+                Listener.DebugReturn(DebugLevel.ERROR, SupportClass.StreamBufferToString(stream));
+            }
             int num = 0;
             switch (b3)
             {
-                case 1:
-                    this.InitCallback();
-                    break;
-
                 case 3:
                     {
                         OperationResponse operationResponse = this.SerializationProtocol.DeserializeOperationResponse(stream);
@@ -588,28 +590,41 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
-
                 case 4:
                     {
+                        
+                        try
+                        {
+                            EventData eventData = this.SerializationProtocol.DeserializeEventData(stream, this.reusableEventData);
+                            if (this.TrafficStatsEnabled)
+                            {
+                                this.TrafficStatsGameLevel.CountEvent(this.ByteCountCurrentDispatch);
+                                num = SupportClass.GetTickCount();
+                            }
+                            this.Listener.OnEvent(eventData);
+                            if (this.TrafficStatsEnabled)
+                            {
+                                this.TrafficStatsGameLevel.TimeForEventCallback(eventData.Code, SupportClass.GetTickCount() - num);
+                            }
+                            if (this.photonPeer.ReuseEventInstance)
+                            {
+                                this.reusableEventData = eventData;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            if (debugOut >= DebugLevel.INFO)
+                            {
+                                this.EnqueueDebugReturn(DebugLevel.ERROR, "Received abnormal EventData: " + e.Message + "\nException: " + e.StackTrace);
 
-                        EventData eventData = this.SerializationProtocol.DeserializeEventData(stream, this.reusableEventData);
-                        if (this.TrafficStatsEnabled)
-                        {
-                            this.TrafficStatsGameLevel.CountEvent(this.ByteCountCurrentDispatch);
-                            num = SupportClass.GetTickCount();
-                        }
-                        this.Listener.OnEvent(eventData);
-                        if (this.TrafficStatsEnabled)
-                        {
-                            this.TrafficStatsGameLevel.TimeForEventCallback(eventData.Code, SupportClass.GetTickCount() - num);
-                        }
-                        if (this.photonPeer.ReuseEventInstance)
-                        {
-                            this.reusableEventData = eventData;
+                            }
+                            return true;
                         }
                         break;
                     }
-
+                case 1:
+                    this.InitCallback();
+                    break;
                 case 7:
                     {
                         OperationResponse operationResponse = this.SerializationProtocol.DeserializeOperationResponse(stream);
@@ -640,7 +655,6 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
-
                 case 8:
                     {
                         object obj = this.SerializationProtocol.DeserializeMessage(stream);
@@ -655,7 +669,6 @@ namespace ExitGames.Client.Photon
                         }
                         break;
                     }
-
                 case 9:
                     {
                         if (this.TrafficStatsEnabled)

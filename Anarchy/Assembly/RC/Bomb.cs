@@ -104,7 +104,7 @@ public class Bomb : Photon.MonoBehaviour
     private void OnEnable()
     {
         disabled = false;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (this.BasePV != null && BasePV.owner != null)
             {

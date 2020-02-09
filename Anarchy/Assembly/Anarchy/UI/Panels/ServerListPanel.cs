@@ -15,7 +15,7 @@ namespace Anarchy.UI
         private const int SettingsPage = 2;
         private const int PasswordRequestPage = 3;
 
-        const int PresetsVisibleCount = 4;
+        const int PresetsVisibleCount = 6;
         const float UpdateTime = 2f;
         private readonly string[] CustomServers = new string[] { "01042015", "verified343" };
 
@@ -91,7 +91,7 @@ namespace Anarchy.UI
         {
             if (string.IsNullOrEmpty(nameFilter))
                 return true;
-            return room.name.ToUpper().Contains(nameFilter.ToUpper());
+            return room.Name.ToUpper().Contains(nameFilter.ToUpper());
         }
 
         [GUIPage(CreationPage, GUIPageType.DisableMethod)]
@@ -246,6 +246,10 @@ namespace Anarchy.UI
             {
                 PhotonNetwork.Disconnect();
             }
+            if (!PhotonNetwork.inRoom)
+            {
+                AnarchyManager.MainMenu.EnableImmediate();
+            }
         }
 
         protected override void OnPanelEnable()
@@ -256,6 +260,7 @@ namespace Anarchy.UI
             connectNext = false;
             regions = locale.GetArray("regions");
             TryConnect(NetworkSettings.PreferedRegion.Value);
+            AnarchyManager.MainMenu.DisableImmediate();
         }
 
         private void OnJoinedLobby(AOTEventArgs args)
@@ -296,7 +301,7 @@ namespace Anarchy.UI
                 }
                 else
                 {
-                    PhotonNetwork.JoinRoom(roomToJoin.name);
+                    PhotonNetwork.JoinRoom(roomToJoin.Name);
                     disconnectByJoin = true;
                     DisableImmediate();
                 }
@@ -338,11 +343,6 @@ namespace Anarchy.UI
 
             LabelCenter(left, locale["dayLight"], true);
             daylight = SelectionGrid(left, daylight, daylights, daylights.Length, true);
-
-            if (Button(left, locale["advancedSettings"], true))
-            {
-
-            }
             left.MoveY();
 
             LabelCenter(left, locale["presets"], true);
@@ -507,7 +507,7 @@ namespace Anarchy.UI
             {
                 foreach (var room in roomList)
                 {
-                    if (Button(scrollRect, room.UIName.ToHTMLFormat(), true) && room.playerCount != room.maxPlayers)
+                    if (Button(scrollRect, room.UIName.ToHTMLFormat(), true) && room.PlayerCount != room.MaxPlayers)
                     {
                         if (room.HasPassword)
                         {
@@ -517,7 +517,7 @@ namespace Anarchy.UI
                         }
                         else
                         {
-                            PhotonNetwork.JoinRoom(room.name);
+                            PhotonNetwork.JoinRoom(room.Name);
                             disconnectByJoin = true;
                             DisableImmediate();
                         }
@@ -566,11 +566,6 @@ namespace Anarchy.UI
             Label(rect, locale["connectionProtocolDescUDP"], true);
             Label(rect, locale["connectionProtocolDescTCP"], true);
             Label(rect, locale["connectionProtocolDescWS"], true);
-            rect.MoveY();
-            LabelCenter(rect, locale["settingsOthers"], true);
-            Label(rect, locale["serializationProtocol"], false);
-            rect.MoveOffsetX(300f);
-            SelectionGrid(rect, NetworkSettings.Protocol, serProtocols, serProtocols.Length);
             rect.ResetX();
             rect.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
             Label(rect, locale["settingsDesc"], true);
@@ -640,7 +635,7 @@ namespace Anarchy.UI
                     {
                         roomList.Add(room);
                     }
-                    playersCount += room.playerCount;
+                    playersCount += room.PlayerCount;
                 }
                 head = $"{locale["connected"]} {regions[region]} [{locale["players"]} {playersCount}, {locale["ping"]} {PhotonNetwork.GetPing()}]";
                 scrollAreaView.height = (Style.Height * roomList.Count) + (Style.VerticalMargin * (roomList.Count - 1));

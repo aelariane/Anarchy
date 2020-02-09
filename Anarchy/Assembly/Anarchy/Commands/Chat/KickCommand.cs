@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Anarchy.Commands.Chat
 {
@@ -9,7 +11,7 @@ namespace Anarchy.Commands.Chat
     {
         private bool ban;
 
-        public KickCommand(bool ban) : base(ban ? "ban" : "kick", true, true, false)
+        public KickCommand(bool ban) : base(ban ? "ban" : "kick", false, true, false)
         {
             this.ban = ban;
         }

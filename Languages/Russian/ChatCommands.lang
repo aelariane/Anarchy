@@ -18,6 +18,7 @@ pmSent:<color=#$maincolor$>ЛС отправлено игроку <color=$subcol
 #Room commands
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>секунд добавлено к времени</color>
 roomMax:<color=#$maincolor$>Количество игроков изменено на <color=#$subcolor$>{0}</color></color>
+roomTimeSet:<color=#$maincolor$>Время комнаты установлено на <color=#$subcolor$>{0}</color></color>
 
 #Restart
 restartMessage:<color=#$maincolor$>Хост рестартнул игру!</color>

@@ -73,10 +73,19 @@ erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>désactivé</col
 deadlycannonsInfoEnabled:<color=#$maincolor$>Mode cannons mortels <color=#$eColor$>activé</color></color>
 deadlycannonsInfoDisabled:<color=#$maincolor$>Mode cannons mortels <color=#$dColor$>désactivé</color></color>
 
+noGuestInfoEnabled:<color=#$maincolor$>No-Guest <color=#$eColor$>activé</color></color>
+noGuestInfoDisabled:<color=#$maincolor$>No-Guest <color=#$dColor$>désactivé</color></color>
+
+antiReviveInfoEnabled:<color=#$maincolor$>Pas de réanimation <color=#$eColor$>activé</color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Pas de réanimation <color=#$dColor$>désactivé</color></color>
+
+afkKillInfoEnabled:<color=#$maincolor$>Tuer les joueurs absent <color=#$eColor$>activé</color> (<color=#$subcolor$>{0} secondes</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>Tuer les joueurs absent <color=#$dColor$>désactivé</color></color>
+
+#Racing
 asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>activé</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>désactivé</color></color>
 
-#Racing
 startTimeInfoEnabled:<color=#$maincolor$>Racing custom start time set to <color=#$subcolor$>{0}</color></color> 
 startTimeInfoDisabled:<color=#$maincolor$>Racing custom start time <color=#$dColor$>disabled</color></color> 
 

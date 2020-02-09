@@ -71,10 +71,10 @@ namespace Anarchy.Network.Discord
             }
             else
             {
-                var text = PhotonNetwork.room.name.Split('`')[0].RemoveHex();
+                var text = PhotonNetwork.room.Name.Split('`')[0].RemoveHex();
                 _presence.state = "Multiplayer: " + ((text.Length > 30) ? (text.Remove(27) + "...") : text);
-                _presence.partySize = PhotonNetwork.room.playerCount;
-                _presence.partyMax = PhotonNetwork.room.maxPlayers;
+                _presence.partySize = PhotonNetwork.room.PlayerCount;
+                _presence.partyMax = PhotonNetwork.room.MaxPlayers;
                 _presence.largeImageKey = FengGameManagerMKII.Level.DiscordName;
                 _presence.largeImageText = FengGameManagerMKII.Level.Name;
             }

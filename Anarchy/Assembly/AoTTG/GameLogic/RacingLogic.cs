@@ -359,11 +359,6 @@ namespace GameLogic
                     center += "\n\n";
                 }
                 topCenter += "\n" + Lang.Format("racingRemaining", (StartTime - Round.Time).ToString("F0"));
-                if (PhotonNetwork.IsMasterClient)
-                {
-                    OnRequireStatus();
-                }
-
             }
 
             Labels.TopCenter = topCenter;
@@ -374,12 +369,19 @@ namespace GameLogic
 
         protected override void UpdateLogic()
         {
-            if (!RaceStart && Round.Time >= StartTime)
+            if (!RaceStart)
             {
-                RaceStart = true;
-                TryDestroyDoors();
-                Labels.TopCenter = string.Empty;
-                Labels.Center = string.Empty;
+                if (Round.Time >= StartTime)
+                {
+                    RaceStart = true;
+                    TryDestroyDoors();
+                    Labels.TopCenter = string.Empty;
+                    Labels.Center = string.Empty;
+                }
+                if (GameModes.RacingRestartTime.Enabled && PhotonNetwork.IsMasterClient)
+                {
+                    OnRequireStatus();
+                }
             }
             if (needDestroyDoors && !doorsDestroyed && RaceStart && CustomLevel.customLevelLoaded)
             {
@@ -409,9 +411,7 @@ namespace GameLogic
                 if (this.MyRespawnTime > 1.5f)
                 {
                     this.MyRespawnTime = 0f;
-                    IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
                     FengGameManagerMKII.FGM.SpawnPlayer(FengGameManagerMKII.FGM.myLastHero);
-                    IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
                     Labels.Center = string.Empty;
                 }
             }

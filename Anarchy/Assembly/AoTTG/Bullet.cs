@@ -79,7 +79,7 @@ public class Bullet : Photon.MonoBehaviour
                 switch (tf.gameObject.layer)
                 {
                     case Layers.EnemyBoxN:
-                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                         {
                             BasePV.RPC("tieMeToOBJ", PhotonTargets.Others, new object[] { raycastHit.collider.transform.root.gameObject.GetPhotonView().viewID });
                         }
@@ -93,7 +93,7 @@ public class Bullet : Photon.MonoBehaviour
 
                     case Layers.NetworkObjectN:
                         if (!tf.gameObject.CompareTag("Player") || leviMode) break;
-                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                         {
                             BasePV.RPC("tieMeToOBJ", PhotonTargets.Others, new object[] { tf.root.gameObject.GetPhotonView().viewID });
                         }
@@ -113,7 +113,7 @@ public class Bullet : Photon.MonoBehaviour
                     if (this.phase != 2)
                     {
                         this.phase = 1;
-                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                         {
                             BasePV.RPC("setPhase", PhotonTargets.Others, new object[] { 1 });
                             BasePV.RPC("tieMeTo", PhotonTargets.Others, new object[] { baseT.position });
@@ -132,7 +132,7 @@ public class Bullet : Photon.MonoBehaviour
             if (this.killTime2 > 0.8f)
             {
                 this.phase = 4;
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     BasePV.RPC("setPhase", PhotonTargets.Others, new object[] { 4 });
                 }
@@ -343,7 +343,7 @@ public class Bullet : Photon.MonoBehaviour
     {
         this.phase = 2;
         this.killTime = 0f;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             BasePV.RPC("setPhase", PhotonTargets.Others, new object[] { 2 });
         }

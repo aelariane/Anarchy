@@ -14,7 +14,7 @@ public class BombExplode : Photon.MonoBehaviour
 
     public void OnEnable()
     {
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (BasePV != null && BasePV.owner != null)
             {

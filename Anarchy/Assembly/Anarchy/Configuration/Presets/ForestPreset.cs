@@ -49,13 +49,13 @@ namespace Anarchy.Configuration.Presets
         public ForestPreset(string name) : base(name, ForestPath)
         {
             data = new string[Length].Select(x => string.Empty).ToArray();
-            LinkedSkybox = "$Not define$";
+            LinkedSkybox = Anarchy.Configuration.StringSetting.NotDefine;
         }
 
         public override void Draw(SmartRect rect, Locale locale)
         {
             int index = 0;
-            if (LinkedSkybox != "$Not define$")
+            if (LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 Label(rect, locale.Format("linkedBox", LinkedSkybox), true);
             }
@@ -105,13 +105,13 @@ namespace Anarchy.Configuration.Presets
                 {
                     data[i] = file.GetString("leaves" + (i - 1).ToString(), string.Empty);
                 }
-                LinkedSkybox = file.GetString("skybox", "$Not define$");
-                if(LinkedSkybox != "$Not define$")
+                LinkedSkybox = file.GetString("skybox", Anarchy.Configuration.StringSetting.NotDefine);
+                if(LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
                 {
                     SkyboxPreset set = new SkyboxPreset(LinkedSkybox);
                     if (!set.Exists())
                     {
-                        LinkedSkybox = "$Not define$";
+                        LinkedSkybox = Anarchy.Configuration.StringSetting.NotDefine;
                     }
                 }
                 RandomizePairs = file.GetBool("randomizePairs", false);

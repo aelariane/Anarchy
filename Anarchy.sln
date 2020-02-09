@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Anarchy\Assembly\Assembly-CSharp.csproj", "{FFF16F95-8AF6-41B2-9FD1-5F82FEAA3E61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photon3Unity3D", "Anarchy\Photon\Photon3Unity3D.csproj", "{1B1B937E-A32E-44F7-8A04-EE4CE415BFA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61AE834A-671A-4599-B3CA-80AA69F145FC} = {61AE834A-671A-4599-B3CA-80AA69F145FC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antis", "Anarchy\Antis\Antis.csproj", "{61AE834A-671A-4599-B3CA-80AA69F145FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +36,14 @@ Global
 		{1B1B937E-A32E-44F7-8A04-EE4CE415BFA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1B1B937E-A32E-44F7-8A04-EE4CE415BFA7}.Release|x86.ActiveCfg = Release|Any CPU
 		{1B1B937E-A32E-44F7-8A04-EE4CE415BFA7}.Release|x86.Build.0 = Release|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

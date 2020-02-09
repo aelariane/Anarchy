@@ -38,7 +38,7 @@ presets:<color=red>Presets</color>
 presetName:Preset name:
 presetAdd:Add
 presetRemove:Remove
-presetNote:<color=yellow>Note: Scrollable at 5+ presets</color>
+presetNote:<color=yellow>Note: Scrollable at 6+ presets</color>
 advancedSettings:Advanced settings
 customServer:Custom server:
 joinRoom:Try to join room

@@ -59,7 +59,7 @@ public class ChangeQuality : MonoBehaviour
     {
         if(Anarchy.Configuration.VideoSettings.Quality != null)
         {
-            setQuality(Anarchy.Configuration.VideoSettings.Quality);
+            setQuality(Anarchy.Configuration.VideoSettings.Quality.Value);
         }
     }
 

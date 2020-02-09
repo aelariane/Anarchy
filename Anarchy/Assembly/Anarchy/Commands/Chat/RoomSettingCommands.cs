@@ -1,4 +1,6 @@
-﻿namespace Anarchy.Commands.Chat
+﻿using System.Collections.Generic;
+
+namespace Anarchy.Commands.Chat
 {
     internal class RoomSettingCommands : ChatCommand
     {
@@ -18,7 +20,7 @@
                         chatMessage = Lang.Format("errArg", CommandName + " max");
                         return false;
                     }
-                    PhotonNetwork.room.maxPlayers = max;
+                    PhotonNetwork.room.MaxPlayers = max;
                     chatMessage = Lang.Format("roomMax", max.ToString());
                     SendLocalizedText("roomMax", new string[] { max.ToString() });
                     break;

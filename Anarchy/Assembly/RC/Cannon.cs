@@ -1,5 +1,6 @@
 ﻿using System;
 using Anarchy;
+using Anarchy.InputPos;
 using Optimization.Caching;
 using RC;
 using UnityEngine;
@@ -244,7 +245,7 @@ public class Cannon : Photon.MonoBehaviour
                 a2 += a * d;
             }
             float num = 30f;
-            bool flag2 = InputManager.IsInputCannon(6);
+            bool flag2 = InputManager.IsInputCannonHolding((int)InputCannon.CannonSlow);
             if (flag2)
             {
                 num = 5f;
@@ -252,7 +253,7 @@ public class Cannon : Photon.MonoBehaviour
             bool flag3 = this.isCannonGround;
             if (flag3)
             {
-                bool flag4 = InputManager.IsInputCannon(0);
+                bool flag4 = InputManager.IsInputCannonHolding((int)InputCannon.CannonUp);
                 if (flag4)
                 {
                     bool flag5 = this.currentRot <= 32f;
@@ -264,21 +265,21 @@ public class Cannon : Photon.MonoBehaviour
                 }
                 else
                 {
-                    bool flag6 = InputManager.IsInputCannon(1) && this.currentRot >= -18f;
+                    bool flag6 = InputManager.IsInputCannonHolding((int)InputCannon.CannonDown) && this.currentRot >= -18f;
                     if (flag6)
                     {
                         this.currentRot += Time.deltaTime * -num;
                         this.barrel.Rotate(new Vector3(0f, 0f, Time.deltaTime * -num));
                     }
                 }
-                bool flag7 = InputManager.IsInputCannon(2);
+                bool flag7 = InputManager.IsInputCannonHolding((int)InputCannon.CannonLeft);
                 if (flag7)
                 {
                     base.transform.Rotate(new Vector3(0f, Time.deltaTime * -num, 0f));
                 }
                 else
                 {
-                    bool flag8 = InputManager.IsInputCannon(3);
+                    bool flag8 = InputManager.IsInputCannonHolding((int)InputCannon.CannonRight);
                     if (flag8)
                     {
                         base.transform.Rotate(new Vector3(0f, Time.deltaTime * num, 0f));
@@ -287,7 +288,7 @@ public class Cannon : Photon.MonoBehaviour
             }
             else
             {
-                bool flag9 = InputManager.IsInputCannon(0);
+                bool flag9 = InputManager.IsInputCannonHolding((int)InputCannon.CannonUp);
                 if (flag9)
                 {
                     bool flag10 = this.currentRot >= -50f;
@@ -299,35 +300,35 @@ public class Cannon : Photon.MonoBehaviour
                 }
                 else
                 {
-                    bool flag11 = InputManager.IsInputCannon(1) && this.currentRot <= 40f;
+                    bool flag11 = InputManager.IsInputCannonHolding((int)InputCannon.CannonDown) && this.currentRot <= 40f;
                     if (flag11)
                     {
                         this.currentRot += Time.deltaTime * num;
                         this.barrel.Rotate(new Vector3(Time.deltaTime * num, 0f, 0f));
                     }
                 }
-                bool flag12 = InputManager.IsInputCannon(2);
+                bool flag12 = InputManager.IsInputCannonHolding((int)InputCannon.CannonLeft);
                 if (flag12)
                 {
                     base.transform.Rotate(new Vector3(0f, Time.deltaTime * -num, 0f));
                 }
                 else
                 {
-                    bool flag13 = InputManager.IsInputCannon(3);
+                    bool flag13 = InputManager.IsInputCannonHolding((int)InputCannon.CannonRight);
                     if (flag13)
                     {
                         base.transform.Rotate(new Vector3(0f, Time.deltaTime * num, 0f));
                     }
                 }
             }
-            bool flag14 = InputManager.IsInputCannon(4);
+            bool flag14 = InputManager.IsInputCannonDown((int)InputCannon.CannonFire);
             if (flag14)
             {
                 this.Fire();
             }
             else
             {
-                bool flag15 = InputManager.IsInputCannon(5);
+                bool flag15 = InputManager.IsInputCannonDown((int)InputCannon.CannonMount);
                 if (flag15)
                 {
                     bool flag16 = this.myHero != null;

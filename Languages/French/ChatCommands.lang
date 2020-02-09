@@ -18,6 +18,7 @@ pmSent:<color=#$maincolor$>MP envoyé à l'ID <color=$subcolor$>{0}</color> (<co
 errRoom:<color=red>Erreur: Commande pour le serveur <color=yellow>"{0}"</color> non trouvé</color>
 roomTime:<color=#$maincolor$>{0}</color> <color=#$subcolor$>secondes ajoutés au temps</color>
 roomMax:<color=#$maincolor$>Nombre de joueurs maximum mis à <color=#$subcolor$>{0}</color></color>
+roomTimeSet:<color=#$maincolor$>Temps de la partie paramétrée à <color=#$subcolor$>{0}</color></color>
 
 #Restart
 restartMessage:<color=#$maincolor$>Masterclient a redémarré la partie</color>

@@ -110,6 +110,10 @@ namespace Anarchy.Skins
         {
             if (element != null && element.IsDone)
             {
+                if(!canBeTransparent && element.IsTransparent)
+                {
+                    return;
+                }
                 if (canBeTransparent && element.IsTransparent)
                 {
                     rend.enabled = false;

@@ -73,10 +73,19 @@ erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>deshabilitada</c
 deadlycannonsInfoEnabled:<color=#$maincolor$>Modo de cañones mortales <color=#$eColor$>habilitada</color></color>
 deadlycannonsInfoDisabled:<color=#$maincolor$>Modo de cañones mortales <color=#$dColor$>deshabilitada</color></color>
 
+noGuestInfoEnabled:<color=#$maincolor$>No-Guest <color=#$eColor$>habilitado</color></color>
+noGuestInfoDisabled:<color=#$maincolor$>No-Guest <color=#$dColor$>deshabilitado</color></color>
+
+antiReviveInfoEnabled:<color=#$maincolor$>Anti-Revivir <color=#$eColor$>habilitado</color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Anti-Revivir <color=#$dColor$>deshabilitado</color></color>
+
+afkKillInfoEnabled:<color=#$maincolor$>Matar Jugador AFK <color=#$eColor$>habilitado</color> (<color=#$subcolor$>{0} segundos</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>Matar Jugador AFK <color=#$dColor$>deshabilitado</color></color>
+
+#Racing
 asoracingInfoEnabled:<color=#$maincolor$>ASO Carreras <color=#$eColor$>habilitada</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Carreras <color=#$dColor$>deshabilitada</color></color>
 
-#Racing
 startTimeInfoEnabled:<color=#$maincolor$>Tiempo de inicio de carrera personalizada, establecida en <color=#$subcolor$>{0}</color></color> 
 startTimeInfoDisabled:<color=#$maincolor$>Tiempo de inicio personalizado <color=#$dColor$>deshabilitada</color></color> 
 

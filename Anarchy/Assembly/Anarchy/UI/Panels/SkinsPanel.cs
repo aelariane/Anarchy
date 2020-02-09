@@ -189,6 +189,7 @@ namespace Anarchy.UI
         private void HumansPage()
         {
             left.Reset();
+            ToggleButton(left, SkinSettings.DisableCustomGas, locale["disableCustomGas"], true);
             SelectionGrid(left, SkinSettings.HumanSkins, locale.GetArray("skinStateSelection"), 3, true);
             left.MoveY();
             DrawControlElements();
@@ -247,7 +248,7 @@ namespace Anarchy.UI
         {
             if (currentSet != null)
             {
-                currentSet.Value = skinSelection < 0 ? "$Not define$" : presets[skinSelection].Name;
+                currentSet.Value = skinSelection < 0 ? Anarchy.Configuration.StringSetting.NotDefine : presets[skinSelection].Name;
             }
             SavePresets();
         }

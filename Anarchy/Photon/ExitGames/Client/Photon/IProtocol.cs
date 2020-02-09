@@ -42,23 +42,23 @@ namespace ExitGames.Client.Photon
 
 		public object Deserialize(StreamBuffer stream)
 		{
-			return this.Deserialize(stream, stream.ReadByte());
+			return this.Deserialize(stream, stream.ReadByteAsByte());
 		}
 
 		public object Deserialize(byte[] serializedData)
 		{
 			StreamBuffer streamBuffer = new StreamBuffer(serializedData);
-			return this.Deserialize(streamBuffer, streamBuffer.ReadByte());
+			return this.Deserialize(streamBuffer, streamBuffer.ReadByteAsByte());
 		}
 
 		public object DeserializeMessage(StreamBuffer stream)
 		{
-			return this.Deserialize(stream, stream.ReadByte());
+			return this.Deserialize(stream, stream.ReadByteAsByte());
 		}
 
 		internal void SerializeMessage(StreamBuffer ms, object msg)
 		{
 			this.Serialize(ms, msg, true);
 		}
-	}
+    }
 }

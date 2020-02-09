@@ -20,6 +20,7 @@ restartMessage:<color=#$maincolor$>Masterclient has restarted the game</color>
 #Room commands
 errRoom:<color=red>Error: room command <color=yellow>"{0}"</color> not found</color>
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>seconds add to time</color>
+roomTimeSet:<color=#$maincolor$>Room time set to <color=#$subcolor$>{0}</color></color>
 roomMax:<color=#$maincolor$>Max players set to <color=#$subcolor$>{0}</color></color>
 
 #Pause

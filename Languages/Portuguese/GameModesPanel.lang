@@ -1,5 +1,5 @@
 ﻿title:Configurações de Jogo
-selections:Titã,PvP,Utilitário,Bombas
+selections:Titã,PvP,Utilitário,Corrida
 btnClose:Fechar
 
 #Titans
@@ -72,6 +72,14 @@ horseState:Permitir cavalos:
 
 motd:Mensagem do dia!
 
+noGuestState:Anti-Guest:
+
+antiReviveState:Anti-Reviver abusivo:
+
+afkKillState:Matar jogadores AFK:
+afkKillInt0:Segundos AFK:
+
+#Racing
 asoracingState:Corrida ASO(Infinita):
 
 startTimeState:Usar tempo customizado de inicializacao:

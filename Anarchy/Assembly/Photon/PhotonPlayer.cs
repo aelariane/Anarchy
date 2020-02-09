@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Antis.Spam;
 using ExitGames.Client.Photon;
 using UnityEngine;
 
@@ -14,29 +15,17 @@ public class PhotonPlayer
     private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
 
-    private string _nameField = string.Empty;
     private bool anarchySync = false;
+    public ICounter<byte> EventSpam;
     public readonly int ID;
+    public ICounter<string> InstantiateSpam;
     public readonly bool IsLocal;
+    private string modName = ModNames.Vanilla;
+    private string nameField = string.Empty;
+    private readonly RaiseEventOptions option = new RaiseEventOptions();
     private bool rcSync = false;
-    private string modName = "[CCCCCC][V]";
-
-    public string ModName
-    {
-        get => modName;
-        set
-        {
-            if(value == null)
-            {
-                return;
-            }
-            modName = value;
-            if(FengGameManagerMKII.FGM && FengGameManagerMKII.FGM.playerList != null)
-            {
-                FengGameManagerMKII.FGM.playerList.Update();
-            }
-        }
-    }
+    public ICounter<string> RPCSpam;
+    private readonly int[] targetArray; 
 
     public bool AnarchySync
     {
@@ -65,7 +54,7 @@ public class PhotonPlayer
                     vanillaUsersList.Remove(this);
                     vanillaUsersArray = vanillaUsersList.ToArray();
                 }
-                ModName = "[00BBCC][A]";
+                ModName = ModNames.Anarchy;
             }
             else if (anarchySync && !value && !IsLocal)
             {
@@ -81,9 +70,28 @@ public class PhotonPlayer
         }
     }
 
+    public GameObject GameObject { get; set; } = null;
+
     public bool HasVoice { get; set; }
 
     public bool IsMuted { get; set; }
+
+    public string ModName
+    {
+        get => modName;
+        set
+        {
+            if (value == null)
+            {
+                return;
+            }
+            modName = value;
+            if (FengGameManagerMKII.FGM && FengGameManagerMKII.FGM.playerList != null)
+            {
+                FengGameManagerMKII.FGM.playerList.Update();
+            }
+        }
+    }
 
     public bool RCIgnored { get; set; }
 
@@ -105,7 +113,12 @@ public class PhotonPlayer
                     rcUsersList.Add(this);
                     rcUsersArray = rcUsersList.ToArray();
                 }
-                ModName = "[9999FF][RC]";
+                if (!notAnarchyUsersList.Contains(this))
+                {
+                    notAnarchyUsersList.Add(this);
+                    notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+                }
+                ModName = ModNames.RC;
             }
         }
     }
@@ -115,11 +128,13 @@ public class PhotonPlayer
     static PhotonPlayer()
     {
         NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
+        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnPhotonPlayerDisconnected, OnPhotonPlayerDisconnected);
     }
 
-    public PhotonPlayer(bool isLocal, int actorID, string name)
+    private PhotonPlayer(int actorID, bool isLocal)
     {
         Properties = new Hashtable();
+        ID = actorID;
         this.IsLocal = isLocal;
         if (!isLocal)
         {
@@ -128,40 +143,28 @@ public class PhotonPlayer
             notAnarchyUsersList.Add(this);
             notAnarchyUsersArray = notAnarchyUsersList.ToArray();
         }
-        ID = actorID;
-        _nameField = name;
         if (isLocal)
         {
             AnarchySync = true;
             HasVoice = true;
-            if (global::Anarchy.AnarchyManager.CustomVersion)
-            {
-                ModName = $"[00BBCC][A[CCCCDD]({(global::Anarchy.AnarchyManager.CustomName != string.Empty ? global::Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
-            }
+            ModName = string.Format(ModNames.AnarchyCustom, (Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Custom"));
         }
+        targetArray = new int[] { ID };
+        option = new RaiseEventOptions() { TargetActors = targetArray };
+        InitializeCounters();
     }
 
-    protected internal PhotonPlayer(bool isLocal, int actorID, Hashtable properties)
+    public PhotonPlayer(bool isLocal, int actorID, string name) : this(actorID, isLocal)
     {
-        Properties = new Hashtable();
-        this.IsLocal = isLocal;
-        if (!isLocal)
-        {
-            vanillaUsersList.Add(this);
-            vanillaUsersArray = vanillaUsersList.ToArray();
-            notAnarchyUsersList.Add(this);
-            notAnarchyUsersArray = notAnarchyUsersList.ToArray();
-        }
-        ID = actorID;
+        nameField = name;
+    }
+
+    protected internal PhotonPlayer(bool isLocal, int actorID, Hashtable properties) : this(actorID, isLocal)
+    {
         InternalCacheProperties(properties);
-        if (isLocal)
+        if (!isLocal)
         {
-            AnarchySync = true;
-            HasVoice = true;
-            if (global::Anarchy.AnarchyManager.CustomVersion)
-            {
-                ModName = $"[00BBCC][A[CCCCDD]({(global::Anarchy.AnarchyManager.CustomName != string.Empty ? global::Anarchy.AnarchyManager.CustomName : "Cus")})[-]]";
-            }
+            RCSync = properties.ContainsKey("RCteam");
         }
     }
 
@@ -253,7 +256,7 @@ public class PhotonPlayer
 
     public PhotonPlayer GetNext() => GetNextFor(ID);
 
-    public PhotonPlayer GetNextFor(PhotonPlayer currentPlayer) => currentPlayer == null ? GetNextFor(currentPlayer.ID) : null;
+    public PhotonPlayer GetNextFor(PhotonPlayer currentPlayer) => currentPlayer != null ? GetNextFor(currentPlayer.ID) : null;
 
     public PhotonPlayer GetNextFor(int currentPlayerId)
     {
@@ -278,6 +281,13 @@ public class PhotonPlayer
         return (num == int.MaxValue) ? mActors[num2] : mActors[num];
     }
 
+    private void InitializeCounters()
+    {
+        EventSpam = new EventsCounter(ID);
+        RPCSpam = new RPCCounter(ID);
+        InstantiateSpam = new InstantiateCounter(ID);
+    }
+
     internal void InternalChangeLocalID(int newID)
     {
         if (!this.IsLocal)
@@ -285,11 +295,13 @@ public class PhotonPlayer
             Debug.LogError("ERROR You should never change PhotonPlayer IDs!");
             return;
         }
-        var info = this.GetType().GetField(nameof(ID), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+        var info = GetType().GetField(nameof(ID), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
         if (info != null)
         {
-            info.SetValue(this, (object)newID);
+            info.SetValue(this, newID);
+            InitializeCounters();
         }
+        targetArray[0] = ID;
 
     }
 
@@ -305,7 +317,7 @@ public class PhotonPlayer
         }
         if (properties.ContainsKey(byte.MaxValue))
         {
-            this._nameField = (string)properties[byte.MaxValue];
+            this.nameField = (string)properties[byte.MaxValue];
         }
         this.Properties.MergeStringKeys(properties);
         this.Properties.StripKeysWithNullValues();
@@ -326,6 +338,34 @@ public class PhotonPlayer
         vanillaUsersArray = vanillaUsersList.ToArray();
         notAnarchyUsersList.Clear();
         notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+    }
+
+    private static void OnPhotonPlayerDisconnected(Optimization.AOTEventArgs args)
+    {
+        PhotonPlayer player = args.Player;
+        if(player != null)
+        {
+            if (anarchyUsersList.Contains(player))
+            {
+                anarchyUsersList.Remove(player);
+                anarchyUsersArray = anarchyUsersList.ToArray();
+            }
+            if (rcUsersList.Contains(player))
+            {
+                rcUsersList.Remove(player);
+                rcUsersArray = rcUsersList.ToArray();
+            }
+            if (vanillaUsersList.Contains(player))
+            {
+                vanillaUsersList.Remove(player);
+                vanillaUsersArray = vanillaUsersList.ToArray();
+            }
+            if (notAnarchyUsersList.Contains(player))
+            {
+                notAnarchyUsersList.Remove(player);
+                notAnarchyUsersArray = notAnarchyUsersList.ToArray();
+            }
+        }
     }
 
     public bool RemoveProperty(string property)
@@ -352,14 +392,24 @@ public class PhotonPlayer
         NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { this, propertiesToSet });
     }
 
+    public RaiseEventOptions ToOption()
+    {
+        return option;
+    }
+
     public override string ToString()
     {
-        return string.IsNullOrEmpty(_nameField) ? $"#{this.ID:00}{((!IsMasterClient) ? string.Empty : "(master)")}" : $"'{_nameField}'{((!IsMasterClient) ? string.Empty : "(master)")}";
+        return string.IsNullOrEmpty(nameField) ? $"#{this.ID:00}{((!IsMasterClient) ? string.Empty : "(master)")}" : $"'{nameField ?? "nameField"}'{((!IsMasterClient) ? string.Empty : "(master)")}";
     }
 
     public string ToStringFull()
     {
-        return $"#{this.ID:00} '{_nameField}' {this.Properties.ToStringFull()}";
+        return $"#{this.ID:00} '{nameField}' {this.Properties.ToStringFull()}";
+    }
+
+    public int[] ToTargetArray() 
+    {
+        return targetArray;
     }
 
     public void Unmute()
@@ -373,7 +423,7 @@ public class PhotonPlayer
         {
             Hashtable hashtable = new Hashtable();
             hashtable.Merge(Properties);
-            hashtable[byte.MaxValue] = _nameField;
+            hashtable[byte.MaxValue] = nameField;
             return hashtable;
         }
     }
@@ -383,7 +433,6 @@ public class PhotonPlayer
         get => Properties[PhotonPlayerProperty.character] as string ?? "Levi";
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.character, value } });
         }
     }
@@ -393,7 +442,6 @@ public class PhotonPlayer
         get => Properties[PhotonPlayerProperty.currentLevel] as string ?? "";
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.currentLevel, value } });
         }
     }
@@ -405,7 +453,6 @@ public class PhotonPlayer
         get => Properties != null && Properties[PhotonPlayerProperty.dead] is bool dead && dead;
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.dead, value } });
         }
     }
@@ -415,8 +462,21 @@ public class PhotonPlayer
         get => Properties == null || !(Properties[PhotonPlayerProperty.deaths] is int deaths) ? -1 : deaths;
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.deaths, value } });
+        }
+    }
+
+    public string FriendName
+    {
+        get => nameField;
+        set
+        {
+            if (!this.IsLocal)
+            {
+                Debug.LogError("Error: Cannot change the name of a remote player!");
+                return;
+            }
+            this.nameField = value;
         }
     }
 
@@ -425,11 +485,9 @@ public class PhotonPlayer
         get => Properties == null ? "Unknown" : Properties[PhotonPlayerProperty.guildName] as string ?? "Unknown";
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.guildName, value } });
         }
     }
-
 
     public bool IsMasterClient => NetworkingPeer.mMasterClient.ID == ID;
 
@@ -438,7 +496,6 @@ public class PhotonPlayer
         get => Properties != null && Properties[PhotonPlayerProperty.isTitan] is int tit && tit == 2;
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.isTitan, value ? 2 : 1 } });
         }
     }
@@ -448,7 +505,6 @@ public class PhotonPlayer
         get => Properties == null || !(Properties[PhotonPlayerProperty.kills] is int kills) ? -1 : kills;
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.kills, value } });
         }
     }
@@ -458,22 +514,7 @@ public class PhotonPlayer
         get => Properties == null || !(Properties[PhotonPlayerProperty.max_dmg] is int max) ? -1 : max;
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.max_dmg, value } });
-        }
-    }
-
-    public string Name
-    {
-        get => _nameField;
-        set
-        {
-            if (!this.IsLocal)
-            {
-                Debug.LogError("Error: Cannot change the name of a remote player!");
-                return;
-            }
-            this._nameField = value;
         }
     }
 
@@ -571,9 +612,9 @@ public class PhotonPlayer
 
     public int RCteam
     {
-        get => Properties == null || !(Properties["RCteam"] is int team) ? 1 : team; set
+        get => Properties == null || !(Properties["RCteam"] is int team) ? 1 : team;
+        set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { "RCteam", value } });
         }
     }
@@ -590,7 +631,6 @@ public class PhotonPlayer
         }
         set
         {
-            if (Properties == null) return;
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.team, value } });
         }
     }

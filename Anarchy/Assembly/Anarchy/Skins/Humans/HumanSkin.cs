@@ -20,7 +20,7 @@ namespace Anarchy.Skins.Humans
             {
                 renderers.Add(i, GetRenderers(i));
             }
-            int key = IN_GAME_MAIN_CAMERA.GameType == GameType.Multi ? owner.BasePV.owner.ID : -1;
+            int key = IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer ? owner.BasePV.owner.ID : -1;
             if (Storage.ContainsKey(key))
             {
                 elements = Storage[key];
@@ -36,6 +36,10 @@ namespace Anarchy.Skins.Humans
             HERO hero = Owner.GetComponent<HERO>();
             foreach (KeyValuePair<int, Renderer[]> pair in renderers)
             {
+                if (pair.Key == (int)HumanParts.Gas && Configuration.SkinSettings.DisableCustomGas.Value)
+                {
+                    continue;
+                }
                 SkinElement skin = elements[pair.Key];
                 if (skin.IsDone && pair.Value != null)
                 {

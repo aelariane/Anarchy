@@ -29,7 +29,7 @@ public class SelfDestroy : Photon.MonoBehaviour
                 Pool.Disable(gameObject);
                 return;
             }
-            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 if (BasePV != null)
                 {

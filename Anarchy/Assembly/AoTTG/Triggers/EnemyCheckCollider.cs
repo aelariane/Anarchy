@@ -53,7 +53,7 @@ public class EnemyCheckCollider : Photon.MonoBehaviour
                             component.transform.root.GetComponent<HERO>().blowAway(vector.normalized * num3 + Vector3.up * 1f);
                             return;
                         }
-                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                         {
                             object[] parameters = new object[]
                             {
@@ -74,7 +74,7 @@ public class EnemyCheckCollider : Photon.MonoBehaviour
                                 return;
                             }
                         }
-                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
                         {
                             component.transform.root.GetComponent<HERO>().markDie();
                             int myOwnerViewID = -1;

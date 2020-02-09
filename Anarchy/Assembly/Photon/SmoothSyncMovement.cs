@@ -3,10 +3,13 @@ using UnityEngine;
 
 class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
 {
+    private float activityTime = 0f;
     private Rigidbody baseR;
     private Transform baseT;
     private Vector3 correctPlayerPos = Vectors.zero;
     private Quaternion correctPlayerRot = Quaternion.identity;
+    private Vector3 oldPlayerPos = Vectors.zero;
+    private Quaternion oldPlayerRot = Quaternion.identity;
     private Vector3 correctPlayerVelocity = Vectors.zero;
     public Quaternion CorrectCameraRot;
     public bool Disabled;
@@ -63,6 +66,19 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
         {
             this.correctPlayerPos = (Vector3)stream.ReceiveNext();
             this.correctPlayerRot = (Quaternion)stream.ReceiveNext();
+            if(PhotonNetwork.IsMasterClient && Anarchy.GameModes.AFKKill.Enabled)
+            {
+                if(oldPlayerPos != correctPlayerPos)
+                {
+                    activityTime = 0f;
+                    oldPlayerPos = correctPlayerPos;
+                }
+                if(oldPlayerRot != correctPlayerRot)
+                {
+                    activityTime = 0f;
+                    oldPlayerRot = correctPlayerRot;
+                }
+            }
             if (!noVelocity)
             {
                 this.correctPlayerVelocity = (Vector3)stream.ReceiveNext();
@@ -85,6 +101,14 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
             float delta = Time.deltaTime * SmoothingDelay;
             baseT.position = Vector3.Lerp(baseT.position, correctPlayerPos, delta);
             baseT.rotation = Quaternion.Lerp(baseT.rotation, correctPlayerRot, delta);
+            if(PhotonNetwork.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING & FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && !Anarchy.GameModes.EndlessRespawn.Enabled && Anarchy.GameModes.AFKKill.Enabled && oldPlayerPos == correctPlayerPos && oldPlayerRot == correctPlayerRot)
+            {
+                activityTime += Time.deltaTime;
+                if(activityTime >= Anarchy.GameModes.AFKKill.GetInt(0))
+                {
+                    this.BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, "AFK Kill " });
+                }
+            }
         }
         if (!noVelocity)
         {

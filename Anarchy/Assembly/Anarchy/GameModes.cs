@@ -9,10 +9,12 @@ namespace Anarchy
 {
     public class GameModes
     {
-        public static StringSetting DisabledColor = new StringSetting(nameof(EnabledColor), "CCFFCC");
-        public static StringSetting EnabledColor = new StringSetting(nameof(EnabledColor), "FFAACC");
+        public static StringSetting DisabledColor = new StringSetting(nameof(DisabledColor), "FFAACC");
+        public static StringSetting EnabledColor = new StringSetting(nameof(EnabledColor), "CCFFCC");
 
         private static List<GameModeSetting> allGameSettings;
+        public static List<int> AntiReviveList = new List<int>();
+
         private static Hashtable oldHash = new Hashtable();
         private static Hashtable infection = new Hashtable();
 
@@ -46,9 +48,61 @@ namespace Anarchy
         public static readonly AnarchyGameModeSetting RacingFinishersRestart = new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new int[] { 5 });
         public static readonly AnarchyGameModeSetting RacingTimeLimit = new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new int[] { 500 });
         public static readonly AnarchyGameModeSetting RacingRestartTime = (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new int[] { 999 }).RemoveCallback(AnarchyGameModeSetting.AnarchySettingCallback).AddCallback(RacingLogic.RestartTimeCheck);
+        public static readonly AnarchyGameModeSetting NoGuest = new AnarchyGameModeSetting("noGuest");
+        public static readonly AnarchyGameModeSetting AntiRevive = new AnarchyGameModeSetting("antiRevive");
+        public static readonly AnarchyGameModeSetting AFKKill = new AnarchyGameModeSetting("afkKill,afkKillTime", new int[] { 20 });
         public static readonly GameModeSetting ASORacing = new GameModeSetting("asoracing").AddCallback(RacingLogic.ASORacingCheck);
 
 
+        public static bool AntiReviveAdd(int ID)
+        {
+            if (AntiReviveEnabled() && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING && FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && FengGameManagerMKII.FGM.Logic.RoundTime > 10f)
+            {
+                if (AntiReviveList.Contains(ID))
+                {
+                    return false;
+                }
+                AntiReviveList.Add(ID);
+                return true;
+            }
+            return false;
+        }
+
+        public static bool AntiReviveCheck(int ID, HERO hero)
+        {
+            if (AntiReviveEnabled())
+            {
+                if (AntiReviveList.Contains(ID))
+                {
+                    hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, "Anti-Revive " });
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public static void AntiReviveClear()
+        {
+            if (AntiReviveEnabled())
+            {
+                AntiReviveList.Clear();
+            }
+        }
+
+        public static bool AntiReviveEnabled()
+        {
+            return IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && AntiRevive.Enabled;
+        }
+
+        public static bool AntiReviveRemove(int ID)
+        {
+            if (AntiReviveEnabled())
+            {
+                return AntiReviveList.Remove(ID);
+            }
+            return false;
+        }
 
         public static void AddSetting(GameModeSetting set)
         {
@@ -62,7 +116,7 @@ namespace Anarchy
         {
             yield return new UnityEngine.WaitForSeconds(time);
             PhotonPlayer player = PhotonPlayer.Find(id);
-            if (player.Dead && !player.IsTitan)
+            if (player != null && player.Dead && !player.IsTitan)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", player, new object[0]);
             }
@@ -71,7 +125,7 @@ namespace Anarchy
 
         public static System.Collections.IEnumerator CheckGameEnd()
         {
-            yield return new UnityEngine.WaitForSeconds(0.03f);
+            yield return new UnityEngine.WaitForSeconds(0.05f);
             if (PhotonNetwork.IsMasterClient && CheckPVPWinner())
             {
                 yield break;
@@ -173,6 +227,16 @@ namespace Anarchy
                     FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
                     {
                         $"Team <color={(teamCyanWin ? "cyan>cyan" : "magenta>magenta")}</color> wins.",
+                        ""
+                    });
+                    return true;
+                }
+                else if(teamMagentaWin && teamCyanWin)
+                {
+                    FengGameManagerMKII.FGM.GameWin();
+                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
+                    {
+                        $"Nobody wins.",
                         ""
                     });
                     return true;
@@ -424,15 +488,15 @@ namespace Anarchy
                         {
                             anarchyString += "\n";
                         }
-                        anarchyString += setting.ToString(false);
+                        anarchyString += setting.ToString();
                     }
-                    if (!player.RCSync)
+                    else if (!player.RCSync)
                     {
                         if (vanillaString.Length > 0)
                         {
                             vanillaString += "\n";
                         }
-                        vanillaString += set.ToString(false);
+                        vanillaString += set.ToString();
                     }
                 }
             }

@@ -9,7 +9,7 @@ namespace Anarchy.Skins
         private const int AllowedSize = 1000000;
 
         public bool IsDone { get; private set; } = false;
-        public bool IsTransparent => Path.ToLower().Equals("transparent");
+        public bool IsTransparent => Path.ToLower().Trim().Equals("transparent");
         public bool NeedReload { get; private set; }
         public string Path { get; private set; }
         public Texture2D Texture { get; private set; }

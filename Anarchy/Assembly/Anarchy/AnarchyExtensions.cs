@@ -1,10 +1,11 @@
-﻿using Optimization.Caching;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Optimization.Caching;
 using UnityEngine;
 
 namespace Anarchy
@@ -12,7 +13,25 @@ namespace Anarchy
     public static class AnarchyExtensions
     {
         private static Regex HexCode = new Regex(@"\[([0-9a-f]{6})\]", RegexOptions.IgnoreCase);
-        
+
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://google.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static string ColorToString(this Color colorb)
         {
             Color32 color = colorb;
@@ -154,7 +173,7 @@ namespace Anarchy
         /// </summary>
         public static string LimitToLengthStripped(this string value, int length)
         {
-            return value.RemoveAll().Length <= length ? value : value.Substring(0, length) + "...";
+            return value.RemoveHex().RemoveHTML().Length <= length ? value : (value.Substring(0, length) + "...");
         }
 
         /// <summary>

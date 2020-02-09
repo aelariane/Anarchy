@@ -410,6 +410,10 @@ namespace Anarchy.UI
             RebindLabels = null;
             Settings.Apply();
             VideoSettings.Apply();
+            if (Application.loadedLevelName == "menu")
+            {
+                AnarchyManager.MainMenu.EnableImmediate();
+            }
         }
 
         protected override void OnPanelEnable()
@@ -427,6 +431,10 @@ namespace Anarchy.UI
             ModLabels = locale.GetArray("modMenu");
             AbilityPage = 0;
             AbilityLabels = locale.GetArray("abilityNames");
+            if (Application.loadedLevelName == "menu")
+            {
+                AnarchyManager.MainMenu.DisableImmediate();
+            }
         }
 
         private void RebindButton(SmartRect rect, KeySetting set)

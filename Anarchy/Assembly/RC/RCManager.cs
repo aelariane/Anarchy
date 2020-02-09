@@ -38,19 +38,24 @@ namespace RC
         public static Anarchy.Configuration.IntSetting SpawnCapCustom = new Anarchy.Configuration.IntSetting("titanSpawnCap", 1);
 
 
-        public static void Clear()
+        public static void ClearAll()
         {
-            boolVariables.Clear();
-            floatVariables.Clear();
+            ClearVariables();
             heroHash.Clear();
-            intVariables.Clear();
-            playerVariables.Clear();
-            stringVariables.Clear();
-            titanVariables.Clear();
             RCEvents.Clear();
             RCRegions.Clear();
             RCRegionTriggers.Clear();
             RCVariableNames.Clear();
+        }
+
+        public static void ClearVariables()
+        {
+            boolVariables.Clear();
+            floatVariables.Clear();
+            intVariables.Clear();
+            playerVariables.Clear();
+            stringVariables.Clear();
+            titanVariables.Clear();
         }
 
         public static IEnumerator DownloadAssets()

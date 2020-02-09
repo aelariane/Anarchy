@@ -1,4 +1,5 @@
-﻿using Anarchy;
+﻿
+using Anarchy;
 using Anarchy.Configuration;
 using Optimization.Caching;
 using UnityEngine;
@@ -30,7 +31,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     private int snapShotCount;
     private float snapShotCountDown;
     private int snapShotDmg;
-    private float snapShotInterval = 0.02f;
+    private float snapShotInterval = Time.fixedDeltaTime;
     private float snapShotStartCountDownTime;
     private GameObject snapShotTarget;
     private Vector3 snapShotTargetPosition;
@@ -72,7 +73,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 
     public static GameObject mainObject;
 
-    public static float sensitivityMulti = 0.5f;
+    public static float sensitivityMulti;
 
     public static string singleCharacter;
 
@@ -85,7 +86,6 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     public AudioSource bgmusic;
 
     public bool gameOver;
-
 
     public float justHit;
 
@@ -147,28 +147,13 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         BaseG = gameObject;
         BaseT = transform;
         name = "MainCamera";
-        BaseCamera.useOcclusionCulling = true;
         isTyping = false;
         isPausing = false;
         SpecMov = GetComponent<SpectatorMovement>();
         Look = GetComponent<MouseLook>();
-        if (PlayerPrefs.HasKey("GameQuality"))
-        {
-            if (PlayerPrefs.GetFloat("GameQuality") >= 0.9f)
-            {
-                base.GetComponent<TiltShift>().enabled = true;
-            }
-            else
-            {
-                base.GetComponent<TiltShift>().enabled = false;
-            }
-        }
-        else
-        {
-            base.GetComponent<TiltShift>().enabled = true;
-        }
         CameraMode = (CameraType)Anarchy.Configuration.Settings.CameraMode.Value;
         CreateMinimap();
+        VideoSettings.Apply();
     }
 
     private void CameraMovement()
@@ -211,15 +196,21 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
                     }
                     break;
 
+
             }
         }
         BaseT.position -= (((BaseT.Forward() * this.distance) * this.distanceMulti) * this.distanceOffsetMulti);
-        if (cameraDistance >= 0.65f) return;
+        if (cameraDistance >= 0.65f) 
+            return;
         BaseT.position += (BaseT.Right() * Mathf.Max(((0.6f - cameraDistance) * 2f), 0.65f));
     }
 
     public void CameraMovementLive(HERO hero)
     {
+        if (hero == null)
+        { 
+            return; 
+        }
         float magnitude = hero.rigidbody.velocity.magnitude;
         if (magnitude > 10f)
         {
@@ -311,7 +302,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         cam.Render();
         Texture2D texture2D = new Texture2D(cam.targetTexture.width, cam.targetTexture.height);
         int num = (int)((float)cam.targetTexture.width * 0.04f);
-        int num2 = (int)((float)cam.targetTexture.width * 0.02f);
+        int num2 = (int)((float)cam.targetTexture.width * Time.fixedDeltaTime);
         texture2D.ReadPixels(new Rect((float)num, (float)num, (float)(cam.targetTexture.width - num), (float)(cam.targetTexture.height - num)), num2, num2);
         texture2D.Apply();
         RenderTexture.active = active;
@@ -343,9 +334,8 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         this.setDayLight(DayLight);
         this.locker = CacheGameObject.Find("locker");
         this.createSnapShotRT();
-        if(Anarchy.AnarchyManager.Background != null)
+        if(AnarchyManager.Background != null)
         {
-            Settings.Apply();
             VideoSettings.Apply();
         }
     }
@@ -509,6 +499,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             }
         }
         this.lockAngle = lockAngle;
+        VideoSettings.Apply();
         return MainObject;
     }
 
@@ -810,13 +801,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             else if (CameraMode == CameraType.TPS)
             {
                 CameraMode = CameraType.ORIGINAL;
-                Screen.lockCursor = false;
+
+                Screen.lockCursor = CameraMode >= CameraType.TPS;
             }
-            //else if(CameraMode == CameraType.oldTPS)
-            //{
-            //    CameraMode = CameraType.ORIGINAL;
-            //    Screen.lockCursor = false;
-            //}
             Anarchy.Configuration.Settings.CameraMode.Value = (int)CameraMode;
         }
         if (InputManager.IsInputDown[InputCode.HideCursor])

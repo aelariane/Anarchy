@@ -83,7 +83,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                                     component.transform.root.GetComponent<HERO>().die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
                                 }
                             }
-                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
                             {
                                 component.transform.root.GetComponent<HERO>().markDie();
                                 component.transform.root.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -111,7 +111,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                             {
                                 int num2 = (int)((IN_GAME_MAIN_CAMERA.MainR.velocity - component2.transform.root.rigidbody.velocity).magnitude * 10f * this.scoreMulti);
                                 num2 = Mathf.Max(10, num2);
-                                FengGameManagerMKII.FGM.netShowDamage(num2, new PhotonMessageInfo());
+                                FengGameManagerMKII.FGM.netShowDamage(num2);
                                 if ((float)num2 > component2.transform.root.GetComponent<TITAN>().myLevel * 100f)
                                 {
                                     component2.transform.root.GetComponent<TITAN>().die();
@@ -383,7 +383,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
 
     private void Start()
     {
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (!baseT.root.gameObject.GetPhotonView().IsMine)
             {

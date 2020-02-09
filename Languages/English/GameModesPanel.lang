@@ -1,5 +1,5 @@
 ﻿title:Game Settings
-selections:Titan,PvP,Misc
+selections:Titan,PvP,Misc,Racing
 btnClose:Close
 
 #Titans
@@ -72,6 +72,14 @@ horseState:Allow horses:
 
 motd:Message of the day
 
+noGuestState:Anti-Guest:
+
+antiReviveState:Anti-Abusive revive:
+
+afkKillState:Kill AFK players:
+afkKillInt0:AFK seconds:
+
+#Racing?
 asoracingState:ASO(Endless) racing:
 
 startTimeState:Use custom start time:

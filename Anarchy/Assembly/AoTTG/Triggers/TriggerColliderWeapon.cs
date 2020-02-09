@@ -100,7 +100,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                                 component.transform.root.GetComponent<HERO>().die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
                             }
                         }
-                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
                         {
                             component.transform.root.GetComponent<HERO>().markDie();
                             component.transform.root.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -135,7 +135,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                             }
                             component2.transform.root.GetComponent<TITAN>().die();
                             this.napeMeat(IN_GAME_MAIN_CAMERA.MainR.velocity, component2.transform.root);
-                            FengGameManagerMKII.FGM.netShowDamage(num2, null);
+                            FengGameManagerMKII.FGM.netShowDamage(num2);
                             FengGameManagerMKII.FGM.PlayerKillInfoSingleUpdate(num2);
                         }
                     }

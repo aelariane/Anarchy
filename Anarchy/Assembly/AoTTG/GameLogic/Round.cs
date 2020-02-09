@@ -25,7 +25,7 @@ namespace GameLogic
         {
             float time = UnityEngine.Time.deltaTime;
             Time += time;
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && (IsWinning || IsLosing))
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && (IsWinning || IsLosing))
             {
                 GameEndCD -= time;
             }

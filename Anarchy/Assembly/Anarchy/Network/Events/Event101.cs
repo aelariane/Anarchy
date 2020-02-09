@@ -18,11 +18,11 @@ namespace Anarchy.Network.Events
             {
                 if (parameters[101] is bool)
                 {
-                    sender.ModName = "[[000000]RedSkies[-]]";
+                    sender.ModName = ModNames.RedSkies;
                 }
                 else if (parameters[102] is bool)
                 {
-                    sender.ModName = $"[00FFFF][Cyan[CCCCDD]({parameters[104] as string})[-][-]]";
+                    sender.ModName = string.Format(ModNames.Cyan, parameters[104] as string);
                 }
             }
             reason = "";

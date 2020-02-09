@@ -18,6 +18,7 @@ pmSent:<color=#$maincolor$>PM enviado a ID<color=$subcolor$>{0}</color> (<color=
 errRoom:<color=red>Error: comando de sala <color=yellow>"{0}"</color> no encontrado</color>
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>segundos agregados al tiempo</color>
 roomMax:<color=#$maincolor$>Max jugadores establecidos en <color=#$subcolor$>{0}</color></color>
+roomTimeSet:<color=#$maincolor$>Tiempo del servidor establecido en <color=#$subcolor$>{0}</color></color>
 
 #Restart
 restartMessage:<color=#$maincolor$>Masterclient reinicio el juego</color>

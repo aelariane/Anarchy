@@ -13,7 +13,7 @@ public class PanelMultiJoin : MonoBehaviour
 
     private string getServerDataString(RoomInfo room)
     {
-        string[] array = room.name.Split(new char[]
+        string[] array = room.Name.Split(new char[]
         {
             "`"[0]
         });
@@ -28,9 +28,9 @@ public class PanelMultiJoin : MonoBehaviour
             "/",
             array[4],
             " ",
-            room.playerCount,
+            room.PlayerCount,
             "/",
-            room.maxPlayers
+            room.MaxPlayers
         });
     }
 
@@ -95,7 +95,7 @@ public class PanelMultiJoin : MonoBehaviour
                 {
                     this.items[i].SetActive(true);
                     this.items[i].GetComponentInChildren<UILabel>().text = this.getServerDataString(PhotonNetwork.GetRoomList()[num]);
-                    this.items[i].GetComponentInChildren<BTN_Connect_To_Server_On_List>().roomName = PhotonNetwork.GetRoomList()[num].name;
+                    this.items[i].GetComponentInChildren<BTN_Connect_To_Server_On_List>().roomName = PhotonNetwork.GetRoomList()[num].Name;
                 }
                 else
                 {
@@ -113,7 +113,7 @@ public class PanelMultiJoin : MonoBehaviour
                     RoomInfo roomInfo = (RoomInfo)this.filterRoom[num2];
                     this.items[i].SetActive(true);
                     this.items[i].GetComponentInChildren<UILabel>().text = this.getServerDataString(roomInfo);
-                    this.items[i].GetComponentInChildren<BTN_Connect_To_Server_On_List>().roomName = roomInfo.name;
+                    this.items[i].GetComponentInChildren<BTN_Connect_To_Server_On_List>().roomName = roomInfo.Name;
                 }
                 else
                 {
@@ -153,7 +153,7 @@ public class PanelMultiJoin : MonoBehaviour
         }
         foreach (RoomInfo roomInfo in PhotonNetwork.GetRoomList())
         {
-            if (roomInfo.name.ToUpper().Contains(this.filter.ToUpper()))
+            if (roomInfo.Name.ToUpper().Contains(this.filter.ToUpper()))
             {
                 this.filterRoom.Add(roomInfo);
             }

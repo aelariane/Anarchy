@@ -8,7 +8,7 @@ internal class LoadbalancingPeer : PhotonPeer
     {
     }
 
-    protected bool OpSetPropertiesOfActor(int actorNr, Hashtable actorProperties, bool broadcast, byte channelId)
+    internal bool OpSetPropertiesOfActor(int actorNr, Hashtable actorProperties, bool broadcast, byte channelId)
     {
         if (base.DebugOut >= DebugLevel.INFO)
         {
@@ -23,13 +23,13 @@ internal class LoadbalancingPeer : PhotonPeer
             return false;
         }
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
-        dictionary.Add(251, actorProperties);
-        dictionary.Add(254, actorNr);
+        dictionary.Add(ParameterCode.Properties, actorProperties);
+        dictionary.Add(ParameterCode.ActorNr, actorNr);
         if (broadcast)
         {
-            dictionary.Add(250, broadcast);
+            dictionary.Add(ParameterCode.Broadcast, broadcast);
         }
-        return SendOperation(252, dictionary, broadcast ? SendOptions.SendReliable : SendOptions.SendUnreliable);
+        return SendOperation(OperationCode.SetProperties, dictionary, broadcast ? SendOptions.SendReliable : SendOptions.SendUnreliable);
     }
 
     protected void OpSetPropertyOfRoom(byte propCode, object value)
@@ -48,18 +48,18 @@ internal class LoadbalancingPeer : PhotonPeer
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
         if (authValues != null && authValues.Secret != null)
         {
-            dictionary[221] = authValues.Secret;
-            return SendOperation(230, dictionary, SendOptions.SendReliable);
+            dictionary[ParameterCode.Secret] = authValues.Secret;
+            return SendOperation(OperationCode.Authenticate, dictionary, SendOptions.SendReliable);
         }
-        dictionary[220] = appVersion;
-        dictionary[224] = appId;
+        dictionary[ParameterCode.AppVersion] = appVersion;
+        dictionary[ParameterCode.ApplicationId] = appId;
         if (!string.IsNullOrEmpty(regionCode))
         {
-            dictionary[210] = regionCode;
+            dictionary[ParameterCode.Region] = regionCode;
         }
         if (!string.IsNullOrEmpty(userId))
         {
-            dictionary[225] = userId;
+            dictionary[ParameterCode.UserId] = userId;
         }
         if (authValues != null && authValues.AuthType != CustomAuthenticationType.None)
         {
@@ -68,21 +68,21 @@ internal class LoadbalancingPeer : PhotonPeer
                 base.Listener.DebugReturn(DebugLevel.ERROR, "OpAuthenticate() failed. When you want Custom Authentication encryption is mandatory.");
                 return false;
             }
-            dictionary[217] = (byte)authValues.AuthType;
+            dictionary[ParameterCode.ClientAuthenticationType] = (byte)authValues.AuthType;
             if (!string.IsNullOrEmpty(authValues.Secret))
             {
-                dictionary[221] = authValues.Secret;
+                dictionary[ParameterCode.Secret] = authValues.Secret;
             }
             if (!string.IsNullOrEmpty(authValues.AuthParameters))
             {
-                dictionary[216] = authValues.AuthParameters;
+                dictionary[ParameterCode.ClientAuthenticationParams] = authValues.AuthParameters;
             }
             if (authValues.AuthPostData != null)
             {
-                dictionary[214] = authValues.AuthPostData;
+                dictionary[ParameterCode.ClientAuthenticationData] = authValues.AuthPostData;
             }
         }
-        bool flag = SendOperation(230, dictionary, new SendOptions() { Channel = 0, DeliveryMode = DeliveryMode.Reliable, Encrypt = IsEncryptionAvailable });
+        bool flag = SendOperation(OperationCode.Authenticate, dictionary, new SendOptions() { Channel = 0, DeliveryMode = DeliveryMode.Reliable, Encrypt = IsEncryptionAvailable });
         if (!flag)
         {
             base.Listener.DebugReturn(DebugLevel.ERROR, "Error calling OpAuthenticate! Did not work. Check log output, CustomAuthenticationValues and if you're connected.");
@@ -99,13 +99,13 @@ internal class LoadbalancingPeer : PhotonPeer
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
         if (groupsToRemove != null)
         {
-            dictionary[239] = groupsToRemove;
+            dictionary[ParameterCode.Remove] = groupsToRemove;
         }
         if (groupsToAdd != null)
         {
-            dictionary[238] = groupsToAdd;
+            dictionary[ParameterCode.Add] = groupsToAdd;
         }
-        return SendOperation(248, dictionary, SendOptions.SendReliable);
+        return SendOperation(OperationCode.ChangeGroups, dictionary, SendOptions.SendReliable);
     }
 
     public virtual bool OpCreateRoom(string roomName, RoomOptions roomOptions, TypedLobby lobby, Hashtable playerProperties, bool onGameServer)
@@ -117,43 +117,42 @@ internal class LoadbalancingPeer : PhotonPeer
         Dictionary<byte, object> customOpParameters = new Dictionary<byte, object>();
         if (!string.IsNullOrEmpty(roomName))
         {
-            customOpParameters[0xff] = roomName;
-            customOpParameters[0xec] = 3000;
+            customOpParameters[ParameterCode.RoomName] = roomName;
+            customOpParameters[ParameterCode.EmptyRoomTTL] = 3000;
         }
         if (lobby != null)
         {
-            customOpParameters[0xd5] = lobby.Name;
-            customOpParameters[0xd4] = (byte)lobby.Type;
+            customOpParameters[ParameterCode.LobbyName] = lobby.Name;
+            customOpParameters[ParameterCode.LobbyType] = (byte)lobby.Type;
         }
         if (onGameServer)
         {
             if ((playerProperties != null) && (playerProperties.Count > 0))
             {
-                customOpParameters[0xf9] = playerProperties;
-                customOpParameters[250] = true;
+                customOpParameters[ParameterCode.PlayerProperties] = playerProperties;
+                customOpParameters[ParameterCode.Broadcast] = true;
             }
             if (roomOptions == null)
             {
                 roomOptions = new RoomOptions();
             }
             Hashtable target = new Hashtable();
-            customOpParameters[0xf8] = target;
+            customOpParameters[ParameterCode.GameProperties] = target;
             target.MergeStringKeys(roomOptions.customRoomProperties);
-            target[(byte)0xfd] = roomOptions.isOpen;
-            target[(byte)0xfe] = roomOptions.isVisible;
-            target[(byte)250] = roomOptions.customRoomPropertiesForLobby;
+            target[RoomProperty.Joinable] = roomOptions.isOpen;
+            target[RoomProperty.Visibility] = roomOptions.isVisible;
+            target[RoomProperty.PropertiesListedInLobby] = roomOptions.customRoomPropertiesForLobby;
             if (roomOptions.maxPlayers > 0)
             {
-                target[(byte)0xff] = roomOptions.maxPlayers;
+                target[RoomProperty.MaxPlayers] = roomOptions.maxPlayers;
             }
             if (roomOptions.cleanupCacheOnLeave)
             {
-                customOpParameters[0xf1] = true;
-                target[(byte)0xf9] = true;
+                customOpParameters[ParameterCode.CleanupCacheOnLeave] = true;
+                target[RoomProperty.CleanUpCacheOnLeave] = true;
             }
         }
-        return SendOperation(227, customOpParameters, SendOptions.SendReliable);
-        //return this.OpCustom(227, dictionary, true);
+        return SendOperation(OperationCode.CreateGame, customOpParameters, SendOptions.SendReliable);
     }
 
     public virtual bool OpFindFriends(string[] friendsToFind)
@@ -161,16 +160,16 @@ internal class LoadbalancingPeer : PhotonPeer
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
         if (friendsToFind != null && friendsToFind.Length > 0)
         {
-            dictionary[1] = friendsToFind;
+            dictionary[ParameterCode.FindFriendsRequestList] = friendsToFind;
         }
-        return SendOperation(222, dictionary, SendOptions.SendReliable);
+        return SendOperation(OperationCode.FindFriends, dictionary, SendOptions.SendReliable);
     }
 
     public virtual bool OpGetRegions(string appId)
     {
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
-        dictionary[224] = appId;
-        return SendOperation(220, dictionary, new SendOptions() { DeliveryMode = DeliveryMode.Reliable, Channel = 0, Encrypt = true });
+        dictionary[ParameterCode.ApplicationId] = appId;
+        return SendOperation(OperationCode.GetRegions, dictionary, new SendOptions() { DeliveryMode = DeliveryMode.Reliable, Channel = 0, Encrypt = true });
     }
 
     public virtual bool OpJoinLobby(TypedLobby lobby)
@@ -183,10 +182,10 @@ internal class LoadbalancingPeer : PhotonPeer
         if (lobby != null && !lobby.IsDefault)
         {
             dictionary = new Dictionary<byte, object>();
-            dictionary[213] = lobby.Name;
-            dictionary[212] = (byte)lobby.Type;
+            dictionary[ParameterCode.LobbyName] = lobby.Name;
+            dictionary[ParameterCode.LobbyType] = (byte)lobby.Type;
         }
-        return SendOperation(229, dictionary, SendOptions.SendReliable);
+        return SendOperation(OperationCode.JoinLobby, dictionary, SendOptions.SendReliable);
     }
 
     public virtual bool OpJoinRandomRoom(Hashtable expectedCustomRoomProperties, byte expectedMaxPlayers, Hashtable playerProperties, MatchmakingMode matchingType, TypedLobby typedLobby, string sqlLobbyFilter)
@@ -204,26 +203,26 @@ internal class LoadbalancingPeer : PhotonPeer
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
         if (hashtable.Count > 0)
         {
-            dictionary[248] = hashtable;
+            dictionary[ParameterCode.GameProperties] = hashtable;
         }
         if (playerProperties != null && playerProperties.Count > 0)
         {
-            dictionary[249] = playerProperties;
+            dictionary[ParameterCode.PlayerProperties] = playerProperties;
         }
         if (matchingType != MatchmakingMode.FillRoom)
         {
-            dictionary[223] = (byte)matchingType;
+            dictionary[ParameterCode.MatchMakingType] = (byte)matchingType;
         }
         if (typedLobby != null)
         {
-            dictionary[213] = typedLobby.Name;
-            dictionary[212] = (byte)typedLobby.Type;
+            dictionary[ParameterCode.LobbyName] = typedLobby.Name;
+            dictionary[ParameterCode.LobbyType] = (byte)typedLobby.Type;
         }
         if (!string.IsNullOrEmpty(sqlLobbyFilter))
         {
-            dictionary[245] = sqlLobbyFilter;
+            dictionary[ParameterCode.Data] = sqlLobbyFilter;
         }
-        return SendOperation(225, dictionary, SendOptions.SendReliable);
+        return SendOperation(OperationCode.JoinRandomGame, dictionary, SendOptions.SendReliable);
     }
 
     public virtual bool OpJoinRoom(string roomName, RoomOptions roomOptions, TypedLobby lobby, bool createIfNotExists, Hashtable playerProperties, bool onGameServer)
@@ -235,19 +234,19 @@ internal class LoadbalancingPeer : PhotonPeer
         }
         if (createIfNotExists)
         {
-            dictionary[215] = true;
+            dictionary[ParameterCode.JoinMode] = true;
             if (lobby != null)
             {
-                dictionary[213] = lobby.Name;
-                dictionary[212] = (byte)lobby.Type;
+                dictionary[ParameterCode.LobbyName] = lobby.Name;
+                dictionary[ParameterCode.LobbyType] = (byte)lobby.Type;
             }
         }
         if (onGameServer)
         {
             if (playerProperties != null && playerProperties.Count > 0)
             {
-                dictionary[249] = playerProperties;
-                dictionary[250] = true;
+                dictionary[ParameterCode.PlayerProperties] = playerProperties;
+                dictionary[ParameterCode.Broadcast] = true;
             }
             if (createIfNotExists)
             {
@@ -256,23 +255,23 @@ internal class LoadbalancingPeer : PhotonPeer
                     roomOptions = new RoomOptions();
                 }
                 Hashtable hashtable = new Hashtable();
-                dictionary[248] = hashtable;
+                dictionary[ParameterCode.GameProperties] = hashtable;
                 hashtable.MergeStringKeys(roomOptions.customRoomProperties);
-                hashtable[253] = roomOptions.isOpen;
-                hashtable[254] = roomOptions.isVisible;
-                hashtable[250] = roomOptions.customRoomPropertiesForLobby;
+                hashtable[RoomProperty.Joinable] = roomOptions.isOpen;
+                hashtable[RoomProperty.Visibility] = roomOptions.isVisible;
+                hashtable[RoomProperty.PropertiesListedInLobby] = roomOptions.customRoomPropertiesForLobby;
                 if (roomOptions.maxPlayers > 0)
                 {
-                    hashtable[byte.MaxValue] = roomOptions.maxPlayers;
+                    hashtable[RoomProperty.MaxPlayers] = roomOptions.maxPlayers;
                 }
                 if (roomOptions.cleanupCacheOnLeave)
                 {
-                    dictionary[241] = true;
-                    hashtable[249] = true;
+                    dictionary[ParameterCode.CleanupCacheOnLeave] = true;
+                    hashtable[RoomProperty.CleanUpCacheOnLeave] = true;
                 }
             }
         }
-        return SendOperation(226, dictionary, SendOptions.SendReliable);
+        return SendOperation(OperationCode.JoinGame, dictionary, SendOptions.SendReliable);
     }
 
     public virtual bool OpLeaveLobby()
@@ -281,16 +280,16 @@ internal class LoadbalancingPeer : PhotonPeer
         {
             base.Listener.DebugReturn(DebugLevel.INFO, "OpLeaveLobby()");
         }
-        return SendOperation(228, null, SendOptions.SendReliable);
+        return SendOperation(OperationCode.LeaveLobby, null, SendOptions.SendReliable);
     }
 
     public virtual bool OpRaiseEvent(byte eventCode, object customEventContent, bool sendReliable, RaiseEventOptions raiseEventOptions)
     {
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
-        dictionary[244] = eventCode;
+        dictionary[ParameterCode.Code] = eventCode;
         if (customEventContent != null)
         {
-            dictionary[245] = customEventContent;
+            dictionary[ParameterCode.CustomEventContent] = customEventContent;
         }
         if (raiseEventOptions == null)
         {
@@ -300,26 +299,26 @@ internal class LoadbalancingPeer : PhotonPeer
         {
             if (raiseEventOptions.CachingOption != EventCaching.DoNotCache)
             {
-                dictionary[247] = (byte)raiseEventOptions.CachingOption;
+                dictionary[ParameterCode.Cache] = (byte)raiseEventOptions.CachingOption;
             }
             if (raiseEventOptions.Receivers != ReceiverGroup.Others)
             {
-                dictionary[246] = (byte)raiseEventOptions.Receivers;
+                dictionary[ParameterCode.ReceiverGroup] = (byte)raiseEventOptions.Receivers;
             }
             if (raiseEventOptions.InterestGroup != 0)
             {
-                dictionary[240] = raiseEventOptions.InterestGroup;
+                dictionary[ParameterCode.Group] = raiseEventOptions.InterestGroup;
             }
             if (raiseEventOptions.TargetActors != null)
             {
-                dictionary[252] = raiseEventOptions.TargetActors;
+                dictionary[ParameterCode.ActorList] = raiseEventOptions.TargetActors;
             }
             if (raiseEventOptions.ForwardToWebhook)
             {
-                dictionary[234] = true;
+                dictionary[ParameterCode.EventForward] = true;
             }
         }
-        return SendOperation(253, dictionary, new SendOptions() { DeliveryMode = sendReliable ? DeliveryMode.Reliable : DeliveryMode.Unreliable, Channel = raiseEventOptions.SequenceChannel, Encrypt = false });
+        return SendOperation(OperationCode.RaiseEvent, dictionary, new SendOptions() { DeliveryMode = sendReliable ? DeliveryMode.Reliable : DeliveryMode.Unreliable, Channel = raiseEventOptions.SequenceChannel, Encrypt = false });
     }
 
     public bool OpSetCustomPropertiesOfActor(int actorNr, Hashtable actorProperties, bool broadcast, byte channelId)
@@ -339,11 +338,11 @@ internal class LoadbalancingPeer : PhotonPeer
             base.Listener.DebugReturn(DebugLevel.INFO, "OpSetPropertiesOfRoom()");
         }
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
-        dictionary.Add(251, gameProperties);
+        dictionary.Add(ParameterCode.Properties, gameProperties);
         if (broadcast)
         {
-            dictionary.Add(250, true);
+            dictionary.Add(ParameterCode.Broadcast, true);
         }
-        return SendOperation(252, dictionary, new SendOptions() { Channel = channelId, DeliveryMode = broadcast ? DeliveryMode.Reliable : DeliveryMode.Unreliable, Encrypt = false });
+        return SendOperation(OperationCode.SetProperties, dictionary, new SendOptions() { Channel = channelId, DeliveryMode = DeliveryMode.Reliable, Encrypt = false });
     }
 }

@@ -179,7 +179,7 @@ namespace ExitGames.Client.Photon
 			}
 		}
 
-		public int QueuedIncomingCommands
+        public int QueuedIncomingCommands
 		{
 			get
 			{
@@ -607,8 +607,8 @@ namespace ExitGames.Client.Photon
 			if (flag)
 			{
 				this.SocketImplementationConfig = new Dictionary<ConnectionProtocol, Type>(5);
-				this.SocketImplementationConfig.Add(ConnectionProtocol.Udp, typeof(SocketUdp));
-				this.SocketImplementationConfig.Add(ConnectionProtocol.Tcp, typeof(SocketTcp));
+				this.SocketImplementationConfig.Add(ConnectionProtocol.Udp, typeof(SocketUdpAsync));
+				this.SocketImplementationConfig.Add(ConnectionProtocol.Tcp, typeof(SocketTcpAsync));
                 this.SocketImplementationConfig.Add(ConnectionProtocol.WebSocket, typeof(SocketWeb));
                 this.SocketImplementationConfig.Add(ConnectionProtocol.WebSocketSecure, typeof(SocketWeb));
             }
@@ -633,7 +633,7 @@ namespace ExitGames.Client.Photon
 				throw new Exception("No PeerBase");
 			}
 			this.peerBase.photonPeer = this;
-			this.peerBase.usedTransportProtocol = this.TransportProtocol;
+            this.peerBase.usedTransportProtocol = this.TransportProtocol;
 			Type socketImplementation = null;
 			this.SocketImplementationConfig.TryGetValue(this.TransportProtocol, out socketImplementation);
 			this.SocketImplementation = socketImplementation;
@@ -906,7 +906,7 @@ namespace ExitGames.Client.Photon
 
 		private bool trafficStatsEnabled = false;
 
-		internal PeerBase peerBase;
+		public PeerBase peerBase;
 
 		private readonly object SendOutgoingLockObject = new object();
 

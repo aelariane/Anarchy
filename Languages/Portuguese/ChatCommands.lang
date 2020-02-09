@@ -18,6 +18,7 @@ pmSent:<color=#$maincolor$>PM(Mensagem Privada) enviada ao ID <color=$subcolor$>
 errRoom:<color=red>Error: comando de sala <color=yellow>"{0}"</color> não achado</color>
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>segundos adicionados ao tempo</color>
 roomMax:<color=#$maincolor$>Número máximo de jogadores definidos em <color=#$subcolor$>{0}</color></color>
+roomTimeSet:<color=#$maincolor$>Tempo da sala definido em <color=#$subcolor$>{0}</color></color>
 
 #Restart
 restartMessage:<color=#$maincolor$>Masterclient reiniciou o jogo</color>

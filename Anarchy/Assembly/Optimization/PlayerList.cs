@@ -15,12 +15,12 @@ namespace Optimization
             var bld = new StringBuilder();
             bld.Append($"[FFFFFF]# {player.ID} ");
             bld.Append(player.IsLocal ? "[FFCC00]>>[-] " : "");
-            bld.Append(player.ModName + "[-] ");
+            bld.Append("[" + player.ModName + "] ");
             bld.Append(player.RCIgnored ? "[FF0000][IGNORED] [-]" : string.Empty);
             bld.Append(player.IsMasterClient ? "[MC] " : "");
             bld.Append(player.Dead ? $"[{ColorSet.color_red}]*dead* " : "");
             bld.Append(player.IsTitan ? $"[{ColorSet.color_titan_player}][T] " : (player.Team == 2 ? $"[{ColorSet.color_human_1}][A] " : $"[{ColorSet.color_human}][H] "));
-            bld.Append($"{player.UIName}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.Max_Dmg}/{player.Total_Dmg}");
+            bld.Append($"{((player.UIName.Contains("<") || player.UIName.Contains(">")) ? "InvalidName" : player.UIName)}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.Max_Dmg}/{player.Total_Dmg}");
             return bld.ToString();
         }
 

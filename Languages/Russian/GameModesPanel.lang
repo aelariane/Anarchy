@@ -1,5 +1,5 @@
 ﻿title:Игровые настройки
-selections:Титаны,ПвП,Остальное
+selections:Титаны,ПвП,Остальное,Гонка
 btnClose:Закрыть
 
 #Titans
@@ -72,6 +72,14 @@ horseState:Разрешить лошадей:
 
 motd:Сообщение дня
 
+noGuestState:Анти-Гость:
+
+antiReviveState:Анти-Респавн:
+
+afkKillState:Убийство АФК игроков:
+afkKillInt0:Секунд в АФК:
+
+#Racing
 asoracingState:АСО(Бесконечная) гонка:
 
 startTimeState:Кастомный таймер перед гонкой:

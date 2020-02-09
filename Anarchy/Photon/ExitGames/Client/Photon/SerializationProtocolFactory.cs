@@ -1,21 +1,27 @@
-﻿using System;
+﻿
 
 namespace ExitGames.Client.Photon
 {
-	internal static class SerializationProtocolFactory
+	public static class SerializationProtocolFactory
 	{
-		internal static IProtocol Create(SerializationProtocol serializationProtocol)
+		public static IProtocol Create(SerializationProtocol serializationProtocol)
 		{
-			IProtocol result;
-			if (serializationProtocol != SerializationProtocol.GpBinaryV18)
-			{
-				result = new Protocol16();
-			}
-			else
-			{
-				result = new Protocol18();
-			}
-			return result;
+			IProtocol result = null;
+            switch(serializationProtocol)
+            {
+                case SerializationProtocol.GpBinaryV16:
+                    result = new RpcProtocols.GpBinaryV16.Protocol16();
+                    break;
+
+                case SerializationProtocol.GpBinaryV18:
+                    result = new RpcProtocols.GpBinaryV18.Protocol18();
+                    break;
+
+                default:
+                    result = new RpcProtocols.GpBinaryV16.Protocol16();
+                    break;
+            }
+            return result;
 		}
 	}
 }

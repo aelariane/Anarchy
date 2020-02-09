@@ -3,7 +3,7 @@
 public sealed class UIMainReferences : MonoBehaviour
 {
     private static bool isGAMEFirstLaunch = true;
-    public const string VersionShow = "Anarchy mod (Beta 7.6.0)";
+    public const string VersionShow = "Anarchy mod (Beta 7.7.0)";
     public static string ConnectField = "01042015";
     public static UIMainReferences Main;
     public GameObject panelCredits;
@@ -39,5 +39,6 @@ public sealed class UIMainReferences : MonoBehaviour
             DontDestroyOnLoad(inputs);
             new GameObject("AnarchyManager").AddComponent<Anarchy.AnarchyManager>();
         }
+        Anarchy.Network.NetworkManager.TryRejoin();
     }
 }

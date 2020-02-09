@@ -5,6 +5,7 @@ using UnityEngine;
 public class TITAN_CONTROLLER : MonoBehaviour
 {
     public Camera currentCamera;
+    private PhotonView view;
 
     public float currentDirection;
     public float targetDirection;
@@ -30,6 +31,11 @@ public class TITAN_CONTROLLER : MonoBehaviour
     public bool choptr;
     public bool cover;
 
+    private void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
+
     private void Start()
     {
         currentCamera = GameObject.Find("MainCamera").GetComponent<Camera>();
@@ -41,6 +47,10 @@ public class TITAN_CONTROLLER : MonoBehaviour
 
     private void Update()
     {
+        if(view != null && !view.IsMine)
+        {
+            return;
+        }
         if (isHorse)
         {
             int Ordonate;

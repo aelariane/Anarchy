@@ -105,7 +105,7 @@ namespace Anarchy.UI
             left = init[0];
             right = init[1];
             mapList = new string[] { "[S]Tutorial", "[S]Battle training", "[S]City", "[S]Forest", "[S]Forest Survive(no crawler)", "[S]Forest Survive(no crawler no punk)", "[S]Racing - Akina" };
-            cameraList = new string[] { "ORIGINAL", "WOW", "TPS", "oldTPS" };
+            cameraList = new string[] { "ORIGINAL", "WOW", "TPS" };
             characterList = locale.GetArray("characters");
             costumeList = new string[] { "Cos1", "Cos2", "Cos3" };
             dayLightList = locale.GetArray("daylights");

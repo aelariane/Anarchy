@@ -1,5 +1,5 @@
 ﻿title:Configuraciones de Juego
-selections:Titán,PvP,Varios
+selections:Titán,PvP,Varios,Carrera
 btnClose:Cerra
 
 #Titans
@@ -71,6 +71,15 @@ erenState:Autokick Eren titan:
 horseState:Permitir caballos:
 
 motd:Mensaje del día
+
+noGuestState:Anti-Guest:
+
+antiReviveState:Anti-Revivir abusivo:
+
+afkKillState:Matar Jugador AFK:
+afkKillInt0:Segundos AFK:
+
+#Racing
 
 asoracingState:ASO(Endless) carreras:
 

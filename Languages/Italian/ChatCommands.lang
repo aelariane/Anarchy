@@ -18,6 +18,7 @@ pmSent:<color=#$maincolor$>Spedito PM a ID <color=$subcolor$>{0}</color> (<color
 errRoom:<color=red>Errore: Commando stanza <color=yellow>"{0}"</color> non trovato</color>
 roomTime:<color=#$subcolor$>{0}</color> <color=#$maincolor$>secondi addati al tempo</color>
 roomMax:<color=#$maincolor$>Giocatori massimi impostato a <color=#$subcolor$>{0}</color></color>
+roomTimeSet:<color=#$maincolor$>Tempo impostato su<color=#$subcolor$>{0}</color></color>
 
 #Restart
 restartMessage:<color=#$maincolor$>Masterclient ha riavviato il gioco</color>

@@ -330,14 +330,14 @@ public class TITAN_EREN : Photon.MonoBehaviour
     {
         if (SkinSettings.SkinsCheck(SkinSettings.TitanSkins))
         {
-            if (SkinSettings.TitanSet.Value != "$Not define$")
+            if (SkinSettings.TitanSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 TitanSkinPreset set = new TitanSkinPreset(SkinSettings.TitanSet.Value);
                 set.Load();
                 if (set.Eren.IsImage())
                 {
                     StartCoroutine(LoadMySkin(set.Eren));
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.TitanSkins.Value != 2)
                     {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { set.Eren });
                     }
@@ -653,7 +653,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
             if (base.animation["rock_fix_hole"].normalizedTime >= 0.62f && !this.rockHitGround)
             {
                 this.rockHitGround = true;
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
                 {
                     Optimization.Caching.Pool.NetworkEnable("FX/boom1_CT_KICK", new Vector3(0f, 30f, 684f), Quaternion.Euler(270f, 0f, 0f), 0);
                 }
@@ -780,7 +780,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
             this.hasDied = true;
             Transform transform = base.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
             GameObject gameObject;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 gameObject = Optimization.Caching.Pool.NetworkEnable("bloodExplore", transform.position + Vectors.up * 1f * 4f, Quaternion.Euler(270f, 0f, 0f), 0);
             }
@@ -790,7 +790,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
                 //(GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("bloodExplore"), transform.position + Vectors.up * 1f * 4f, Quaternion.Euler(270f, 0f, 0f));
             }
             gameObject.transform.localScale = base.transform.localScale;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 gameObject = Optimization.Caching.Pool.NetworkEnable("bloodsplatter", transform.position, Quaternion.Euler(90f + transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z), 0);
             }
@@ -801,7 +801,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
             }
             gameObject.transform.localScale = base.transform.localScale;
             gameObject.transform.parent = transform;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 gameObject = Optimization.Caching.Pool.NetworkEnable("FX/justSmoke", transform.position, Quaternion.Euler(270f, 0f, 0f), 0);
             }

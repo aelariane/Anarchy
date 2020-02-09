@@ -40,7 +40,7 @@ namespace Anarchy.Network.Events
                     DictionaryEntry current = enumerator2.Current;
                     string roomName = (string)current.Key;
                     RoomInfo info = new RoomInfo(roomName, (ExitGames.Client.Photon.Hashtable)current.Value);
-                    if (info.removedFromList)
+                    if (info.RemovedFromList)
                     {
                         NetworkingPeer.mGameList.Remove(roomName);
                     }

@@ -7,13 +7,14 @@ btnCopy:Copier
 btnDelete:Supprimer
 name:Nom:
 set:Set
+sets:Sets disponibles
 setName:Set <color=yellow>"{0}"</color>
 
 skinStateSelection:Désactivé,Activé,Local
 skyboxDesc:Désactivé ciel customisé sur Cité/forest skins
 #Human skins
+disableCustomGas:Désactiver les textures personnalisées du gas:
 humanLabels:Cheval,Cheveux,Yeux,Lunettes,Face,Skin,Costume,Cape,3DMG Gauche,3DMG Droit,Gas,Capuche,Trainée
-sets:Sets disponibles
 
 #Titan sets
 titanHair:Cheveux 

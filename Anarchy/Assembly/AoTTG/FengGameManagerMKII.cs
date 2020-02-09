@@ -1,17 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Anarchy;
+using Anarchy.Commands.Chat;
 using Anarchy.Configuration;
+using Anarchy.Network;
 using Anarchy.UI;
+using ExitGames.Client.Photon;
 using Optimization;
 using Optimization.Caching;
 using RC;
 using UnityEngine;
+using Anti = Anarchy.Network.Antis;
 
 internal class FengGameManagerMKII : Photon.MonoBehaviour
 {
-    private static readonly Hashtable itweenHash = new Hashtable() { { "x", 0 }, { "y", 0 }, { "z", 0 }, { "easetype", iTween.EaseType.easeInBounce }, { "time", 0.5f }, { "delay", 2f } };
+    private static readonly System.Collections.Hashtable itweenHash = new System.Collections.Hashtable() { { "x", 0 }, { "y", 0 }, { "z", 0 }, { "easetype", iTween.EaseType.easeInBounce }, { "time", 0.5f }, { "delay", 2f } };
     private static Queue<KillInfoComponent> killInfoList = new Queue<KillInfoComponent>();
     private FEMALE_TITAN annie;
     private COLOSSAL_TITAN colossal;
@@ -95,6 +100,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (locale == null || args == null)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ChatLocalized));
+            info.Sender.AnarchySync = false;
             return;
         }
         if (!locale.IsOpen)
@@ -137,6 +143,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if(info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(clearlevel));
+            Anti.Kick(info.Sender, true);
             return;
         }
         switch (gametype)
@@ -196,17 +203,19 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(customlevelRPC));
+            Anti.Kick(info.Sender, true);
             return;
         }
         CustomLevel.RPC(content);
     }
 
     [RPC]
-    private void getRacingResult(string player, float time, PhotonMessageInfo info)
+    private void getRacingResult(string player, float time, PhotonMessageInfo info = null)
     {
         if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !PhotonNetwork.IsMasterClient))
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(getRacingResult));
+            Anti.Kick(info.Sender, true);
             return;
         }
         (Logic as GameLogic.RacingLogic).OnPlayerFinished(time, player);
@@ -220,7 +229,8 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         if (!info.Sender.IsMasterClient)
         {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ignorePlayerArray));
+            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ignorePlayer));
+            Anti.Kick(info.Sender, true);
             return;
         }
         PhotonPlayer photonPlayer = PhotonPlayer.Find(ID);
@@ -237,6 +247,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (!info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ignorePlayerArray));
+            Anti.Kick(info.Sender, true);
             return;
         }
         foreach (int ID in IDS)
@@ -329,7 +340,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             if (SkinSettings.SkinsCheck(SkinSettings.CitySkins))
             {
-                if (SkinSettings.CitySet.Value != "$Not define$")
+                if (SkinSettings.CitySet.Value != Anarchy.Configuration.StringSetting.NotDefine)
                 {
                     var set = new Anarchy.Configuration.Presets.CityPreset(SkinSettings.CitySet);
                     set.Load();
@@ -342,14 +353,14 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                     string urls = string.Join(",", set.Houses) + ",";
                     string urls2 = $"{set.Ground},{set.Wall},{set.Gate}";
                     string[] box = new string[6].Select(x => "").ToArray();
-                    if (set.LinkedSkybox != "$Not define$")
+                    if (set.LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
                     {
                         var boxSet = new Anarchy.Configuration.Presets.SkyboxPreset(set.LinkedSkybox);
                         boxSet.Load();
                         box = boxSet.ToSkinData();
                     }
                     LoadMapSkin(n, urls, urls2, box);
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.CitySkins.Value != 2)
                     {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { n, urls, urls2, box });
                     }
@@ -360,7 +371,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             if (SkinSettings.SkinsCheck(SkinSettings.ForestSkins))
             {
-                if (SkinSettings.ForestSet.Value != "$Not define$")
+                if (SkinSettings.ForestSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
                 {
                     var set = new Anarchy.Configuration.Presets.ForestPreset(SkinSettings.ForestSet);
                     set.Load();
@@ -382,14 +393,14 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                     string urls2 = string.Join(",", set.Leaves);
                     urls2 += "," + set.Ground;
                     string[] box = new string[6].Select(x => "").ToArray();
-                    if (set.LinkedSkybox != "$Not define$")
+                    if (set.LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
                     {
                         var boxSet = new Anarchy.Configuration.Presets.SkyboxPreset(set.LinkedSkybox);
                         boxSet.Load();
                         box = boxSet.ToSkinData();
                     }
                     LoadMapSkin(n, urls, urls2, box);
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.ForestSkins.Value != 2)
                     {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { n, urls, urls2, box });
                     }
@@ -404,6 +415,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if(info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(FengGameManagerMKII) + "." + nameof(loadskinRPC));
+            Anti.Kick(info.Sender, true);
             return;
         }
         if (!Level.MapName.Contains("City") && !Level.MapName.Contains("Forest"))
@@ -427,6 +439,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netGameLose));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.NetGameLose(score);
@@ -438,6 +451,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netGameWin));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.NetGameWin(score);
@@ -449,12 +463,34 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !info.Sender.IsMasterClient))
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netRefreshRacingResult));
+            Anti.Kick(info.Sender, true);
             return;
         }
         this.LocalRacingResult = tmp;
         if(Logic is GameLogic.RacingLogic rac)
         {
             rac.OnUpdateRacingResult();
+        }
+    }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            if(Application.loadedLevelName == "menu" || AnarchyManager.SettingsPanel.Active || AnarchyManager.CharacterSelectionPanel.Active || IN_GAME_MAIN_CAMERA.isPausing)
+            {
+                Screen.showCursor = true;
+                Screen.lockCursor = false;
+            }
+            else if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !PhotonNetwork.player.Dead))
+            {
+                Screen.showCursor = false;
+                Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+                if (GameObject.Find("cross1"))
+                {
+                    GameObject.Find("cross1").GetComponent<Transform>().position = Input.mousePosition;
+                }
+            }
         }
     }
 
@@ -524,7 +560,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         PVPcheckPoint.chkPts = new ArrayList();
         IN_GAME_MAIN_CAMERA.MainCamera.enabled = false;
         IN_GAME_MAIN_CAMERA.BaseCamera.GetComponent<CameraShake>().enabled = false;
-        IN_GAME_MAIN_CAMERA.GameType = GameType.Multi;
+        IN_GAME_MAIN_CAMERA.GameType = GameType.MultiPlayer;
         LoadSkinCheck();
         CustomLevel.OnLoadLevel();
         if (info.Mode == GameMode.TROST)
@@ -664,23 +700,25 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void pauseRPC(bool pause, PhotonMessageInfo info = null)
     {
-        if(info != null && info.Sender.IsMasterClient)
+        if (info != null && !info.Sender.IsMasterClient)
         {
-            if (pause)
+            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(pauseRPC));
+            Anti.Kick(info.Sender, true);
+            return;
+        }
+        if (pause)
+        {
+            AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
+            UnityEngine.Time.timeScale = 1E-06f;
+            if (!AnarchyManager.PauseWindow.Active)
             {
-                AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
-                UnityEngine.Time.timeScale = 1E-06f;
-                if (!AnarchyManager.PauseWindow.Active)
-                {
-                    AnarchyManager.PauseWindow.EnableImmediate();
-                }
-            }
-            else
-            {
-                AnarchyManager.PauseWindow.PauseWaitTime = 3f;
+                AnarchyManager.PauseWindow.EnableImmediate();
             }
         }
-
+        else
+        {
+            AnarchyManager.PauseWindow.PauseWaitTime = 3f;
+        }
     }
 
     [RPC]
@@ -689,6 +727,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient && Logic.Mode != GameMode.PVP_CAPTURE)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshPVPStatus));
+            Anti.Kick(info.Sender, true);
             return;
         }
         if (Logic is GameLogic.PVPCaptureLogic log)
@@ -704,6 +743,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshPVPStatus_AHSS));
+            Anti.Kick(info.Sender, true);
             return;
         }
         if (Logic is GameLogic.PVPLogic log)
@@ -745,6 +785,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshStatus));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.OnRefreshStatus(score1, score2, wav, highestWav, time1, time2, startRacin, endRacin);
@@ -756,6 +797,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !PhotonNetwork.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(RequireStatus));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.OnRequireStatus();
@@ -784,13 +826,16 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void RPCLoadLevel(PhotonMessageInfo info = null)
     {
-        if (info.Sender.IsMasterClient)
+        if (info != null && !info.Sender.IsMasterClient)
         {
-            AnarchyManager.Log.Disable();
-            AnarchyManager.Chat.Disable();
-            DestroyAllExistingCloths();
-            PhotonNetwork.LoadLevel(FengGameManagerMKII.Level.MapName);
+            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(RPCLoadLevel));
+            Anti.Kick(info.Sender, true);
+            return;
         }
+        AnarchyManager.Log.Disable();
+        AnarchyManager.Chat.Disable();
+        DestroyAllExistingCloths();
+        PhotonNetwork.LoadLevel(FengGameManagerMKII.Level.MapName);
     }
 
     //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
@@ -802,16 +847,10 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             if (isCustom)
             {
-                string customNameShow = customName == string.Empty ? "Cus" : customName;
-                if (!AnarchyManager.CustomVersion)
-                {
-                    info.Sender.AnarchySync = useSync && version == AnarchyManager.AnarchyVersion.ToString();
-                }
-                else
-                {
-                    info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
-                }
-                info.Sender.ModName = $"[00BBCC][A[CCCCDD]({customNameShow})[-]]";
+                string customNameShow = customName == string.Empty ? "Custom" : customName;
+                info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
+
+                info.Sender.ModName = string.Format(ModNames.AnarchyCustom, customNameShow);
                 return;
             }
             if (version == AnarchyManager.AnarchyVersion.ToString())
@@ -819,14 +858,19 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 return;
             }
             info.Sender.AnarchySync = false;
+            info.Sender.ModName =string.Format(ModNames.AnarchyCustom, version);
         }
     }
 
 
     [RPC]
-    private void setMasterRC()
+    private void setMasterRC(PhotonMessageInfo info)
     {
-
+        if(info != null && !info.Sender.IsMasterClient)
+        {
+            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(setMasterRC));
+            Anti.Kick(info.Sender, true);
+        }
     }
 
     private void setTeam(int team)
@@ -885,6 +929,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if(info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(setTeamRPC));
+            Anti.Kick(info.Sender, true);
             return;
         }
         setTeam(team);
@@ -896,15 +941,13 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(settingRPC));
+            Anti.Kick(info.Sender, true);
             return;
         }
-        if (info.Sender.IsMasterClient)
-        {
-            GameModes.HandleRPC(hash);
-        }
+        GameModes.HandleRPC(hash);
     }
 
-    #region Show UILabels
+#region Show UILabels
     internal void ShowHUDInfoCenter(string content)
     {
         Labels.Center = content.ToHTMLFormat();
@@ -939,7 +982,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         Labels.TopRight += content.ToHTMLFormat();
     }
-    #endregion
+#endregion
 
     [RPC]
     private void showResult(string text0, string text1, string text2, string text3, string text4, string text6, PhotonMessageInfo info)
@@ -947,6 +990,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (info != null && !info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(showResult));
+            Anti.Kick(info.Sender, true);
             return;
         }
         if (this.gameTimesUp)
@@ -1071,6 +1115,11 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             }
             SpawnNonAITitan(this.myLastHero, "titanRespawn");
         }
+        else
+        {
+            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(spawnTitanRPC));
+            Anti.Kick(info.Sender, true);
+        }
     }
 
     private void Start()
@@ -1080,7 +1129,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         DontDestroyOnLoad(this);
         HeroCostume.Init();
         CharacterMaterials.Init();
-        RCManager.Clear();
+        RCManager.ClearAll();
         this.heroes = new List<HERO>();
         this.titans = new List<TITAN>();
         this.hooks = new List<Bullet>();
@@ -1096,19 +1145,31 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         if (!GameStart)
             return;
-        foreach (var h in heroes)
+
+        int i;
+        for (i = 0; i < hooks.Count; i++)
         {
-            h.update();
+            hooks[i].update();
         }
-        foreach (var b in hooks)
+        for (i = 0; i < heroes.Count; i++)
         {
-            b.update();
+            heroes[i].update();
         }
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || PhotonNetwork.IsMasterClient)
         {
-            foreach (var t in titans)
+            for (i = 0; i < titans.Count; i++)
             {
-                t.update();
+                titans[i].update();
+            }
+        }
+        else if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.player.IsTitan)
+        {
+            for (i = 0; i < titans.Count; i++)
+            {
+                if (titans[i].IsLocal)
+                {
+                    titans[i].update();
+                }
             }
         }
         if (mainCamera != null)
@@ -1122,9 +1183,9 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void updateKillInfo(bool t1, string killer, bool t2, string victim, int dmg, PhotonMessageInfo info)
     {
-        if (info != null && !info.Sender.IsMasterClient && dmg != 0 && !t1)
+        if (info != null && !info.Sender.IsMasterClient && dmg != 0 && !t1 && !info.Sender.IsTitan)
         {
-            Log.AddLineRaw($"t1:{t1},killer:{killer},t2:{t2},victim:{victim},dmg:{dmg}", MsgType.Warning);
+            Log.AddLineRaw($"t1:{t1},killer:{killer},t2:{t2},victim:{victim},dmg:{dmg},sender:{info.Sender.ID},isTitan:{info.Sender.IsTitan}", MsgType.Warning);
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(updateKillInfo));
             return;
         }
@@ -1160,7 +1221,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (ID < 0)
         {
             string ver = ID.ToString().Replace("-", "");
-            info.Sender.ModName = $"[00FFFF][Cyan[CCCCDD]({ver[0]}.{ver[1]}.{ver[2]})[-]]";
+            info.Sender.ModName = string.Format(ModNames.Cyan, $"{ver[0]}.{ver[1]}.{ver[2]}");
         }
     }
 
@@ -1262,7 +1323,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         float num = Logic.RoundTime - (Logic as GameLogic.RacingLogic).StartTime;
         if (PhotonNetwork.IsMasterClient)
         {
-            this.getRacingResult(User.RaceName, num, new PhotonMessageInfo());
+            this.getRacingResult(User.RaceName, num);
         }
         else
         {
@@ -1276,11 +1337,12 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     }
 
     [RPC]
-    public void netShowDamage(int speed, PhotonMessageInfo info)
+    public void netShowDamage(int speed, PhotonMessageInfo info = null)
     {
-        if (info != null && !info.Sender.IsMasterClient)
+        if (info != null && !info.Sender.IsMasterClient && !info.Sender.IsTitan)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netShowDamage));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Stylish?.Style(speed);
@@ -1318,14 +1380,11 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         this.myLastHero = id.ToUpper();
         PhotonNetwork.player.Dead = true;
         PhotonNetwork.player.IsTitan = false;
-        if (!Level.Name.StartsWith("Custom"))
-        {
-            Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-            Screen.showCursor = false;
-            IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
-        }
+        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+        Screen.showCursor = false;
         IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
         IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null, true, false);
+        IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
         IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
     }
 
@@ -1397,6 +1456,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if(info != null && !PhotonNetwork.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(oneTitanDown));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.OnTitanDown(name1, onPlayerLeave);
@@ -1414,7 +1474,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void OnJoinedRoom(AOTEventArgs args)
     {
-        string[] strArray = PhotonNetwork.room.name.Split('`');
+        string[] strArray = PhotonNetwork.room.Name.Split('`');
         gameTimesUp = false;
         Level = LevelInfo.GetInfo(strArray[1]);
         switch (strArray[2].ToLower())
@@ -1476,6 +1536,13 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             BasePV.RPC("RequireStatus", PhotonTargets.MasterClient, new object[0]);
         }
+        foreach (HERO her in heroes)
+        {
+            if(her.BasePV != null && her.BasePV.owner.GameObject == null)
+            {
+                her.BasePV.owner.GameObject = her.baseG;
+            }
+        }
     }
 
     public void OnLeftLobby(AOTEventArgs args)
@@ -1517,6 +1584,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         {
             GameModes.Load();
             GameModes.ForceChange();
+            RCManager.ClearAll();
             this.RestartGame(true, false);
         }
     }
@@ -1562,9 +1630,21 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
         playerList?.Update();
+        if (player.Properties[PhotonPlayerProperty.name] == null)
+        {
+            while (player.Properties[PhotonPlayerProperty.name] == null)
+            {
+                yield return awaiter;
+            }
+        }
         if (PhotonNetwork.IsMasterClient)
         {
+            yield return awaiter;
             GameModes.SendRPCToPlayer(player);
+            if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().StartsWith("GUEST"))
+            {
+                Anti.Kick(player, true, "Anti-guest");
+            }
         }
     }
 
@@ -1588,7 +1668,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             if (PhotonNetwork.IsMasterClient)
             {
                 this.oneTitanDown(string.Empty, true);
-                this.someOneIsDead(0, null);
+                this.someOneIsDead(0);
             }
         }
     }
@@ -1706,6 +1786,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         killInfoList.Clear();
         this.racingResult = new ArrayList();
+        RCManager.ClearVariables();
         this.ShowHUDInfoCenter(string.Empty);
         DestroyAllExistingCloths();
         PhotonNetwork.DestroyAll();
@@ -1759,11 +1840,12 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     }
 
     [RPC]
-    public void someOneIsDead(int id, PhotonMessageInfo info)
+    public void someOneIsDead(int id, PhotonMessageInfo info = null)
     {
         if (info != null && !PhotonNetwork.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(someOneIsDead));
+            Anti.Kick(info.Sender, true);
             return;
         }
         Logic.OnSomeOneIsDead(id);
@@ -1823,7 +1905,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void SpawnPlayerAt(string id, string tag = "")
     {
-        if(!CustomLevel.logicLoaded || !CustomLevel.customLevelLoaded)
+        if(!CustomLevel.logicLoaded  || !CustomLevel.customLevelLoaded)
         {
             NOTSpawnPlayer(id);
             return;
@@ -1964,7 +2046,8 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         else
         {
-            component.SetMainObject(Optimization.Caching.Pool.NetworkEnable("AOTTG_HERO 1", pos, Quaternion.identity, 0).GetComponent<HERO>(), true, false);
+            HERO hero = Optimization.Caching.Pool.NetworkEnable("AOTTG_HERO 1", pos, Quaternion.identity, 0).GetComponent<HERO>();
+            component.SetMainObject(hero, true, false);
             id = id.ToUpper();
             if (id == "SET 1" || id == "SET 2" || id == "SET 3")
             {
@@ -2021,6 +2104,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             PhotonNetwork.player.IsTitan = false;
         }
         component.enabled = true;
+
         IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
         IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
         IN_GAME_MAIN_CAMERA.Look.disable = true;
@@ -2318,7 +2402,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         Damage = Mathf.Max(10, Damage);
         this.SendKillInfo(false, LoginFengKAI.player.name, true, name, Damage);
-        this.netShowDamage(Damage, new PhotonMessageInfo());
+        this.netShowDamage(Damage);
         this.oneTitanDown(name, false);
         this.PlayerKillInfoUpdate(PhotonNetwork.player, Damage);
     }

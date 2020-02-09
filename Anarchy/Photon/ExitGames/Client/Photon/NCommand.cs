@@ -116,7 +116,7 @@ namespace ExitGames.Client.Photon
         {
             get
             {
-                return (this.Payload != null) ? this.Payload.Length : 0;
+                return (this.Payload != null) ? this.Payload.IntLength : 0;
             }
         }
 
@@ -218,25 +218,25 @@ namespace ExitGames.Client.Photon
                     }
                     break;
                 case 6:
-                    this.Size = 12 + payload.Length;
+                    this.Size = 12 + payload.IntLength;
                     break;
                 case 14:
-                    this.Size = 12 + payload.Length;
+                    this.Size = 12 + payload.IntLength;
                     this.commandFlags = 3;
                     break;
                 case 7:
-                    this.Size = 16 + payload.Length;
+                    this.Size = 16 + payload.IntLength;
                     this.commandFlags = 0;
                     break;
                 case 11:
-                    this.Size = 16 + payload.Length;
+                    this.Size = 16 + payload.IntLength;
                     this.commandFlags = 2;
                     break;
                 case 8:
-                    this.Size = 32 + payload.Length;
+                    this.Size = 32 + payload.IntLength;
                     break;
                 case 15:
-                    this.Size = 32 + payload.Length;
+                    this.Size = 32 + payload.IntLength;
                     this.commandFlags = 3;
                     break;
             }
@@ -310,7 +310,7 @@ namespace ExitGames.Client.Photon
                 StreamBuffer streamBuffer = PeerBase.MessageBufferPoolGet();
                 streamBuffer.Write(inBuff, readingOffset, num);
                 this.Payload = streamBuffer;
-                this.Payload.Position = 0;
+                this.Payload.IntPosition = 0;
                 readingOffset += num;
             }
         }

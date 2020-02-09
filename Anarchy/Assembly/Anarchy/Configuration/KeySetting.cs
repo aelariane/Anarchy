@@ -21,7 +21,7 @@ namespace Anarchy.Configuration
             return Input.GetAxis("Mouse ScrollWheel") * modifier > 0f;
         }
 
-        public bool IsHolding()
+        public bool IsKeyHolding()
         {
             if (isAxis)
             {
@@ -30,7 +30,7 @@ namespace Anarchy.Configuration
             return Input.GetKey(Value);
         }
 
-        public bool IsPressed()
+        public bool IsKeyDown()
         {
             if (isAxis)
             {
@@ -39,7 +39,7 @@ namespace Anarchy.Configuration
             return Input.GetKeyDown(Value);
         }
 
-        public bool IsUp()
+        public bool IsKeyUp()
         {
             if (isAxis)
             {

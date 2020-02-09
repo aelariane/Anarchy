@@ -369,11 +369,11 @@ public static class PhotonNetwork
             {
                 return 0;
             }
-            return room.maxPlayers;
+            return room.MaxPlayers;
         }
         set
         {
-            room.maxPlayers = value;
+            room.MaxPlayers = value;
         }
     }
 
@@ -1378,7 +1378,7 @@ public static class PhotonNetwork
     {
         if (target != null)
         {
-            FengGameManagerMKII.FGM.BasePV.RPC("SetAnarchyMod", target, new object[] { Anarchy.AnarchyManager.CustomVersion, Anarchy.AnarchyManager.FullAnarchySync, Anarchy.AnarchyManager.CustomName, Anarchy.AnarchyManager.AnarchyVersion.ToString() });
+            FengGameManagerMKII.FGM.BasePV.RPC("SetAnarchyMod", target, new object[] { true, Anarchy.AnarchyManager.FullAnarchySync, Anarchy.AnarchyManager.CustomName, Anarchy.AnarchyManager.AnarchyVersion.ToString() });
         }
     }
 
@@ -1417,7 +1417,7 @@ public static class PhotonNetwork
                 customProperties[(string)obj] = null;
             }
         }
-        if (room != null && room.isLocalClientInside)
+        if (room != null && room.IsLocalClientInside)
         {
             player.SetCustomProperties(customProperties);
         }

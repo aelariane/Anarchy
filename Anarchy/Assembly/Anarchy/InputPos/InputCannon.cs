@@ -3,7 +3,7 @@
     internal enum InputCannon : int
     {
         CannonUp,
-        CannongDown,
+        CannonDown,
         CannonLeft,
         CannonRight,
         CannonFire,

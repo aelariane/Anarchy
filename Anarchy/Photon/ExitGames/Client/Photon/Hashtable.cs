@@ -24,7 +24,7 @@ namespace ExitGames.Client.Photon
 			}
 			set
 			{
-				base[key] = value;
+				base[key ?? "null"] = value;
 			}
 		}
 

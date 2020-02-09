@@ -15,8 +15,8 @@ banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> banned 
 
 #RPC
 RPCerror:<color=#$maincolor$>Invalid RPC[<color=#$subcolor>{1}</color>] by ID: <color=#$subcolor$>{0}</color></color>
-invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL</color>
-invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link</color>
+invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin URL(<color=#$subcolor$>{1}</color>)</color>
+invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> invalid skin Link(<color=#$subcolor$>{1}</color>)</color>
 
 #Events errors
 eventName:<color=#$maincolor$>Event <color=#$subcolor$>{0}</color>:</color>

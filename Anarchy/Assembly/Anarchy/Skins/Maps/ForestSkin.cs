@@ -42,7 +42,10 @@ namespace Anarchy.Skins.Maps
                             }
                             else if (render.name.Contains("Plane_031"))
                             {
-                                TryApplyTexture(elements[9 + second], render, true);
+                                if (!elements[9 + second].IsTransparent)
+                                {
+                                    TryApplyTexture(elements[9 + second], render, !GameModes.BombMode.Enabled);
+                                }
                             }
                         }
                     }
@@ -53,7 +56,10 @@ namespace Anarchy.Skins.Maps
                             Renderer[] rends = go.GetComponentsInChildren<Renderer>();
                             foreach(Renderer rend in rends)
                             {
-                                TryApplyTexture(elements[17], rend);
+                                if (!elements[17].IsTransparent)
+                                {
+                                    TryApplyTexture(elements[17], rend);
+                                }
                             }
                         }
                     }

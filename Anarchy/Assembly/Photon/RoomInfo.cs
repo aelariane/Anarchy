@@ -1,27 +1,21 @@
 ﻿using Anarchy;
+using Antis;
 using ExitGames.Client.Photon;
 
 public class RoomInfo
 {
-    private Hashtable customPropertiesField = new Hashtable();
-
     protected bool autoCleanUpField = PhotonNetwork.autoCleanUpPlayerObjects;
-
-    protected byte maxPlayersField;
-
-    protected string nameField;
-
-    protected bool openField = true;
-
-    protected bool visibleField = true;
-
     private string cachedname;
+    protected byte maxPlayersField;
+    protected string nameField;
+    protected bool openField = true;
+    protected bool visibleField = true;
 
     public bool HasPassword
     {
         get
         {
-            string[] array = name.Split('`');
+            string[] array = Name.Split('`');
             if(array.Length != 7)
             {
                 return false;
@@ -36,17 +30,11 @@ public class RoomInfo
         this.nameField = roomName;
     }
 
-    public Hashtable customProperties
-    {
-        get
-        {
-            return this.customPropertiesField;
-        }
-    }
+    public Hashtable CustomProperties { get; } = new Hashtable();
 
-    public bool isLocalClientInside { get; set; }
+    public bool IsLocalClientInside { get; set; }
 
-    public byte maxPlayers
+    public byte MaxPlayers
     {
         get
         {
@@ -54,7 +42,7 @@ public class RoomInfo
         }
     }
 
-    public string name
+    public string Name
     {
         get
         {
@@ -62,7 +50,7 @@ public class RoomInfo
         }
     }
 
-    public bool open
+    public bool Open
     {
         get
         {
@@ -70,10 +58,10 @@ public class RoomInfo
         }
     }
 
-    public int playerCount { get; private set; }
-    public bool removedFromList { get; internal set; }
+    public int PlayerCount { get; private set; }
+    public bool RemovedFromList { get; internal set; }
 
-    public bool visible
+    public bool Visible
     {
         get
         {
@@ -83,57 +71,33 @@ public class RoomInfo
 
     protected internal void CacheProperties(Hashtable propertiesToCache)
     {
-        if (((propertiesToCache != null) && (propertiesToCache.Count != 0)) && !this.customPropertiesField.Equals(propertiesToCache))
+        if (((propertiesToCache != null) && (propertiesToCache.Count != 0)) && !CustomProperties.Equals(propertiesToCache))
         {
-            if (propertiesToCache.ContainsKey((byte)0xfb) && propertiesToCache[(byte)0xfb] is bool)
+            if(propertiesToCache.CheckKey(RoomProperty.RemovedFromList, out bool removed, true))
             {
-                this.removedFromList = (bool)propertiesToCache[(byte)0xfb];
+                RemovedFromList = removed;
             }
-            else if (propertiesToCache.ContainsKey((byte)0xfb))
+            if(propertiesToCache.CheckKey(RoomProperty.MaxPlayers, out byte max, true))
             {
-                propertiesToCache.Remove((byte)0xfb);
+                maxPlayersField = max;
             }
-            if (propertiesToCache.ContainsKey((byte)0xff) && propertiesToCache[(byte)0xff] is byte)
+            if (propertiesToCache.CheckKey(RoomProperty.Visibility, out bool visible, true))
             {
-                this.maxPlayersField = (byte)propertiesToCache[(byte)0xff];
+                visibleField = visible;
             }
-            else if (propertiesToCache.ContainsKey((byte)0xff))
+            if (propertiesToCache.CheckKey(RoomProperty.Joinable, out bool joinable, true))
             {
-                propertiesToCache.Remove((byte)0xff);
+                openField = joinable;
             }
-            if (propertiesToCache.ContainsKey((byte)0xfd) && propertiesToCache[(byte)0xfd] is bool)
+            if (propertiesToCache.CheckKey(RoomProperty.PlayerCount, out byte players, true))
             {
-                this.openField = (bool)propertiesToCache[(byte)0xfd];
+                PlayerCount = players;
             }
-            else if (propertiesToCache.ContainsKey((byte)0xfd))
+            if(propertiesToCache.CheckKey(RoomProperty.CleanUpCacheOnLeave, out bool cleanup, true))
             {
-                propertiesToCache.Remove((byte)0xfd);
+                autoCleanUpField = cleanup;
             }
-            if (propertiesToCache.ContainsKey((byte)0xfe) && propertiesToCache[(byte)0xfe] is bool)
-            {
-                this.visibleField = (bool)propertiesToCache[(byte)0xfe];
-            }
-            else if (propertiesToCache.ContainsKey((byte)0xfe))
-            {
-                propertiesToCache.Remove((byte)0xfe);
-            }
-            if (propertiesToCache.ContainsKey((byte)0xfc) && propertiesToCache[(byte)0xfc] is byte)
-            {
-                this.playerCount = (byte)propertiesToCache[(byte)0xfc];
-            }
-            else if (propertiesToCache.ContainsKey((byte)0xfc))
-            {
-                propertiesToCache.Remove((byte)0xfc);
-            }
-            if (propertiesToCache.ContainsKey((byte)0xf9) && propertiesToCache[(byte)0xf9] is bool)
-            {
-                this.autoCleanUpField = (bool)propertiesToCache[(byte)0xf9];
-            }
-            else if (propertiesToCache.ContainsKey((byte)0xf9))
-            {
-                propertiesToCache.Remove((byte)0xf9);
-            }
-            this.customPropertiesField.MergeStringKeys(propertiesToCache);
+            CustomProperties.MergeStringKeys(propertiesToCache);
         }
     }
 
@@ -154,13 +118,12 @@ public class RoomInfo
         {
             return true;
         }
-        string[] array = name.Split('`');
+        string[] array = Name.Split('`');
         if (array.Length != 7)
         {
             return false;
         }
         string decrypted = new SimpleAES().Decrypt(array[5]);
-        UnityEngine.Debug.Log($"decrypted: {decrypted}, pass {pass}, decrypted.Equals(pass) {decrypted.Equals(pass)}");
         return decrypted.Equals(pass);
     }
 
@@ -168,13 +131,13 @@ public class RoomInfo
 
     public override string ToString()
     {
-        object[] args = new object[] { this.nameField, !this.visibleField ? "hidden" : "visible", !this.openField ? "closed" : "open", this.maxPlayersField, this.playerCount };
+        object[] args = new object[] { this.nameField, !this.visibleField ? "hidden" : "visible", !this.openField ? "closed" : "open", this.maxPlayersField, this.PlayerCount };
         return string.Format("Room: '{0}' {1},{2} {4}/{3} players.", args);
     }
 
     public string ToStringFull()
     {
-        object[] args = new object[] { this.nameField, !this.visibleField ? "hidden" : "visible", !this.openField ? "closed" : "open", this.maxPlayersField, this.playerCount, this.customPropertiesField.ToStringFull() };
+        object[] args = new object[] { this.nameField, !this.visibleField ? "hidden" : "visible", !this.openField ? "closed" : "open", this.maxPlayersField, this.PlayerCount, this.CustomProperties.ToStringFull() };
         return string.Format("Room: '{0}' {1},{2} {4}/{3} players.\ncustomProps: {5}", args);
     }
 
@@ -184,23 +147,12 @@ public class RoomInfo
         {
             if (cachedname == null)
             {
-                var strArray = name.Split('`');
+                var strArray = Name.Split('`');
                 if (strArray.Length != 7)
                 {
                     cachedname = $"Invalid server name[{strArray.Length}]";
-                    return $"{cachedname} {playerCount}/{maxPlayers}";
+                    return $"{cachedname} {PlayerCount}/{MaxPlayers}";
                 }
-                //if (Astora.Antis.CheckRoomData(strArray))
-                //{
-                //    visibleField = false;
-                //    string log = "";
-                //    foreach (string str in strArray)
-                //    {
-                //        log += str + System.Environment.NewLine;
-                //    }
-                //    Astora.FileLogger.AddLine("Invalid room name: " + log);
-                //    return string.Empty;
-                //}
                 string open = openField ? "" : "[FF0000][Closed][-] ";
                 string pass = strArray[5].Length > 0 ? "[PWD] " : string.Empty;
                 int length = strArray[0].RemoveHex().Length;
@@ -219,7 +171,7 @@ public class RoomInfo
                     cachedname += "/[FF0000]RoomID: " + strArray[6] + "[-]/";
                 }
             }
-            string max = playerCount == maxPlayers ? $"[FF0000][{playerCount}/{maxPlayers}][-]" : $"[{playerCount}/{maxPlayers}]";
+            string max = PlayerCount == MaxPlayers ? $"[FF0000][{PlayerCount}/{MaxPlayers}][-]" : $"[{PlayerCount}/{MaxPlayers}]";
             return $"{cachedname} {max}";
         }
     }

@@ -9,6 +9,7 @@ namespace Anarchy.Configuration
         private static List<ISetting> allSettings;
         private static object locker = new object();
         public static IDataStorage Storage;
+
         public static BoolSetting InvertY = new BoolSetting("InvertY", false);
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);
         public static BoolSetting SnapshotsInGame = new BoolSetting("SnapshotsInGame", false);
@@ -40,9 +41,8 @@ namespace Anarchy.Configuration
         {
             AudioListener.volume = SoundLevel.Value;
             IN_GAME_MAIN_CAMERA.sensitivityMulti = MouseSensivity.Value;
-            IN_GAME_MAIN_CAMERA.cameraDistance = 0.3f + CameraDistance.Value;
+            IN_GAME_MAIN_CAMERA.cameraDistance = 0.3f + CameraDistance.Value; ;
             IN_GAME_MAIN_CAMERA.invertY = InvertY.Value ? -1 : 1;
-           
         }
 
         public static void Clear()

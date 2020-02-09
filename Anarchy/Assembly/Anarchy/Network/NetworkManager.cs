@@ -18,18 +18,20 @@ namespace Anarchy.Network
         private static readonly EventPropertires props = new EventPropertires();
         private static readonly EventRoast roast = new EventRoast();
         private static readonly EventRoomListUpdate roomUpdate = new EventRoomListUpdate();
-        private static readonly EventRoomListUpdate1 roomUpdate1 = new EventRoomListUpdate1();
+        private static readonly EventRoomList roomUpdate1 = new EventRoomList();
         private static readonly EventRPC rpc = new EventRPC();
 
         static NetworkManager()
         {
             NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnJoinedLobby, OnJoinedLobby);
+            NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnJoinedRoom, OnJoinedRoom);
+            NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnConnectionFail, OnConnectionFail);
         }
 
         private static Dictionary<byte, INetworkEvent> events;
-        //public static bool NeedRejoin = false;
-        //public static Room RejoinRoom;
-        //public static string RejoinRegion = "";
+        public static bool NeedRejoin = false;
+        public static Room RejoinRoom = null;
+        public static string RejoinRegion = "";
 
         internal static void RegisterEvent(INetworkEvent ev)
         {
@@ -40,38 +42,61 @@ namespace Anarchy.Network
 
         public static INetworkEvent GetEvent(byte code)
         {
-            if (!events.ContainsKey(code))
-                return null;
-            return events[code];
+            events.TryGetValue(code, out INetworkEvent result);
+            return result;
+        }
+
+        private static void OnConnectionFail(Optimization.AOTEventArgs args)
+        {
+            UnityEngine.Debug.Log("OnConnectionFail: " + args.DisconnectCause.ToString());
+            switch (args.DisconnectCause)
+            {
+                case DisconnectCause.DisconnectByServerLogic:
+                case DisconnectCause.DisconnectByClientTimeout:
+                case DisconnectCause.DisconnectByServerTimeout:
+                case DisconnectCause.InternalReceiveException:
+                case DisconnectCause.Exception:
+                    NeedRejoin = true;
+                    break;
+
+                default:
+                    NeedRejoin = false;
+                    break;
+            }
         }
 
         private static void OnJoinedLobby(Optimization.AOTEventArgs args)
         {
-            //if (NeedRejoin)
-            //{
-            //    TryRejoinRoom();
-            //    NeedRejoin = false;
-            //}
-            //RejoinRegion = PhotonNetwork.networkingPeer.MasterServerAddress.Split(':')[0];
+            if (NeedRejoin)
+            {
+                TryRejoinRoom();
+                NeedRejoin = false;
+            }
+            RejoinRegion = PhotonNetwork.networkingPeer.MasterServerAddress.Split(':')[0];
         }
 
-        //public static bool TryRejoin()
-        //{
-        //    if (Settings.Rejoin == 0 || RejoinRoom == null)
-        //        return false;
-        //    bool result = PhotonNetwork.ConnectToMaster(RejoinRegion, NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.TransportProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
-        //    return result;
-        //}
+        private static void OnJoinedRoom(Optimization.AOTEventArgs args)
+        {
+            RejoinRoom = PhotonNetwork.room;
+        }
 
-        //public static bool TryRejoinRoom()
-        //{
-        //    if (Settings.Rejoin == 0 || RejoinRoom == null)
-        //    {
-        //        return false;
-        //    }
-        //    if (RejoinRoom.maxPlayers <= RejoinRoom.playerCount)
-        //        return false;
-        //    return PhotonNetwork.JoinRoom(RejoinRoom.name);
-        //}
+        public static bool TryRejoin()
+        {
+            if (!NeedRejoin || NetworkSettings.Rejoin == 0 || RejoinRoom == null)
+                return false;
+            bool result = PhotonNetwork.ConnectToMaster(RejoinRegion, NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.TransportProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
+            return result;
+        }
+
+        public static bool TryRejoinRoom()
+        {
+            if (NetworkSettings.Rejoin == 0 || RejoinRoom == null)
+            {
+                return false;
+            }
+            if (RejoinRoom.MaxPlayers <= RejoinRoom.PlayerCount)
+                return false;
+            return PhotonNetwork.JoinRoom(RejoinRoom.Name);
+        }
     }
 }

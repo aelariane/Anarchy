@@ -57,7 +57,7 @@ namespace Anarchy.UI
             }
             if (PauseButton(pauseRect, "custom"))
             {
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient))
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient))
                 {
                     if (activePanel != null)
                     {
@@ -69,7 +69,7 @@ namespace Anarchy.UI
             }
             if (PauseButton(pauseRect, "gameSettings"))
             {
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient))
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient))
                 {
                     if (activePanel != null)
                     {
@@ -114,7 +114,7 @@ namespace Anarchy.UI
             }
             if (leaving)
             {
-                if(IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     PhotonNetwork.Disconnect();
                 }

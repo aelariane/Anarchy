@@ -1,70 +1,64 @@
 ﻿using System;
-using System.Threading;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.RpcProtocols.GpBinaryV16;
 
 namespace ExitGames.Client.Photon
 {
     public class Protocol
     {
-        internal static readonly Dictionary<Type, CustomType> TypeDict = new Dictionary<Type, CustomType>();
-
         internal static readonly Dictionary<byte, CustomType> CodeDict = new Dictionary<byte, CustomType>();
-
-        private static IProtocol ProtocolDefault;
-
-        private static readonly float[] memFloatBlock = new float[1];
-
         private static readonly byte[] memDeserialize = new byte[4];
+        private static readonly float[] memFloatBlock = new float[1];
+        private static IProtocol ProtocolDefault;
+        internal static readonly Dictionary<Type, CustomType> TypeDict = new Dictionary<Type, CustomType>();
 
         public static bool TryRegisterType(Type type, byte typeCode, SerializeMethod serializeFunction, DeserializeMethod deserializeFunction)
         {
-            if (Protocol.CodeDict.ContainsKey(typeCode) || Protocol.TypeDict.ContainsKey(type))
+            if (CodeDict.ContainsKey(typeCode) || TypeDict.ContainsKey(type))
             {
                 return false;
             }
             CustomType value = new CustomType(type, typeCode, serializeFunction, deserializeFunction);
-            Protocol.CodeDict.Add(typeCode, value);
-            Protocol.TypeDict.Add(type, value);
+            CodeDict.Add(typeCode, value);
+            TypeDict.Add(type, value);
             return true;
         }
 
         public static bool TryRegisterType(Type type, byte typeCode, SerializeStreamMethod serializeFunction, DeserializeStreamMethod deserializeFunction)
         {
-            if (Protocol.CodeDict.ContainsKey(typeCode) || Protocol.TypeDict.ContainsKey(type))
+            if (CodeDict.ContainsKey(typeCode) || TypeDict.ContainsKey(type))
             {
                 return false;
             }
             CustomType value = new CustomType(type, typeCode, serializeFunction, deserializeFunction);
-            Protocol.CodeDict.Add(typeCode, value);
-            Protocol.TypeDict.Add(type, value);
+            CodeDict.Add(typeCode, value);
+            TypeDict.Add(type, value);
             return true;
         }
 
         [Obsolete]
         public static byte[] Serialize(object obj)
         {
-            if (Protocol.ProtocolDefault == null)
+            if (ProtocolDefault == null)
             {
-                Protocol.ProtocolDefault = new Protocol16();
+                ProtocolDefault = new Protocol16();
             }
-            IProtocol protocolDefault = Protocol.ProtocolDefault;
-            lock (protocolDefault)
+            lock (ProtocolDefault)
             {
-                return Protocol.ProtocolDefault.Serialize(obj);
+                return ProtocolDefault.Serialize(obj);
             }
         }
 
         [Obsolete]
         public static object Deserialize(byte[] serializedData)
         {
-            if (Protocol.ProtocolDefault == null)
+            if (ProtocolDefault == null)
             {
-                Protocol.ProtocolDefault = new Protocol16();
+                ProtocolDefault = new Protocol16();
             }
-            IProtocol protocolDefault = Protocol.ProtocolDefault;
-            lock (protocolDefault)
+            lock (ProtocolDefault)
             {
-                return Protocol.ProtocolDefault.Deserialize(serializedData);
+                return ProtocolDefault.Deserialize(serializedData);
             }
         }
 
@@ -84,11 +78,10 @@ namespace ExitGames.Client.Photon
 
         public static void Serialize(float value, byte[] target, ref int targetOffset)
         {
-            float[] obj = Protocol.memFloatBlock;
-            lock (obj)
+            lock (memFloatBlock)
             {
-                Protocol.memFloatBlock[0] = value;
-                Buffer.BlockCopy(Protocol.memFloatBlock, 0, target, targetOffset, 4);
+                memFloatBlock[0] = value;
+                Buffer.BlockCopy(memFloatBlock, 0, target, targetOffset, 4);
             }
             if (BitConverter.IsLittleEndian)
             {
@@ -116,10 +109,9 @@ namespace ExitGames.Client.Photon
         {
             if (BitConverter.IsLittleEndian)
             {
-                byte[] obj = Protocol.memDeserialize;
-                lock (obj)
+                lock (memDeserialize)
                 {
-                    byte[] array = Protocol.memDeserialize;
+                    byte[] array = memDeserialize;
                     array[3] = source[offset++];
                     array[2] = source[offset++];
                     array[1] = source[offset++];

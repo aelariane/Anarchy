@@ -13,6 +13,7 @@ skinStateSelection:Disattivato,Attivato,Locale
 skyboxDesc:Disabilita custom skybox sulle skin di città/foresta
 #Human skins
 humanLabels:Cavallo:,Capelli,Occhi,Occhiali,Faccia,Pelle,Costume,Mantello,Sinistro 3DMG,Destro 3DMG,Gas,Cappuccio,Trail
+disableCustomGas:Disattiva la skin del gas:
 sets:Sets disponibili
 
 #Titan sets

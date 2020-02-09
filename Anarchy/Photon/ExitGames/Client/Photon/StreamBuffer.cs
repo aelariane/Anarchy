@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ExitGames.Client.Photon
 {
-    public class StreamBuffer
+    public class StreamBuffer : Stream
     {
         private const int DefaultInitialSize = 0;
 
@@ -13,7 +13,7 @@ namespace ExitGames.Client.Photon
 
         private byte[] buf;
 
-        public bool CanRead
+        public override bool CanRead
         {
             get
             {
@@ -21,7 +21,7 @@ namespace ExitGames.Client.Photon
             }
         }
 
-        public bool CanSeek
+        public override bool CanSeek
         {
             get
             {
@@ -29,7 +29,7 @@ namespace ExitGames.Client.Photon
             }
         }
 
-        public bool CanWrite
+        public override bool CanWrite
         {
             get
             {
@@ -37,15 +37,15 @@ namespace ExitGames.Client.Photon
             }
         }
 
-        public int Length
+        public int IntLength
         {
             get
             {
-                return this.len;
+                return len;
             }
         }
 
-        public int Position
+        public int IntPosition
         {
             get
             {
@@ -61,6 +61,30 @@ namespace ExitGames.Client.Photon
                 }
             }
         }
+
+        public override long Length
+        {
+            get
+            {
+                return len;
+            }
+        }
+
+        public override long Position
+        {
+            get
+            {
+                return pos;
+            }
+            set
+            {
+                checked
+                {
+                    pos = (int)value;
+                }
+            }
+        }
+      
 
         public StreamBuffer(int size = 0)
         {
@@ -94,12 +118,12 @@ namespace ExitGames.Client.Photon
 
         public void Compact()
         {
-            long num = this.Length - this.Position;
+            long num = this.IntLength - this.IntPosition;
             if (num > 0)
             {
-                Buffer.BlockCopy(this.buf, this.Position, this.buf, 0, (int)num);
+                Buffer.BlockCopy(this.buf, this.IntPosition, this.buf, 0, (int)num);
             }
-            this.Position = 0;
+            this.IntPosition = 0;
             this.SetLength(num);
         }
 
@@ -110,16 +134,16 @@ namespace ExitGames.Client.Photon
 
         public byte[] GetBufferAndAdvance(int length, out int offset)
         {
-            offset = this.Position;
-            this.Position += length;
+            offset = this.IntPosition;
+            this.IntPosition += length;
             return this.buf;
         }
 
-        public void Flush()
+        public override void Flush()
         {
         }
 
-        public long Seek(long offset, SeekOrigin origin)
+        public override long Seek(long offset, SeekOrigin origin)
         {
             int num = 0;
             switch (origin)
@@ -148,7 +172,7 @@ namespace ExitGames.Client.Photon
             return this.pos;
         }
 
-        public void SetLength(long value)
+        public override void SetLength(long value)
         {
             this.len = (int)value;
             this.CheckSize(this.len);
@@ -163,7 +187,7 @@ namespace ExitGames.Client.Photon
             this.CheckSize(neededSize);
         }
 
-        public int Read(byte[] buffer, int offset, int count)
+        public override int Read(byte[] buffer, int offset, int count)
         {
             int num = this.len - this.pos;
             if (num <= 0)
@@ -179,7 +203,7 @@ namespace ExitGames.Client.Photon
             return count;
         }
 
-        public void Write(byte[] buffer, int srcOffset, int count)
+        public override void Write(byte[] buffer, int srcOffset, int count)
         {
             int num = this.pos + count;
             this.CheckSize(num);
@@ -191,7 +215,7 @@ namespace ExitGames.Client.Photon
             this.pos = num;
         }
 
-        public byte ReadByte()
+        public byte ReadByteAsByte()
         {
             if (this.pos >= this.len)
             {
@@ -200,7 +224,16 @@ namespace ExitGames.Client.Photon
             return this.buf[this.pos++];
         }
 
-        public void WriteByte(byte value)
+        public override int ReadByte()
+        {
+            if (this.pos >= this.len)
+            {
+                throw new EndOfStreamException("SteamBuffer.ReadByte() failed. pos:" + this.pos + "len:" + this.len);
+            }
+            return this.buf[this.pos++];
+        }
+
+        public override void WriteByte(byte value)
         {
             if (this.pos >= this.len)
             {

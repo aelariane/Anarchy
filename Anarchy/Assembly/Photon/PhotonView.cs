@@ -116,7 +116,7 @@ public sealed class PhotonView : Photon.MonoBehaviour
 
     private void OnDisable()
     {
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (!this.destroyedByPhotonNetworkOrQuit)
             {

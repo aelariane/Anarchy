@@ -17,11 +17,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PROTOCOL17</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -87,8 +89,10 @@
     <Compile Include="ExitGames\Client\Photon\PhotonSocketError.cs" />
     <Compile Include="ExitGames\Client\Photon\PhotonSocketState.cs" />
     <Compile Include="ExitGames\Client\Photon\Protocol.cs" />
-    <Compile Include="ExitGames\Client\Photon\Protocol16.cs" />
-    <Compile Include="ExitGames\Client\Photon\Protocol18.cs" />
+    <Compile Include="ExitGames\Client\Photon\RpcProtocols\GpBinaryV16\GpTypeV16.cs" />
+    <Compile Include="ExitGames\Client\Photon\RpcProtocols\GpBinaryV16\Protocol16.cs" />
+    <Compile Include="ExitGames\Client\Photon\RpcProtocols\GpBinaryV18\GpTypeV18.cs" />
+    <Compile Include="ExitGames\Client\Photon\RpcProtocols\GpBinaryV18\Protocol18.cs" />
     <Compile Include="ExitGames\Client\Photon\SendOptions.cs" />
     <Compile Include="ExitGames\Client\Photon\SerializationProtocol.cs" />
     <Compile Include="ExitGames\Client\Photon\SerializationProtocolFactory.cs" />
@@ -119,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Antis\Antis.csproj">
+      <Project>{61AE834A-671A-4599-B3CA-80AA69F145FC}</Project>
+      <Name>Antis</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

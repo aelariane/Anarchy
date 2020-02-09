@@ -45,6 +45,7 @@ namespace Anarchy.Network.Events
                 reason += Log.GetString("missOrInvalidKeyArgd", "0", (key ?? "null"));
                 return false;
             }
+            snder.InstantiateSpam.Count(key);
             if (!CheckKey(hash, 6, out timeStamp))
             {
                 reason += Log.GetString("missOrInvalidKey", "6");

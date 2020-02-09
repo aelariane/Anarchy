@@ -539,7 +539,7 @@ namespace ExitGames.Client.Photon
                 StreamBuffer obj2 = this.outgoingAcknowledgementsPool;
                 lock (obj2)
                 {
-                    if (this.outgoingAcknowledgementsPool.Length > 0)
+                    if (this.outgoingAcknowledgementsPool.IntLength > 0)
                     {
                         num = this.SerializeAckToBuffer();
                         base.timeLastSendAck = base.timeInt;
@@ -726,7 +726,7 @@ namespace ExitGames.Client.Photon
             EnetChannel channel = this.GetChannel(channelNumber);
             base.ByteCountLastOperation = 0;
             int num = this.GetFragmentLength();
-            if (payload == null || payload.Length <= num)
+            if (payload == null || payload.IntLength <= num)
             {
                 NCommand nCommand = new NCommand(this, commandType, payload, channel.ChannelNumber);
                 if (nCommand.IsFlaggedReliable)
@@ -753,15 +753,15 @@ namespace ExitGames.Client.Photon
             else
             {
                 bool flag = commandType == 14 || commandType == 11;
-                int fragmentCount = (payload.Length + num - 1) / num;
+                int fragmentCount = (payload.IntLength + num - 1) / num;
                 int startSequenceNumber = (flag ? channel.outgoingReliableUnsequencedNumber : channel.outgoingReliableSequenceNumber) + 1;
                 byte[] buffer = payload.GetBuffer();
                 int num2 = 0;
-                for (int i = 0; i < payload.Length; i += num)
+                for (int i = 0; i < payload.IntLength; i += num)
                 {
-                    if (payload.Length - i < num)
+                    if (payload.IntLength - i < num)
                     {
-                        num = payload.Length - i;
+                        num = payload.IntLength - i;
                     }
                     StreamBuffer streamBuffer = PeerBase.MessageBufferPoolGet();
                     streamBuffer.Write(buffer, i, num);
@@ -769,7 +769,7 @@ namespace ExitGames.Client.Photon
                     nCommand2.fragmentNumber = num2;
                     nCommand2.startSequenceNumber = startSequenceNumber;
                     nCommand2.fragmentCount = fragmentCount;
-                    nCommand2.totalLength = payload.Length;
+                    nCommand2.totalLength = payload.IntLength;
                     nCommand2.fragmentOffset = i;
                     this.QueueOutgoingReliableCommand(nCommand2);
                     base.ByteCountLastOperation += nCommand2.Size;
@@ -796,7 +796,7 @@ namespace ExitGames.Client.Photon
             base.SerializationProtocol.SerializeOperationRequest(streamBuffer, opCode, parameters, false);
             if (encrypt)
             {
-                byte[] array = base.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.Length);
+                byte[] array = base.CryptoProvider.Encrypt(streamBuffer.GetBuffer(), 0, streamBuffer.IntLength);
                 streamBuffer.SetLength(0L);
                 streamBuffer.Write(EnetPeer.messageHeader, 0, EnetPeer.messageHeader.Length);
                 streamBuffer.Write(array, 0, array.Length);
@@ -816,7 +816,7 @@ namespace ExitGames.Client.Photon
         internal int SerializeAckToBuffer()
         {
             this.outgoingAcknowledgementsPool.Seek(0L, SeekOrigin.Begin);
-            while (this.outgoingAcknowledgementsPool.Position + 20 <= this.outgoingAcknowledgementsPool.Length)
+            while (this.outgoingAcknowledgementsPool.IntPosition + 20 <= this.outgoingAcknowledgementsPool.IntLength)
             {
                 if (this.udpBufferIndex + 20 <= this.udpBufferLength)
                 {
@@ -831,12 +831,12 @@ namespace ExitGames.Client.Photon
                 {
                     break;
                 }
-                base.Listener.DebugReturn(DebugLevel.INFO, "UDP package is full. Commands in Package: " + this.udpCommandCount + ". bytes left in queue: " + this.outgoingAcknowledgementsPool.Position);
+                base.Listener.DebugReturn(DebugLevel.INFO, "UDP package is full. Commands in Package: " + this.udpCommandCount + ". bytes left in queue: " + this.outgoingAcknowledgementsPool.IntPosition);
                 break;
             }
             this.outgoingAcknowledgementsPool.Compact();
-            this.outgoingAcknowledgementsPool.Position = this.outgoingAcknowledgementsPool.Length;
-            return this.outgoingAcknowledgementsPool.Length / 20;
+            this.outgoingAcknowledgementsPool.IntPosition = this.outgoingAcknowledgementsPool.IntLength;
+            return this.outgoingAcknowledgementsPool.IntLength / 20;
         }
 
         internal int SerializeToBuffer(Queue<NCommand> commandList)
@@ -1322,7 +1322,7 @@ namespace ExitGames.Client.Photon
                         {
                             base.TrafficStatsIncoming.CountFragmentOpCommand(command.Size);
                         }
-                        if (command.fragmentNumber > command.fragmentCount || command.fragmentOffset >= command.totalLength || command.fragmentOffset + command.Payload.Length > command.totalLength)
+                        if (command.fragmentNumber > command.fragmentCount || command.fragmentOffset >= command.totalLength || command.fragmentOffset + command.Payload.IntLength > command.totalLength)
                         {
                             if ((int)base.debugOut >= 1)
                             {
@@ -1367,7 +1367,7 @@ namespace ExitGames.Client.Photon
                                         NCommand nCommand3 = default(NCommand);
                                         if (channel.TryGetFragment(num3, flag, out nCommand3))
                                         {
-                                            Buffer.BlockCopy(nCommand3.Payload.GetBuffer(), 0, array, nCommand3.fragmentOffset, nCommand3.Payload.Length);
+                                            Buffer.BlockCopy(nCommand3.Payload.GetBuffer(), 0, array, nCommand3.fragmentOffset, nCommand3.Payload.IntLength);
                                             nCommand3.FreePayload();
                                             channel.RemoveFragment(nCommand3.reliableSequenceNumber, flag);
                                             num3++;

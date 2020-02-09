@@ -30,6 +30,7 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("leave", new LeaveCommand());
             allCommands.Add("asoracing", new ASORacingCommand());
             allCommands.Add("rules", new RulesCommand());
+            allCommands.Add("clear", new ClearCommand());
         }
 
         private void NotFound(string name)
@@ -65,7 +66,7 @@ namespace Anarchy.Commands.Chat
                 NotFound(strArray[0].ToLower());
                 return;
             }
-            if(cmd.ReqiresMC && !PhotonNetwork.IsMasterClient)
+            if(cmd.RequireMC && !PhotonNetwork.IsMasterClient)
             {
                 UI.Chat.Add(ChatCommand.Lang["errMC"]);
                 return;

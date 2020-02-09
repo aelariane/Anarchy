@@ -1,5 +1,5 @@
 ﻿title:Impostazioni gioco
-selections:Titani,PvP,Misc
+selections:Titani,PvP,Misc,Racing
 btnClose:Chiudi
 
 #Titans
@@ -72,9 +72,16 @@ horseState:Permetti cavalli:
 
 motd:Messaggio del giorno
 
-asoracingState:ASO(infinito) racing:
+noGuestState:Anti-Guest:
+
+antiReviveState:Anti-Rianimo abusivo:
+
+afkKillState:Uccidi giocatori AFK:
+afkKillInt0:Secondi AFK:
 
 #Racing
+asoracingState:ASO(infinito) racing:
+
 startTimeState:Usa il proprio tempo d'inizio:
 startTimeInt0:Tempo prima della gara:
 

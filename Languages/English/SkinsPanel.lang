@@ -12,6 +12,7 @@ setName:Set <color=yellow>"{0}"</color>
 skinStateSelection:Disabled,Enabled,Local
 skyboxDesc:Disabled custom skybox on city/forest skins
 #Human skins
+disableCustomGas:Disable custom gas textures:
 humanLabels:Horse:,Hair,Eyes,Glass,Face,Skin,Costume,Cape,Left 3DMG,Right 3DMG,Gas,Hoodie,Trail
 sets:Availible sets
 

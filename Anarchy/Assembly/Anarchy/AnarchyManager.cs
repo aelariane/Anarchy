@@ -18,10 +18,10 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static Version AnarchyVersion = new Version("0.7.6.1");
+        public static Version AnarchyVersion = new Version("0.7.7.0");
+
         public static readonly string CustomName = string.Empty;
-        public static readonly bool CustomVersion = true;
-        public static readonly bool FullAnarchySync = false;
+        public static readonly bool FullAnarchySync = true;
 
         public static Background Background;
         public static UI.PanelMain MainMenu;
@@ -55,6 +55,45 @@ namespace Anarchy
             DontDestroyOnLoad(new GameObject("DiscordManager").AddComponent<Network.Discord.DiscordManager>());
             DestroyMainScene();
             GameModes.ResetOnLoad();
+            Antis.Spam.EventsCounter.OnEventsSpamDetected += (sender, args) => 
+            {
+                if(args.SpammedObject == 200 || args.SpammedObject == 253 && args.Count < 130)
+                {
+                    return;
+                }
+                PhotonPlayer player = PhotonPlayer.Find(args.Sender);
+                if (player.RCIgnored)
+                {
+                    return;
+                }
+                Log.AddLine("eventSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
+            };
+            Antis.Spam.RPCCounter.OnRPCSpamDetected += (sender, args) => 
+            {
+                if(args.SpammedObject == "netPauseAnimation" || args.SpammedObject == "netCrossFade" && args.Count < 75)
+                {
+                    return;
+                }
+                PhotonPlayer player = PhotonPlayer.Find(args.Sender);
+                if (player.RCIgnored)
+                {
+                    return;
+                }
+                Log.AddLine("rpcSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
+            };
+            Antis.Spam.InstantiateCounter.OnInstantiateSpamDetected += (sender, args) =>
+            {
+                if (args.SpammedObject.Contains("TITAN") && args.Count <= 50)
+                {
+                    return;
+                }
+                PhotonPlayer player = PhotonPlayer.Find(args.Sender);
+                if (player.RCIgnored)
+                {
+                    return;
+                }
+                Log.AddLine("instantiateSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
+            };
         }
 
         public static void DestroyMainScene()

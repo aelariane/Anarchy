@@ -73,11 +73,19 @@ erenInfoDisabled:<color=#$maincolor$>Anti-Eren titano <color=#$dColor$>disattiva
 deadlycannonsInfoEnabled:<color=#$maincolor$>Cannoni uccidono umani <color=#$eColor$>attivato</color></color>
 deadlycannonsInfoDisabled:<color=#$maincolor$>Cannoni uccidono umani <color=#$dColor$>disattivato</color></color>
 
+noGuestInfoEnabled:<color=#$maincolor$>No-Guest <color=#$eColor$>attivato</color></color>
+noGuestInfoDisabled:<color=#$maincolor$>No-Guest <color=#$dColor$>disattivato</color></color>
+
+antiReviveInfoEnabled:<color=#$maincolor$>Anti-Revive <color=#$eColor$>attivato</color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Anti-Revive <color=#$dColor$>disattivato</color></color>
+
+afkKillInfoEnabled:<color=#$maincolor$>Uccisione del giocatore afk <color=#$eColor$>attivato</color> (<color=#$subcolor$>{0} seconds</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>Uccisione del giocatore afk  <color=#$dColor$>disattivato</color></color>
+
+#Racing
 asoracingInfoEnabled:<color=#$maincolor$>ASO Racing <color=#$eColor$>attivato</color></color>
 asoracingInfoDisabled:<color=#$maincolor$>ASO Racing <color=#$dColor$>disattivato</color></color>
 
-
-#Racing
 startTimeInfoEnabled:<color=#$maincolor$>Proprio tempo d'inizio gara su <color=#$subcolor$>{0}</color></color> 
 startTimeInfoDisabled:<color=#$maincolor$>Proprio tempo d'inizio gara <color=#$dColor$>disattivato</color></color> 
 

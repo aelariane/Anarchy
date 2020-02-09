@@ -12,6 +12,8 @@ using UnityEngine;
 
 public class TITAN : Optimization.Caching.Bases.TitanBase
 {
+    private static string[] titanNames = new string[] { "Titan", "Aberrant", "Jumper", "Crawler", "Punk" };
+
     private Vector3 abnorma_jump_bite_horizon_v;
     private float angle;
     private string attackAnimation;
@@ -108,9 +110,12 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     internal TitanSkin Skin;
     public float speed = 7f;
 
+    public string ShowName { get; private set; }
+
+
     private void attack(string type)
     {
-        this.state = TitanState.attack;
+        this.state = TitanState.Attack;
         this.attacked = false;
         this.isAlarm = true;
         if (this.attackAnimation == type)
@@ -375,7 +380,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void chase()
     {
-        this.state = TitanState.chase;
+        this.state = TitanState.Chase;
         this.isAlarm = true;
         this.crossFade(this.runAnimation, 0.5f);
     }
@@ -446,7 +451,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     private void crossFade(string aniName, float time)
     {
         baseA.CrossFade(aniName, time);
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("netCrossFade", PhotonTargets.Others, new object[]
             {
@@ -508,7 +513,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void eat()
     {
-        this.state = TitanState.eat;
+        this.state = TitanState.Eat;
         this.attacked = false;
         if (this.isGrabHandLeft)
         {
@@ -534,7 +539,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             {
                 this.grabToRight();
             }
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
             {
                 BasePV.RPC(this.isGrabHandLeft ? "grabToLeft" : "grabToRight", PhotonTargets.Others, new object[0]);
                 hero.BasePV.RPC("netPlayAnimation", PhotonTargets.All, new object[]
@@ -684,7 +689,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         {
             GameObject x2 = this.myHero;
             this.myHero = x;
-            if (x2 != this.myHero && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+            if (x2 != this.myHero && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 if (this.myHero == null)
                 {
@@ -709,7 +714,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     {
         GameObject y = this.myHero;
         this.myHero = this.getNearestHero();
-        if (this.myHero != y && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+        if (this.myHero != y && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
             if (this.myHero == null)
             {
@@ -760,7 +765,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             }
             this.oldCorePosition = baseT.position - Core.position;
         }
-        else if ((this.state == TitanState.attack && this.isAttackMoveByCore) || this.state == TitanState.hit)
+        else if ((this.state == TitanState.Attack && this.isAttackMoveByCore) || this.state == TitanState.Hit)
         {
             Vector3 a2 = baseT.position - Core.position - this.oldCorePosition;
             baseR.velocity = a2 / Time.deltaTime + Vectors.up * baseR.velocity.y;
@@ -794,7 +799,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             }
             return;
         }
-        if (this.nonAI && !IN_GAME_MAIN_CAMERA.isPausing && (this.state == TitanState.idle || (this.state == TitanState.attack && this.attackAnimation == "jumper_1")))
+        if (this.nonAI && !IN_GAME_MAIN_CAMERA.isPausing && (this.state == TitanState.Idle || (this.state == TitanState.Attack && this.attackAnimation == "jumper_1")))
         {
             Vector3 a3 = Vectors.zero;
             if (this.controller.targetDirection != -874f)
@@ -820,7 +825,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     a3 = baseT.Forward() * this.speed * Mathf.Sqrt(this.myLevel);
                 }
                 baseGT.rotation = Quaternion.Lerp(baseGT.rotation, Quaternion.Euler(0f, this.controller.targetDirection, 0f), this.speed * 0.15f * Time.deltaTime);
-                if (this.state == TitanState.idle)
+                if (this.state == TitanState.Idle)
                 {
                     if (this.controller.isWALKDown || flag)
                     {
@@ -850,7 +855,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                             {
                                 hero.die((hero.baseT.position - position) * 15f * this.myLevel, false);
                             }
-                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && base.BasePV.IsMine && !hero.HasDied())
+                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && base.BasePV.IsMine && !hero.HasDied())
                             {
                                 hero.markDie();
                                 hero.BasePV.RPC("netDie", PhotonTargets.All, new object[] { (hero.baseT.position - position) * 15f * this.myLevel, true, (!this.nonAI) ? -1 : BasePV.viewID, name, true });
@@ -863,7 +868,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                 }
             }
-            else if (this.state == TitanState.idle)
+            else if (this.state == TitanState.Idle)
             {
                 if (this.abnormalType == AbnormalType.Crawler)
                 {
@@ -878,7 +883,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 }
                 a3 = Vectors.zero;
             }
-            if (this.state == TitanState.idle)
+            if (this.state == TitanState.Idle)
             {
                 Vector3 velocity = baseR.velocity;
                 Vector3 force = a3 - velocity;
@@ -887,7 +892,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 force.y = 0f;
                 baseR.AddForce(force, ForceMode.VelocityChange);
             }
-            else if (this.state == TitanState.attack && this.attackAnimation == "jumper_0")
+            else if (this.state == TitanState.Attack && this.attackAnimation == "jumper_0")
             {
                 Vector3 velocity2 = baseR.velocity;
                 Vector3 force2 = a3 * 0.8f - velocity2;
@@ -897,7 +902,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 baseR.AddForce(force2, ForceMode.VelocityChange);
             }
         }
-        if ((this.abnormalType == AbnormalType.Aberrant || this.abnormalType == AbnormalType.Jumper) && !this.nonAI && this.state == TitanState.attack && this.attackAnimation == "jumper_0")
+        if ((this.abnormalType == AbnormalType.Aberrant || this.abnormalType == AbnormalType.Jumper) && !this.nonAI && this.state == TitanState.Attack && this.attackAnimation == "jumper_0")
         {
             Vector3 a4 = baseT.Forward() * this.speed * this.myLevel * 0.5f;
             Vector3 velocity3 = baseR.velocity;
@@ -911,7 +916,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             force3.y = 0f;
             baseR.AddForce(force3, ForceMode.VelocityChange);
         }
-        if (this.state == TitanState.chase || this.state == TitanState.wander || this.state == TitanState.to_check_point || this.state == TitanState.to_pvp_pt || this.state == TitanState.random_run)
+        if (this.state == TitanState.Chase || this.state == TitanState.Wander || this.state == TitanState.To_CheckPoint || this.state == TitanState.To_PVP_PT || this.state == TitanState.Random_Run)
         {
             Vector3 a5 = baseT.Forward() * this.speed;
             Vector3 velocity4 = baseR.velocity;
@@ -928,7 +933,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     this.stuckTime = 2f;
                     this.stuckTurnAngle = (float)UnityEngine.Random.Range(0, 2) * 140f - 70f;
                 }
-                if (this.state == TitanState.chase && this.myHero != null && this.myDistance > this.attackDistance && this.myDistance < 150f)
+                if (this.state == TitanState.Chase && this.myHero != null && this.myDistance > this.attackDistance && this.myDistance < 150f)
                 {
                     float num = 0.05f;
                     if (this.myDifficulty > 1)
@@ -949,11 +954,11 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 }
             }
             float num3;
-            if (this.state == TitanState.wander)
+            if (this.state == TitanState.Wander)
             {
                 num3 = baseT.rotation.eulerAngles.y - 90f;
             }
-            else if (this.state == TitanState.to_check_point || this.state == TitanState.to_pvp_pt || this.state == TitanState.random_run)
+            else if (this.state == TitanState.To_CheckPoint || this.state == TitanState.To_PVP_PT || this.state == TitanState.Random_Run)
             {
                 Vector3 vector = this.targetCheckPt - baseT.position;
                 num3 = -Mathf.Atan2(vector.z, vector.x) * 57.29578f;
@@ -1364,7 +1369,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void getDown()
     {
-        this.state = TitanState.down;
+        this.state = TitanState.Down;
         this.isAlarm = true;
         this.playAnimation("sit_hunt_down");
         this.getdownTime = UnityEngine.Random.Range(3f, 5f);
@@ -1404,7 +1409,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void grab(string type)
     {
-        this.state = TitanState.grab;
+        this.state = TitanState.Grad;
         this.attacked = false;
         this.isAlarm = true;
         this.attackAnimation = type;
@@ -1469,7 +1474,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void hit(string animationName, Vector3 attacker, float hitPauseTime)
     {
-        this.state = TitanState.hit;
+        this.state = TitanState.Hit;
         this.hitAnimation = animationName;
         this.hitPause = hitPauseTime;
         this.playAnimation(this.hitAnimation);
@@ -1534,7 +1539,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 this.sbtime += 0.4f;
             }
         }
-        this.state = TitanState.idle;
+        this.state = TitanState.Idle;
         if (this.abnormalType == AbnormalType.Crawler)
         {
             this.crossFade("crawler_idle", 0.2f);
@@ -1549,7 +1554,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     {
         if (target != null)
         {
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && this.BasePV.IsMine)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && this.BasePV.IsMine)
             {
                 if (!target.HasDied())
                 {
@@ -1557,7 +1562,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     target.BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                     {
                     nonAI ? BasePV.viewID : -1,
-                    base.name
+                    ShowName
                     });
                     return;
                 }
@@ -1571,9 +1576,9 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void justHitEye()
     {
-        if (this.state != TitanState.hit_eye)
+        if (this.state != TitanState.Hit_Eye)
         {
-            if (this.state == TitanState.down || this.state == TitanState.sit)
+            if (this.state == TitanState.Down || this.state == TitanState.Sit)
             {
                 this.playAnimation("sit_hit_eye");
             }
@@ -1581,17 +1586,17 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             {
                 this.playAnimation("hit_eye");
             }
-            this.state = TitanState.hit_eye;
+            this.state = TitanState.Hit_Eye;
         }
     }
 
     [RPC]
     private void laugh(float sbtime = 0f)
     {
-        if (this.state == TitanState.idle || this.state == TitanState.turn || this.state == TitanState.chase)
+        if (this.state == TitanState.Idle || this.state == TitanState.Turn || this.state == TitanState.Chase)
         {
             this.sbtime = sbtime;
-            this.state = TitanState.laugh;
+            this.state = TitanState.Laugh;
             this.crossFade("laugh", 0.2f);
         }
     }
@@ -1783,14 +1788,30 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     }
 
     [RPC]
-    private void netPlayAnimation(string aniName)
+    private void netPlayAnimation(string aniName, PhotonMessageInfo info = null)
     {
+        if (!Antis.Protection.TitanAnimationCheck.Check(aniName))
+        {
+            if (info != null)
+            {
+                Anarchy.Network.Antis.Kick(info.Sender, true, "Invalid TITAN anim: " + aniName);
+            }
+            return;
+        }
         baseA.Play(aniName);
     }
 
     [RPC]
-    private void netPlayAnimationAt(string aniName, float normalizedTime)
+    private void netPlayAnimationAt(string aniName, float normalizedTime, PhotonMessageInfo info = null)
     {
+        if (!Antis.Protection.TitanAnimationCheck.Check(aniName))
+        {
+            if (info != null)
+            {
+                Anarchy.Network.Antis.Kick(info.Sender, true, "Invalid TITAN anim: " + aniName);
+            }
+            return;
+        }
         baseA.Play(aniName);
         baseA[aniName].normalizedTime = normalizedTime;
     }
@@ -1828,7 +1849,8 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             this.runAnimation = "run_abnormal_1";
             base.GetComponent<TITAN_SETUP>().setPunkHair();
         }
-        base.name = User.TitanNames[(int)abnormalType].PickRandomString();
+        base.name = titanNames[(int)abnormalType];
+        ShowName = User.TitanNames[(int)abnormalType].PickRandomString();
         if (this.abnormalType == AbnormalType.Aberrant || this.abnormalType == AbnormalType.Jumper || this.abnormalType == AbnormalType.Punk)
         {
             this.speed = 18f;
@@ -1914,7 +1936,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     private void playAnimation(string aniName)
     {
         baseA.Play(aniName);
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("netPlayAnimation", PhotonTargets.Others, new object[]
             {
@@ -1927,7 +1949,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     {
         baseA.Play(aniName);
         baseA[aniName].normalizedTime = normalizedTime;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("netPlayAnimationAt", PhotonTargets.Others, new object[]
             {
@@ -1958,14 +1980,14 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void recover()
     {
-        this.state = TitanState.recover;
+        this.state = TitanState.Recover;
         this.playAnimation("idle_recovery");
         this.getdownTime = UnityEngine.Random.Range(2f, 5f);
     }
 
     private void remainSitdown()
     {
-        this.state = TitanState.sit;
+        this.state = TitanState.Sit;
         this.playAnimation("sit_idle");
         this.getdownTime = UnityEngine.Random.Range(10f, 30f);
     }
@@ -2098,7 +2120,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     private void sitdown()
     {
-        this.state = TitanState.sit;
+        this.state = TitanState.Sit;
         this.playAnimation("sit_down");
         this.getdownTime = UnityEngine.Random.Range(10f, 30f);
     }
@@ -2111,7 +2133,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         this.grabTF = new GameObject();
         this.grabTF.name = "titansTmpGrabTF";
         this.oldHeadRotation = this.Head.rotation;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && !BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !BasePV.IsMine)
         {
             return;
         }
@@ -2147,7 +2169,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         }
         this.lagMax = 150f + this.myLevel * 3f;
         this.healthTime = Time.time;
-        if(currentHealth > 0 && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if(currentHealth > 0 && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { currentHealth, maxHealth });
         }
@@ -2183,12 +2205,12 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         d = Mathf.Clamp(d, -120f, 120f);
         this.turnDeg = d;
         this.desDeg = baseGT.rotation.eulerAngles.y + this.turnDeg;
-        this.state = TitanState.turn;
+        this.state = TitanState.Turn;
     }
 
     private void wander(float sbtime = 0f)
     {
-        this.state = TitanState.wander;
+        this.state = TitanState.Wander;
         this.crossFade(this.runAnimation, 0.5f);
     }
 
@@ -2210,14 +2232,14 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         {
             return;
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             BasePV.RPC("laugh", PhotonTargets.All, new object[]
             {
                 0f
             });
         }
-        else if (this.state == TitanState.idle || this.state == TitanState.turn || this.state == TitanState.chase)
+        else if (this.state == TitanState.Idle || this.state == TitanState.Turn || this.state == TitanState.Chase)
         {
             this.laugh(0f);
         }
@@ -2323,7 +2345,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             }
             else
             {
-                FengGameManagerMKII.FGM.TitanGetKill(view.owner, damage, base.name);
+                FengGameManagerMKII.FGM.TitanGetKill(view.owner, damage, ShowName);
             }
         }
         else
@@ -2373,7 +2395,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         FengGameManagerMKII.FGM.oneTitanDown(string.Empty, false);
         this.needFreshCorePosition = true;
         GameObject gameObject;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             gameObject = Optimization.Caching.Pool.NetworkEnable("bloodExplore", this.Head.position + Vectors.up * 1f * this.myLevel, Quaternion.Euler(270f, 0f, 0f), 0);
         }
@@ -2382,7 +2404,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             gameObject = Pool.Enable("bloodExplore", this.Head.position + Vectors.up * 1f * this.myLevel, Quaternion.Euler(270f, 0f, 0f));//(GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("bloodExplore"), this.Head.position + Vectors.up * 1f * this.myLevel, Quaternion.Euler(270f, 0f, 0f));
         }
         gameObject.transform.localScale = baseT.localScale;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             gameObject = Optimization.Caching.Pool.NetworkEnable("bloodsplatter", this.Head.position, Quaternion.Euler(270f + this.Neck.rotation.eulerAngles.x, this.Neck.rotation.eulerAngles.y, this.Neck.rotation.eulerAngles.z), 0);
         }
@@ -2392,7 +2414,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         }
         gameObject.transform.localScale = baseT.localScale;
         gameObject.transform.parent = this.Neck;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             gameObject = Optimization.Caching.Pool.NetworkEnable("FX/justSmoke", this.Neck.position, Quaternion.Euler(270f, 0f, 0f), 0);
         }
@@ -2471,7 +2493,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     this.targetHeadRotation = this.Head.rotation;
                     bool flag2 = false;
-                    bool flag6 = this.abnormalType != AbnormalType.Crawler && this.state != TitanState.attack && this.state != TitanState.down && this.state != TitanState.hit && this.state != TitanState.recover && this.state != TitanState.eat && this.state != TitanState.hit_eye && !this.hasDie && this.myDistance < 100f && this.myHero != null;
+                    bool flag6 = this.abnormalType != AbnormalType.Crawler && this.state != TitanState.Attack && this.state != TitanState.Down && this.state != TitanState.Hit && this.state != TitanState.Recover && this.state != TitanState.Eat && this.state != TitanState.Hit_Eye && !this.hasDie && this.myDistance < 100f && this.myHero != null;
                     if (flag6)
                     {
                         Vector3 vector = this.myHero.transform.position - baseT.position;
@@ -2504,7 +2526,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                         };
                         BasePV.RPC("setIfLookTarget", PhotonTargets.Others, objArray3);
                     }
-                    bool flag9 = this.state == TitanState.attack || this.state == TitanState.hit || this.state == TitanState.hit_eye;
+                    bool flag9 = this.state == TitanState.Attack || this.state == TitanState.Hit || this.state == TitanState.Hit_Eye;
                     if (flag9)
                     {
                         this.oldHeadRotation = Quaternion.Lerp(this.oldHeadRotation, this.targetHeadRotation, Time.deltaTime * 20f);
@@ -2549,7 +2571,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             else
             {
                 this.targetHeadRotation = this.Head.rotation;
-                bool flag13 = this.abnormalType != AbnormalType.Crawler && this.state != TitanState.attack && this.state != TitanState.down && this.state != TitanState.hit && this.state != TitanState.recover && this.state != TitanState.hit_eye && !this.hasDie && this.myDistance < 100f && this.myHero != null;
+                bool flag13 = this.abnormalType != AbnormalType.Crawler && this.state != TitanState.Attack && this.state != TitanState.Down && this.state != TitanState.Hit && this.state != TitanState.Recover && this.state != TitanState.Hit_Eye && !this.hasDie && this.myDistance < 100f && this.myHero != null;
                 if (flag13)
                 {
                     Vector3 vector3 = this.myHero.transform.position - baseT.position;
@@ -2561,7 +2583,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     num8 = Mathf.Clamp(num8, -40f, 30f);
                     this.targetHeadRotation = Quaternion.Euler(this.Head.rotation.eulerAngles.x + num8, this.Head.rotation.eulerAngles.y + num6, this.Head.rotation.eulerAngles.z);
                 }
-                bool flag14 = this.state == TitanState.attack || this.state == TitanState.hit || this.state == TitanState.hit_eye;
+                bool flag14 = this.state == TitanState.Attack || this.state == TitanState.Hit || this.state == TitanState.Hit_Eye;
                 if (flag14)
                 {
                     this.oldHeadRotation = Quaternion.Lerp(this.oldHeadRotation, this.targetHeadRotation, Time.deltaTime * 20f);
@@ -2681,7 +2703,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         {
             return;
         }
-        if (this.state == TitanState.down)
+        if (this.state == TitanState.Down)
         {
             return;
         }
@@ -2699,7 +2721,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         {
             return;
         }
-        if (this.state == TitanState.down)
+        if (this.state == TitanState.Down)
         {
             return;
         }
@@ -2893,7 +2915,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     public void randomRun(Vector3 targetPt, float r)
     {
-        this.state = TitanState.random_run;
+        this.state = TitanState.Random_Run;
         this.targetCheckPt = targetPt;
         this.targetR = r;
         this.random_run_time = UnityEngine.Random.Range(1f, 2f);
@@ -2985,13 +3007,13 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 }
             }
         }
-        if (GameModes.SpawnRate.Enabled && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+        if (GameModes.SpawnRate.Enabled && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
             num = (int)type;
         }
         if (SkinSettings.SkinsCheck(SkinSettings.TitanSkins))
         {
-            if (SkinSettings.TitanSet.Value != "$Not define$")
+            if (SkinSettings.TitanSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 TitanSkinPreset set = new TitanSkinPreset(SkinSettings.TitanSet.Value);
                 set.Load();
@@ -3006,7 +3028,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 }
                 GetComponent<TITAN_SETUP>().SetVar(rnd, eye);
                 StartCoroutine(loadskinRPCE(body, eyes));
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.TitanSkins.Value != 2)
                 {
                     BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { body, eyes });
                 }
@@ -3082,7 +3104,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 }
                 else
                 {
-                    FengGameManagerMKII.FGM.TitanGetKill(photonView.owner, speed, base.name);
+                    FengGameManagerMKII.FGM.TitanGetKill(photonView.owner, speed, ShowName);
                 }
             }
         }
@@ -3090,7 +3112,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     public void toCheckPoint(Vector3 targetPt, float r)
     {
-        this.state = TitanState.to_check_point;
+        this.state = TitanState.To_CheckPoint;
         this.targetCheckPt = targetPt;
         this.targetR = r;
         this.crossFade(this.runAnimation, 0.5f);
@@ -3098,7 +3120,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
 
     public void toPVPCheckPoint(Vector3 targetPt, float r)
     {
-        this.state = TitanState.to_pvp_pt;
+        this.state = TitanState.To_PVP_PT;
         this.targetCheckPt = targetPt;
         this.targetR = r;
         this.crossFade(this.runAnimation, 0.5f);
@@ -3125,7 +3147,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         Explode();
         if (!this.nonAI)
         {
-            if (this.activeRad < 2147483647 && (this.state == TitanState.idle || this.state == TitanState.wander || this.state == TitanState.chase))
+            if (this.activeRad < 2147483647 && (this.state == TitanState.Idle || this.state == TitanState.Wander || this.state == TitanState.Chase))
             {
                 if (this.checkPoints.Count > 1)
                 {
@@ -3147,7 +3169,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     this.whoHasTauntMe = null;
                 }
                 this.myHero = this.whoHasTauntMe;
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
                 {
                     BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
                     {
@@ -3158,7 +3180,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         }
         if (!this.hasDie)
         {
-            if (this.state == TitanState.hit)
+            if (this.state == TitanState.Hit)
             {
                 if (this.hitPause > 0f)
                 {
@@ -3180,7 +3202,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     this.findNearestHero();
                 }
-                if ((this.state == TitanState.idle || this.state == TitanState.chase || this.state == TitanState.wander) && this.whoHasTauntMe == null && UnityEngine.Random.Range(0, 100) < 10)
+                if ((this.state == TitanState.Idle || this.state == TitanState.Chase || this.state == TitanState.Wander) && this.whoHasTauntMe == null && UnityEngine.Random.Range(0, 100) < 10)
                 {
                     this.findNearestFacingHero();
                 }
@@ -3229,7 +3251,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             }
             switch (state)
             {
-                case TitanState.laugh:
+                case TitanState.Laugh:
                     if (baseA["laugh"].normalizedTime >= 1f)
                     {
                         this.idle(2f);
@@ -3237,7 +3259,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.idle:
+                case TitanState.Idle:
                     if (this.nonAI)
                     {
                         if (IN_GAME_MAIN_CAMERA.isPausing)
@@ -3447,7 +3469,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.attack:
+                case TitanState.Attack:
                     if (this.attackAnimation == "combo")
                     {
                         if (this.nonAI)
@@ -3472,7 +3494,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                 {
                                     go.die((go.baseT.position - position) * 15f * this.myLevel, false);
                                 }
-                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && base.BasePV.IsMine && !go.HasDied())
+                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && base.BasePV.IsMine && !go.HasDied())
                                 {
                                     go.markDie();
                                     go.BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -3480,7 +3502,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                     (go.transform.position - position) * 15f * this.myLevel,
                                     false,
                                     (!this.nonAI) ? -1 : base.BasePV.viewID,
-                                    base.name,
+                                    ShowName,
                                     true
                                     });
                                 }
@@ -3496,7 +3518,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                 {
                                     go.die((go.baseT.position - position2) * 15f * myLevel, false);
                                 }
-                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && base.BasePV.IsMine && !go.HasDied())
+                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && base.BasePV.IsMine && !go.HasDied())
                                 {
                                     go.markDie();
                                     go.BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -3504,7 +3526,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                     (go.transform.position - position2) * 15f * this.myLevel,
                                     false,
                                     (!this.nonAI) ? -1 : base.BasePV.viewID,
-                                    base.name,
+                                    ShowName,
                                     true
                                     });
                                 }
@@ -3521,7 +3543,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                             {
                                 go.die((go.baseT.position - position3) * 15f * this.myLevel, false);
                             }
-                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && base.BasePV.IsMine && !go.HasDied())
+                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && base.BasePV.IsMine && !go.HasDied())
                             {
                                 go.markDie();
                                 go.BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -3529,7 +3551,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                     (go.baseT.position - position3) * 15f * this.myLevel,
                                     false,
                                     (!this.nonAI) ? -1 : base.BasePV.viewID,
-                                    base.name,
+                                    ShowName,
                                     true
                                 });
                             }
@@ -3540,7 +3562,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                         this.attacked = true;
                         this.fxPosition = baseT.Find("ap_" + this.attackAnimation).position;
                         GameObject gameObject6;
-                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+                        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
                         {
                             gameObject6 = Optimization.Caching.Pool.NetworkEnable("FX/" + this.fxName, this.fxPosition, this.fxRotation, 0);
                         }
@@ -3562,7 +3584,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                         }
                         if (gameObject6.GetComponent<EnemyfxIDcontainer>())
                         {
-                            gameObject6.GetComponent<EnemyfxIDcontainer>().titanName = base.name;
+                            gameObject6.GetComponent<EnemyfxIDcontainer>().titanName = ShowName;
                         }
                         float num = 1f - Vector3.Distance(IN_GAME_MAIN_CAMERA.MainCamera.transform.position, gameObject6.transform.position) * 0.05f;
                         num = Mathf.Min(1f, num);
@@ -3573,7 +3595,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                         if (!this.attacked && baseA["attack_" + this.attackAnimation].normalizedTime >= 0.11f)
                         {
                             this.attacked = true;
-                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
                             {
                                 this.throwRock = Optimization.Caching.Pool.NetworkEnable("FX/rockThrow", Hand_R_001.position, Hand_R_001.rotation, 0);
                             }
@@ -3589,10 +3611,10 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                 {
                                     this.throwRock.GetComponent<EnemyfxIDcontainer>().myOwnerViewID = BasePV.viewID;
                                 }
-                                this.throwRock.GetComponent<EnemyfxIDcontainer>().titanName = base.name;
+                                this.throwRock.GetComponent<EnemyfxIDcontainer>().titanName = ShowName;
                             }
                             this.throwRock.transform.parent = Hand_R_001;
-                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
                             {
                                 this.throwRock.GetPhotonView().RPC("initRPC", PhotonTargets.Others, new object[]
                                 {
@@ -3700,7 +3722,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                 {
                                     hero7.die((hero7.transform.position - Chest.position) * 15f * this.myLevel, false);
                                 }
-                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine && !hero7.HasDied())
+                                else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine && !hero7.HasDied())
                                 {
                                     hero7.markDie();
                                     hero7.BasePV.RPC("netDie", PhotonTargets.All, new object[]
@@ -3708,7 +3730,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                     (hero7.transform.position - Chest.position) * 15f * this.myLevel,
                                     true,
                                     (!this.nonAI) ? -1 : BasePV.viewID,
-                                    base.name,
+                                    ShowName,
                                     true
                                     });
                                 }
@@ -3751,7 +3773,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                             this.crossFade("attack_" + this.attackAnimation, 0.1f);
                             this.fxPosition = baseT.position;
                             GameObject gameObject8;
-                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+                            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
                             {
                                 gameObject8 = Optimization.Caching.Pool.NetworkEnable("FX/boom2", this.fxPosition, this.fxRotation, 0);
                             }
@@ -3813,7 +3835,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.grab:
+                case TitanState.Grad:
                     if (baseA["grab_" + this.attackAnimation].normalizedTime >= this.attackCheckTimeA && baseA["grab_" + this.attackAnimation].normalizedTime <= this.attackCheckTimeB && this.grabbedTarget == null)
                     {
                         HERO gameObject9 = this.CheckIfHitHand(this.currentGrabHand);
@@ -3836,7 +3858,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.eat:
+                case TitanState.Eat:
                     if (!this.attacked && baseA[this.attackAnimation].normalizedTime >= 0.48f)
                     {
                         this.attacked = true;
@@ -3851,7 +3873,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.chase:
+                case TitanState.Chase:
 
                     if (this.myHero == null)
                     {
@@ -3886,7 +3908,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                             {
                                 gameObject10.die((gameObject10.transform.position - position6) * 15f * this.myLevel, false);
                             }
-                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && base.BasePV.IsMine)
+                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && base.BasePV.IsMine)
                             {
                                 if (gameObject10.eren)
                                 {
@@ -3900,7 +3922,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                                     (gameObject10.baseT.position - position6) * 15f * this.myLevel,
                                     true,
                                     (!this.nonAI) ? -1 : base.BasePV.viewID,
-                                    base.name,
+                                    ShowName,
                                     true
                                     });
                                 }
@@ -3925,7 +3947,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.wander:
+                case TitanState.Wander:
 
                     if (this.myDistance < this.chaseDistance || this.whoHasTauntMe != null)
                     {
@@ -3949,7 +3971,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.turn:
+                case TitanState.Turn:
                     baseGT.rotation = Quaternion.Lerp(baseGT.rotation, Quaternion.Euler(0f, this.desDeg, 0f), dt * Mathf.Abs(this.turnDeg) * 0.015f);
                     if (baseA[this.turnAnimation].normalizedTime >= 1f)
                     {
@@ -3957,7 +3979,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.hit_eye:
+                case TitanState.Hit_Eye:
                     if (baseA.IsPlaying("sit_hit_eye") && baseA["sit_hit_eye"].normalizedTime >= 1f)
                     {
                         this.remainSitdown();
@@ -3975,7 +3997,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.to_check_point:
+                case TitanState.To_CheckPoint:
                     if (this.checkPoints.Count <= 0)
                     {
                         if (this.myDistance < this.attackDistance)
@@ -4023,7 +4045,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.to_pvp_pt:
+                case TitanState.To_PVP_PT:
                     if (this.myDistance < this.chaseDistance * 0.7f)
                     {
                         this.chase();
@@ -4034,7 +4056,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.random_run:
+                case TitanState.Random_Run:
                     this.random_run_time -= dt;
                     if (Vector3.Distance(baseT.position, this.targetCheckPt) < this.targetR || this.random_run_time <= 0f)
                     {
@@ -4042,7 +4064,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.down:
+                case TitanState.Down:
                     this.getdownTime -= dt;
                     if (baseA.IsPlaying("sit_hunt_down") && baseA["sit_hunt_down"].normalizedTime >= 1f)
                     {
@@ -4058,7 +4080,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.sit:
+                case TitanState.Sit:
                     this.getdownTime -= dt;
                     this.angle = 0f;
                     this.between2 = 0f;
@@ -4093,7 +4115,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                     }
                     break;
 
-                case TitanState.recover:
+                case TitanState.Recover:
                     this.getdownTime -= dt;
                     if (this.getdownTime <= 0f)
                     {

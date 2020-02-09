@@ -57,17 +57,20 @@ namespace Anarchy.UI
             {
                 return;
             }
-            if (!messages.ContainsKey(message))
+            lock (Instance.messages)
             {
-                if (messages.Count > MessageCount.Value)
+                if (!messages.ContainsKey(message))
                 {
-                    messages.Remove(messages.Keys.First());
+                    if (messages.Count > MessageCount.Value)
+                    {
+                        messages.Remove(messages.Keys.First());
+                    }
+                    messages.Add(message, 1);
                 }
-                messages.Add(message, 1);
-            }
-            else
-            {
-                messages[message]++;
+                else
+                {
+                    messages[message]++;
+                }
             }
         }
 
@@ -146,26 +149,29 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            List<string> message = messages.Keys.ToList();
-            List<int> count = messages.Values.ToList();
-            GUILayout.BeginArea(position);
-            UnityEngine.GUILayout.FlexibleSpace();
-            try
+            lock (messages)
             {
-                for (int i = 0; i < messages.Count; i++)
+                List<string> message = messages.Keys.ToList();
+                List<int> count = messages.Values.ToList();
+                GUILayout.BeginArea(position);
+                UnityEngine.GUILayout.FlexibleSpace();
+                try
                 {
-                    string currentMessage = message[i];
-                    int currentCount = count[i];
-                    if (!currentMessage.IsNullOrEmpty())
+                    for (int i = 0; i < messages.Count; i++)
                     {
-                        UnityEngine.GUILayout.Label(currentMessage + (currentCount > 1 ? $" <color=red>[x{currentCount}]</color>" : string.Empty), LogStyle, labelOptions);
+                        string currentMessage = message[i];
+                        int currentCount = count[i];
+                        if (!currentMessage.IsNullOrEmpty())
+                        {
+                            UnityEngine.GUILayout.Label(currentMessage + (currentCount > 1 ? $" <color=red>[x{currentCount}]</color>" : string.Empty), LogStyle, labelOptions);
+                        }
                     }
                 }
+                catch
+                {
+                }
+                GUILayout.EndArea();
             }
-            catch
-            { 
-            }
-            GUILayout.EndArea();
         }
 
         public static string GetString(string key)

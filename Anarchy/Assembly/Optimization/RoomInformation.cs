@@ -44,9 +44,9 @@ namespace Optimization
             if (PhotonNetwork.inRoom)
             {
                 bld.AppendLine(lang.Format("room", PhotonNetwork.room.UIName.Split('/')[0].ToHTMLFormat()));
-                bld.AppendLine(lang.Format("slots", PhotonNetwork.room.playerCount.ToString(), PhotonNetwork.room.maxPlayers.ToString().ToString()));
+                bld.AppendLine(lang.Format("slots", PhotonNetwork.room.PlayerCount.ToString(), PhotonNetwork.room.MaxPlayers.ToString().ToString()));
             }
-            bld.AppendLine(lang.Format("fps", FengGameManagerMKII.FPS.FPS.ToString()));
+            bld.Append(lang.Format("fps", FengGameManagerMKII.FPS.FPS.ToString()));
             Labels.TopRight = "<color=#" + User.MainColor.Value + ">" + bld.ToString() + "</color>";
         }
     }

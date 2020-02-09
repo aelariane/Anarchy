@@ -125,7 +125,12 @@ namespace Anarchy.UI
             for(int i = 0; i < files.Length; i++)
             {
                 var file = new System.IO.FileInfo(files[i]);
-                files[i] = file.Name.Replace(file.Extension, "");
+                string name = file.Name;
+                if (file.Extension.Length > 0)
+                {
+                    name = name.Replace(file.Extension, "");
+                }
+                files[i] = name;
             }
             return files;
         }
@@ -241,7 +246,7 @@ namespace Anarchy.UI
             {
                 CustomLevel.currentScript = Load(id, MapsPath);
             }
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")} {(id == -1 ? "(Random)" : "")}: <b>{name}</b>", "" });
             }
@@ -265,7 +270,7 @@ namespace Anarchy.UI
                     return;
                 }
             }
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")} {(id == -1 ? "(Random)" : "")}: <b>{name}</b>", "" });
             }

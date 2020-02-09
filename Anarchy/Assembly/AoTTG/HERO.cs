@@ -6,6 +6,7 @@ using Anarchy.Configuration.Presets;
 using Anarchy.InputPos;
 using Anarchy.Network;
 using Anarchy.Skins.Humans;
+using Anarchy.UI;
 using ExitGames.Client.Photon;
 using Optimization;
 using Optimization.Caching;
@@ -173,6 +174,19 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     public float totalGas = 100f;
     public bool Gunner;
 
+    public bool IsDead
+    {
+        get => hasDied;
+    }
+
+    public bool isGrabbed
+    {
+        get
+        {
+            return this.State == HeroState.Grab;
+        }
+    }
+
     private HeroState State
     {
         get
@@ -186,14 +200,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 this.dashTime = 0f;
             }
             this._state = value;
-        }
-    }
-
-    public bool isGrabbed
-    {
-        get
-        {
-            return this.State == HeroState.Grab;
         }
     }
 
@@ -228,7 +234,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         }
         else
         {
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 baseG.layer = Layers.NetworkObjectN;
                 GetComponent<CapsuleCollider>().isTrigger = false;
@@ -246,7 +252,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
 
     private void bodyLean()
     {
-        if (IsLocal && !grounded)
+        if (IsLocal)
         {
             float z = 0f;
             this.needLean = false;
@@ -269,18 +275,18 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 if (this.almostSingleHook)
                 {
                     this.needLean = true;
-                    z = this.getLeanAngle(this.bulletRight.transform.position, true);
+                    z = this.getLeanAngle(this.bulletRight.baseT.position, true);
                 }
             }
             else if (this.isLeftHandHooked && this.bulletLeft != null)
             {
                 this.needLean = true;
-                z = this.getLeanAngle(this.bulletLeft.transform.position, true);
+                z = this.getLeanAngle(this.bulletLeft.baseT.position, true);
             }
             else if (this.isRightHandHooked && this.bulletRight != null)
             {
                 this.needLean = true;
-                z = this.getLeanAngle(this.bulletRight.transform.position, false);
+                z = this.getLeanAngle(this.bulletRight.baseT.position, false);
             }
             if (this.needLean)
             {
@@ -300,7 +306,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     }
 
     private void bombInit()
-    {
+    {   
         this.skillCDDuration = this.skillCDLast;
         skillIDHUD = skillID;
         if (GameModes.BombMode.Enabled)
@@ -367,7 +373,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             this.bombTime += Time.deltaTime;
             bool flag2 = false;
-            if (InputManager.Settings[InputCode.Attack1].IsUp())
+            if (InputManager.Settings[InputCode.Attack1].IsKeyUp())
             {
                 this.detonate = true;
             }
@@ -904,8 +910,13 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             return;
         }
         this.currentSpeed = baseR.velocity.magnitude;
-        if (!IsLocal) return;
+        if (!IsLocal) 
+            return;
         CheckTitan();
+        if (!baseA.IsPlaying("attack3_2") && !baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra"))
+        {
+            baseR.rotation = Quaternion.Lerp(baseGT.rotation, this.targetRotation, Time.fixedDeltaTime * 6f);
+        }
         if (this.State == HeroState.Grab)
         {
             baseR.AddForce(-baseR.velocity, ForceMode.VelocityChange);
@@ -1527,7 +1538,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         if (flag)
         {
             this.useGas(this.useGasSpeed * Time.deltaTime);
-            if (!this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
+            if (!this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
             {
                 BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, new object[]
                 {
@@ -1538,7 +1549,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         }
         else
         {
-            if (this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
+            if (this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
             {
                 BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, new object[]
                 {
@@ -1562,12 +1573,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             {
                 this.speedFXPS.enableEmission = false;
             }
-        }
-        this.setHookedPplDirection();
-        this.bodyLean();
-        if (!baseA.IsPlaying("attack3_2") && !baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra"))
-        {
-            baseR.rotation = Quaternion.Lerp(baseGT.rotation, this.targetRotation, 0.02f * 6f);
         }
     }
 
@@ -1896,7 +1901,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.falseAttack();
         this.hasDied = true;
         baseG.GetComponent<SmoothSyncMovement>().Disabled = true;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             PhotonNetwork.RemoveRPCs(BasePV);
             PhotonNetwork.player.Dead = true;
@@ -1916,7 +1921,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             }
             FengGameManagerMKII.FGM.BasePV.RPC("someOneIsDead", PhotonTargets.MasterClient, new object[] { titanName != string.Empty ? 1 : 0 });
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             Pool.NetworkEnable("hitMeat2", baseT.position, Quaternion.Euler(270f, 0f, 0f), 0);
         }
@@ -1967,24 +1972,34 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     }
 
     [RPC]
-    private void netPlayAnimation(string aniName)
+    private void netPlayAnimation(string aniName, PhotonMessageInfo info = null)
     {
-        this.currentAnimation = aniName;
-        if (baseA != null)
+        if (!Antis.Protection.HeroAnimationCheck.Check(aniName))
         {
-            baseA.Play(aniName);
+            if(info != null)
+            {
+                Anarchy.Network.Antis.Kick(info.Sender, true, "Invalid HERO anim: " + aniName);
+            }
+            return;
         }
+        this.currentAnimation = aniName;
+        baseA.Play(aniName);
     }
 
     [RPC]
-    private void netPlayAnimationAt(string aniName, float normalizedTime)
+    private void netPlayAnimationAt(string aniName, float normalizedTime, PhotonMessageInfo info = null)
     {
-        this.currentAnimation = aniName;
-        if (baseA != null)
+        if (!Antis.Protection.HeroAnimationCheck.Check(aniName))
         {
-            baseA.Play(aniName);
-            baseA[aniName].normalizedTime = normalizedTime;
+            if (info != null)
+            {
+                Anarchy.Network.Antis.Kick(info.Sender, true, "Invalid HERO anim: " + aniName);
+            }
+            return;
         }
+        this.currentAnimation = aniName;
+        baseA.Play(aniName);
+        baseA[aniName].normalizedTime = normalizedTime;
     }
 
     [RPC]
@@ -2074,6 +2089,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
 
     private void OnDestroy()
     {
+
         if (FengGameManagerMKII.FGM != null)
         {
             FengGameManagerMKII.FGM.RemoveHero(this);
@@ -2086,9 +2102,14 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             Destroy(this.gunDummy);
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             this.releaseIfIHookSb();
+            if(BasePV != null && BasePV.owner != null)
+            {
+                GameModes.AntiReviveAdd(BasePV.owner.ID);
+                BasePV.owner.GameObject = null;
+            }
         }
         if (this.Setup.part_cape != null)
         {
@@ -2102,7 +2123,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             ClothFactory.DisposeObject(this.Setup.part_hair_2);
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV != null)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV != null)
         {
             GameModes.InfectionOnDeath(BasePV.owner);
         }
@@ -2292,7 +2313,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             this.wLeft.myTeam = val;
             this.wRight.myTeam = val;
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && PhotonNetwork.IsMasterClient)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
             if (GameModes.FriendlyMode.Enabled)
             {
@@ -2553,7 +2574,14 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     private void Start()
     {
         FengGameManagerMKII.FGM.AddHero(this);
-        if ((FengGameManagerMKII.Level.HorsesEnabled || GameModes.AllowHorses.Enabled) && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
+        {
+            if(BasePV != null)
+            {
+                BasePV.owner.GameObject = this.gameObject;
+            }
+        }
+        if ((FengGameManagerMKII.Level.HorsesEnabled || GameModes.AllowHorses.Enabled) && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             this.myHorse = Pool.NetworkEnable("horse", baseT.position + Vectors.up * 5f, baseT.rotation, 0);
             this.myHorse.GetComponent<Horse>().myHero = baseG;
@@ -2578,7 +2606,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 col.enabled = false;
             }
         }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
         {
             if (RCManager.heroHash.ContainsKey(BasePV.owner.ID))
             {
@@ -2589,41 +2617,41 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 RCManager.heroHash.Add(BasePV.owner.ID, this);
             }
             this.myNetWorkName = (GameObject)Instantiate(CacheResources.Load("UI/LabelNameOverHead"));
-            this.myNetWorkName.name = "LabelNameOverHead";
-            this.myNetWorkName.transform.parent = FengGameManagerMKII.UIRefer.panels[0].transform;
-            this.myNetWorkName.transform.localScale = new Vector3(6f, 6f, 6f);
-            this.myNetWorkName.GetComponent<UILabel>().text = string.Empty;
-            TextMesh txt = myNetWorkName.GetComponent<TextMesh>();
-            if (txt == null)
-            {
-                txt = myNetWorkName.AddComponent<TextMesh>();
-            }
-            MeshRenderer render = myNetWorkName.GetComponent<MeshRenderer>();
-            if (render == null)
-            {
-                render = myNetWorkName.AddComponent<MeshRenderer>();
-            }
-            render.material = Labels.Font.material;
-            txt.font = Labels.Font;
-            txt.fontSize = 20;
-            txt.anchor = TextAnchor.MiddleCenter;
-            txt.alignment = TextAlignment.Center;
-            txt.color = Colors.white;
-            txt.text = myNetWorkName.GetComponent<UILabel>().text;
-            txt.richText = true;
-            txt.gameObject.layer = 5;
-            string show = string.Empty;
-            myNetWorkName.GetComponent<UILabel>().enabled = false;
-            if (BasePV.owner.Team == 2)
-            {
-                show += "[FF0000]AHSS\n[FFFFFF]";
-            }
-            if (BasePV.owner.GuildName != string.Empty)
-            {
-                show += $"[FFFF00]{BasePV.owner.GuildName}\n[FFFFFF]";
-            }
-            show += BasePV.owner.UIName;
-            myNetWorkName.GetComponent<TextMesh>().text = show.ToHTMLFormat();
+                this.myNetWorkName.name = "LabelNameOverHead";
+                this.myNetWorkName.transform.parent = FengGameManagerMKII.UIRefer.panels[0].transform;
+                this.myNetWorkName.transform.localScale = new Vector3(6f, 6f, 6f);
+                this.myNetWorkName.GetComponent<UILabel>().text = string.Empty;
+                TextMesh txt = myNetWorkName.GetComponent<TextMesh>();
+                if (txt == null)
+                {
+                    txt = myNetWorkName.AddComponent<TextMesh>();
+                }
+                MeshRenderer render = myNetWorkName.GetComponent<MeshRenderer>();
+                if (render == null)
+                {
+                    render = myNetWorkName.AddComponent<MeshRenderer>();
+                }
+                render.material = Labels.Font.material;
+                txt.font = Labels.Font;
+                txt.fontSize = 20;
+                txt.anchor = TextAnchor.MiddleCenter;
+                txt.alignment = TextAlignment.Center;
+                txt.color = Colors.white;
+                txt.text = myNetWorkName.GetComponent<UILabel>().text;
+                txt.richText = true;
+                txt.gameObject.layer = 5;
+                string show = string.Empty;
+                myNetWorkName.GetComponent<UILabel>().enabled = false;
+                if (BasePV.owner.Team == 2)
+                {
+                    show += "[FF0000]AHSS\n[FFFFFF]";
+                }
+                if (BasePV.owner.GuildName != string.Empty)
+                {
+                    show += $"[FFFF00]{BasePV.owner.GuildName}\n[FFFFFF]";
+                }
+                show += BasePV.owner.UIName;
+                myNetWorkName.GetComponent<TextMesh>().text = show.ToHTMLFormat();
             GameModes.InfectionOnSpawn(this);
         }
         else
@@ -2643,7 +2671,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 ShowBullets();
             else
                 ShowBlades();
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 GetComponent<SmoothSyncMovement>().PhotonCamera = true;
                 BasePV.RPC("SetMyPhotonCamera", PhotonTargets.OthersBuffered, new object[]
@@ -2653,7 +2681,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             }
             spawned = true;
             int viewid = -1;
-            if (SkinSettings.HumanSkins.Value > 0 && SkinSettings.HumanSet.Value != "$not define$")
+            if (SkinSettings.HumanSkins.Value > 0 && SkinSettings.HumanSet.Value != StringSetting.NotDefine)
             {
                 var set = new HumanSkinPreset(SkinSettings.HumanSet.Value);
                 set.Load();
@@ -2663,10 +2691,10 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             {
                 viewid = myHorse.GetPhotonView().viewID;
             }
-            if (mySkinURL != string.Empty)
+            if (mySkinURL != string.Empty && SkinSettings.HumanSkins.Value > 0)
             {
                 loadskinRPC(viewid, mySkinURL, null);
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && SkinSettings.HumanSkins.Value != 2)
                 {
                     BasePV.RPC("loadskinRPC", PhotonTargets.Others, new object[] { viewid, mySkinURL });
                 }
@@ -2708,6 +2736,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         UnityEngine.Object.Destroy(this.leftbladetrail2);
         UnityEngine.Object.Destroy(this.rightbladetrail2);
         spawned = true;
+        GameModes.AntiReviveCheck(BasePV.owner.ID, this);
     }
 
     private void suicide()
@@ -2951,7 +2980,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         transform.GetComponent<AudioSource>().Play();
         if (Settings.Snapshots.ToValue())
         {
-            IN_GAME_MAIN_CAMERA.MainCamera.startSnapShot(baseT.position, 0, null, 0.02f);
+            IN_GAME_MAIN_CAMERA.MainCamera.startSnapShot(baseT.position, 0, null, Time.fixedDeltaTime);
         }
         UnityEngine.Object.Destroy(baseG);
     }
@@ -3259,6 +3288,8 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             this.leftbladetrail2.lateUpdate();
             this.rightbladetrail2.lateUpdate();
         }
+        this.setHookedPplDirection();
+        this.bodyLean();
     }
 
     public void launch(Vector3 des, bool left = true, bool leviMode = false)
@@ -3291,23 +3322,23 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             this.falseAttack();
             this.idle();
-            if (this.Gunner)
-            {
-                this.crossFade("AHSS_hook_forward_both", 0.1f);
-            }
-            else if (left && !this.isRightHandHooked)
-            {
-                this.crossFade("air_hook_l_just", 0.1f);
-            }
-            else if (!left && !this.isLeftHandHooked)
-            {
-                this.crossFade("air_hook_r_just", 0.1f);
-            }
-            else
-            {
-                this.crossFade("dash", 0.1f);
-                baseA["dash"].time = 0f;
-            }
+                if (this.Gunner)
+                {
+                    this.crossFade("AHSS_hook_forward_both", 0.1f);
+                }
+                else if (left && !this.isRightHandHooked)
+                {
+                    this.crossFade("air_hook_l_just", 0.1f);
+                }
+                else if (!left && !this.isLeftHandHooked)
+                {
+                    this.crossFade("air_hook_r_just", 0.1f);
+                }
+                else
+                {
+                    this.crossFade("dash", 0.1f);
+                    baseA["dash"].time = 0f;
+                }
         }
         if (left)
         {
@@ -3369,11 +3400,11 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     [RPC]
     public void loadskinRPC(int horse, string urls, PhotonMessageInfo info = null)
     {
-        if (info != null && BasePV != null && (BasePV.owner.ID != info.Sender.ID || !Antis.IsValidSkinURL(ref urls, 13, info.Sender.ID)))
+        if (SkinSettings.HumanSkins.Value == 0)
         {
             return;
         }
-        if (SkinSettings.HumanSkins.Value == 0)
+        if (info != null && BasePV != null && (BasePV.owner.ID != info.Sender.ID || !Anarchy.Network.Antis.IsValidSkinURL(ref urls, 13, info.Sender.ID)))
         {
             return;
         }
@@ -3581,9 +3612,8 @@ public class HERO : Optimization.Caching.Bases.HeroBase
 
     public void resetAnimationSpeed()
     {
-        foreach (object obj in baseA)
+        foreach (AnimationState animationState in baseA)
         {
-            AnimationState animationState = (AnimationState)obj;
             animationState.speed = 1f;
         }
         this.customAnimationSpeed();
@@ -3592,8 +3622,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     [RPC]
     public void ReturnFromCannon(PhotonMessageInfo info)
     {
-        bool flag = info.Sender == BasePV.owner;
-        if (flag)
+        if (info.Sender == BasePV.owner)
         {
             this.isCannon = false;
             base.gameObject.GetComponent<SmoothSyncMovement>().Disabled = false;
@@ -3603,20 +3632,26 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     [RPC]
     public void SetMyCannon(int viewid, PhotonMessageInfo info)
     {
-        bool flag = info.Sender == BasePV.owner;
-        if (flag)
+        if (info.Sender == BasePV.owner)
         {
             PhotonView photonView = PhotonView.Find(viewid);
-            bool flag2 = photonView != null;
-            if (flag2)
+            if(photonView != null)
+            {
+                Log.AddLineRaw("viewID: " + viewid);
+                Component[] comps = photonView.gameObject.GetComponentsInChildren<MonoBehaviour>();
+                foreach(var com in comps)
+                {
+                    Log.AddLineRaw(com.GetType().Name);
+                }
+            }
+            if (photonView != null && photonView.gameObject.GetComponent<Cannon>() != null)
             {
                 this.myCannon = photonView.gameObject;
-                bool flag3 = this.myCannon != null;
-                if (flag3)
+                if (myCannon != null)
                 {
-                    this.myCannonBase = this.myCannon.transform;
-                    this.myCannonPlayer = this.myCannonBase.Find("PlayerPoint");
-                    this.isCannon = true;
+                    myCannonBase = myCannon.transform;
+                    myCannonPlayer = myCannonBase.Find("PlayerPoint");
+                    isCannon = true;
                 }
             }
         }
@@ -3669,7 +3704,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         if (this.skillID == "eren")
         {
             this.skillCDLast = 120f;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 if (FengGameManagerMKII.Level.TeamTitan || FengGameManagerMKII.Level.Mode == GameMode.RACING || FengGameManagerMKII.Level.Mode == GameMode.PVP_CAPTURE || FengGameManagerMKII.Level.Mode == GameMode.TROST)
                 {
@@ -3706,7 +3741,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.speed = (float)this.Setup.myCostume.stat.Spd / 10f;
         this.totalGas = (this.currentGas = (float)this.Setup.myCostume.stat.Gas);
         this.totalBladeSta = (this.currentBladeSta = (float)this.Setup.myCostume.stat.Bla);
-        base.rigidbody.mass = 0.5f - (float)(this.Setup.myCostume.stat.Acl - 100) * 0.001f;
+        baseR.mass = 0.5f - (float)(this.Setup.myCostume.stat.Acl - 100) * 0.001f;
         CacheGameObject.Find("skill_cd_bottom").transform.localPosition = new Vector3(0f, (float)(-(float)Screen.height) * 0.5f + 5f, 0f);
         this.skillCD = CacheGameObject.Find("skill_cd_" + this.skillIDHUD);
         this.skillCD.transform.localPosition = CacheGameObject.Find("skill_cd_bottom").transform.localPosition;
@@ -3790,7 +3825,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
 
     public void setTeam(int team)
     {
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && BasePV.IsMine)
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             BasePV.RPC("setMyTeam", PhotonTargets.AllBuffered, new object[] { team });
             PhotonNetwork.player.Team = team;
@@ -3858,7 +3893,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             {
                 this.bulletRight.RemoveMe();
             }
-            bool flag5 = this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType == GameType.Multi && IsLocal;
+            bool flag5 = this.smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && IsLocal;
             if (flag5)
             {
                 object[] parameters = new object[]
@@ -3889,10 +3924,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             this.myCannonRegion = null;
             IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(this.myCannon.transform.Find("Barrel").Find("FiringPoint").gameObject, true, false);
             IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = 55f;
-            BasePV.RPC("SetMyCannon", PhotonTargets.OthersBuffered, new object[]
-            {
-            this.myCannon.GetPhotonView().viewID
-            });
+            BasePV.RPC("SetMyCannon", PhotonTargets.OthersBuffered, new object[] { myCannon.GetPhotonView().viewID });
             this.skillCDLastCannon = this.skillCDLast;
             this.skillCDLast = 3.5f;
             this.skillCDDuration = 3.5f;
@@ -3947,7 +3979,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         if (this.myCannonRegion != null)
         {
             FengGameManagerMKII.FGM.ShowHUDInfoCenter("Press 'Cannon Mount' key to use Cannon.");
-            if (InputManager.IsInputCannonHolding(5))
+            if (InputManager.IsInputCannonDown((int)InputCannon.CannonMount))
             {
                 this.myCannonRegion.BasePV.RPC("RequestControlRPC", PhotonTargets.MasterClient, new object[] { BasePV.viewID });
             }
@@ -4038,7 +4070,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.bufferUpdate();
         if (!this.grounded && this.State != HeroState.AirDodge)
         {
-            this.checkDashDoubleTap();
             if (InputManager.IsInputRebindHolding((int)InputRebinds.GasBurst))
             {
                 if (InputManager.IsInput[(int)InputCodes.Forward])
@@ -4058,6 +4089,10 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     dash(-1f, 0f);
                 }
             }
+            else
+            {
+                this.checkDashDoubleTap();
+            }
         }
         if (this.grounded && (this.State == HeroState.Idle || this.State == HeroState.Slide))
         {
@@ -4073,11 +4108,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 return;
             }
         }
-        //if (needCheckReelAxis)
-        //{
-        //    needCheckReelAxis = false;
-        //    reelAxis = Input.GetAxis("Mouse ScrollWheel") * 5555f;
-        //}
         switch (_state)
         {
             case HeroState.Idle:
@@ -4382,7 +4412,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     bool flag3 = false;
                     bool flag4 = false;
                     bool flag5 = false;
-                    if (InputManager.Settings[InputCode.Attack1].IsUp())
+                    if (InputManager.Settings[InputCode.Attack1].IsKeyUp())
                     {
                         if (this.leftGunHasBullet && this.rightGunHasBullet)
                         {
@@ -4405,7 +4435,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                             flag5 = true;
                         }
                     }
-                    if (flag5 || InputManager.Settings[InputCode.Attack0].IsUp())
+                    if (flag5 || InputManager.Settings[InputCode.Attack0].IsKeyUp())
                     {
                         if (this.grounded)
                         {
@@ -4471,7 +4501,9 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                     }
                     else if (flag4 && (this.grounded || FengGameManagerMKII.Level.Mode != GameMode.PVP_AHSS))
                     {
-                        this.changeBlade();
+                        {
+                            this.changeBlade();
+                        }
                         ShowBullets();
                     }
                 }
@@ -4503,12 +4535,12 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                             if (!wLeft.Active)
                             {
                                 wLeft.Active = true;
-                                this.leftbladetrail2.Activate();
-                                this.rightbladetrail2.Activate();
+                                this.leftbladetrail.Activate();
+                                this.rightbladetrail.Activate();
                                 if (QualitySettings.GetQualityLevel() >= 2)
                                 {
-                                    this.leftbladetrail.Activate();
-                                    this.rightbladetrail.Activate();
+                                    this.leftbladetrail2.Activate();
+                                    this.rightbladetrail2.Activate();
                                 }
                                 base.baseR.velocity = (-Vectors.up * 30f);
                             }
@@ -4573,12 +4605,12 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                             {
                                 wLeft.Active = true;
                                 this.slash.Play();
-                                this.leftbladetrail2.Activate();
-                                this.rightbladetrail2.Activate();
+                                this.leftbladetrail.Activate();
+                                this.rightbladetrail.Activate();
                                 if (QualitySettings.GetQualityLevel() >= 2)
                                 {
-                                    this.leftbladetrail.Activate();
-                                    this.rightbladetrail.Activate();
+                                    this.leftbladetrail2.Activate();
+                                    this.rightbladetrail2.Activate();
                                 }
                             }
                             if (!wRight.Active)
@@ -4592,12 +4624,12 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                             wRight.Active = false;
                             wLeft.clearHits();
                             wRight.clearHits();
-                            this.leftbladetrail2.StopSmoothly(0.1f);
-                            this.rightbladetrail2.StopSmoothly(0.1f);
+                            this.leftbladetrail.StopSmoothly(0.1f);
+                            this.rightbladetrail.StopSmoothly(0.1f);
                             if (QualitySettings.GetQualityLevel() >= 2)
                             {
-                                this.leftbladetrail.StopSmoothly(0.1f);
-                                this.rightbladetrail.StopSmoothly(0.1f);
+                                this.leftbladetrail2.StopSmoothly(0.1f);
+                                this.rightbladetrail2.StopSmoothly(0.1f);
                             }
                         }
                         if ((this.attackLoop > 0) && (base.baseA[this.attackAnimation].normalizedTime > num2))
@@ -4682,20 +4714,24 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                         if ((this.attackAnimation == "AHSS_shoot_both") || (this.attackAnimation == "AHSS_shoot_both_air"))
                         {
                             flag6 = true;
-                            this.leftGunHasBullet = false;
-                            this.rightGunHasBullet = false;
+                            {
+                                this.leftGunHasBullet = false;
+                                this.rightGunHasBullet = false;
+                            }
                             base.baseR.AddForce((Vector3)(-base.baseT.Forward() * 1000f), ForceMode.Acceleration);
                             ShowBullets();
                         }
                         else
                         {
-                            if ((this.attackAnimation == "AHSS_shoot_l") || (this.attackAnimation == "AHSS_shoot_l_air"))
                             {
-                                this.leftGunHasBullet = false;
-                            }
-                            else
-                            {
-                                this.rightGunHasBullet = false;
+                                if ((this.attackAnimation == "AHSS_shoot_l") || (this.attackAnimation == "AHSS_shoot_l_air"))
+                                {
+                                    this.leftGunHasBullet = false;
+                                }
+                                else
+                                {
+                                    this.rightGunHasBullet = false;
+                                }
                             }
                             base.baseR.AddForce((Vector3)(-base.baseT.Forward() * 600f), ForceMode.Acceleration);
                             ShowBullets();
@@ -4706,7 +4742,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                         {
                             prefabName = "FX/shotGun 1";
                         }
-                        if ((IN_GAME_MAIN_CAMERA.GameType == GameType.Multi) && base.BasePV.IsMine)
+                        if ((IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer) && base.BasePV.IsMine)
                         {
                             obj4 = Optimization.Caching.Pool.NetworkEnable(prefabName, (Vector3)((base.baseT.position + (base.baseT.Up() * 0.8f)) - (base.baseT.Right() * 0.1f)), base.baseT.rotation, 0);
                             if (obj4.GetComponent<EnemyfxIDcontainer>() != null)
@@ -4716,7 +4752,6 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                         }
                         else
                         {
-                            //(GameObject)Instantiate(CacheResources.Load(prefabName), ((base.baseT.position + (base.baseT.Up() * 0.8f)) - (base.baseT.Right() * 0.1f)), base.baseT.rotation);
                             Pool.Enable(prefabName, ((base.baseT.position + (base.baseT.Up() * 0.8f)) - (base.baseT.Right() * 0.1f)), base.baseT.rotation);
                         }
                     }
@@ -4991,7 +5026,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.ShowFlareCD();
         this.ShowAimUI();
         float checkAxis = Input.GetAxis("Mouse ScrollWheel");
-        if (checkAxis != 0f)
+        if(checkAxis != 0f)
         {
             bool flag2 = false;
             bool flag3 = false;

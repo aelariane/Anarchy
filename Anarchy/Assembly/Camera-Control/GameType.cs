@@ -7,5 +7,5 @@ public enum GameType
     Server,
     Client,
     Stop,
-    Multi
+    MultiPlayer
 }

@@ -11,10 +11,6 @@ public class CameraShake : MonoBehaviour
 
     private float R;
 
-    private void FixedUpdate()
-    {
-    }
-
     private void shakeUpdate()
     {
         if (this.duration > 0f)
@@ -31,14 +27,6 @@ public class CameraShake : MonoBehaviour
             this.flip = !this.flip;
             this.R *= this.decay;
         }
-    }
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
     }
 
     public void startShake(float R, float duration, float decay = 0.95f)

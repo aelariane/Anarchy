@@ -86,5 +86,14 @@ restartOnFinishersInfoDisabled:<color=#$maincolor$>Restart on finishers count mo
 racingTimeLimitInfoEnabled:<color=#$maincolor$>Racing time limit <color=#$eColor$>enabled</color> (<color=#$subcolor$>{0}</color>)</color>
 racingTimeLimitInfoDisabled:<color=#$maincolor$>Racing time limit <color=#$dColor$>disabled</color></color>
 
-racingRestartTimeInfoEnabled:<color=#$maincolor$>Racing restart time set to <color=#$subcolor$>{0}</color></color> 
-racingRestartTimeInfoDisabled:<color=#$maincolor$>Racing restart time <color=#$dColor$>disabled</color></color> 
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Racing restart time set to <color=#$subcolor$>{0}</color></color>
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Racing restart time <color=#$dColor$>disabled</color></color>
+
+noGuestInfoEnabled:<color=#$maincolor$>No-Guest <color=#$eColor$>enabled</color></color>
+noGuestInfoDisabled:<color=#$maincolor$>No-Guest <color=#$dColor$>disabled</color></color>
+
+antiReviveInfoEnabled:<color=#$maincolor$>Anti-Revive <color=#$eColor$>enabled</color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Anti-Revive <color=#$dColor$>disabled</color></color>
+
+afkKillInfoEnabled:<color=#$maincolor$>AFK player kill <color=#$eColor$>enabled</color> (<color=#$subcolor$>{0} seconds</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>AFK player kill <color=#$dColor$>disabled</color></color>

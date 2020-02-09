@@ -6,7 +6,7 @@ class RacingKillTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         HERO hero = other.gameObject.GetComponent<HERO>();
-        if(hero != null && hero.IsLocal && !hero.HasDied())
+        if(hero != null && hero.IsLocal && !hero.IsDead)
         {
             hero.markDie();
             hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[]

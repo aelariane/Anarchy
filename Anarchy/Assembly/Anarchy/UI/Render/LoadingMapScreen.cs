@@ -17,11 +17,13 @@ namespace Anarchy.UI
             {
                 instance.DisableImmediate();
             }
+            NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
             instance = this;
         }
 
         ~LoadingMapScreen()
         {
+            NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
             instance = null;
         }
 
@@ -33,7 +35,7 @@ namespace Anarchy.UI
             LabelCenter(rect, locale.Format("loadingProgress", PhotonNetwork.player.CurrentLevel.Length.ToString(), PhotonNetwork.masterClient.CurrentLevel.Length.ToString()), true);
             if(Button(rect, locale["disconnect"], false))
             {
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.Multi)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     PhotonNetwork.Disconnect();
                 }
@@ -47,19 +49,9 @@ namespace Anarchy.UI
             {
                 DisableImmediate();
                 RC.CustomLevel.customLevelLoaded = true;
-                if (!FengGameManagerMKII.FGM.NeedChooseSide)
-                {
-                    if (!PhotonNetwork.player.IsTitan)
-                    {
-                        FengGameManagerMKII.FGM.SpawnPlayer(FengGameManagerMKII.FGM.myLastHero);
-                    }
-                    else
-                    {
-                        FengGameManagerMKII.FGM.SpawnNonAITitan("RANDOM");
-                    }
-                    FengGameManagerMKII.FGM.ShowHUDInfoCenter(string.Empty);
-                }                GameLogic.RacingLogic log = FengGameManagerMKII.FGM.Logic as GameLogic.RacingLogic;
-                if(log != null)
+                RC.CustomLevel.SpawnPlayerCustomMap();
+                GameLogic.RacingLogic log = FengGameManagerMKII.FGM.Logic as GameLogic.RacingLogic;
+                if (log != null)
                 {
                     if (log.RaceStart)
                     {
@@ -71,11 +63,14 @@ namespace Anarchy.UI
 
         protected override void OnDisable()
         {
-            Screen.lockCursor = true;
-            Screen.showCursor = true;
-            IN_GAME_MAIN_CAMERA.SpecMov.disable = false;
-            IN_GAME_MAIN_CAMERA.Look.disable = false;
-            rect = null;
+            if (FengGameManagerMKII.FGM.NeedChooseSide)
+            {
+                Screen.lockCursor = true;
+                Screen.showCursor = true;
+                IN_GAME_MAIN_CAMERA.SpecMov.disable = false;
+                IN_GAME_MAIN_CAMERA.Look.disable = false;
+                rect = null;
+            }
         }
 
         protected override void OnEnable()
@@ -87,6 +82,11 @@ namespace Anarchy.UI
             Screen.showCursor = true;
             IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
             IN_GAME_MAIN_CAMERA.Look.disable = true;
+        }
+
+        private void OnLeftRoom(Optimization.AOTEventArgs args)
+        {
+            DisableImmediate();
         }
 
         public override void OnUpdateScaling()

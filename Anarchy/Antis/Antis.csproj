@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61AE834A-671A-4599-B3CA-80AA69F145FC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Antis</RootNamespace>
+    <AssemblyName>Antis</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\Assemblies\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AntisManager.cs" />
+    <Compile Include="AntisThreadManager.cs" />
+    <Compile Include="Collections\Generic\SyncDictionary.cs" />
+    <Compile Include="Collections\Generic\SyncList.cs" />
+    <Compile Include="Collections\ISyncObject.cs" />
+    <Compile Include="Collections\Syncer.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="AntisThreadExecutable.cs" />
+    <Compile Include="Internal\AntisThread.cs" />
+    <Compile Include="IProtection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Protection.cs" />
+    <Compile Include="Protections\EmptyProtection.cs" />
+    <Compile Include="Protections\HeroAnimationChecker.cs" />
+    <Compile Include="Protections\TitanAnimationChecker.cs" />
+    <Compile Include="Protections\URLChecker.cs" />
+    <Compile Include="Response.cs" />
+    <Compile Include="SenderInfo.cs" />
+    <Compile Include="Spam\EmptyCounter.cs" />
+    <Compile Include="Spam\EventsCounter.cs" />
+    <Compile Include="Spam\ICounter.cs" />
+    <Compile Include="Spam\InstantiateCounter.cs" />
+    <Compile Include="Spam\RPCCounter.cs" />
+    <Compile Include="Spam\SpamCounter.cs" />
+    <Compile Include="Spam\SpamDetected.cs" />
+    <Compile Include="Spam\SpamDetectedArgs.cs" />
+    <Compile Include="ThreadExecutableException.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

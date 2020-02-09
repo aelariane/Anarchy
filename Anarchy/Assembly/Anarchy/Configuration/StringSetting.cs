@@ -2,6 +2,8 @@
 {
     public class StringSetting : Setting<string>
     {
+        public const string NotDefine = "$Not define$";
+
         public StringSetting(string key) : base(key)
         {
         }
