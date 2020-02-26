@@ -139,7 +139,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                             FengGameManagerMKII.FGM.PlayerKillInfoSingleUpdate(num2);
                         }
                     }
-                    else if (!PhotonNetwork.IsMasterClient)
+                    else if (!PhotonNetwork.IsMasterClient || !component2.transform.root.gameObject.GetPhotonView().IsMine)
                     {
                         if (component2.transform.root.GetComponent<TITAN>())
                         {
@@ -271,7 +271,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                                 gameObject2.GetComponent<TITAN>().hitEye();
                             }
                         }
-                        else if (!PhotonNetwork.IsMasterClient)
+                        else if (!PhotonNetwork.IsMasterClient || !gameObject2.GetPhotonView().IsMine)
                         {
                             if (!gameObject2.GetComponent<TITAN>().hasDie)
                             {
@@ -307,7 +307,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                     }
                     else
                     {
-                        if (!PhotonNetwork.IsMasterClient)
+                        if (!PhotonNetwork.IsMasterClient || !gameObject3.GetPhotonView().IsMine)
                         {
                             if (!gameObject3.GetComponent<TITAN>().hasDie)
                             {

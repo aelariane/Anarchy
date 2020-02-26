@@ -13,6 +13,7 @@ namespace ExitGames.Client.Photon
                     result = new RpcProtocols.GpBinaryV16.Protocol16();
                     break;
 
+
                 case SerializationProtocol.GpBinaryV18:
                     result = new RpcProtocols.GpBinaryV18.Protocol18();
                     break;

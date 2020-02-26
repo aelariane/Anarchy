@@ -1,36 +1,36 @@
 ﻿#Overall
-respawnTime:<color=#$maincolor$>Воскрешение через <color=#$subcolor$>{0}</color> секунд</color>
+respawnTime:<color=#$maincolor$>Возрождение через <color=#$subcolor$>{0}</color> секунд.</color>
 pressToJoin:<color=#$maincolor$>Нажмите <color=#$subcolor$>{0}</color> чтобы войти.</color>
-singleState:<color=#$maincolor$>Убийства: <color=#$maincolor$>{0}</color>\nМакс урон: <color=#$maincolor$>{1}</color>\nТотальный урон: <color=#$maincolor$>{2}</color></color>
+singleState:<color=#$maincolor$>Убийства: <color=#$subcolor$>{0}</color>\nМаксимальный урон: <color=#$subcolor$>{1}</color>\nОбщий урон: <color=#$subcolor$>{2}</color></color>
 titans:<color=#$maincolor$>Титанов осталось: <color=#$subcolor$>{0}</color></color>
 time:<color=#$maincolor$>Время: <color=#$subcolor$>{0}</color></color>
 wave:<color=#$maincolor$>Волна: <color=#$subcolor$>{0}</color></color>
 
 #Racing
 racingWaiting:<color=#$maincolor$>Ожидание...</color>
-racingLastResult:<color=#$maincolor$>Последний раунд</color>
-racingResult:<color=#$maincolor$>Результат</color>
+racingLastResult:<color=#$maincolor$>Последний раунд.</color>
+racingResult:<color=#$subcolor$>| Результаты |</color>
 racingPlayerResult:<color=#$maincolor$>Место <color=#$subcolor$>{0}</color>: {1} (<color=#$subcolor$>{2}</color>)</color>
-racingPlayerResultSingle:<color=#$maincolor$>Вы финишировали со временем <color=#$subcolor$>{0}</color>!\nНажмите <color=#$subcolor$>{1}</color> для рестарта</color>
-playerFinished:<color=#$maincolor$>Игрок {0} финишировал с временем <color=#$subcolor$>{1}</color>!</color>
+racingPlayerResultSingle:<color=#$maincolor$>Вы финишировали со временем <color=#$subcolor$>{0}</color>!\nНажмите <color=#$subcolor$>{1}</color> для перезапуска.</color>
+playerFinished:<color=#$maincolor$>Игрок {0} финишировал со временем <color=#$subcolor$>{1}</color>!</color>
 racingRemaining:<color=#$maincolor$>Гонка начнётся через <color=#$subcolor$>{0}</color></color>
-speedLabel:<color=#$maincolor$>Текущая скорость: <color=#$subcolor$>{0}</color>\nMax speed: <color=#$subcolor$>{1}</color></color>
-racingRestart:<color=#$maincolor$>Рестарт через <color=#$subcolor$>{0}</color></color>
+speedLabel:<color=#$maincolor$>Текущая скорость: <color=#$subcolor$>{0}</color>\nМаксимальная скорость: <color=#$subcolor$>{1}</color></color>
+racingRestart:<color=#$maincolor$>Перезапуск через <color=#$subcolor$>{0}</color></color>
 
 #Survive mode
-surviveSingleFail:<color=#$maincolor$>Пройдено<color=#$subcolor$>{0}</color> Волн.\nНажмите <color=#$subcolor$>{1}</color> для рестарта</color>
-surviveFail:<color=#$maincolor$>Пройдено <color=#$subcolor$>{0}</color> Волн.\nРестарт игры через <color=#$subcolor$>{1}</color> с</color>
-surviveWin:<color=#$maincolor$>Пройдены все волны.\nРестарт игры через <color=#$subcolor$>{1}</color> с</color>
-surviveSingleWin:<color=#$maincolor$>Пройдены все волны.\nНажмите <color=#$subcolor$>{1}</color> для рестарта</color>
+surviveSingleFail:<color=#$maincolor$>Вы выжили до <color=#$subcolor$>{0}</color> волны!\nНажмите <color=#$subcolor$>{1}</color> для перезапуска.</color>
+surviveFail:<color=#$maincolor$>Вы выжили до <color=#$subcolor$>{0}</color> волны!\nПерезапуск игры через <color=#$subcolor$>{1}</color> с.</color>
+surviveWin:<color=#$maincolor$>Пройдены все волны!\nПерезапуск игры через <color=#$subcolor$>{1}</color> с.</color>
+surviveSingleWin:<color=#$maincolor$>Пройдены все волны!\nНажмите <color=#$subcolor$>{1}</color> для перезапуска.</color>
 
 #PVP
-pvpWin:<color=#$maincolor$>Команда <color=#$subcolor$>{0}</color> выиграла!\nРестарт игры через <color=#$subcolor$>{1}</color> с</color>
+pvpWin:<color=#$maincolor$>Команда <color=#$subcolor$>{0}</color> выиграла!\nРестарт игры через <color=#$subcolor$>{1}</color> с.</color>
 
 #Others
-humanitySingleFail:<color=#$maincolor$>Человечество провалилось.\nНажмите <color=#$subcolor$>{0}</color> для рестарта</color>
-humanityFail:<color=#$maincolor$>Человечество провалилось.\nРестарт игры через <color=#$subcolor$>{0}</color> с</color>
-humanityWin:<color=#$maincolor$>Человечество победило.\nРестарт игры через <color=#$subcolor$>{0}</color> с</color>
-humanitySingleWin:<color=#$maincolor$>Человечество победило.\nНажмите <color=#$subcolor$>{0}</color> для рестарта</color>
+humanitySingleFail:<color=#$maincolor$>Поражение человечества!\nНажмите <color=#$subcolor$>{0}</color> для перезапуска.</color>
+humanityFail:<color=#$maincolor$>Поражение человечества!\nПерезапуск игры через <color=#$subcolor$>{0}</color> с.</color>
+humanityWin:<color=#$maincolor$>Победа человечества!\nПерезапуск игры через <color=#$subcolor$>{0}</color> с.</color>
+humanitySingleWin:<color=#$maincolor$>Победа человечества!\nНажмите <color=#$subcolor$>{0}</color> для перезапуска.</color>
 
 #CT Fight
-colossalInfo:<color=#$maincolor$>Уничтожьте Колоссального Титана.\nПредотвратите аномального титана у ворот!</color>
+colossalInfo:<color=#$maincolor$>Уничтожьте Колоссального Титана.\nЗащищайте северные ворота от аномальных титанов!</color>

@@ -11,13 +11,13 @@ distance:Дист. Камеры[{0}]
 moreDistance:Доп. Дистанция[{0}]
 snapshots:<b>Снапшоты</b>
 snapshotsEnabled:Использовать снапшоты:
-snapshotsShow:Показывать в игру:
+snapshotsShow:Показывать в игре:
 snapshotsDmg:Минимальный урон:
-gameFeed:РК Гейм фид:
+gameFeed:Игровые события:
 inverty:Инверт. ось Y:
 staticFOV:Статик. поле зрения:
 fovValue:Значение[{0}]
-minimap:Миникарта
+minimap:Миникарта:
 
 others:<b>Остальное</b>
 speedometer:Спидометр:
@@ -58,7 +58,7 @@ shadowNote:<color=yellow>Тени работают при кач-ве >= 0.17</c
 
 #Effects page
 effects:<b>Эффекты</b>
-windEffect:Эффект ветра:
+windEffect:Ветерок:
 bladeTrails:Следы мечей:
 blur:Размытие:
 tilt:Покачивание камеры:
@@ -78,7 +78,7 @@ hudScale:Размер интерфейса[{0}%]:
 guiAutoScale:Использовать автом. размер:
 guiScaleWarning:<color=red><b>Изменения этих полей может <i>СЛОМАТЬ</i> интерфейс.</b></color>
 guiScaleWarning1:<color=yellow>Вы предупреждены.</color>
-windowOffset:<b>Окно & Отступы</b>
+windowOffset:<b>Окно и Отступы</b>
 windowHeight:Высота окна:
 windowWidth:Ширина окна:
 windowBottomOffset:Отступ снизу:
@@ -116,19 +116,19 @@ chatBackVal:Прозрачность[{0}]
 chatCount:Кол-во сообщений:
 chatSize:Размер шрифта:
 chatWidth:Ширина чата:
-chatUseCustomSpace:Использовать кастомные отступы
+chatUseCustomSpace:Отступы для чата:
 chatSpaceUp:Верх:
 chatSpaceDown:Низ:
 chatSpaceLeft:Лево:
 chatSpaceRight:Право:
 
 console:<b>Консоль</b>
-consoleBack:Фон чата:
+consoleBack:Фон консоли:
 consoleBackVal:Прозрачность[{0}]
 consoleCount:Кол-во сообщений:
 consoleSize:Размер шрифта:
 consoleWidth:Ширина консоли:
-consoleUseCustomSpace:Использовать кастомные отступы
+consoleUseCustomSpace:Отступы для консоли:
 consoleSpaceUp:Верх:
 consoleSpaceDown:Низ:
 consoleSpaceLeft:Лево:
@@ -137,7 +137,7 @@ consoleSpaceRight:Право:
 #Abilities
 
 #Abilities/Bombs
-bombStats:<b>Статы бомбы/b>
+bombStats:<b>Настройки бомб</b>
 bombRad:Радиус {0}:
 bombCd:Перезарядка {0}:
 bombSpeed:Скорость {0}:

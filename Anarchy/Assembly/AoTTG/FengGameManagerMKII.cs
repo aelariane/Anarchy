@@ -97,11 +97,21 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             return;
         }
         var locale = Anarchy.Localization.Language.Find(file);
-        if (locale == null || args == null)
+        if (args == null)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ChatLocalized));
             info.Sender.AnarchySync = false;
             return;
+        }
+        if(locale == null)
+        {
+            locale = new Anarchy.Localization.Locale(file, true, ',');
+            if (!File.Exists(locale.Path))
+            {
+                Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ChatLocalized));
+                info.Sender.AnarchySync = false;
+                return;
+            }
         }
         if (!locale.IsOpen)
         {
@@ -121,7 +131,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     private void ChatPM(string sender, string content, PhotonMessageInfo info)
     {
         //TODO: Add antis here
-        content = sender + ":" + content;
+        content = sender + ": " + content;
         Anarchy.UI.Chat.Add(User.ChatPM(info.Sender.ID, content).RemoveSize());
     }
 
@@ -276,7 +286,12 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                     playerList.Update();
                     PhotonNetwork.SendChekInfo(info.Sender);
                 }
+                return;
             }
+        }
+        if (PhotonView.Find(setting) != null) 
+        {
+            return;
         }
     }
 
@@ -758,7 +773,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         IComparer comparer = new IComparerRacingResult();
         this.racingResult.Sort(comparer);
         int num = this.racingResult.Count;
-        num = Mathf.Min(num, 6);
+        num = Mathf.Min(num, GameLogic.RacingLogic.MaxFinishers);
         for (int i = 0; i < num; i++)
         {
             string text = this.LocalRacingResult;
@@ -858,7 +873,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 return;
             }
             info.Sender.AnarchySync = false;
-            info.Sender.ModName =string.Format(ModNames.AnarchyCustom, version);
+            info.Sender.ModName = string.Format(ModNames.AnarchyCustom, version);
         }
     }
 
@@ -866,7 +881,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     [RPC]
     private void setMasterRC(PhotonMessageInfo info)
     {
-        if(info != null && !info.Sender.IsMasterClient)
+        if(!info.Sender.IsMasterClient)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(setMasterRC));
             Anti.Kick(info.Sender, true);
@@ -878,7 +893,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         string nameColor = string.Empty;
         switch (team)
         {
-            case 3:
+            case 0:
                 int cyans = 0;
                 int magentas = 0;
                 foreach(PhotonPlayer player in PhotonNetwork.playerList)
@@ -911,7 +926,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
             PhotonNetwork.player.UIName = User.Name.Value;
         }
         PhotonNetwork.player.RCteam = team;
-        if (team > 0 && team < 3)
+        if (team >= 0 && team < 3)
         {
             foreach (HERO hero in heroes)
             {
@@ -1288,6 +1303,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void GameWin()
     {
+        Debug.Log("GameWin");
         Logic.GameWin();
     }
 
@@ -1417,9 +1433,6 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     public void OnCreatedRoom(AOTEventArgs args)
     {
         this.racingResult = new ArrayList();
-        GameModes.Load();
-        GameModes.ForceChange();
-        GameModes.SendRPC();
     }
 
     public void OnCustomAuthenticationFailed()
@@ -1516,6 +1529,12 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         IN_GAME_MAIN_CAMERA.GameMode = Level.Mode;
         PhotonNetwork.LoadLevel(Level.MapName);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameModes.Load();
+            GameModes.ForceChange();
+            GameModes.SendRPC();
+        }
         PhotonPlayer player = PhotonNetwork.player;
         player.RCIgnored = false;
         player.UIName = User.Name;
@@ -1624,6 +1643,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         WaitForSeconds awaiter = new WaitForSeconds(0.25f);
         yield return awaiter;
+        yield return awaiter;
         if (player.Properties[PhotonPlayerProperty.name] == null)
         {
             yield return awaiter;
@@ -1639,11 +1659,14 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         }
         if (PhotonNetwork.IsMasterClient)
         {
-            yield return awaiter;
             GameModes.SendRPCToPlayer(player);
-            if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().StartsWith("GUEST"))
+            if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().ToUpper().StartsWith("GUEST"))
             {
-                Anti.Kick(player, true, "Anti-guest");
+                Anti.Kick(player, false, "Anti-guest");
+            }
+            else if (BanList.Banned(player.UIName.RemoveHex()))
+            {
+                Anti.Kick(player, false, "Banned");
             }
         }
     }
@@ -1789,6 +1812,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         RCManager.ClearVariables();
         this.ShowHUDInfoCenter(string.Empty);
         DestroyAllExistingCloths();
+        GameModes.SendRPC();
         PhotonNetwork.DestroyAll();
         BasePV.RPC("RPCLoadLevel", PhotonTargets.All, new object[0]);
         if (masterclientSwitched)
@@ -1802,7 +1826,6 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 this.SendChatContentInfo(User.MsgRestart); 
             }
         }
-        GameModes.SendRPC();
     }
 
     public void RestartGameSingle()

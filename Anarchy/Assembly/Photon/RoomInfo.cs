@@ -11,6 +11,7 @@ public class RoomInfo
     protected bool openField = true;
     protected bool visibleField = true;
 
+
     public bool HasPassword
     {
         get

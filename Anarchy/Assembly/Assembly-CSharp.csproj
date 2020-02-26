@@ -109,14 +109,23 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Anarchy\Abuse.cs" />
     <Compile Include="Anarchy\Commands\Chat\ASORacingCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ChangeTeamCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\ClearCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\KillCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\LockCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\RulesCommand.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
+    <Compile Include="Anarchy\IO\TextFile.cs" />
+    <Compile Include="Anarchy\Network\BanList.cs" />
+    <Compile Include="Anarchy\Network\Events\EventVC.cs" />
     <Compile Include="Anarchy\Network\ModNames.cs" />
     <Compile Include="Anarchy\Network\PropertiesChecker.cs" />
+    <Compile Include="Anarchy\Network\SendMask.cs" />
     <Compile Include="Anarchy\UI\AutoScaleFloat.cs" />
+    <Compile Include="Anarchy\UI\Panels\CustomizationPanel.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
     <Compile Include="Anarchy\VoiceChat\VCManager.cs" />
@@ -131,7 +140,6 @@
     <Compile Include="Anarchy\AnarchyManager.cs" />
     <Compile Include="Anarchy\Commands\Chat\ChatCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\ChatCommandHandler.cs" />
-    <Compile Include="Anarchy\Commands\Chat\DaylightChangeCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\KickCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\PauseCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\PMCommand.cs" />

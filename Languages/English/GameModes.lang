@@ -52,7 +52,7 @@ friendlyInfoDisabled:<color=#$maincolor$>PVP Friendly mode <color=#$dColor$>disa
 
 pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
 pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>disabled</color></color>
-pvpSelection:FFA,Team-Based
+pvpSelection:Team-Based,FFA
 
 #Misc
 endlessInfoEnabled:<color=#$maincolor$>Endless respawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>

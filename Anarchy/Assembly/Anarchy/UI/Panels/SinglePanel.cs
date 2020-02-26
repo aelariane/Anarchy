@@ -44,7 +44,7 @@ namespace Anarchy.UI
             LabelCenter(left, locale["daylight"], true);
             SelectionGrid(left, dayLightSelection, dayLightList, 3, true);
             LabelCenter(left, locale["camera"], true);
-            SelectionGrid(left, Settings.CameraMode, cameraList, 4, true);
+            SelectionGrid(left, Settings.CameraMode, cameraList, cameraList.Length, true);
             left.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
             left.height = new AutoScaleFloat(30f);
             if (Button(left, locale["start"], true))

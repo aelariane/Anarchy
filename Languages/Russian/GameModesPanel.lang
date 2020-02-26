@@ -1,30 +1,30 @@
-﻿title:Игровые настройки
-selections:Титаны,ПвП,Остальное,Гонка
+﻿title:Настройки сервера
+selections:Титаны,PvP,Остальное,Гонка
 btnClose:Закрыть
 
 #Titans
 
-titancState:Кол-во титанов:
+titancState:Своё число титанов:
 titancInt0:Количество:
 
-waveModeOnState:Кол-во титанов за волну:
+waveModeOnState:Титанов за волну:
 waveModeOnInt0:Количество:
 
-spawnModeState:Шанс спавна:
+spawnModeState:Свой спавн:
 spawnModeFloat0:Нормальные:
 spawnModeFloat1:Аберранты:
 spawnModeFloat2:Джамперы:
 spawnModeFloat3:Ползуны:
 spawnModeFloat4:Панки:
 
-sizeModeState:Размер титанов:
-sizeModeFloat0:Мин. размер:
-sizeModeFloat1:Мак. размер:
+sizeModeState:Рост титанов:
+sizeModeFloat0:Мининимум:
+sizeModeFloat1:Максимум:
 
 healthModeState:Здоровье титанов:
-healthModeSelection:Фикс.,Скалируемое
-healthModeInt0:Мин. Здоровье:
-healthModeInt1:Макс. Здорове:
+healthModeSelection:Фиксированное,Скалируемое
+healthModeInt0:Мининимум:
+healthModeInt1:Максимум:
 
 damageState:Минимальный урон:
 damageInt0:Урон:
@@ -32,64 +32,64 @@ damageInt0:Урон:
 explodeState:Взрывающиеся титаны:
 explodeInt0:Радиус взрыва:
 
-rockState:Выключить метание камня:
+rockState:Бросок камня:
 
 #PVP
-bombState:Режим бомб:
+bombState:Бомбочки:
 
-pointState:Режим очков:
+pointState:Игра на очки:
 pointInt0:Максимум очков:
 
 teamState:Командный режим:
-teamSelection:Без сорт.,Размер-блок,Скилл-блок
+teamSelection:Свободно,По размеру,По скиллу
 
 infectionState:Режим инфекции:
 infectionInt0:Начальное кол-во титанов:
 
-friendlyState:Мирный режим:
+friendlyState:Дружный режим:
 
-pvpState:Мечники/AHSS ПвП:
-pvpSelection:Команды,ФФА
+pvpState:PvP [Мечники/AHSS]:
+pvpSelection:Команды,Сам за себя
 
-ahssReloadState:Откл. перезарядку AHSS  в воздухе:
+ahssReloadState:Без перезарядки AHSS в воздухе:
 
-deadlycannonsState:Пушки убивают людей
+deadlycannonsState:Пушки убивают людей:
 
 #Misc
-maxwaveState:Максимум волн:
-maxwaveInt0:Волна:
+maxwaveState:Максимальная волна:
+maxwaveInt0:Волн:
 
-punkWavesState:Панки на каждой 5 волне
+punkWavesState:Панки каждые 5 волн:
 
-globalDisableMinimapState:Глобально выключить карту:
+globalDisableMinimapState:Глобальный запрет миникарты:
 
-endlessState:Бесконечный респавн:
-endlessInt0:Время (целое):
+endlessState:Возрождение:
+endlessInt0:Время до возрождения:
 
-erenState:Автокик Эрена-титана:
+erenState:Выгонять Эрена-титана:
 
-horseState:Разрешить лошадей:
+horseState:Лошадки:
 
-motd:Сообщение дня
+motd:Приветсвенное сообщение:
 
-noGuestState:Анти-Гость:
+noGuestState:Выгонять гостей:
 
-antiReviveState:Анти-Респавн:
+antiReviveState:Защита от возрождения:
 
-afkKillState:Убийство АФК игроков:
-afkKillInt0:Секунд в АФК:
+afkKillState:Убивать AFK игроков:
+afkKillInt0:Секунд в AFK:
 
 #Racing
-asoracingState:АСО(Бесконечная) гонка:
+asoracingState:Бесконечная гонка:
 
-startTimeState:Кастомный таймер перед гонкой:
-startTimeInt0:Время перед стартом
+startTimeState:Свой таймер перед гонкой:
+startTimeInt0:Таймер:
 
-restartOnFinishersState:Рестарт после Х финишировавших игроков:
-restartOnFinishersInt0:Финишировавших для рестарта:
+restartOnFinishersState:Перезапуск после N финишировавших игроков:
+restartOnFinishersInt0:Значение N:
 
-racingTimeLimitState:Авторестарт по лимиту времени:
+racingTimeLimitState:Перезапуск по лимиту времени:
 racingTimeLimitInt0:Лимит:
 
-racingRestartTimeState:Кастомное время до рестарта после финиша:
-racingRestartTimeInt0:Время до рестарта:
+racingRestartTimeState:Свой таймер до перезапуска:
+racingRestartTimeInt0:Таймер:

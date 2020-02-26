@@ -880,8 +880,8 @@ public static class PhotonNetwork
                 return false;
             }
             offlineModeRoom = new Room(roomName, roomOptions);
-            NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
             NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom, new object[0]);
+            NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
             return true;
         }
         else
@@ -1144,8 +1144,8 @@ public static class PhotonNetwork
                 return false;
             }
             offlineModeRoom = new Room(roomName, roomOptions);
-            NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
             NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom, new object[0]);
+            NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
             return true;
         }
         else

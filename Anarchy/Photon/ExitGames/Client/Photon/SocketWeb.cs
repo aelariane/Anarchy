@@ -160,7 +160,7 @@ namespace ExitGames.Client.Photon
             {
                 while (this.sock != null && !this.sock.Connected && this.sock.Error == null)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(1);
                 }
 
                 if (this.sock != null)

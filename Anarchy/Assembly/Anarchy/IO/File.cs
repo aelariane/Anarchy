@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using UnityEngine;
 
 namespace Anarchy.IO
 {
@@ -28,6 +25,10 @@ namespace Anarchy.IO
         {
             Path = path;
             info = new FileInfo(Path);
+            if (!info.Directory.Exists)
+            {
+                Directory.CreateDirectory(info.Directory.FullName);
+            }
             if (autocreate)
             {
                 if (!info.Exists)
@@ -42,7 +43,6 @@ namespace Anarchy.IO
 
         ~File()
         {
-
         }
 
         public void Close()
@@ -123,7 +123,7 @@ namespace Anarchy.IO
             }
             using(textWriter = info.AppendText())
             {
-                textWriter.WriteLine();
+                textWriter.WriteLine(line);
             }
         }
     }

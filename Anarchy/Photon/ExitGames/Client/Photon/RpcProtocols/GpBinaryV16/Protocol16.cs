@@ -401,6 +401,7 @@ namespace ExitGames.Client.Photon.RpcProtocols.GpBinaryV16
                     case GpTypeV16.OperationRequest:
                         this.SerializeOperationRequest(dout, (OperationRequest)serObject, setType);
                         break;
+
                     default:
                         if (serObject is ArraySegment<byte>)
                         {

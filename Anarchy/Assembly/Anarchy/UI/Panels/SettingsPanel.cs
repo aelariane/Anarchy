@@ -248,11 +248,6 @@ namespace Anarchy.UI
             ToggleButton(left, Settings.InvertY, locale["inverty"], true);
             HorizontalSlider(left, Settings.MouseSensivity, locale.Format("sensivity", (Settings.MouseSensivity.Value * 100f).ToString("F0") + "%"), 0.01f, 1f, Style.LabelOffsetSlider, true);
             HorizontalSlider(left, Settings.CameraDistance, locale.Format("distance", Settings.CameraDistance.Value.ToString("F2")), Style.LabelOffsetSlider, true);
-            ToggleButton(left, Settings.StaticFOVEnabled, locale["staticFOV"], true);
-            if (Settings.StaticFOVEnabled.Value)
-            {
-                HorizontalSlider(left, Settings.StaticFOV, Style.LabelSpace + locale.Format("fovValue", Settings.StaticFOV.Value.ToString("F0")), 60f, 120f, Style.LabelOffsetSlider, true);
-            }
 
             ToggleButton(left, Settings.Minimap, locale["minimap"], true);
             ToggleButton(left, Settings.GameFeed, locale["gameFeed"], true);

@@ -842,8 +842,8 @@ namespace RC
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();
             logicLoaded = false;
-            customLevelLoaded = FengGameManagerMKII.Level.Name.StartsWith("Custom") == false;
-            if (PhotonNetwork.IsMasterClient)
+            customLevelLoaded = IN_GAME_MAIN_CAMERA.GameType == GameType.Single || FengGameManagerMKII.Level.Name.StartsWith("Custom") == false;
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 updateTime = 1f;
                 if (oldScriptLogic != currentScriptLogic)

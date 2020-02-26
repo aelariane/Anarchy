@@ -89,6 +89,7 @@ namespace Anarchy.UI
             position = new Rect(0f, Style.ScreenHeight - 500, ChatWidth * (Style.WindowWidth / 700f), 470f);
             inputPosition = new Rect(30f, Style.ScreenHeight - 300 + 275, 300f * Style.WindowWidth / 700f + (30f * (Style.WindowWidth / 700f) - 30f), 25f);
             ChatStyle = new GUIStyle(Style.Label);
+            ChatStyle.normal.textColor = Optimization.Caching.Colors.white;
             textFieldStyle = new GUIStyle(Style.TextField);
             textFieldStyle.fontSize = FontSize;
             if (UseBackground)
@@ -207,46 +208,34 @@ namespace Anarchy.UI
             }
             else
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", PhotonTargets.AnarchyUsersOthers, new object[] { file, key, sendArgs });
+                FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", target, new object[] { file, key, sendArgs });
             }
         }
 
         public static void SendLocalizedText(string file, string key, string[] args)
         {
-            string[] sendArgs = args ?? new string[0];
-            var targets = new List<PhotonPlayer>();
-            foreach (PhotonPlayer player in PhotonNetwork.playerList)
+            string[] sendArgs = args ?? new string[0]; if (Localization.Language.SelectedLanguage != Localization.Language.DefaultLanguage)
             {
-                if (!player.AnarchySync)
-                {
-                    targets.Add(player);
-                }
+                Localization.Locale loc = new Localization.Locale("English", file, true, ',');
+                loc.Load();
+                string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.NotAnarchy, new object[] { content, string.Empty });
+                loc.Unload();
             }
-            if (targets.Count > 0)
+            else
             {
-                if (Localization.Language.SelectedLanguage != Localization.Language.DefaultLanguage)
+                Localization.Locale loc = Localization.Language.Find(file);
+                bool needClose = false;
+                if (!loc.IsOpen)
                 {
-                    Localization.Locale loc = new Localization.Locale("English", file, true, ',');
                     loc.Load();
-                    string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", targets.ToArray(), new object[] { content, string.Empty });
-                    loc.Unload();
+                    needClose = true;
                 }
-                else
+                string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.NotAnarchy, new object[] { content, string.Empty });
+                if (needClose)
                 {
-                    Localization.Locale loc = Localization.Language.Find(file);
-                    bool needClose = false;
-                    if (!loc.IsOpen)
-                    {
-                        loc.Load();
-                        needClose = true;
-                    }
-                    string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", targets.ToArray(), new object[] { content, string.Empty });
-                    if (needClose)
-                    {
-                        loc.Unload();
-                    }
+                    loc.Unload();
                 }
             }
             FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", PhotonTargets.AnarchyUsersOthers, new object[] { file, key, sendArgs });

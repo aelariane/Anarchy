@@ -160,7 +160,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     {
         this.distanceOffsetMulti = (cameraDistance * (200f - BaseCamera.fieldOfView)) / 150f;
         BaseT.position = (Head ?? MainT).position + (Vectors.up * (this.heightMulti - ((0.6f - cameraDistance) * 2f)));
-        if (!AnarchyManager.Pause.Active && !AnarchyManager.PauseWindow.Active && !AnarchyManager.SettingsPanel.Active)
+        if (!AnarchyManager.Pause.Active && !AnarchyManager.SettingsPanel.Active)
         {
             switch (CameraMode)
             {

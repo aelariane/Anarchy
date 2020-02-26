@@ -18,12 +18,13 @@ namespace Anarchy.Commands.Chat
             allCommands.Clear();
             allCommands.Add("restart", new RestartCommand());
             allCommands.Add("pm", new PMCommand());
-            allCommands.Add("kick", new KickCommand(false));
-            allCommands.Add("ban", new KickCommand(true));
+            allCommands.Add("kick", new KickCommand(false, false));
+            allCommands.Add("ban", new KickCommand(true, false));
+            allCommands.Add("skick", new KickCommand(false, true));
+            allCommands.Add("sban", new KickCommand(true, true));
             allCommands.Add("room", new RoomSettingCommands());
             allCommands.Add("pause", new PauseCommand(true));
             allCommands.Add("unpause", new PauseCommand(false));
-            allCommands.Add("light", new DaylightChangeCommand());
             allCommands.Add("resetkd", new ResetKDCommand());
             allCommands.Add("revive", new ReviveCommand());
             allCommands.Add("spectate", new SpectateCommand());
@@ -31,6 +32,8 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("asoracing", new ASORacingCommand());
             allCommands.Add("rules", new RulesCommand());
             allCommands.Add("clear", new ClearCommand());
+            allCommands.Add("kill", new KillCommand());
+            allCommands.Add("team", new ChangeTeamCommand());
         }
 
         private void NotFound(string name)

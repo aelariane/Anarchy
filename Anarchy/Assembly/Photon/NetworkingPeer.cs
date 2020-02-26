@@ -46,7 +46,6 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
     public PhotonPlayer[] mPlayerListCopy;
     public string NameServerAddress;
     public bool requestSecurity;
-
     static NetworkingPeer()
     {
         Dictionary<ConnectionProtocol, int> dictionary = new Dictionary<ConnectionProtocol, int>();
@@ -2451,6 +2450,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             {
             }
             this.mRoomToEnterLobby = !this.insideLobby ? null : this.lobby;
+            NetworkManager.RejoinRoom = roomName;
         }
         this.mLastJoinType = JoinType.CreateGame;
         return base.OpCreateRoom(roomName, roomOptions, this.mRoomToEnterLobby, this.GetLocalActorProperties(), onGameServer);
@@ -2490,6 +2490,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 }
                 this.mRoomToEnterLobby = !this.insideLobby ? null : this.lobby;
             }
+            NetworkManager.RejoinRoom = roomName;
         }
         this.mLastJoinType = !createIfNotExists ? JoinType.JoinGame : JoinType.JoinOrCreateOnDemand;
         return base.OpJoinRoom(roomName, roomOptions, this.mRoomToEnterLobby, createIfNotExists, this.GetLocalActorProperties(), onGameServer);

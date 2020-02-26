@@ -3,9 +3,9 @@ btnList:К списку
 btnBack:Назад
 btnSettings:Настройки
 btnCreation:Создать комнату
-btnOffline:Играть оффлайн
+btnOffline:Играть Offline
 btnStart:Создать
-regions:США,Европа,Азия,Япония
+regions:US,EU,ASIA,JAPAN
 connected:Подключен к
 connecting:Подключение к
 notConnected:Не подключен
@@ -14,14 +14,14 @@ players:Кол-во игроков:
 ping:Пинг:
 settingsTitle:Настройки сети
 roomCreationTitle:Создание комнаты
-servers:Публичный,РК привет,Кастом
+servers:Публичный,RC приват,Свой ключ
 roomSettings:Настройки комнаты
 roomName:Имя комнаты:
 pwd:Пароль:
 maxPlayers:Количество игроков:
 time:Время сервера:
 difficulity:Сложность
-difficulities:Нормальная,Сложная,Аномальная
+difficulities:Normal,Hard,Abnormal
 dayLight:Время дня
 dayLights:День,Вечер,Ночь
 mapSelection:Выбор карты
@@ -40,6 +40,6 @@ presetAdd:Добавить
 presetRemove:Удалить
 presetNote:<color=yellow>Прим. Скроллится при кол-ве 5+</color>
 advancedSettings:Расширенные настройки
-customServer:Кастом сервер:
+customServer:Сервера:
 joinRoom:Попробовать присоединиться
-pwdRequest:Веедите пароль
+pwdRequest:Введите пароль

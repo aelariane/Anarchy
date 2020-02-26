@@ -1520,20 +1520,13 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         {
             baseR.AddForce(new Vector3(0f, -this.gravity * baseR.mass, 0f));
         }
-        if (!Settings.StaticFOVEnabled)
+        if (this.currentSpeed > 10f)
         {
-            if (this.currentSpeed > 10f)
-            {
-                IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = Mathf.Lerp(IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView, Mathf.Min(100f, this.currentSpeed + 40f), 0.1f);
-            }
-            else
-            {
-                IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = Mathf.Lerp(IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView, 50f, 0.1f);
-            }
+            IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = Mathf.Lerp(IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView, Mathf.Min(100f, this.currentSpeed + 40f), 0.1f);
         }
         else
         {
-            IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = Settings.StaticFOV.Value;
+            IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView = Mathf.Lerp(IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView, 50f, 0.1f);
         }
         if (flag)
         {
@@ -2011,12 +2004,11 @@ public class HERO : Optimization.Caching.Bases.HeroBase
     [RPC]
     private void netTauntAttack(float tauntTime, float distance = 100f)
     {
-        GameObject[] array = GameObject.FindGameObjectsWithTag("titan");
-        foreach (GameObject gameObject in array)
+        foreach(TITAN tit in FengGameManagerMKII.Titans)
         {
-            if (Vector3.Distance(gameObject.transform.position, baseT.position) < distance && gameObject.GetComponent<TITAN>())
+            if (tit != null && !tit.hasDie && Vector3.Distance(tit.baseGT.position, baseT.position) < distance)
             {
-                gameObject.GetComponent<TITAN>().beTauntedBy(baseG, tauntTime);
+                tit.beTauntedBy(baseG, tauntTime);
             }
         }
     }
@@ -2972,7 +2964,10 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         }
         this.breakApart(v, isBite);
         IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
-        FengGameManagerMKII.FGM.GameLose();
+        if (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
+        {
+            FengGameManagerMKII.FGM.GameLose();
+        }
         this.falseAttack();
         this.hasDied = true;
         Transform transform = baseT.Find("audio_die");
@@ -4070,7 +4065,7 @@ public class HERO : Optimization.Caching.Bases.HeroBase
         this.bufferUpdate();
         if (!this.grounded && this.State != HeroState.AirDodge)
         {
-            if (InputManager.IsInputRebindHolding((int)InputRebinds.GasBurst))
+            if (InputManager.IsInputRebind((int)InputRebinds.GasBurst))
             {
                 if (InputManager.IsInput[(int)InputCodes.Forward])
                 {
@@ -4080,13 +4075,13 @@ public class HERO : Optimization.Caching.Bases.HeroBase
                 {
                     dash(0f, -1f);
                 }
-                else if (InputManager.IsInput[(int)InputCodes.Right])
-                {
-                    dash(1f, 0f);
-                }
                 else if (InputManager.IsInput[(int)InputCodes.Left])
                 {
                     dash(-1f, 0f);
+                }   
+                else if (InputManager.IsInput[(int)InputCodes.Right])
+                {
+                    dash(1f, 0f);
                 }
             }
             else

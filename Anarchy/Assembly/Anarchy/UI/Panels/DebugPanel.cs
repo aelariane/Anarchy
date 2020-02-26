@@ -10,6 +10,9 @@ namespace Anarchy.UI
     public class DebugPanel : GUIPanel
     {
         private const int Debug = 0;
+        private const int Terminal = 1;
+        private const int Players = 3;
+        private const int Traffic = 2;
 
         private static readonly Dictionary<LogType, string> TypeColors = new Dictionary<LogType, string>
         {

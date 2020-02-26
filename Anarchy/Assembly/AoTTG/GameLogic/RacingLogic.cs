@@ -10,7 +10,7 @@ namespace GameLogic
 {
     internal class RacingLogic : GameLogic
     {
-        const int MaxFinishers = 10;
+        public const int MaxFinishers = 10;
         private const float ShowFinishedLabelTime = 7f;
 
         private bool customRestartTime;
@@ -142,7 +142,17 @@ namespace GameLogic
 
         public override void OnRefreshStatus(int score1, int score2, int wav, int highestWav, float time1, float time2, bool startRacin, bool endRacin)
         {
-            base.OnRefreshStatus(score1, score2, wav, highestWav, time1, time2, startRacin, endRacin);
+            HumanScore = score1;
+            TitanScore = score2;
+            if (!GameModes.RacingStartTime.Enabled)
+            {
+                Round.Time = time1;
+            }
+            else
+            {
+                Round.Time = time1 - (20f - GameModes.RacingStartTime.GetInt(0));
+            }
+            ServerTime = ServerTimeBase - time2;
             if (startRacin)
             {
                 RaceStart = true;
@@ -170,7 +180,7 @@ namespace GameLogic
             }
             else
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("refreshStatus", PhotonTargets.NotAnarchy, new object[]
+                FengGameManagerMKII.FGM.BasePV.RPC("refreshStatus", PhotonTargets.Others, new object[]
                 {
                         HumanScore,
                         TitanScore,
@@ -181,17 +191,6 @@ namespace GameLogic
                         RaceStart,
                         false
                 });
-                FengGameManagerMKII.FGM.BasePV.RPC("refreshStatus", PhotonTargets.AnarchyUsersOthers, new object[]
-                {
-                        HumanScore,
-                        TitanScore,
-                        0,
-                        0,
-                        Round.Time,
-                        (ServerTimeBase - ServerTime),
-                        RaceStart,
-                        false
-               });
             }
         }
 
@@ -388,17 +387,30 @@ namespace GameLogic
                 TryDestroyDoors();
                 doorsDestroyed = true;
             }
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            {
+                UpdateRespawnTime();
+            }
         }
 
         protected internal override void OnUpdate()
         {
-            if (needShowFinishers && Multiplayer)
+            if (Multiplayer)
             {
-                showFinishersTime -= Time.unscaledDeltaTime;
-                if (showFinishersTime <= 0f)
+                if (Input.GetKey(KeyCode.Tab))
                 {
-                    needShowFinishers = false;
+                    needShowFinishers = true;
                     UpdateLabels();
+                    return;
+                }
+                if (needShowFinishers)
+                {
+                    showFinishersTime -= Time.unscaledDeltaTime;
+                    if (showFinishersTime <= 0f)
+                    {
+                        needShowFinishers = false;
+                        UpdateLabels();
+                    }
                 }
             }
         }

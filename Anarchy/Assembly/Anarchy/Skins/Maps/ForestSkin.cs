@@ -42,10 +42,7 @@ namespace Anarchy.Skins.Maps
                             }
                             else if (render.name.Contains("Plane_031"))
                             {
-                                if (!elements[9 + second].IsTransparent)
-                                {
-                                    TryApplyTexture(elements[9 + second], render, !GameModes.BombMode.Enabled);
-                                }
+                                TryApplyTexture(elements[9 + second], render, !GameModes.BombMode.Enabled);
                             }
                         }
                     }

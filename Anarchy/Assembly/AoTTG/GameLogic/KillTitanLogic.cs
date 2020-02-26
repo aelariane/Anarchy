@@ -28,5 +28,14 @@
                 IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
             }
         }
+
+        protected override void UpdateLabels()
+        {
+            base.UpdateLabels();
+            if (!Multiplayer)
+            {
+                Optimization.Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.SingleKills.ToString(), FengGameManagerMKII.FGM.SingleMax.ToString(), FengGameManagerMKII.FGM.SingleTotal.ToString());
+            }
+        }
     }
 }

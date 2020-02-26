@@ -88,7 +88,7 @@ namespace Anarchy.UI
             Textures.Initialize();
             Color[] textColorsArray = new Color[6] { TextColors[0].HexToColor(), TextColors[1].HexToColor(), TextColors[2].HexToColor(), TextColors[3].HexToColor(), TextColors[4].HexToColor(), TextColors[5].HexToColor() };
             //Box
-            Box.ApplyStyle(TextAnchor.UpperCenter, FontStyle.Bold, FontSize + 2, true, white);
+            Box.ApplyStyle(TextAnchor.UpperCenter, FontStyle.Bold, FontSize + 2, true, textColorsArray[0]);
             Box.richText = true;
             Box.normal.background = Textures.TextureCache[ElementType.Box][0];
             Box.hover.background = Textures.TextureCache[ElementType.Box][0];
@@ -100,9 +100,9 @@ namespace Anarchy.UI
             Button.hover.background = Textures.TextureCache[ElementType.Button][1];
             Button.active.background = Textures.TextureCache[ElementType.Button][2];
             //Label
-            Label.ApplyStyle(TextAnchor.MiddleLeft, FontStyle.Normal, FontSize, true, white);
+            Label.ApplyStyle(TextAnchor.MiddleLeft, FontStyle.Normal, FontSize, true, textColorsArray);
             Label.richText = true;
-            LabelCenter.ApplyStyle(TextAnchor.MiddleCenter, FontStyle.Normal, FontSize, true, white);
+            LabelCenter.ApplyStyle(TextAnchor.MiddleCenter, FontStyle.Normal, FontSize, true, textColorsArray);
             LabelCenter.richText = true;
             //SelectionGrid
             SelectionGrid.ApplyStyle(TextAnchor.MiddleCenter, FontStyle.Normal, FontSize, false, textColorsArray);

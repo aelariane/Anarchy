@@ -222,10 +222,7 @@ namespace GameLogic
             ServerTime = ServerTimeBase - time2;
         }
 
-        protected virtual void OnRestart()
-        {
-
-        }
+        protected virtual void OnRestart() { }
 
         public virtual void OnRequireStatus()
         {

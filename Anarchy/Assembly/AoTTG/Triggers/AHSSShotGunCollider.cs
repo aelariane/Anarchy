@@ -123,7 +123,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                                 }
                             }
                         }
-                        else if (!PhotonNetwork.IsMasterClient)
+                        else if (!PhotonNetwork.IsMasterClient || !component2.transform.root.GetComponent<PhotonView>().BasePV.IsMine)
                         {
                             if (component2.transform.root.GetComponent<TITAN>())
                             {
@@ -234,7 +234,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                                     gameObject.GetComponent<FEMALE_TITAN>().hitEye();
                                 }
                             }
-                            else if (!PhotonNetwork.IsMasterClient)
+                            else if (!PhotonNetwork.IsMasterClient || !gameObject.GetPhotonView().IsMine)
                             {
                                 if (!gameObject.GetComponent<FEMALE_TITAN>().hasDie)
                                 {
@@ -258,7 +258,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                                     gameObject.GetComponent<TITAN>().hitEye();
                                 }
                             }
-                            else if (!PhotonNetwork.IsMasterClient)
+                            else if (!PhotonNetwork.IsMasterClient || !gameObject.GetPhotonView().IsMine)
                             {
                                 if (!gameObject.GetComponent<TITAN>().hasDie)
                                 {
@@ -294,7 +294,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                         }
                         else
                         {
-                            if (!PhotonNetwork.IsMasterClient)
+                            if (!PhotonNetwork.IsMasterClient || !gameObject2.GetPhotonView().IsMine)
                             {
                                 if (!gameObject2.GetComponent<TITAN>().hasDie)
                                 {

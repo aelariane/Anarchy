@@ -5,20 +5,20 @@ welcome:<color=#$maincolor$>[Добро пожаловать]</color>
 falseRestart:Ложный рестарт
 restartGameByClient:restartGameByClient RPC
 
-instantiateSpam:<color=#$maincolor$>Spammed object <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
-rpcSpam:<color=#$maincolor$>Spammed RPC <color=#$subcolor$>"{0}"</color> by ID {1} <color=red>x{2}</color></color>
-eventSpam:<color=#$maincolor$>Spammed event <color=#$subcolor$>{0}</color> by ID {1} <color=red>x{2}</color></color>
+instantiateSpam:<color=#$maincolor$>Спам объектом <color=#$subcolor$>"{0}"</color> от ID {1} <color=red>x{2}</color></color>
+rpcSpam:<color=#$maincolor$>Спам RPC <color=#$subcolor$>"{0}"</color> от ID {1} <color=red>x{2}</color></color>
+eventSpam:<color=#$maincolor$>Спам ивентом <color=#$subcolor$>{0}</color> от ID {1} <color=red>x{2}</color></color>
 
 #Player related
-playerConnected:<color=#$maincolor$>Игрок [{0}] {1} подключился</color>
-playerLeft:<color=#$maincolor$>Игрок [{0}] {1} вышел</color>
-ignoredRC:<color=red>Игрок [{0}] {1} заигнорен хостом.</color>
-playerKicked:<color=#$subcolor$>[{0}) <color=#$maincolor$>{1}</color> кикнут]</color>
-banPlayer:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен.</color>
-banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен (<color=#$subcolor$>{1}</color>)</color>
+playerConnected:<color=#$maincolor$>Игрок <color=#$subcolor$>[{0}]</color> {1} подключился</color>
+playerLeft:<color=#$maincolor$>Игрок <color=#$subcolor$>[{0}]</color> {1} отключился</color>
+ignoredRC:<color=red>Игрок <color=#$subcolor$>[{0}]</color> {1} заигнорен хостом</color>
+playerKicked:<color=#$maincolor$>Игрок <color=#$subcolor$>[{0}]</color> {1} выгнан хостом</color>
+banPlayer:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен</color>
+banPlayerReasoned:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> забанен: (<color=#$subcolor$>{1}</color>)</color>
 
 #RPC
-RPCerror:<color=#$maincolor$>Invalid RPC[<color=#$subcolor>{1}</color>] by ID: <color=#$subcolor$>{0}</color></color>
+RPCerror:<color=#$maincolor$>Недопустимый RPC [<color=#$subcolor$>{1}</color>] от ID: <color=#$subcolor$>[{0}]</color></color>
 invalidSkinUrl:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> неправильная ссылка на скин</color>
 invalidSkinLink:<color=#$maincolor$>ID: <color=#$subcolor$>{0}</color> неизвестная ссылка на скин</color>
 

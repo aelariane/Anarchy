@@ -20,15 +20,15 @@ namespace GameLogic
 
         public void CheckPVPpts()
         {
-            if (this.PVPTitanScore >= this.PVPTitanScoreMax)
-            {
-                this.PVPTitanScore = this.PVPTitanScoreMax;
-                this.GameLose();
-            }
-            else if (this.PVPHumanScore >= this.PVPHumanScoreMax)
+            if (this.PVPHumanScore >= this.PVPHumanScoreMax)
             {
                 this.PVPHumanScore = this.PVPHumanScoreMax;
                 this.GameWin();
+            }
+            else if (this.PVPTitanScore >= this.PVPTitanScoreMax)
+            {
+                this.PVPTitanScore = this.PVPTitanScoreMax;
+                this.GameLose();
             }
         }
 
@@ -51,6 +51,12 @@ namespace GameLogic
                 this.PVPHumanScore,
                 this.PVPTitanScore
             });
+        }
+
+        protected override void OnRestart()
+        {
+            PVPHumanScore = 0;
+            PVPTitanScore = 0;
         }
 
         public override void OnTitanDown(string name, bool isLeaving)
@@ -99,7 +105,7 @@ namespace GameLogic
             }
             else if (Round.IsLosing && Round.GameEndCD >= 0f)
             {
-                    Labels.Center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
+                Labels.Center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
             }
             string top = "";
             string info = "| ";
@@ -112,6 +118,11 @@ namespace GameLogic
 
             top += "\n" + Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? FengGameManagerMKII.FGM.Logic.RoundTime : ServerTime).ToString("F0"));
             Labels.TopCenter = top;
+        }
+
+        protected override void UpdateLogic()
+        {
+            CheckPVPpts();
         }
     }
 }

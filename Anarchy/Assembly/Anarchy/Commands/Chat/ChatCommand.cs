@@ -84,6 +84,7 @@ namespace Anarchy.Commands.Chat
         {
             UI.Chat.SendLocalizedText("ChatCommands", key, args);
         }
+
         public static void SendLocalizedText(PhotonPlayer target, string key, string[] args)
         {
             if (target != null)

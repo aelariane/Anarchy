@@ -4,21 +4,25 @@ namespace Anarchy.IO
 {
     public class LogFile : File
     {
-        private static bool created = false;
+        public static readonly string Directory = Application.dataPath + "/Logs/";
+        public static readonly string Extension = ".log";
 
-        public LogFile() : base(Application.dataPath + "/AnarchyLog.log", true, true)
+        public LogFile(string fileName) : base(Directory + fileName + Extension, false, true)
         {
-            if (created)
+            Clear();
+        }
+
+        public void Clear()
+        {
+            using (var writer = new System.IO.StreamWriter(info.FullName, false))
             {
-                Debug.LogError($"Created second instance of LogFile.");
-                return;
+                writer.Write(string.Empty);
             }
-            created = true;
         }
 
         public override string ReadLine()
         {
-            throw new System.Exception($"You are trying to read something from LogFile. This file should be used only for writing!");
+            throw new System.InvalidOperationException($"You are trying to read something from LogFile. This file should be used only for writing!");
         }
 
         public override void WriteLine(string line)

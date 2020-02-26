@@ -21,8 +21,8 @@ namespace Anarchy.Configuration
 
         public AnarchyGameModeSetting(string key, int selection, float[] floats, int[] ints) : base(key, selection, floats, ints)
         {
-            RemoveCallback(RCSettingCallback);
-            AddCallback(AnarchySettingCallback);
+            RemoveChangedCallback(RCSettingCallback);
+            AddChangedCallback(AnarchySettingCallback);
         }
 
         public static void AnarchySettingCallback(GameModeSetting set, bool state, bool received)
@@ -34,7 +34,7 @@ namespace Anarchy.Configuration
                 {
                     return;
                 }
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", targets, new object[] { set.ToString(false), string.Empty });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", targets, new object[] { set.ToString(), string.Empty });
             }
         }
     }

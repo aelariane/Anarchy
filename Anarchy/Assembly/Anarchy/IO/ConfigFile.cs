@@ -104,6 +104,10 @@ namespace Anarchy.IO
             {
                 strings.Add(key, result);
             }
+            else
+            {
+                result = string.Empty;
+            }
             return result;
         }
         #endregion

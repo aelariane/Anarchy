@@ -1,5 +1,5 @@
 ﻿title:Скины
-skinSelection:Человек,Титаны,Город,Лес,Небо,Кастом
+skinSelection:Человек,Титаны,Город,Лес,Небо,Своя карта
 btnClose:Закрыть
 
 btnAdd:Добавить
@@ -14,8 +14,8 @@ skyboxDesc:Включает скины неба в городе/лесу
 sets:Доступные сеты
 
 #Human skins
-disableCustomGas:Выключить кастомные текстуры газа:
-humanLabels:Лошадь,Волосы,Глаза,Очки,Лицо,Кожа,Костюм,Накидка,Левый привод,Правый привод,Газ,Худи,След клинков
+disableCustomGas:Выключить текстуры газа:
+humanLabels:Лошадь,Волосы,Глаза,Очки,Лицо,Кожа,Костюм,Накидка,Левый привод,Правый привод,Газ,Толстовка,Следы клинков
 
 #Titan sets
 titanHair:Волосы 
@@ -48,7 +48,7 @@ forestRandomize:Случайные пары:
 skyboxState:Скин неба:
 btnLinkCity:Прикрепить к скину города <color=yellow>{0}</color>
 btnLinkForest:Прикрепить к скину леса <color=yellow>{0}</color>
-skyboxFront:Фронт
+skyboxFront:Перед
 skyboxBack:Зад
 skyboxLeft:Лево
 skyboxRight:Право

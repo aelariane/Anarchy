@@ -2,99 +2,99 @@
 disabled:disabled
 
 #Titans
-titancInfoEnabled:<color=#$maincolor$>Custom titan spawn amount [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-titancInfoDisabled:<color=#$maincolor$>Custom titan spawn amount <color=#$dColor$>disabled</color></color>
+titancInfoEnabled:<color=#$maincolor$>Своё число титанов [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+titancInfoDisabled:<color=#$maincolor$>Своё число титанов: <color=#$dColor$><b>выкл.</b></color></color>
 
-punkWavesInfoEnabled:<color=#$maincolor$>Punk override every 5 waves <color=#$eColor$>enabled</color></color>
-punkWavesInfoDisabled:<color=#$maincolor$>Punk override every 5 waves <color=#$dColor$>disabled</color></color>
+punkWavesInfoEnabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$eColor$><b>вкл.</b></color></color>
+punkWavesInfoDisabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$dColor$><b>выкл.</b></color></color>
 
-rockInfoEnabled:<color=#$maincolor$>No punk rock throwing <color=#$eColor$>enabled</color></color>
-rockInfoDisabled:<color=#$maincolor$>No punk rock throwing <color=#$dColor$>disabled</color></color>
+rockInfoEnabled:<color=#$maincolor$>Панки не бросают камни: <color=#$eColor$><b>вкл.</b></color></color>
+rockInfoDisabled:<color=#$maincolor$>Панки не бросают камни: <color=#$dColor$><b>выкл.</b></color></color>
 
-explodeInfoEnabled:<color=#$maincolor$>Titan explode mode [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-explodeInfoDisabled:<color=#$maincolor$>Titan explode mode <color=#$dColor$>disabled</color></color>
+explodeInfoEnabled:<color=#$maincolor$>Взрывающиеся титаны [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+explodeInfoDisabled:<color=#$maincolor$>Взрывающиеся титаны: <color=#$dColor$><b>выкл.</b></color></color>
 
-healthModeInfoEnabled:<color=#$maincolor$>Titan health [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> to <color=#$subcolor$>{2}</color>] <color=#$eColor$>enabled</color></color>
-healthModeInfoDisabled:<color=#$maincolor$>Titan health <color=#$dColor$>disabled</color></color>
-healthModeSelection:Fixed,Scaled
+healthModeInfoEnabled:<color=#$maincolor$>Здоровье титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> к <color=#$subcolor$>{2}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Здоровье титанов: <color=#$dColor$><b>выкл.</b></color></color>
+healthModeSelection:Фиксированное,Скалируемое
 
-damageInfoEnabled:<color=#$maincolor$>Nape minimum damage [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-damageInfoDisabled:<color=#$maincolor$>Nape minimum damage <color=#$dColor$>disabled</color></color>
+damageInfoEnabled:<color=#$maincolor$>Минимальный урон [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+damageInfoDisabled:<color=#$maincolor$>Минимальный урон: <color=#$dColor$><b>выкл.</b></color></color>
 
-sizeModeInfoEnabled:<color=#$maincolor$>Custom titan size [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>] <color=#$eColor$>enabled</color></color>
-sizeModeInfoDisabled:<color=#$maincolor$>Custom titan size <color=#$dColor$>disabled</color></color>
+sizeModeInfoEnabled:<color=#$maincolor$>Своя настройка роста титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Своя настройка роста титанов: <color=#$dColor$><b>выкл.</b></color></color>
 
-spawnModeInfoEnabled:<color=#$maincolor$>Custom spawn rate <color=#$eColor$>enabled</color>\n[N: <color=#$subcolor$>{0}</color>, A: <color=#$subcolor$>{1}</color>, J: <color=#$subcolor$>{2}</color>, C: <color=#$subcolor$>{3}</color>, P: <color=#$subcolor$>{4}</color>]</color>
-spawnModeInfoDisabled:<color=#$maincolor$>Custom spawn rate <color=#$dColor$>disabled</color></color>
+spawnModeInfoEnabled:<color=#$maincolor$>Свой спавн: <color=#$eColor$><b>вкл.</b></color></color>\n[Нормальные: <color=#$subcolor$>{0} </color>%]\n[Аберранты: <color=#$subcolor$>{1} </color>%]\n[Джамперы: <color=#$subcolor$>{2} </color>%]\n[Ползуны: <color=#$subcolor$>{3} </color>%]\n[Панки: <color=#$subcolor$>{4} </color>%]
+spawnModeInfoDisabled:<color=#$maincolor$>Свой спавн: <color=#$dColor$><b>выкл.</b></color></color>
 
-waveModeOnInfoEnabled:<color=#$maincolor$>Custom wave titan spawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-waveModeOnInfoDisabled:<color=#$maincolor$>Custom wave titan spawn <color=#$dColor$>disabled</color></color>
+waveModeOnInfoEnabled:<color=#$maincolor$>Своё число титанов за волну [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Своё число титанов за волну: <color=#$dColor$><b>выкл.</b></color></color>
 
 #PvP
-bombInfoEnabled:<color=#$maincolor$>Bomb mode <color=#$eColor$>enabled</color></color>
-bombInfoDisabled:<color=#$maincolor$>Bomb mode <color=#$dColor$>disabled</color></color>
+bombInfoEnabled:<color=#$maincolor$>Режим бомбочек: <color=#$eColor$><b>вкл.</b></color></color>
+bombInfoDisabled:<color=#$maincolor$>Режим бомбочек: <color=#$dColor$><b>выкл.</b></color></color>
 
-ahssReloadInfoEnabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$eColor$>enabled</color></color>
-ahssReloadInfoDisabled:<color=#$maincolor$>Anti AHSS Air-Reload <color=#$dColor$>disabled</color></color>
+ahssReloadInfoEnabled:<color=#$maincolor$>Без перезарядки AHSS в воздухе: <color=#$eColor$><b>вкл.</b></color></color>
+ahssReloadInfoDisabled:<color=#$maincolor$>Без перезарядки AHSS в воздухе: <color=#$dColor$><b>выкл.</b></color></color>
 
-teamInfoEnabled:<color=#$maincolor$>Team mode [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-teamInfoDisabled:<color=#$maincolor$>Team mode <color=#$dColor$>disabled</color></color>
-teamSelection:No sort,Locked by size,Locked by skill
+teamInfoEnabled:<color=#$maincolor$>Командный режим [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+teamInfoDisabled:<color=#$maincolor$>Командный режим: <color=#$dColor$><b>выкл.</b></color></color>
+teamSelection:Свободно,По размеру,По скиллу
 
-infectionInfoEnabled:<color=#$maincolor$>Infection mode <color=#$eColor$>enabled</color></color>
-infectionInfoDisabled:<color=#$maincolor$>Infection mode <color=#$dColor$>disabled</color></color>
+infectionInfoEnabled:<color=#$maincolor$>Режим инфекции: <color=#$eColor$><b>вкл.</b></color></color>
+infectionInfoDisabled:<color=#$maincolor$>Режим инфекции: <color=#$dColor$><b>выкл.</b></color></color>
 
-pointInfoEnabled:<color=#$maincolor$>Point limit [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-pointInfoDisabled:<color=#$maincolor$>Point limit <color=#$dColor$>disabled</color></color>
+pointInfoEnabled:<color=#$maincolor$>Игра на очки [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+pointInfoDisabled:<color=#$maincolor$>Игра на очки: <color=#$dColor$><b>выкл.</b></color></color>
 
-friendlyInfoEnabled:<color=#$maincolor$>PVP Friendly mode <color=#$eColor$>enabled</color></color>
-friendlyInfoDisabled:<color=#$maincolor$>PVP Friendly mode <color=#$dColor$>disabled</color></color>
+friendlyInfoEnabled:<color=#$maincolor$>Дружный режим: <color=#$eColor$><b>вкл.</b></color></color>
+friendlyInfoDisabled:<color=#$maincolor$>Дружный режим: <color=#$dColor$><b>выкл.</b></color></color>
 
-pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>disabled</color></color>
-pvpSelection:FFA,Team-Based
+pvpInfoEnabled:<color=#$maincolor$>PvP Мечники/AHSS [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+pvpInfoDisabled:<color=#$maincolor$>PvP Мечники/AHSS: <color=#$dColor$><b>выкл.</b></color></color>
+pvpSelection:Команды,Сам за себя
 
 #Misc
-endlessInfoEnabled:<color=#$maincolor$>Endless respawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-endlessInfoDisabled:<color=#$maincolor$>Endless respawn <color=#$dColor$>disabled</color></color>
+endlessInfoEnabled:<color=#$maincolor$>Бесконечное возрождение [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+endlessInfoDisabled:<color=#$maincolor$>Бесконечное возрождение: <color=#$dColor$><b>выкл.</b></color></color>
 
-maxwaveInfoEnabled:<color=#$maincolor$>Max wave [<color=#$subcolor$>{0}</color>] <color=#$eColor$>enabled</color></color>
-maxwaveInfoDisabled:<color=#$maincolor$>Max wave <color=#$dColor$>disabled</color></color>
+maxwaveInfoEnabled:<color=#$maincolor$>Максимальная волна [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+maxwaveInfoDisabled:<color=#$maincolor$>Максимальная волна: <color=#$dColor$><b>выкл.</b></color></color>
 
-globalDisableMinimapInfoEnabled:<color=#$maincolor$>Global minimap disable <color=#$eColor$>enabled</color></color>
-globalDisableMinimapInfoDisabled:<color=#$maincolor$>Global minimap disable <color=#$dColor$>disabled</color></color>
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Глобальный запрет миникарты: <color=#$eColor$><b>вкл.</b></color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Глобальный запрет миникарты: <color=#$dColor$><b>выкл.</b></color></color>
 
-horseInfoEnabled:<color=#$maincolor$>Horses <color=#$eColor$>enabled</color></color>
-horseInfoDisabled:<color=#$maincolor$>Horses <color=#$dColor$>disabled</color></color>
+horseInfoEnabled:<color=#$maincolor$>Лошадки: <color=#$eColor$><b>вкл.</b></color></color>
+horseInfoDisabled:<color=#$maincolor$>Лошадки: <color=#$dColor$><b>выкл.</b></color></color>
 
-erenInfoEnabled:<color=#$maincolor$>Anti-Eren <color=#$eColor$>enabled</color></color>
-erenInfoDisabled:<color=#$maincolor$>Anti-Eren <color=#$dColor$>disabled</color></color>
+erenInfoEnabled:<color=#$maincolor$>Выгонять Эрена-титана: <color=#$eColor$><b>вкл.</b></color></color>
+erenInfoDisabled:<color=#$maincolor$>Выгонять Эрена-титана: <color=#$dColor$><b>выкл.</b></color></color>
 
-deadlycannonsInfoEnabled:<color=#$maincolor$>Deadly cannons mode <color=#$eColor$>enabled</color></color>
-deadlycannonsInfoDisabled:<color=#$maincolor$>Deadly cannons mode <color=#$dColor$>disabled</color></color>
+deadlycannonsInfoEnabled:<color=#$maincolor$>Пушки убивают людей: <color=#$eColor$><b>вкл.</b></color></color>
+deadlycannonsInfoDisabled:<color=#$maincolor$>Пушки убивают людей: <color=#$dColor$><b>выкл.</b></color></color>
 
 
-noGuestInfoEnabled:<color=#$maincolor$>Анти-Гость <color=#$eColor$>включен</color></color>
-noGuestInfoDisabled:<color=#$maincolor$>Анти-Гость <color=#$dColor$>выключен</color></color>
+noGuestInfoEnabled:<color=#$maincolor$>Выгонять гостей: <color=#$eColor$><b>вкл.</b></color></color>
+noGuestInfoDisabled:<color=#$maincolor$>Выгонять гостей: <color=#$dColor$><b>выкл.</b></color></color>
 
-antiReviveInfoEnabled:<color=#$maincolor$>Анти-Респавн <color=#$eColor$>включен</color></color>
-antiReviveInfoDisabled:<color=#$maincolor$>Анти-Респавн <color=#$dColor$>выключен</color></color>
+antiReviveInfoEnabled:<color=#$maincolor$>Защита от возрождения: <color=#$eColor$><b>вкл.</b></color></color>
+antiReviveInfoDisabled:<color=#$maincolor$>Защита от возрождения: <color=#$dColor$><b>выкл.</b></color></color>
 
-afkKillInfoEnabled:<color=#$maincolor$>Убийство АФК игроков <color=#$eColor$>включено</color> (<color=#$subcolor$>{0} секунд</color>)</color>
-afkKillInfoDisabled:<color=#$maincolor$>Убийство АФК игроков <color=#$dColor$>выключено</color></color>
+afkKillInfoEnabled:<color=#$maincolor$>Убивать AFK игроков: <color=#$eColor$>вкл.</color> (<color=#$subcolor$>{0} секунд</color>)</color>
+afkKillInfoDisabled:<color=#$maincolor$>Убивать AFK игроков: <color=#$dColor$><b>выкл.</b></color></color>
 
-asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка <color=#eColor>включена</color></color>
-asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка <color=#dColor>выключена</color></color>
+asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка: <color=#$eColor$><b>вкл.</b></color></color>
+asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка: <color=#$dColor$><b>выкл.</b></color></color>
 
 #Racing
-startTimeInfoEnabled:<color=#$maincolor$>Racing custom start time set to <color=#$subcolor$>{0}</color></color> 
-startTimeInfoDisabled:<color=#$maincolor$>Racing custom start time <color=#$dColor$>disabled</color></color> 
+startTimeInfoEnabled:<color=#$maincolor$>Свой таймер [<color=#$subcolor$>{0}</color>] перед гонкой: <color=#$eColor$><b>вкл.</b></color></color>
+startTimeInfoDisabled:<color=#$maincolor$>Свой таймер перед гонки: <color=#$dColor$><b>выкл.</b></color></color> 
 
-restartOnFinishersInfoEnabled:<color=#$maincolor$>Game will restart after <color=#$subcolor$>{0}</color> players finish.</color>
-restartOnFinishersInfoDisabled:<color=#$maincolor$>Restart on finishers count mode <color=#$dColor$>disabled</color></color>
+restartOnFinishersInfoEnabled:<color=#$maincolor$>Перезапуск после [<color=#$subcolor$>{0}</color>] финишировавших игроков: <color=#$eColor$><b>вкл.</b></color></color>
+restartOnFinishersInfoDisabled:<color=#$maincolor$>Перезапуск после <color=#$subcolor$>N</color> финишировавших игроков: <color=#$dColor$><b>выкл.</b></color></color>
 
-racingTimeLimitInfoEnabled:<color=#$maincolor$>Racing time limit <color=#$eColor$>enabled</color> (<color=#$subcolor$>{0}</color>)</color>
-racingTimeLimitInfoDisabled:<color=#$maincolor$>Racing time limit <color=#$dColor$>disabled</color></color>
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Перезапуск по лимиту времени [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+racingTimeLimitInfoDisabled:<color=#$maincolor$>Перезапуск по лимиту времени: <color=#$dColor$><b>выкл.</b></color></color>
 
-racingRestartTimeInfoEnabled:<color=#$maincolor$>Racing restart time set to <color=#$subcolor$>{0}</color></color> 
-racingRestartTimeInfoDisabled:<color=#$maincolor$>Racing restart time <color=#$dColor$>disabled</color></color> 
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Свой таймер [<color=#$subcolor$>{0}</color>] до перезапуска: <color=#$eColor$><b>вкл.</b></color></color>
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Свой таймер до перезапуска: <color=#$dColor$><b>выкл.</b></color></color> 

@@ -663,7 +663,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         }
     }
 
-    private void findNearestFacingHero()
+    private void FindNearestFacingHero()
     {
         GameObject[] array = GameObject.FindGameObjectsWithTag("Player");
         GameObject x = null;
@@ -691,45 +691,19 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             this.myHero = x;
             if (x2 != this.myHero && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
-                if (this.myHero == null)
-                {
-                    BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
-                    {
-                        -1
-                    });
-                }
-                else
-                {
-                    BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
-                    {
-                        this.myHero.GetPhotonView().viewID
-                    });
-                }
+                BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[] { myHero == null ? -1 : this.myHero.GetPhotonView().viewID });
             }
             this.tauntTime = 5f;
         }
     }
 
-    private void findNearestHero()
+    private void FindNearestHero()
     {
         GameObject y = this.myHero;
         this.myHero = this.getNearestHero();
         if (this.myHero != y && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
-            if (this.myHero == null)
-            {
-                BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
-                {
-                    -1
-                });
-            }
-            else
-            {
-                BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
-                {
-                    this.myHero.GetPhotonView().viewID
-                });
-            }
+            BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[] { myHero == null ? -1 : this.myHero.GetPhotonView().viewID });
         }
         this.oldHeadRotation = this.Head.rotation;
     }
@@ -2152,7 +2126,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
         this.setAbnormalType(this.abnormalType, false);
         if (this.myHero == null)
         {
-            this.findNearestHero();
+            this.FindNearestHero();
         }
         if (maxHealth == 0 && GameModes.HealthMode.Enabled)
         {
@@ -2164,7 +2138,8 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             }
             else if(GameModes.HealthMode.Selection == 2)
             {
-                maxHealth = (this.currentHealth = Mathf.Clamp(Mathf.RoundToInt(this.myLevel / 4f * (float)UnityEngine.Random.Range(healthLower, healthUpper)), healthLower, healthUpper));
+                maxHealth = this.currentHealth = Mathf.Clamp(Mathf.RoundToInt(this.myLevel / 4f * (float)UnityEngine.Random.Range(healthLower, healthUpper)), healthLower, healthUpper);
+                Anarchy.UI.Log.AddLineRaw(maxHealth.ToString());
             }
         }
         this.lagMax = 150f + this.myLevel * 3f;
@@ -2249,7 +2224,12 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
     {
         this.whoHasTauntMe = target;
         this.tauntTime = tauntTime;
-        this.isAlarm = true;
+        this.isAlarm = true; 
+        if (whoHasTauntMe != null && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
+        {
+            this.myHero = this.whoHasTauntMe;
+            BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[] { this.myHero.GetPhotonView().viewID });
+        }
     }
 
     public bool die()
@@ -3082,6 +3062,11 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             this.healthTime = Time.time;
             if (GameModes.DamageMode.Enabled && speed < GameModes.DamageMode.GetInt(0))
             {
+                FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[] { speed });
+                if (maxHealth > 0)
+                {
+                    BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { currentHealth, maxHealth });
+                }
                 return;
             }
             currentHealth -= speed;
@@ -3106,6 +3091,10 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     FengGameManagerMKII.FGM.TitanGetKill(photonView.owner, speed, ShowName);
                 }
+            }
+            else
+            {
+                FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[] { speed });
             }
         }
     }
@@ -3167,14 +3156,7 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
                 if (this.tauntTime <= 0f)
                 {
                     this.whoHasTauntMe = null;
-                }
-                this.myHero = this.whoHasTauntMe;
-                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
-                {
-                    BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[]
-                    {
-                        this.myHero.GetPhotonView().viewID
-                    });
+                    BasePV.RPC("setMyTarget", PhotonTargets.Others, new object[] { -1 });
                 }
             }
         }
@@ -3200,11 +3182,11 @@ public class TITAN : Optimization.Caching.Bases.TitanBase
             {
                 if (this.myHero == null)
                 {
-                    this.findNearestHero();
+                    this.FindNearestHero();
                 }
                 if ((this.state == TitanState.Idle || this.state == TitanState.Chase || this.state == TitanState.Wander) && this.whoHasTauntMe == null && UnityEngine.Random.Range(0, 100) < 10)
                 {
-                    this.findNearestFacingHero();
+                    this.FindNearestFacingHero();
                 }
                 if (this.myHero == null)
                 {

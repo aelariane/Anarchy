@@ -52,7 +52,7 @@ friendlyInfoDisabled:<color=#$maincolor$>PVP Amichevole <color=#$dColor$>disatti
 
 pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>
 pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>disattivato</color></color>
-pvpSelection:FFA,Team-Based
+pvpSelection:Team-Based,FFA
 
 #Misc
 endlessInfoEnabled:<color=#$maincolor$>Infinito respawn [<color=#$subcolor$>{0}</color>] <color=#$eColor$>attivato</color></color>

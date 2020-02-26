@@ -287,10 +287,6 @@ internal class LoadbalancingPeer : PhotonPeer
     {
         Dictionary<byte, object> dictionary = new Dictionary<byte, object>();
         dictionary[ParameterCode.Code] = eventCode;
-        if (customEventContent != null)
-        {
-            dictionary[ParameterCode.CustomEventContent] = customEventContent;
-        }
         if (raiseEventOptions == null)
         {
             raiseEventOptions = RaiseEventOptions.Default;
@@ -317,6 +313,10 @@ internal class LoadbalancingPeer : PhotonPeer
             {
                 dictionary[ParameterCode.EventForward] = true;
             }
+        }
+        if (customEventContent != null)
+        {
+            dictionary[ParameterCode.CustomEventContent] = customEventContent;
         }
         return SendOperation(OperationCode.RaiseEvent, dictionary, new SendOptions() { DeliveryMode = sendReliable ? DeliveryMode.Reliable : DeliveryMode.Unreliable, Channel = raiseEventOptions.SequenceChannel, Encrypt = false });
     }

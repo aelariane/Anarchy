@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class SpectatorMovement : MonoBehaviour
 {
+
+    private Transform baseT;
     private float speed = 100f;
     public bool disable;
+
+    private void Awake()
+    {
+        baseT = transform;
+    }
 
     private void Update()
     {
@@ -39,29 +46,34 @@ public class SpectatorMovement : MonoBehaviour
         {
             num2 = 0f;
         }
+        float spd = speed;
+        if (InputManager.IsInput[InputCode.Gas])
+        {
+            spd *= 5;
+        }
         if (num > 0f)
         {
-            base.transform.position += base.transform.Forward() * this.speed * Time.deltaTime;
+            baseT.position += baseT.Forward() * spd * Time.deltaTime;
         }
         if (num < 0f)
         {
-            base.transform.position -= base.transform.Forward() * this.speed * Time.deltaTime;
+            baseT.position -= baseT.Forward() * spd * Time.deltaTime;
         }
         if (num2 > 0f)
         {
-            base.transform.position += base.transform.right * this.speed * Time.deltaTime;
+            baseT.position += baseT.right * spd * Time.deltaTime;
         }
         if (num2 < 0f)
         {
-            base.transform.position -= base.transform.right * this.speed * Time.deltaTime;
+            baseT.position -= baseT.right * spd * Time.deltaTime;
         }
         if (InputManager.IsInput[InputCode.LeftRope])
         {
-            base.transform.position -= base.transform.Up() * this.speed * Time.deltaTime;
+            baseT.position -= baseT.Up() * spd * Time.deltaTime;
         }
         if (InputManager.IsInput[InputCode.RightRope])
         {
-            base.transform.position += base.transform.Up() * this.speed * Time.deltaTime;
+            baseT.position += baseT.Up() * spd * Time.deltaTime;
         }
     }
 }

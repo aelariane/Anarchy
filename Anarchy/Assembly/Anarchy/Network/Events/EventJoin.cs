@@ -43,11 +43,11 @@ namespace Anarchy.Network.Events
                         PhotonNetwork.networkingPeer.AddNewPlayer(num2, new PhotonPlayer(false, num2, string.Empty));
                     }
                 }
+                NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom, new object[0]);
                 if ((PhotonNetwork.networkingPeer.mLastJoinType == JoinType.JoinOrCreateOnDemand) && (PhotonNetwork.networkingPeer.mLocalActor.ID == 1))
                 {
                     NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
                 }
-                NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom, new object[0]); 
                 PhotonNetwork.SendChek();
             }
             return true;

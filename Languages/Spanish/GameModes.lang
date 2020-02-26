@@ -52,7 +52,7 @@ friendlyInfoDisabled:<color=#$maincolor$>Modo amigable PVP <color=#$dColor$>desh
 
 pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>
 pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>deshabilitada</color></color>
-pvpSelection:FFA,En equipo
+pvpSelection:En equipo,FFA
 
 #Misc
 endlessInfoEnabled:<color=#$maincolor$>Reaparecer sin fin [<color=#$subcolor$>{0}</color>] <color=#$eColor$>habilitada</color></color>

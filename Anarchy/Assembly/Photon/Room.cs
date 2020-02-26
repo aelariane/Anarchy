@@ -25,6 +25,7 @@ public class Room : RoomInfo
         }
     }
 
+
     public new int MaxPlayers
     {
         get
@@ -49,6 +50,7 @@ public class Room : RoomInfo
             this.maxPlayersField = (byte)value;
         }
     }
+
 
     public new string Name
     {
@@ -94,7 +96,9 @@ public class Room : RoomInfo
         }
     }
 
+
     public string[] PropertiesListedInLobby { get; private set; }
+
 
     public new bool Visible
     {

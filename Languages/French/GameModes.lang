@@ -52,7 +52,7 @@ friendlyInfoDisabled:<color=#$maincolor$>PVP Mode amical <color=#$dColor$>désac
 
 pvpInfoEnabled:<color=#$maincolor$>Blade/AHSS PvP [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>
 pvpInfoDisabled:<color=#$maincolor$>Blade/AHSS PvP <color=#$dColor$>désactivé</color></color>
-pvpSelection:Mélée générale,Basé sur équipe
+pvpSelection:Basé sur équipe,Mélée générale
 
 #Misc
 endlessInfoEnabled:<color=#$maincolor$>Temps de réaparition [<color=#$subcolor$>{0}</color>] <color=#$eColor$>activé</color></color>

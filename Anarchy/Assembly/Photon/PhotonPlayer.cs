@@ -93,6 +93,7 @@ public class PhotonPlayer
         }
     }
 
+
     public bool RCIgnored { get; set; }
 
     public bool RCSync
@@ -147,7 +148,7 @@ public class PhotonPlayer
         {
             AnarchySync = true;
             HasVoice = true;
-            ModName = string.Format(ModNames.AnarchyCustom, (Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Custom"));
+                ModName = string.Format(ModNames.AnarchyCustom, (Anarchy.AnarchyManager.CustomName != string.Empty ? Anarchy.AnarchyManager.CustomName : "Custom"));
         }
         targetArray = new int[] { ID };
         option = new RaiseEventOptions() { TargetActors = targetArray };
@@ -378,6 +379,7 @@ public class PhotonPlayer
         SetCustomProperties(Properties);
         return true;
     }
+
 
     public void SetCustomProperties(Hashtable propertiesToSet)
     {

@@ -104,7 +104,7 @@ namespace Anarchy.UI
         protected override void OnEnable()
         {
             profileRect = new Rect(Style.ScreenWidth - new AutoScaleFloat(300f), 0f, new AutoScaleFloat(300f), new AutoScaleFloat(20f));
-            rect = new SmartRect(new Rect(Style.ScreenWidth - new AutoScaleFloat(396f), Style.ScreenHeight - new AutoScaleFloat(360f), new AutoScaleFloat(400f), new AutoScaleFloat(54f)), 0f, new AutoScaleFloat(18f));
+            rect = new SmartRect(new Rect(Style.ScreenWidth - new AutoScaleFloat(400f), Style.ScreenHeight - new AutoScaleFloat(360f), new AutoScaleFloat(396f), new AutoScaleFloat(54f)), 0f, new AutoScaleFloat(18f));
             style = Helper.CreateStyle(TextAnchor.MiddleRight, FontStyle.Normal, Mathf.RoundToInt(new AutoScaleFloat(35)), true, new Color[] { white, orange, yellow, white, white, white });
             style.normal.background = style.hover.background = style.active.background = EmptyTexture;
             style.font = AnarchyAssets.Load<Font>(Style.FontName);

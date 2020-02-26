@@ -7,13 +7,14 @@ namespace Anarchy.Network
 {
     internal static class Antis
     {
-        private static readonly string[] AllowedProperties = new string[] { "kills", "deaths", "total_dmg", "max_dmg", "isTitan", "dead", "RCteam", "team", "guildName" };
 
         private static string[] ValidLinks = new string[]
         {
             "i.imgur.com", "imgur.com", "discordapp.com", "discordapp.net", "postimg", "aotcorehome.files", "deviantart", "wmpics.pics", "puu.sh", "pp.userapi.com",
             "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-6.userapi.com", "images.ourclipart.com", "pictureshack.ru", "savepice.ru"
         };
+
+        
 
         public static void Kick(PhotonPlayer player, bool ban, string reason = "")
         {
@@ -22,17 +23,16 @@ namespace Anarchy.Network
                 return;
             }
             player.RCIgnored = true;
+            if(ban)
+            {
+                BanList.Ban(player, reason);
+            }
             if (reason != string.Empty)
             {
                 //TODO: Make banlist and localize
                 UI.Chat.Add($"Player {player.ID} autobanned. Reason: {reason}");
             }
-            var data = new Hashtable();
-            data[(byte)0] = "hook";
-            data[(byte)6] = PhotonNetwork.networkingPeer.ServerTimeInMilliSeconds;
-            data[(byte)7] = 2;
-            PhotonNetwork.networkingPeer.OpRaiseEvent(202, data, true, new RaiseEventOptions() { TargetActors = new int[] { player.ID } });
-            PhotonNetwork.networkingPeer.OpRaiseEvent(203, null, true, new RaiseEventOptions() { TargetActors = new int[] { player.ID } });
+            PhotonNetwork.networkingPeer.OpRaiseEvent(203, null, true, player.ToOption());
         }
 
         internal static bool IsValidURL(string url, out Uri uri)
@@ -75,6 +75,30 @@ namespace Anarchy.Network
             }
             all_parts = string.Join(",", urls);
             return true;
+        }
+
+        public static void SuperKick(PhotonPlayer player, bool ban, string reason = "")
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                return;
+            }
+            player.RCIgnored = true;   
+            if(ban)
+            {
+                BanList.Ban(player, reason);
+            }
+            if (reason != string.Empty)
+            {
+                //TODO: Make banlist and localize
+                UI.Chat.Add($"Player {player.ID} autobanned. Reason: {reason}");
+            }
+            var data = new Hashtable();
+            data[(byte)0] = "hook";
+            data[(byte)6] = PhotonNetwork.networkingPeer.ServerTimeInMilliSeconds;
+            data[(byte)7] = 2;
+            PhotonNetwork.networkingPeer.OpRaiseEvent(202, data, true, player.ToOption());
+            PhotonNetwork.networkingPeer.OpRaiseEvent(203, null, true, player.ToOption());
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Anarchy.Localization
     {
         public const string Extension = ".lang";
 
+        private bool custom = false;
         public readonly string Element;
         public readonly string MyLanguage;
         private Dictionary<string, string> localizedText = new Dictionary<string, string>();
@@ -56,6 +57,7 @@ namespace Anarchy.Localization
             {
                 FormatColors();
             }
+            custom = true;
             Language.AddLocale(this);
         }
 
@@ -155,7 +157,10 @@ namespace Anarchy.Localization
 
         public void Reload()
         {
-            Path = Language.Directory + Element + Extension;
+            if (!custom)
+            {
+                Path = Language.Directory + Element + Extension;
+            }
             Load();
         }
 

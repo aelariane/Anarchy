@@ -17,9 +17,10 @@ namespace Anarchy.Network
         private static readonly EventOSR osr = new EventOSR();
         private static readonly EventPropertires props = new EventPropertires();
         private static readonly EventRoast roast = new EventRoast();
-        private static readonly EventRoomListUpdate roomUpdate = new EventRoomListUpdate();
-        private static readonly EventRoomList roomUpdate1 = new EventRoomList();
+        private static readonly EventRoomListUpdate roomListUpdate = new EventRoomListUpdate();
+        private static readonly EventRoomList roomList = new EventRoomList();
         private static readonly EventRPC rpc = new EventRPC();
+        private static readonly EventVC vc = new EventVC();
 
         static NetworkManager()
         {
@@ -30,7 +31,7 @@ namespace Anarchy.Network
 
         private static Dictionary<byte, INetworkEvent> events;
         public static bool NeedRejoin = false;
-        public static Room RejoinRoom = null;
+        public static string RejoinRoom = null;
         public static string RejoinRegion = "";
 
         internal static void RegisterEvent(INetworkEvent ev)
@@ -77,7 +78,7 @@ namespace Anarchy.Network
 
         private static void OnJoinedRoom(Optimization.AOTEventArgs args)
         {
-            RejoinRoom = PhotonNetwork.room;
+            //RejoinRoom = PhotonNetwork.room;
         }
 
         public static bool TryRejoin()
@@ -94,9 +95,9 @@ namespace Anarchy.Network
             {
                 return false;
             }
-            if (RejoinRoom.MaxPlayers <= RejoinRoom.PlayerCount)
-                return false;
-            return PhotonNetwork.JoinRoom(RejoinRoom.Name);
+            //if (RejoinRoom.MaxPlayers <= RejoinRoom.PlayerCount)
+            //    return false;
+            return PhotonNetwork.JoinRoom(RejoinRoom);
         }
     }
 }

@@ -21,6 +21,12 @@ namespace Anarchy.UI
             GUI.LabelCenter(windowRect, label);
         }
 
+        protected override void OnDisable()
+        {
+            PauseWaitTime = 0f;
+            Time.timeScale = 1f;
+        }
+
         public override void Update()
         {
             if (Time.timeScale <= 0.1f)

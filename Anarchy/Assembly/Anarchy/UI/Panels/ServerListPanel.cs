@@ -480,6 +480,11 @@ namespace Anarchy.UI
         [GUIPage(ServerListPage)]
         private void ServerList()
         {
+            if (Event.current != null && Event.current.type == EventType.KeyDown && UnityEngine.GUI.GetNameOfFocusedControl() == "ServerListFilter")
+            {
+                UpdateRoomList();
+            }
+
             rect.Reset();
             region = SelectionGrid(rect, region, regions, regions.Length, true);
 
@@ -496,6 +501,7 @@ namespace Anarchy.UI
 
             rect.ResetX();
             CheckReconnect();
+            UnityEngine.GUI.SetNextControlName("ServerListFilter");
             nameFilter = TextField(rect, nameFilter, locale["filter"], offset, true);
 
             rect.ResetX();
@@ -562,7 +568,12 @@ namespace Anarchy.UI
             rect.MoveY();
             LabelCenter(rect, locale["connectionProtocol"], true);
             rect.MoveY();
+            int prot = NetworkSettings.ConnectionProtocol;
             SelectionGrid(rect, NetworkSettings.ConnectionProtocol, protocols, protocols.Length, true);
+            if(prot != NetworkSettings.ConnectionProtocol.Value)
+            {
+                PhotonNetwork.SwitchToProtocol(NetworkSettings.ConnectProtocol);
+            }
             Label(rect, locale["connectionProtocolDescUDP"], true);
             Label(rect, locale["connectionProtocolDescTCP"], true);
             Label(rect, locale["connectionProtocolDescWS"], true);

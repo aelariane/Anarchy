@@ -42,19 +42,9 @@ namespace GameLogic
                 {
                     OnRequireStatus();
                 }
-                if (Round.Wave > 20 || GameModes.MaxWave.Enabled)
+                if (GameModes.MaxWave.Enabled ? Round.Wave > GameModes.MaxWave.GetInt(0) : Round.Wave > 20)
                 {
-                    if (GameModes.MaxWave.Enabled)
-                    {
-                        if (Round.Wave > GameModes.MaxWave.GetInt(0))
-                        {
-                            GameWin();
-                        }
-                    }
-                    else
-                    {
-                        GameWin();
-                    }
+                    GameWin();
                 }
                 else
                 {

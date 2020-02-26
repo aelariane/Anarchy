@@ -11,7 +11,11 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            string sendKey = string.Empty;
+            if(args.Length < 2)
+            {
+                chatMessage = Lang.Format("errRoom", args[0].ToLower());
+                return false;
+            }
             switch (args[0].ToLower())
             {
                 case "max":
@@ -26,7 +30,25 @@ namespace Anarchy.Commands.Chat
                     break;
 
                 case "time":
-                    if (!int.TryParse(args[1], out int time))
+                    int time;
+                    if(args[1].ToLower() == "set")
+                    {
+                        if(args.Length < 3)
+                        {
+                            chatMessage = Lang.Format("errRoom", args[0].ToLower());
+                            return false;
+                        }
+                        if (!int.TryParse(args[1], out time))
+                        {
+                            chatMessage = Lang.Format("errArg", CommandName + " time");
+                            return false;
+                        }
+                        FengGameManagerMKII.FGM.Logic.ServerTime = time;
+                        chatMessage = Lang.Format("roomTimeSet", time.ToString());
+                        SendLocalizedText("roomTime", new string[] { time.ToString() });
+                        break;
+                    }
+                    if (!int.TryParse(args[1], out time))
                     {
                         chatMessage = Lang.Format("errArg", CommandName + " time");
                         return false;

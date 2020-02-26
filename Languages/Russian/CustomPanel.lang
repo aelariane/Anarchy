@@ -1,10 +1,10 @@
-﻿title:Кастом
-selection:Кастом карта,Кастом логика
-gameTypes:1 Раунд,Волны,ПвП,Гонка,Кастом
+﻿title:Пользовательские настройки уровня 
+selection:Карта,Логика
+gameTypes:1 Раунд,Волны,PvP,Гонка,Свой
 spawnCap:Количество титанов:
 gameMode:Режим:
-mapScript:Скрипт карты
-logicScript:Скрипт логики
+mapScript:Скрипт:
+logicScript:Скрипт:
 btnClear:Очистить
 btnClose:Закрыть
 random:Случайно

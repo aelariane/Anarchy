@@ -43,7 +43,7 @@ namespace Anarchy.UI
             stats = character.Contains("SET") ? (set == null ? new HeroStat() : set.stat) : HeroStat.getInfo(character);
 
             LabelCenter(left, locale["camera"], true);
-            SelectionGrid(left, Settings.CameraMode, cameraList, 4, true);
+            SelectionGrid(left, Settings.CameraMode, cameraList, cameraList.Length, true);
             float height = Style.Height * (FengGameManagerMKII.Level.PVPEnabled ? 3f : 2f) + (Style.VerticalMargin * (FengGameManagerMKII.Level.PVPEnabled ? 2f : 1f)) + (Style.Height + Style.VerticalMargin);
             left.MoveToEndY(BoxPosition, height);
             if (Button(left, locale["humanStart"], true))

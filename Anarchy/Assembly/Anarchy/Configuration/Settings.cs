@@ -14,7 +14,6 @@ namespace Anarchy.Configuration
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);
         public static BoolSetting SnapshotsInGame = new BoolSetting("SnapshotsInGame", false);
         public static BoolSetting Speedometer = new BoolSetting("Speedometer", false);
-        public static BoolSetting StaticFOVEnabled = new BoolSetting("StaticFOVEnabled", false);
         public static BoolSetting GameFeed = new BoolSetting("GameFeed", false);
         public static BoolSetting Minimap = new BoolSetting("Minimap", false);
 
@@ -25,7 +24,6 @@ namespace Anarchy.Configuration
         public static FloatSetting CameraDistance = new FloatSetting("CameraDistance", 1f);
         public static FloatSetting MouseSensivity = new FloatSetting("MouseSensivity", 0.5f);
         public static FloatSetting SoundLevel = new FloatSetting("SoundLevel", 1f);
-        public static FloatSetting StaticFOV = new FloatSetting("StaticFOV", 115f);
 
         public static void AddSetting(ISetting set)
         {

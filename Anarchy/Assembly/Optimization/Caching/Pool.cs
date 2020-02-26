@@ -4,15 +4,12 @@ namespace Optimization.Caching
 {
     internal static class Pool
     {
-#if USEPOOL
         public static bool Initialized = false;
         private static PoolObject Effects;
         private static PoolObject RC;
-#endif
 
         public static void Create()
         {
-#if USEPOOL
             //Characters = new PoolObject(10);
             Effects = new PoolObject(new string[]
         {
@@ -26,23 +23,19 @@ namespace Optimization.Caching
             //Objects.Initialize();
             //RC.Initialize();
             Initialized = true;
-#endif
         }
 
         public static void Clear()
         {
-#if USEPOOL
             if (Initialized)
             {
                 Effects.Clear();
                 RC.Clear();
             }
-#endif
         }
 
         public static void Disable(GameObject go)
         {
-#if USEPOOL
             if (go != null)
             {
                 if (go.GetComponent<PoolableObject>() != null)
@@ -52,9 +45,6 @@ namespace Optimization.Caching
                 }
                 Object.Destroy(go);
             }
-#else
-            Object.Destroy(go);
-#endif
         }
 
         public static GameObject Enable(string name)
@@ -64,7 +54,6 @@ namespace Optimization.Caching
 
         public static GameObject Enable(string name, Vector3 position, Quaternion rotation)
         {
-#if USEPOOL
             if (!Initialized)
             {
                 return (GameObject)Object.Instantiate(CacheResources.Load(name), position, rotation);
@@ -92,14 +81,10 @@ namespace Optimization.Caching
                 default:
                     return (GameObject)Object.Instantiate(CacheResources.Load(name), position, rotation);
             }
-#else
-            return (GameObject)Object.Instantiate(CacheResources.Load(name), position, rotation);
-#endif
         }
 
         public static GameObject NetworkEnable(string name, Vector3 position, Quaternion rotation, int group = 0)
         {
-#if USEPOOL
             if (name.StartsWith("FX/"))
             {
                 return Effects.NetworkEnable(name, position, rotation);
@@ -123,14 +108,10 @@ namespace Optimization.Caching
                 default:
                     return PhotonNetwork.Instantiate(name, position, rotation, group);
             }
-#else
-            return PhotonNetwork.Instantiate(name, position, rotation, group);
-#endif
         }
 
         public static GameObject NetworkInstantiate(string name, Vector3 position, Quaternion rotation, int instantioationId, int[] viewIDs, short prefix = 0, int group = 0, object[] data = null)
         {
-#if USEPOOL
             if (name.StartsWith("FX/"))
             {
                 return Effects.NetworkInstantiate(name, position, rotation, instantioationId, viewIDs, prefix, group, data);
@@ -154,7 +135,6 @@ namespace Optimization.Caching
                 default:
                     break;
             }
-#endif
             GameObject res = (name.StartsWith("RCAsset/") ? CacheResources.RCLoad(name) : CacheResources.Load(name)) as GameObject;
             if(res == null)
             {

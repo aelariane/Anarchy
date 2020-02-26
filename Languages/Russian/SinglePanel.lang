@@ -1,12 +1,12 @@
 ﻿title:Создание одиночной игры
-map:Выбор карты
-daylight:Выбор времени суток
+map:Карта
+daylight:Время суток
 daylights:День,Вечер,Ночь
-difficulity:Выбор сложности
-difficulities:Нормальная,Сложная,Аномальная
+difficulity:Сложность
+difficulities:Normal,Hard,Abnormal
 character:Выбор персонажа
-characters:Микаса,Леви,Армин,Марко,Жан,Эрен,Титан эрен,Петра,Саша,Сет 1,Сет 2,Сет 3 
+characters:Микаса,Леви,Армин,Марко,Жан,Эрен,Титан Эрен,Петра,Саша,Сет 1,Сет 2,Сет 3 
 costume:Костюм:
-camera:Выбор камеры
-start:Начать игру
+camera:Камера
+start:Играть
 back:Назад

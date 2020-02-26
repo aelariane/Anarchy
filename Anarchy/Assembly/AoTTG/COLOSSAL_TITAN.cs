@@ -666,7 +666,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 size = UnityEngine.Random.Range(GameModes.SizeMode.GetFloat(0), GameModes.SizeMode.GetFloat(1));
                 BasePV.RPC("setSize", PhotonTargets.AllBuffered, new object[] { size });
             }
-            if (maxHealth == 0 && GameModes.HealthMode.Enabled)
+            if (GameModes.HealthMode.Enabled)
             {
                 int healthLower = GameModes.HealthMode.GetInt(0);
                 int healthUpper = GameModes.HealthMode.GetInt(1) + 1;
@@ -679,8 +679,12 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                     maxHealth = (NapeArmor = Mathf.Clamp(Mathf.RoundToInt(size / 4f * (float)UnityEngine.Random.Range(healthLower, healthUpper)), healthLower, healthUpper));
                 }
             }
+            else
+            {
+                maxHealth = NapeArmor;
+            }
             this.lagMax = 150f + size * 3f;
-            this.healthTime = Time.time;
+            this.healthTime = 0f;
             if (NapeArmor > 0 && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
                 BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { NapeArmor, Mathf.RoundToInt(maxHealth) });
@@ -773,18 +777,19 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             return;
         }
         float magnitude = (photonView.gameObject.transform.position - transform.transform.position).magnitude;
-        if (magnitude < lagMax && !this.hasDie && Time.time - this.healthTime > 0.2f)
+        if (magnitude < lagMax && !this.hasDie && this.healthTime <= 0f)
         {
-            healthTime = Time.time;
+            healthTime = 0.2f;
             if(GameModes.DamageMode.Enabled && speed < GameModes.DamageMode.GetInt(0))
             {
+                FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[] { speed });
                 this.neckSteam();
                 return;
             }
             this.NapeArmor -= speed;
             if (this.maxHealth > 0)
             {
-                BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { this.NapeArmor, this.maxHealth });
+                BasePV.RPC("labelRPC", PhotonTargets.AllBuffered, new object[] { NapeArmor, Mathf.RoundToInt(this.maxHealth) });
             }
             this.neckSteam();
             if (this.NapeArmor <= 0)
@@ -817,6 +822,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
 
     public void Update()
     {
+        this.healthTime -= Time.deltaTime;
         UpdateLabel();
         if (this.state == "null")
         {

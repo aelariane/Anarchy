@@ -179,6 +179,7 @@ namespace ExitGames.Client.Photon
 			}
 		}
 
+
         public int QueuedIncomingCommands
 		{
 			get
