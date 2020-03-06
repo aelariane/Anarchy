@@ -24,10 +24,21 @@ namespace GameLogic
         public void OnLateUpdate()
         {
             float time = UnityEngine.Time.deltaTime;
-            Time += time;
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && (IsWinning || IsLosing))
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
-                GameEndCD -= time;
+                if (IsWinning || IsLosing)
+                {
+                    return;
+                }
+                Time += time;
+            }
+            else
+            {
+                Time += time;
+                if (IsWinning || IsLosing)
+                {
+                    GameEndCD -= time;
+                }
             }
         }
 

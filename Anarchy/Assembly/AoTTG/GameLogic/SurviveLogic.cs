@@ -101,7 +101,7 @@ namespace GameLogic
         {
             if (!Round.IsWinning && !Round.IsLosing)
             {
-                FengGameManagerMKII.FGM.StartCoroutine(Anarchy.GameModes.CheckGameEnd());
+                FengGameManagerMKII.FGM.StartCoroutine(GameModes.CheckGameEnd());
             }
         }
 
