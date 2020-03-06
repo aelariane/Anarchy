@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Threading;
+using UnityEngine;
 using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 namespace ExitGames.Client.Photon
@@ -44,26 +45,31 @@ namespace ExitGames.Client.Photon
             this.State = PhotonSocketState.Disconnected;
         }
 
-        //GameObject websocketConnectionObject;
+        GameObject websocketConnectionObject;
         public override bool Connect()
         {
+            //bool baseOk = base.Connect();
+            //if (!baseOk)
+            //{
+            //    return false;
+            //}
+
+
             this.State = PhotonSocketState.Connecting;
 
-            //if (this.websocketConnectionObject != null)
-            //{
-            //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
-            //}
-            //this.websocketConnectionObject = new GameObject("websocketConnectionObject");
-            //MonoBehaviour mb = this.websocketConnectionObject.AddComponent<MonoBehaviourExt>();
-            //this.websocketConnectionObject.hideFlags = HideFlags.HideInHierarchy;
-            //UnityEngine.Object.DontDestroyOnLoad(this.websocketConnectionObject);
-            this.sock = new WebSocket(new Uri(this.ServerAddress), SerializationProtocol);
-            this.sock.Connect();
-            new Thread(new ThreadStart(this.ReceiveLoop))
+            if (this.websocketConnectionObject != null)
             {
-                IsBackground = true
-            }.Start();
-            //mb.StartCoroutine(this.ReceiveLoop());
+                UnityEngine.Object.Destroy(this.websocketConnectionObject);
+            }
+
+            this.websocketConnectionObject = new GameObject("websocketConnectionObject");
+            MonoBehaviour mb = this.websocketConnectionObject.AddComponent<MonoBehaviourExt>();
+            this.websocketConnectionObject.hideFlags = HideFlags.HideInHierarchy;
+            UnityEngine.Object.DontDestroyOnLoad(this.websocketConnectionObject);
+            this.sock = new WebSocket(new Uri(this.ServerAddress), SerializationProtocol);          // TODO: The protocol should be set based on current PeerBase value (but that's currently not accessible)
+            this.sock.Connect();
+
+            mb.StartCoroutine(this.ReceiveLoop());
             return true;
         }
 
@@ -93,10 +99,10 @@ namespace ExitGames.Client.Photon
                 }
             }
 
-            //if (this.websocketConnectionObject != null)
-            //{
-            //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
-            //}
+            if (this.websocketConnectionObject != null)
+            {
+                UnityEngine.Object.Destroy(this.websocketConnectionObject);
+            }
 
             this.State = PhotonSocketState.Disconnected;
             return true;
@@ -153,14 +159,14 @@ namespace ExitGames.Client.Photon
         internal const int TCP_HEADER_BYTES = 7;
         internal const int MSG_HEADER_BYTES = 2;
 
-        public void ReceiveLoop()
+        public IEnumerator ReceiveLoop()
         {
             //this.Listener.DebugReturn(DebugLevel.INFO, "ReceiveLoop()");
             if (this.sock != null)
             {
                 while (this.sock != null && !this.sock.Connected && this.sock.Error == null)
                 {
-                    Thread.Sleep(1);
+                    yield return new WaitForRealSeconds(0.1f);
                 }
 
                 if (this.sock != null)
@@ -173,9 +179,9 @@ namespace ExitGames.Client.Photon
                     else
                     {
                         // connected
-                        if (this.ReportDebugOfLevel(DebugLevel.ERROR))
+                        if (this.ReportDebugOfLevel(DebugLevel.ALL))
                         {
-                            this.Listener.DebugReturn(DebugLevel.ERROR, "Receiving by websocket. this.State: " + this.State);
+                            this.Listener.DebugReturn(DebugLevel.ALL, "Receiving by websocket. this.State: " + this.State);
                         }
 
                         this.State = PhotonSocketState.Connected;
@@ -195,7 +201,8 @@ namespace ExitGames.Client.Photon
                                     if (inBuff == null || inBuff.Length == 0)
                                     {
                                         // nothing received. wait a bit, try again
-                                        Thread.Sleep(1);
+                                        yield return new WaitForRealSeconds(0.02f);
+                                        continue;
                                     }
 
                                     if (this.ReportDebugOfLevel(DebugLevel.ALL))
@@ -231,5 +238,214 @@ namespace ExitGames.Client.Photon
 
             this.Disconnect();
         }
+
+        private class MonoBehaviourExt : MonoBehaviour { }
+
+        //public void Dispose()
+        //{
+        //    this.State = PhotonSocketState.Disconnecting;
+
+        //    if (this.sock != null)
+        //    {
+        //        try
+        //        {
+        //            if (this.sock.Connected) this.sock.Close();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            this.EnqueueDebugReturn(DebugLevel.INFO, "Exception in Dispose(): " + ex);
+        //        }
+        //    }
+
+        //    this.sock = null;
+        //    this.State = PhotonSocketState.Disconnected;
+        //}
+
+        ////GameObject websocketConnectionObject;
+        //public override bool Connect()
+        //{
+        //    this.State = PhotonSocketState.Connecting;
+
+        //    //if (this.websocketConnectionObject != null)
+        //    //{
+        //    //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
+        //    //}
+        //    //this.websocketConnectionObject = new GameObject("websocketConnectionObject");
+        //    //MonoBehaviour mb = this.websocketConnectionObject.AddComponent<MonoBehaviourExt>();
+        //    //this.websocketConnectionObject.hideFlags = HideFlags.HideInHierarchy;
+        //    //UnityEngine.Object.DontDestroyOnLoad(this.websocketConnectionObject);
+        //    this.sock = new WebSocket(new Uri(this.ServerAddress), SerializationProtocol);
+        //    this.sock.Connect();
+        //    new Thread(new ThreadStart(this.ReceiveLoop))
+        //    {
+        //        IsBackground = true
+        //    }.Start();
+        //    //mb.StartCoroutine(this.ReceiveLoop());
+        //    return true;
+        //}
+
+
+        //public override bool Disconnect()
+        //{
+        //    if (this.ReportDebugOfLevel(DebugLevel.INFO))
+        //    {
+        //        this.Listener.DebugReturn(DebugLevel.INFO, "SocketWebTcp.Disconnect()");
+        //    }
+
+        //    this.State = PhotonSocketState.Disconnecting;
+
+        //    lock (this.syncer)
+        //    {
+        //        if (this.sock != null)
+        //        {
+        //            try
+        //            {
+        //                this.sock.Close();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                this.Listener.DebugReturn(DebugLevel.ERROR, "Exception in Disconnect(): " + ex);
+        //            }
+        //            this.sock = null;
+        //        }
+        //    }
+
+        //    //if (this.websocketConnectionObject != null)
+        //    //{
+        //    //    UnityEngine.Object.Destroy(this.websocketConnectionObject);
+        //    //}
+
+        //    this.State = PhotonSocketState.Disconnected;
+        //    return true;
+        //}
+
+        ///// <summary>
+        ///// used by TPeer*
+        ///// </summary>
+        //public override PhotonSocketError Send(byte[] data, int length)
+        //{
+        //    if (this.State != PhotonSocketState.Connected)
+        //    {
+        //        return PhotonSocketError.Skipped;
+        //    }
+
+        //    try
+        //    {
+        //        if (data.Length > length)
+        //        {
+        //            byte[] trimmedData = new byte[length];
+        //            Buffer.BlockCopy(data, 0, trimmedData, 0, length);
+        //            data = trimmedData;
+        //        }
+
+        //        if (this.ReportDebugOfLevel(DebugLevel.ALL))
+        //        {
+        //            this.Listener.DebugReturn(DebugLevel.ALL, "Sending: " + SupportClassPun.ByteArrayToString(data));
+        //        }
+
+        //        if (this.sock != null)
+        //        {
+        //            this.sock.Send(data);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        this.Listener.DebugReturn(DebugLevel.ERROR, "Cannot send to: " + this.ServerAddress + ". " + e.Message);
+
+        //        this.HandleException(StatusCode.Exception);
+        //        return PhotonSocketError.Exception;
+        //    }
+
+        //    return PhotonSocketError.Success;
+        //}
+
+        //public override PhotonSocketError Receive(out byte[] data)
+        //{
+        //    data = null;
+        //    return PhotonSocketError.NoData;
+        //}
+
+
+        //internal const int ALL_HEADER_BYTES = 9;
+        //internal const int TCP_HEADER_BYTES = 7;
+        //internal const int MSG_HEADER_BYTES = 2;
+
+        //public void ReceiveLoop()
+        //{
+        //    //this.Listener.DebugReturn(DebugLevel.INFO, "ReceiveLoop()");
+        //    if (this.sock != null)
+        //    {
+        //        while (this.sock != null && !this.sock.Connected && this.sock.Error == null)
+        //        {
+        //        }
+
+        //        if (this.sock != null)
+        //        {
+        //            if (this.sock.Error != null)
+        //            {
+        //                this.Listener.DebugReturn(DebugLevel.ERROR, "Exiting receive thread. Server: " + this.ServerAddress + ":" + this.ServerPort + " Error: " + this.sock.Error);
+        //                this.HandleException(StatusCode.ExceptionOnConnect);
+        //            }
+        //            else
+        //            {
+        //                // connected
+        //                if (this.ReportDebugOfLevel(DebugLevel.ERROR))
+        //                {
+        //                    this.Listener.DebugReturn(DebugLevel.ERROR, "Receiving by websocket. this.State: " + this.State);
+        //                }
+
+        //                this.State = PhotonSocketState.Connected;
+        //                while (this.State == PhotonSocketState.Connected)
+        //                {
+        //                    if (this.sock != null)
+        //                    {
+        //                        if (this.sock.Error != null)
+        //                        {
+        //                            this.Listener.DebugReturn(DebugLevel.ERROR, "Exiting receive thread (inside loop). Server: " + this.ServerAddress + ":" + this.ServerPort + " Error: " + this.sock.Error);
+        //                            this.HandleException(StatusCode.ExceptionOnReceive);
+        //                            break;
+        //                        }
+        //                        else
+        //                        {
+        //                            byte[] inBuff = this.sock.Recv();
+        //                            if (inBuff == null || inBuff.Length == 0)
+        //                            {
+        //                                // nothing received. wait a bit, try again
+        //                                Thread.Sleep(1);
+        //                            }
+
+        //                            if (this.ReportDebugOfLevel(DebugLevel.ALL))
+        //                            {
+        //                                this.Listener.DebugReturn(DebugLevel.ALL, "TCP << " + inBuff.Length + " = " + SupportClassPun.ByteArrayToString(inBuff));
+        //                            }
+
+        //                            if (inBuff.Length > 0)
+        //                            {
+        //                                try
+        //                                {
+        //                                    this.HandleReceivedDatagram(inBuff, inBuff.Length, false);
+        //                                }
+        //                                catch (Exception e)
+        //                                {
+        //                                    if (this.State != PhotonSocketState.Disconnecting && this.State != PhotonSocketState.Disconnected)
+        //                                    {
+        //                                        if (this.ReportDebugOfLevel(DebugLevel.ERROR))
+        //                                        {
+        //                                            this.EnqueueDebugReturn(DebugLevel.ERROR, "Receive issue. State: " + this.State + ". Server: '" + this.ServerAddress + "' Exception: " + e);
+        //                                        }
+
+        //                                        this.HandleException(StatusCode.ExceptionOnReceive);
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    this.Disconnect();
+        //}
     }
 }
