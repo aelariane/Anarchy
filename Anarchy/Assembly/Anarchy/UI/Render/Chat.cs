@@ -29,6 +29,9 @@ namespace Anarchy.UI
 
         private Rect position;
         private Rect inputPosition;
+        private Vector2 scrollvector;
+        private Rect scrollView;
+        private Rect scrollAreaView;
 
         private GUIStyle ChatStyle;
         private GUIStyle textFieldStyle;
@@ -114,6 +117,10 @@ namespace Anarchy.UI
             //ChatStyle.fixedWidth = 330f * (Style.WindowWidth / 700f);
             labelOptions = UnityEngine.GUILayout.MinWidth(position.width);
             textFieldOptions = new GUILayoutOption[] { UnityEngine.GUILayout.Width(inputPosition.width) };
+            scrollView = new Rect(0f, 0f, position.width, position.height);
+            scrollAreaView = new Rect(0f, 0f, position.width, 2000f);
+            scrollvector = Optimization.Caching.Vectors.v2zero;
+
         }
 
         protected internal override void Draw()
@@ -132,6 +139,20 @@ namespace Anarchy.UI
                         ResetInputline();
                         return;
                     }
+                    if (RC.RCManager.RCEvents.ContainsKey("OnChatInput"))
+                    {
+                        string key = (string)RC.RCManager.RCVariableNames["OnChatInput"];
+                        var collection = RC.RCManager.stringVariables;
+                        if (collection.ContainsKey(key))
+                        {
+                            collection[key] = inputLine;
+                        }
+                        else
+                        {
+                            collection.Add(key, inputLine);
+                        }
+                        ((RCEvent)RC.RCManager.RCEvents["OnChatInput"]).checkEvent();
+                    }
                     if (inputLine.StartsWith("/"))
                     {
                         CMDHandler.TryHandle(inputLine);
@@ -147,10 +168,13 @@ namespace Anarchy.UI
                 {
                     inputLine = "\t";
                     UnityEngine.GUI.FocusControl("ChatInput");
-                }   
+                }
             }
             UnityEngine.GUI.SetNextControlName(string.Empty);
             GUILayout.BeginArea(position);
+            scrollvector = GUI.BeginScrollView(scrollView, scrollvector, scrollAreaView);
+            scrollvector.y = float.PositiveInfinity;
+            GUILayout.BeginArea(scrollAreaView);
             UnityEngine.GUILayout.FlexibleSpace();
             try
             {
@@ -166,6 +190,8 @@ namespace Anarchy.UI
             catch
             {
             }
+            GUILayout.EndArea();
+            GUI.EndScrollView();
             GUILayout.EndArea();
             UnityEngine.GUI.SetNextControlName("ChatInput");
             GUILayout.BeginArea(inputPosition);
