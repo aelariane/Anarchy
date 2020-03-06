@@ -97,6 +97,10 @@ namespace Anarchy.UI
             costumeList = null;
             dayLightList = null;
             difficulityList = null;
+            if(Application.loadedLevelName == "menu")
+            {
+                AnarchyManager.MainMenu.EnableImmediate();
+            }
         }
 
         protected override void OnPanelEnable()
@@ -110,6 +114,7 @@ namespace Anarchy.UI
             costumeList = new string[] { "Cos1", "Cos2", "Cos3" };
             dayLightList = locale.GetArray("daylights");
             difficulityList = locale.GetArray("difficulities");
+            AnarchyManager.MainMenu.DisableImmediate();
         }
 
         public override void OnUpdateScaling()
