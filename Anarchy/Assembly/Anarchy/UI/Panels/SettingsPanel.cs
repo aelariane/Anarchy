@@ -311,6 +311,10 @@ namespace Anarchy.UI
                         RebindButton(rects[1], InputManager.AllKeys[i]);
                     }
                     LabelCenter(rects[1], locale["rebinds"], true);
+                    Label(rects[1], "Burst type:", false);
+                    rects[1].MoveOffsetX(Style.LabelOffset);
+                    SelectionGrid(rects[1], InputManager.GasBurstType, new string[] { "Both", "Rebinded only" }, 2, true);
+                    rects[1].ResetX();
                     for (int i = (int)InputCodes.DefaultsCount; i < RebindCannon; i++)
                     {
                         RebindButton(rects[1], InputManager.AllKeys[i]);

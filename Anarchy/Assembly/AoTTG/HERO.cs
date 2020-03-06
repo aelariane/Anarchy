@@ -4086,7 +4086,10 @@ public class HERO : Optimization.Caching.Bases.HeroBase
             }
             else
             {
-                this.checkDashDoubleTap();
+                if (InputManager.GasBurstType.Value == 0)
+                {
+                    this.checkDashDoubleTap();
+                }
             }
         }
         if (this.grounded && (this.State == HeroState.Idle || this.State == HeroState.Slide))

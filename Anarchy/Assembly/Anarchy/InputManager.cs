@@ -14,6 +14,7 @@ namespace Anarchy
         public static bool MenuOn;
         private static Action onAwake;
         public static KeySetting[] Settings;
+        public static IntSetting GasBurstType = new IntSetting(nameof(GasBurstType), 0);
 
         public static KeySetting[] RebindKeyCodes = new KeySetting[]
         {
