@@ -1,18 +1,26 @@
-﻿using Optimization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Anarchy.Configuration;
+using Optimization;
 using UnityEngine;
+using GUI = Anarchy.UI.GUI;
+using GUILayout = Anarchy.UI.GUILayout;
 using static Anarchy.UI.GUI;
+
 
 namespace Anarchy.UI
 {
-    public class DebugPanel : GUIPanel
+    public class DebugPanel : GUIBase
     {
         private const int Debug = 0;
         private const int Terminal = 1;
         private const int Players = 3;
         private const int Traffic = 2;
+
+        internal static IntSetting DebugLevel = new IntSetting(nameof(DebugLevel), 0);
+        internal static IntSetting LogLevel = new IntSetting(nameof(LogLevel), 0);
+        internal static IntSetting LogMessagesCount = new IntSetting(nameof(LogMessagesCount), 50);
 
         private static readonly Dictionary<LogType, string> TypeColors = new Dictionary<LogType, string>
         {
@@ -23,7 +31,7 @@ namespace Anarchy.UI
             { LogType.Warning, "<color=yellow>" }
         };
 
-        private List<LogMsg> messages;
+        private List<LogMessage> messages;
         private SmartRect rect;
 
         private Vector2 scroll;
@@ -34,24 +42,24 @@ namespace Anarchy.UI
         public DebugPanel() : base(nameof(DebugPanel), 369)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
-            messages = new List<LogMsg>();
+            messages = new List<LogMessage>();
             Application.RegisterLogCallback(Log);
         }
 
         public void Log(string message, string trace, LogType type)
         {
-            var msg = new LogMsg(message, trace, type);
-            messages.Add(msg);
+
+            messages.Add(new LogMessage(message, trace, type));
         }
 
-        protected override void OnPanelEnable()
+        protected override void OnEnable()
         {
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
-            scroll = Optimization.Caching.Vectors.v2zero;
-            scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
-            scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
-            scrollAreaView = new Rect(0f, 0f, rect.width, 1000f);
-            head = locale["title"];
+            //rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            //scroll = Optimization.Caching.Vectors.v2zero;
+            //scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
+            //scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            //scrollAreaView = new Rect(0f, 0f, rect.width, 5000f);
+            //head = locale["title"];
         }
 
         [GUIPage(Debug)]
@@ -64,30 +72,34 @@ namespace Anarchy.UI
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
             foreach (var msg in messages)
             {
-                Label(scrollRect, $"{msg.time} {msg.Content}: {msg.Stacktrace}", true);
+                GUILayout.Label(msg.ToString(), new GUILayoutOption[0]);
             }
             EndScrollView();
         }
 
-        protected override void DrawMainPart()
+        protected internal override void Draw()
         {
-            DrawLowerButtons();
         }
 
-        protected override void OnPanelDisable()
+        //protected override void DrawMainPart()
+        //{
+        //    DrawLowerButtons();
+        //}
+
+        protected override void OnDisable()
         {
         }
 
         private void DrawLowerButtons()
         {
-            rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
-            rect.width = Style.LabelOffset;
-            if (Button(rect, locale["btnClose"]))
-            {
-                Disable();
-                return;
-            }
+            //rect.MoveToEndY(BoxPosition, Style.Height);
+            //rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            //rect.width = Style.LabelOffset;
+            //if (Button(rect, locale["btnClose"]))
+            //{
+            //    Disable();
+            //    return;
+            //}
         }
 
         public override void Update()
@@ -104,24 +116,25 @@ namespace Anarchy.UI
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
-        private struct LogMsg
+        internal class LogMessage
         {
             internal string Content;
-            internal string time;
+            internal DateTime TimeStamp;
+            internal LogType Type;
             internal string Stacktrace;
 
-            internal LogMsg(string content, string trace, LogType type)
+            internal LogMessage(string content, string trace, LogType type)
             {
-                time = "<color=orange>[" + DateTime.Now.ToLongTimeString() + "]</color>";
-                Content = TypeColors[type] + content + "</color>";
-                Stacktrace = trace == "" ? "" : "<color=lightblue>" + trace + "</color>";
+                TimeStamp = DateTime.Now;
+                Type = type;
+                Content = content;
+                Stacktrace = trace;
             }
 
             public override string ToString()
             {
-                return time + " " + Content + (Stacktrace == "" ? "" : "\nStackTrace: " + Stacktrace);
+                return $"<color=orange>[{TimeStamp.ToLongTimeString()}]</color> {TypeColors[Type]}{Content}</color> {(Stacktrace == string.Empty ? string.Empty : $"\n<color=lightblue>Stacktrace: {Stacktrace}</color>")}";
             }
-
         }
     }
 }
