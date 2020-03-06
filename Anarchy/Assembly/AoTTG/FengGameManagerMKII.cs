@@ -1487,6 +1487,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     public void OnJoinedRoom(AOTEventArgs args)
     {
+        Debug.Log("OnJoinedRoom >> " + PhotonNetwork.room.Name);
         string[] strArray = PhotonNetwork.room.Name.Split('`');
         gameTimesUp = false;
         Level = LevelInfo.GetInfo(strArray[1]);
@@ -1641,20 +1642,14 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 StartCoroutine(CustomLevel.SendRPCToPlayer(player));
             }
         }
-        WaitForSeconds awaiter = new WaitForSeconds(0.25f);
-        yield return awaiter;
-        yield return awaiter;
-        if (player.Properties[PhotonPlayerProperty.name] == null)
-        {
-            yield return awaiter;
-        }
+        yield return new WaitForSeconds(0.5f);
         Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
         playerList?.Update();
         if (player.Properties[PhotonPlayerProperty.name] == null)
         {
             while (player.Properties[PhotonPlayerProperty.name] == null)
             {
-                yield return awaiter;
+                yield return new WaitForSeconds(0.5f);
             }
         }
         if (PhotonNetwork.IsMasterClient)
