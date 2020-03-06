@@ -62,11 +62,11 @@ namespace Anarchy.UI
                 int pickId = Random.Range(0, allNames.Length);
                 if (filter.Length > 0)
                 {
-                    PickByName(allNames[pickId], -1);
+                    PickByName(allNames[pickId], true);
                 }
                 else
                 {
-                    Pick(pickId, allNames[pickId]);
+                    Pick(pickId, allNames[pickId], true);
                 }
             }
             right.ResetX();
@@ -85,11 +85,11 @@ namespace Anarchy.UI
                 {
                     if (filter.Length == 0)
                     {
-                        Pick(i, allNames[i]);
+                        Pick(i, allNames[i], false);
                     }
                     else
                     {
-                        PickByName(allNames[i], 0);
+                        PickByName(allNames[i], false);
                     }
                 }
             }
@@ -236,7 +236,7 @@ namespace Anarchy.UI
             filter = "";
         }
 
-        private void Pick(int id, string name)
+        private void Pick(int id, string name, bool rnd)
         {
             if(pageSelection == CustomLogicPage)
             {
@@ -248,11 +248,11 @@ namespace Anarchy.UI
             }
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")} {(id == -1 ? "(Random)" : "")}: <b>{name}</b>", "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")}{(rnd ? " (Random)" : "")}: <b>{name}</b>", "" });
             }
         }
 
-        private void PickByName(string name, int id)
+        private void PickByName(string name, bool rnd)
         {
             if (pageSelection == CustomLogicPage)
             {
@@ -272,7 +272,7 @@ namespace Anarchy.UI
             }
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")} {(id == -1 ? "(Random)" : "")}: <b>{name}</b>", "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")}{(rnd ? " (Random)" : "")}: <b>{name}</b>", "" });
             }
         }
 
