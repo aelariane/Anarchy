@@ -165,7 +165,7 @@ namespace Anarchy
             }
             if (!TeamMode.Enabled)
             {
-                if (PointMode.Enabled)
+                if (!PointMode.Enabled)
                 {
                     List<PhotonPlayer> alives = new List<PhotonPlayer>();
                     string winnerName = "";
