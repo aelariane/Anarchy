@@ -18,7 +18,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static Version AnarchyVersion = new Version("0.7.7.6");
+        public static Version AnarchyVersion = new Version("0.7.7.7");
 
         public static readonly string CustomName = string.Empty;
         public static readonly bool FullAnarchySync = true;
@@ -186,5 +186,19 @@ namespace Anarchy
             Destroy(back);
         }
 
+        private void Update()
+        {
+            //if (Input.GetKeyDown(KeyCode.F5))
+            //{
+            //    if (DebugPanel.Active)
+            //    {
+            //        DebugPanel.DisableImmediate();
+            //    }
+            //    else
+            //    {
+            //        DebugPanel.EnableImmediate();
+            //    }
+            //}
+        }
     }
 }
