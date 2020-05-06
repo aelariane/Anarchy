@@ -29,7 +29,7 @@ pauseFalse:<color=#$maincolor$>Хост снял игру с паузы!</color>
 
 #ResetKD
 resetkdLocal:<color=#$maincolor$>Ваша стататистика сброшена.</color>
-resetkdAll:<color=#$maincolor$>Статистика color=#$subcolor$>всех</color> игроков очищена.</color>
+resetkdAll:<color=#$maincolor$>Статистика <color=#$subcolor$>всех</color> игроков очищена.</color>
 resetkdPlayer:<color=#$maincolor$>Статистика игрока <color=#$subcolor$>[{0}]</color> {1} сброшена.</color>
 
 #Revive
