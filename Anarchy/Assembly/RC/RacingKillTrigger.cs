@@ -8,7 +8,7 @@ class RacingKillTrigger : MonoBehaviour
         HERO hero = other.gameObject.GetComponent<HERO>();
         if(hero != null && hero.IsLocal && !hero.IsDead)
         {
-            hero.markDie();
+            hero.MarkDie();
             hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[]
             {
                         -1,

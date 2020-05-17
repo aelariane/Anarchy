@@ -837,7 +837,7 @@ namespace RC
 
         public static void OnLoadLevel()
         {
-            FengGameManagerMKII.FGM.Logic.RoundTime = 0f;
+            FengGameManagerMKII.FGM.logic.RoundTime = 0f;
             RCManager.racingSpawnPoint = Vectors.zero;
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();
@@ -2436,7 +2436,7 @@ namespace RC
 
         public static void SpawnPlayerCustomMap()
         {
-            if (!FengGameManagerMKII.FGM.NeedChooseSide && IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
+            if (!FengGameManagerMKII.FGM.needChooseSide && IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
             {
                 if (PhotonNetwork.player.Dead)
                 {
@@ -2446,7 +2446,7 @@ namespace RC
                     }
                     else
                     {
-                        FengGameManagerMKII.FGM.SpawnNonAITitan("RANDOM");
+                        FengGameManagerMKII.FGM.SpawnNonAiTitan("RANDOM");
                     }
                 }
                 FengGameManagerMKII.FGM.ShowHUDInfoCenter(string.Empty);

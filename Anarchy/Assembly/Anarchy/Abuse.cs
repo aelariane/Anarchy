@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Anarchy
@@ -11,9 +12,10 @@ namespace Anarchy
             {
                 return false;
             }
-            if(player.GameObject.GetComponent<HERO>() != null)
+            if (player.GameObject.GetComponent<HERO>() != null)
             {
-                player.GameObject.GetComponent<HERO>().BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, killer });
+                player.GameObject.GetComponent<HERO>().BasePV
+                    .RPC("netDie2", PhotonTargets.All, new object[] { -1, killer });
                 return true;
             }
             return false;

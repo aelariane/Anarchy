@@ -11,7 +11,7 @@ namespace Anarchy.UI
         private Rect screenRect = new Rect(0f, 0f, Style.ScreenWidth, Style.ScreenHeight);
         private SmartRect rect;
 
-        public LoadingMapScreen() : base(nameof(LoadingMapScreen))
+        public LoadingMapScreen() : base(nameof(LoadingMapScreen), GUILayers.LoadingMapScreen)
         {
             if(instance != null)
             {
@@ -40,7 +40,7 @@ namespace Anarchy.UI
                     PhotonNetwork.Disconnect();
                 }
                 IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-                FengGameManagerMKII.FGM.GameStart = false;
+                FengGameManagerMKII.FGM.gameStart = false;
                 UnityEngine.Object.Destroy(FengGameManagerMKII.FGM);
                 Application.LoadLevel("menu");
                 DisableImmediate();
@@ -50,7 +50,7 @@ namespace Anarchy.UI
                 DisableImmediate();
                 RC.CustomLevel.customLevelLoaded = true;
                 RC.CustomLevel.SpawnPlayerCustomMap();
-                GameLogic.RacingLogic log = FengGameManagerMKII.FGM.Logic as GameLogic.RacingLogic;
+                GameLogic.RacingLogic log = FengGameManagerMKII.FGM.logic as GameLogic.RacingLogic;
                 if (log != null)
                 {
                     if (log.RaceStart)
@@ -63,7 +63,7 @@ namespace Anarchy.UI
 
         protected override void OnDisable()
         {
-            if (FengGameManagerMKII.FGM.NeedChooseSide)
+            if (FengGameManagerMKII.FGM.needChooseSide)
             {
                 Screen.lockCursor = true;
                 Screen.showCursor = true;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using Anarchy.Configuration.Presets;
 using Anarchy.Network;
 using Anarchy.UI.Animation;
@@ -62,7 +63,7 @@ namespace Anarchy.UI
         private SmartRect scrollRect;
         private float timeToUpdate;
 
-        public ServerListPanel() : base(nameof(ServerListPanel), 3)
+        public ServerListPanel() : base(nameof(ServerListPanel), GUILayers.ServerList)
         {
             animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
@@ -606,7 +607,17 @@ namespace Anarchy.UI
             if (PhotonNetwork.connected)
                 PhotonNetwork.Disconnect();
             head = locale["connecting"] + " " + regions[selection] + "...";
-            PhotonNetwork.ConnectToMaster(string.Format(NetworkSettings.AdressString, NetworkSettings.RegionAdresses[selection]), NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
+            bool result = PhotonNetwork.ConnectToMaster(string.Format(NetworkSettings.AdressString, NetworkSettings.RegionAdresses[selection]), NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
+            if (!result)
+            {
+                FengGameManagerMKII.FGM.StartCoroutine(TryConnectI(selection));
+            }
+        }
+
+        private System.Collections.IEnumerator TryConnectI(int sel)
+        {
+            yield return new WaitForSeconds(0.5f);
+            TryConnect(sel);
         }
 
         public override void Update()

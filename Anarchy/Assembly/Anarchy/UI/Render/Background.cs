@@ -11,7 +11,7 @@ namespace Anarchy.UI
         private Texture2D texture;
         private MovieTexture movie;
 
-        public Background() : base("Wallpapers", 0)
+        public Background() : base("Wallpapers", GUILayers.Background)
         {
         }
 

@@ -116,7 +116,7 @@ namespace GameLogic
             info += " |";
             top = $"<color=#{User.MainColor.ToValue()}>{PVPTitanScoreMax - PVPTitanScore} {info.ToHTMLFormat()} {PVPHumanScoreMax - PVPHumanScore}</color>";
 
-            top += "\n" + Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? FengGameManagerMKII.FGM.Logic.RoundTime : ServerTime).ToString("F0"));
+            top += "\n" + Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? FengGameManagerMKII.FGM.logic.RoundTime : ServerTime).ToString("F0"));
             Labels.TopCenter = top;
         }
 

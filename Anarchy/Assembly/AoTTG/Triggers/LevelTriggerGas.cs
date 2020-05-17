@@ -8,12 +8,12 @@ public class LevelTriggerGas : MonoBehaviour
         {
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
-                other.gameObject.GetComponent<HERO>().fillGas();
+                other.gameObject.GetComponent<HERO>().FillGas();
                 UnityEngine.Object.Destroy(base.gameObject);
             }
             else if (other.gameObject.GetComponent<HERO>().BasePV.IsMine)
             {
-                other.gameObject.GetComponent<HERO>().fillGas();
+                other.gameObject.GetComponent<HERO>().FillGas();
                 UnityEngine.Object.Destroy(base.gameObject);
             }
         }

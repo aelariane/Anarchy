@@ -20,7 +20,7 @@ namespace Anarchy.UI
         //sort later
         
 
-        public ProfilePanel() : base(nameof(ProfilePanel), 30)
+        public ProfilePanel() : base(nameof(ProfilePanel), GUILayers.ProfilePanel)
         {
             animator = new Animation.AngleAnimation(this, Animation.AngleAnimation.StartPoint.TopLeft, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
             if(animator is Animation.AngleAnimation anim)
@@ -42,17 +42,17 @@ namespace Anarchy.UI
             right.MoveY();
             LabelCenter(right, locale["chatSettings"], true);
             TextField(right, User.ChatFormat, locale["chatFormat"], Style.LabelOffset, true);
-            TextField(right, User.ChatPMFormat, locale["chatPMFormat"], Style.LabelOffset, true);
+            TextField(right, User.ChatPmFormat, locale["chatPMFormat"], Style.LabelOffset, true);
             LabelCenter(right, locale["chatFormatSend"], true);
             TextField(right, User.ChatFormatSend, string.Empty, 0f, true);
             LabelCenter(right, locale["chatPMFormatSend"], true);
-            TextField(right, User.ChatPMFormatSend, string.Empty, 0f, true);
+            TextField(right, User.ChatPmFormatSend, string.Empty, 0f, true);
             right.MoveY();
             LabelCenter(right, locale["others"], true);
             LabelCenter(right, locale["restart"], true);
             TextField(right, User.RestartMessage, string.Empty, 0f, true);
             LabelCenter(right, locale["mcswitch"], true);
-            TextField(right, User.MCSwitch, string.Empty, 0f, true);
+            TextField(right, User.McSwitch, string.Empty, 0f, true);
 
             right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
             if(Button(right, locale["preview"], true))
@@ -169,7 +169,7 @@ namespace Anarchy.UI
             LabelCenter(right, locale["killTriggers"], true);
             TextField(right, User.Suicide, locale["suicide"], Style.LabelOffset, true);
             TextField(right, User.AkinaKillTrigger, locale["akinaTrigger"], Style.LabelOffset, true);
-            TextField(right, User.ForestLava, locale["forestTrigger"], Style.LabelOffset, true);
+            TextField(right, User.ForestLavaKillTrigger, locale["forestTrigger"], Style.LabelOffset, true);
             TextField(right, User.RacingKillTrigger, locale["racingTrigger"], Style.LabelOffset, true);
 
             LabelCenter(right, locale["titans"], true);
@@ -269,7 +269,7 @@ namespace Anarchy.UI
             LabelCenter(right, locale["killTriggers"], true);
             Label(right, locale["suicide"] + " " + User.Suicide.ToValue().ToHTMLFormat(), true);
             Label(right, locale["akinaTrigger"] + " " + User.AkinaKillTrigger.ToValue().ToHTMLFormat(), true);
-            Label(right, locale["forestTrigger"] + " " + User.ForestLava.ToValue().ToHTMLFormat(), true);
+            Label(right, locale["forestTrigger"] + " " + User.ForestLavaKillTrigger.ToValue().ToHTMLFormat(), true);
             Label(right, locale["racingTrigger"] + " " + User.RacingKillTrigger.ToValue().ToHTMLFormat(), true);
 
             LabelCenter(right, locale["titans"], true);
@@ -291,9 +291,9 @@ namespace Anarchy.UI
             right.MoveY();
             LabelCenter(right, locale["chatSettings"], true);
             Label(right, locale["chatFormat"] + " " + User.Chat(1, "Player: Message").ToHTMLFormat(), true);
-            Label(right, locale["chatPMFormat"] + " " + User.ChatPM(1, "Player: Message").ToHTMLFormat(),  true);
+            Label(right, locale["chatPMFormat"] + " " + User.ChatPm(1, "Player: Message").ToHTMLFormat(),  true);
             Label(right, locale["chatFormatSend"] + ": " + User.ChatSend("message").ToHTMLFormat(), true);
-            Label(right, locale["chatPMFormatSend"] + ": " + User.ChatPMSend(1, "<color=white>Message</color>").ToHTMLFormat(), true);
+            Label(right, locale["chatPMFormatSend"] + ": " + User.ChatPmSend(1, "<color=white>Message</color>").ToHTMLFormat(), true);
 
             right.MoveY();
             LabelCenter(right, locale["others"], true);

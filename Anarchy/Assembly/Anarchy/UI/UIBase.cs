@@ -14,7 +14,6 @@ namespace Anarchy.UI
             if (transform != null)
             {
                 transform.parent = null;
-                UIManager.CheckIfNeedDisable();
             }
         }
     }

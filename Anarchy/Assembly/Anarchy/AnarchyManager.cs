@@ -2,13 +2,13 @@
 using Anarchy.Configuration;
 using Anarchy.UI;
 using System.Collections;
+using ExitGames.Client.Photon;
 using UnityEngine;
 
 namespace Anarchy
 {
     internal class AnarchyManager : MonoBehaviour
     {
-
         //In case you want to make your mod synchronizeable with public anarchy version
         //Note: Anarchy sync with current public version will work if
         //1. AnarchyVersion equals to public's mod AnarchyVersion
@@ -18,12 +18,13 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static Version AnarchyVersion = new Version("0.7.7.7");
+        public static readonly Version AnarchyVersion = new Version("0.7.8.0");
 
         public static readonly string CustomName = string.Empty;
         public static readonly bool FullAnarchySync = true;
 
         public static Background Background;
+        public static GameFeed Feed;
         public static UI.PanelMain MainMenu;
         public static PausePanel Pause;
         public static PauseWindow PauseWindow;
@@ -35,11 +36,13 @@ namespace Anarchy
         public static CharacterSelectionPanel CharacterSelectionPanel;
         public static Chat Chat;
         public static Log Log;
+        public static SingleStatsPanel StatsPanel;
 
         private void Awake()
         {
             StartCoroutine(OnGameWasOpened());
             DontDestroyOnLoad(this);
+            Feed = new GameFeed();
             Background = new Background();
             MainMenu = new UI.PanelMain();
             Pause = new PausePanel();
@@ -55,9 +58,9 @@ namespace Anarchy
             DontDestroyOnLoad(new GameObject("DiscordManager").AddComponent<Network.Discord.DiscordManager>());
             DestroyMainScene();
             GameModes.ResetOnLoad();
-            //Antis.Spam.EventsCounter.OnEventsSpamDetected += (sender, args) => 
+            //Antis.Spam.EventsCounter.OnEventsSpamDetected += (sender, args) =>
             //{
-            //    if(args.SpammedObject == 200 || args.SpammedObject == 253 && args.Count < 130)
+            //    if (args.SpammedObject == 200 || args.SpammedObject == 253 && args.Count < 130)
             //    {
             //        return;
             //    }
@@ -68,9 +71,9 @@ namespace Anarchy
             //    }
             //    Log.AddLine("eventSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
             //};
-            //Antis.Spam.RPCCounter.OnRPCSpamDetected += (sender, args) => 
+            //Antis.Spam.RPCCounter.OnRPCSpamDetected += (sender, args) =>
             //{
-            //    if(args.SpammedObject == "netPauseAnimation" || args.SpammedObject == "netCrossFade" && args.Count < 75)
+            //    if (args.SpammedObject == "netPauseAnimation" || args.SpammedObject == "netCrossFade" && args.Count < 75)
             //    {
             //        return;
             //    }
@@ -94,21 +97,42 @@ namespace Anarchy
             //    }
             //    Log.AddLine("instantiateSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
             //};
+            Antis.AntisManager.OnResponseCallback += (id, banned, reason) =>
+            {
+                Log.AddLineRaw($"Player [{id}] has been {(banned ? "banned" : "kicked")}. " +
+                                  $"{(reason == "" ? "" : $"reason: {reason}")}");
+            };
+            StatsPanel = new SingleStatsPanel();
             Network.BanList.Load();
         }
 
         public static void DestroyMainScene()
         {
-            string[] objectsToDestroy = new string[] { "PanelLogin", "LOGIN", "BG_TITLE", "Colossal", "Icosphere", "cube", "colossal", "CITY", "city", "rock", "AOTTG_HERO", "Checkbox", };
-            GameObject[] gos = (GameObject[])FindObjectsOfType(typeof(GameObject));
-            for(int i = 0; i < objectsToDestroy.Length; i++)
+            var objectsToDestroy = new[]
             {
-                string name = objectsToDestroy[i];
-                for(int j = 0; j < gos.Length; j++)
+                "PanelLogin",
+                "LOGIN",
+                "BG_TITLE",
+                "Colossal",
+                "Icosphere",
+                "cube",
+                "colossal",
+                "CITY",
+                "city",
+                "rock",
+                "AOTTG_HERO",
+                "Checkbox",
+            };
+            var gos = (GameObject[]) FindObjectsOfType(typeof(GameObject));
+            foreach (var name in objectsToDestroy)
+            {
+                foreach (var go in gos)
                 {
-                    if (gos[j].name.Contains(name) || (gos[j].GetComponent<UILabel>() != null && gos[j].GetComponent<UILabel>().text.Contains("Snap")) || (gos[j].GetComponent<UILabel>() != null && gos[j].GetComponent<UILabel>().text.Contains("Custom")))
+                    if (go.name.Contains(name) ||
+                        (go.GetComponent<UILabel>() != null && go.GetComponent<UILabel>().text.Contains("Snap")) ||
+                        (go.GetComponent<UILabel>() != null && go.GetComponent<UILabel>().text.Contains("Custom")))
                     {
-                        Destroy(gos[j]);
+                        Destroy(go);
                     }
                 }
             }
@@ -126,17 +150,19 @@ namespace Anarchy
 
         private void OnLevelWasLoaded(int id)
         {
-            if(Application.loadedLevelName == "menu")
+            if (Application.loadedLevelName == "menu")
             {
                 if (!Background.Active)
                 {
                     Background.Enable();
                 }
+
                 if (Chat != null && Chat.Active)
                 {
                     Chat.Disable();
                     Chat.Clear();
                 }
+
                 if (Log != null && Log.Active)
                 {
                     Log.Disable();
@@ -145,37 +171,47 @@ namespace Anarchy
                 DestroyMainScene();
                 GameModes.ResetOnLoad();
                 Network.BanList.Save();
-                Anarchy.Skins.Humans.HumanSkin.Storage.Clear();
+                Skins.Humans.HumanSkin.Storage.Clear();
             }
             else
             {
+                if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+                {
+                    SingleRunStats.Reset();
+                }
                 if (Background.Active)
                 {
                     Background.Disable();
                 }
-                if (Application.loadedLevelName != "characterCreation" && Application.loadedLevelName != "SnapShot" && PhotonNetwork.inRoom)
+
+                if (Application.loadedLevelName != "characterCreation" && Application.loadedLevelName != "SnapShot" &&
+                    PhotonNetwork.inRoom)
                 {
                     if (Chat != null && !Chat.Active)
                     {
                         Chat.Enable();
                     }
+
                     if (Log != null && !Log.Active)
                     {
                         Log.Enable();
                     }
                 }
             }
-            if(Pause != null)
-                Pause.Continue();
+
+            Pause?.Continue();
             Settings.Apply();
             VideoSettings.Apply();
             if (PauseWindow.Active)
             {
                 PauseWindow.DisableImmediate();
             }
+            if (StatsPanel.Active)
+            {
+                StatsPanel.DisableImmediate();
+            }
         }
 
-      
 
         private IEnumerator OnGameWasOpened()
         {
@@ -188,17 +224,6 @@ namespace Anarchy
 
         private void Update()
         {
-            //if (Input.GetKeyDown(KeyCode.F5))
-            //{
-            //    if (DebugPanel.Active)
-            //    {
-            //        DebugPanel.DisableImmediate();
-            //    }
-            //    else
-            //    {
-            //        DebugPanel.EnableImmediate();
-            //    }
-            //}
         }
     }
 }

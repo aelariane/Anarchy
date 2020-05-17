@@ -40,7 +40,7 @@ public class LevelInfo
             {
                 if (initLogic)
                 {
-                    FengGameManagerMKII.FGM.Logic = (GameLogic.GameLogic)System.Activator.CreateInstance(levelInfo.LogicType);
+                    FengGameManagerMKII.FGM.logic = (GameLogic.GameLogic)System.Activator.CreateInstance(levelInfo.LogicType);
                 }
                 return levelInfo;
             }

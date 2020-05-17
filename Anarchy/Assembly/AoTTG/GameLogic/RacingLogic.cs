@@ -65,7 +65,7 @@ namespace GameLogic
         public RacingLogic() : base()
         {
             StartTime = IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? 5f : (GameModes.RacingStartTime.Enabled ? GameModes.RacingStartTime.GetInt(0) : 20f);
-            if (GameModes.ASORacing.Enabled)
+            if (GameModes.AsoRacing.Enabled)
             {
                 CustomRestartTime = true;
                 RestartTime = 999f;
@@ -83,7 +83,7 @@ namespace GameLogic
 
         public static void ASORacingCheck(Setting set, bool state, bool rcv)
         {
-            if (FengGameManagerMKII.FGM.Logic is RacingLogic log)
+            if (FengGameManagerMKII.FGM.logic is RacingLogic log)
             {
                 log.CustomRestartTime = state;
                 if (state)
@@ -104,11 +104,11 @@ namespace GameLogic
         {
             if (Multiplayer && !PhotonNetwork.IsMasterClient)
             {
-                if (FengGameManagerMKII.FGM.LocalRacingResult.Length <= 0)
+                if (FengGameManagerMKII.FGM.localRacingResult.Length <= 0)
                 {
                     return string.Empty;
                 }
-                return "<color=#" + User.MainColor.ToValue() + ">" + FengGameManagerMKII.FGM.LocalRacingResult.ToHTMLFormat() + "</color>\n";
+                return "<color=#" + User.MainColor.ToValue() + ">" + FengGameManagerMKII.FGM.localRacingResult.ToHTMLFormat() + "</color>\n";
             }
             if (finishers.Count == 0)
             {
@@ -253,7 +253,7 @@ namespace GameLogic
 
         public static void RestartTimeCheck(Setting sender, bool state, bool rcv)
         {
-            if (FengGameManagerMKII.FGM.Logic is RacingLogic log)
+            if (FengGameManagerMKII.FGM.logic is RacingLogic log)
             {
                 log.CustomRestartTime = state;
                 if (state)
@@ -261,15 +261,15 @@ namespace GameLogic
                     if (sender.GetInt(0) == 999 || sender.GetInt(0) == 1000)
                     {
                         sender.State = false;
-                        if (!GameModes.ASORacing.Enabled)
+                        if (!GameModes.AsoRacing.Enabled)
                         {
-                            GameModes.ASORacing.State = true;
+                            GameModes.AsoRacing.State = true;
                         }
                         return;
                     }
-                    else if (GameModes.ASORacing.Enabled)
+                    else if (GameModes.AsoRacing.Enabled)
                     {
-                        GameModes.ASORacing.State = false;
+                        GameModes.AsoRacing.State = false;
                     }
                     Anarchy.Configuration.AnarchyGameModeSetting.AnarchySettingCallback(sender, true, false);
                     log.RestartTime = sender.GetInt(0);
@@ -284,7 +284,7 @@ namespace GameLogic
 
         public static void StartTimeCheck(Setting set, bool state, bool rcv)
         {
-            if (FengGameManagerMKII.FGM.Logic is RacingLogic log)
+            if (FengGameManagerMKII.FGM.logic is RacingLogic log)
             {
                 if (state)
                 {
@@ -417,7 +417,7 @@ namespace GameLogic
 
         protected override void UpdateRespawnTime()
         {
-            if (IN_GAME_MAIN_CAMERA.MainCamera.gameOver && !FengGameManagerMKII.FGM.NeedChooseSide)
+            if (IN_GAME_MAIN_CAMERA.MainCamera.gameOver && !FengGameManagerMKII.FGM.needChooseSide)
             {
                 this.MyRespawnTime += UpdateInterval;
                 if (this.MyRespawnTime > 1.5f)

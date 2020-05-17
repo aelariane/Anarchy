@@ -1,5 +1,6 @@
 ﻿using System;
 using Anarchy;
+using Anarchy.Commands.Chat;
 using Optimization;
 using RC;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace GameLogic
         public GameMode Mode => IN_GAME_MAIN_CAMERA.GameMode;
         public bool Multiplayer => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer;
         public float ServerTime { get; set; }
-        public int RoundsCount { get; private set; } = 1;
+        public int RoundsCount { get; private set; } = 0;
         public float RoundTime { get => Round.Time; set => Round.Time = value; }
         public int HumanScore { get; set; }
         public int TitanScore { get; set; }
@@ -76,6 +77,7 @@ namespace GameLogic
             TitanScore++;
             Round.GameEndCD = Round.GameEndTimer;
             OnGameLoose();
+            AnarchyManager.Feed.RoundLoose();
             if (Multiplayer)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("netGameLose", PhotonTargets.Others, new object[] { TitanScore });
@@ -92,6 +94,7 @@ namespace GameLogic
             HumanScore++;
             Round.GameEndCD = Round.GameEndTimer;
             OnGameWin();
+            AnarchyManager.Feed.RoundWin();
             if (Multiplayer)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("netGameWin", PhotonTargets.Others, new object[] { GetNetGameWinData() });
@@ -135,6 +138,7 @@ namespace GameLogic
             TitanScore = score;
             Round.GameEndCD = Round.GameEndTimer;
             OnNetGameLose(score);
+            AnarchyManager.Feed.RoundLoose();
         }
 
         public void NetGameWin(int score)
@@ -143,6 +147,7 @@ namespace GameLogic
             HumanScore = score;
             Round.GameEndCD = Round.GameEndTimer;
             OnNetGameWin(score);
+            AnarchyManager.Feed.RoundWin();
         }
 
         protected virtual void OnGameLoose() { }
@@ -159,9 +164,13 @@ namespace GameLogic
             OnRestart();
             GameModes.AntiReviveClear();
             Restarting = false;
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
-                OnRequireStatus();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    OnRequireStatus();
+                }
+                AnarchyManager.Feed.RoundStart();
             }
         }
 
@@ -186,8 +195,9 @@ namespace GameLogic
                 UpdateLabels();
                 if (Multiplayer)
                 {
+                    UpdateTeams();
                     UpdateCustomLogic();
-                    if (FengGameManagerMKII.FGM.NeedChooseSide)
+                    if (FengGameManagerMKII.FGM.needChooseSide)
                     {
                         Labels.TopCenter += "\n\n" + Lang.Format("pressToJoin", 1.ToString());
                     }
@@ -248,7 +258,7 @@ namespace GameLogic
         private void ShowResult()
         {
             IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-            FengGameManagerMKII.FGM.GameStart = false;
+            FengGameManagerMKII.FGM.gameStart = false;
             Screen.lockCursor = false;
             Screen.showCursor = true;
             string names = string.Empty;
@@ -310,7 +320,7 @@ namespace GameLogic
                                     default:
                                         break;
                                 }
-                                tit.setAbnormalType(type, type == AbnormalType.Crawler);
+                                tit.SetAbnormalType(type, type == AbnormalType.Crawler);
                                 if (item.endless)
                                 {
                                     item.time = item.delay;
@@ -328,7 +338,7 @@ namespace GameLogic
 
         private void UpdateInputs()
         {
-            if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && FengGameManagerMKII.FGM.NeedChooseSide)
+            if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && FengGameManagerMKII.FGM.needChooseSide)
             {
                 if (InputManager.IsInputDown[InputCode.Flare1] && !AnarchyManager.Pause.Active)
                 {
@@ -400,7 +410,7 @@ namespace GameLogic
             {
                 top += " ";
             }
-            top += Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.Logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.Logic.ServerTime).ToString("F0")));
+            top += Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.logic.ServerTime).ToString("F0")));
             Labels.TopCenter = top;
         }
 
@@ -408,7 +418,7 @@ namespace GameLogic
 
         protected virtual void UpdateRespawnTime()
         {
-            if ((IN_GAME_MAIN_CAMERA.MainCamera.gameOver && !FengGameManagerMKII.FGM.NeedChooseSide) && (FengGameManagerMKII.Level.RespawnMode == RespawnMode.DEATHMATCH || GameModes.EndlessRespawn.Enabled || ((GameModes.BombMode.Enabled || GameModes.BladePVP.Enabled) && GameModes.PointMode.Enabled)))
+            if ((IN_GAME_MAIN_CAMERA.MainCamera.gameOver && !FengGameManagerMKII.FGM.needChooseSide) && (FengGameManagerMKII.Level.RespawnMode == RespawnMode.DEATHMATCH || GameModes.EndlessRespawn.Enabled || ((GameModes.BombMode.Enabled || GameModes.BladePvp.Enabled) && GameModes.PointMode.Enabled)) && !SpectateCommand.IsInSpecMode)
             {
                 this.MyRespawnTime += UpdateInterval;
                 int num = 10;
@@ -427,7 +437,7 @@ namespace GameLogic
                     IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
                     if (PhotonNetwork.player.IsTitan)
                     {
-                        FengGameManagerMKII.FGM.SpawnNonAITitan(FengGameManagerMKII.FGM.myLastHero, "titanRespawn");
+                        FengGameManagerMKII.FGM.SpawnNonAiTitan(FengGameManagerMKII.FGM.myLastHero, "titanRespawn");
                     }
                     else
                     {
@@ -436,6 +446,14 @@ namespace GameLogic
                     IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
                     Labels.Center = string.Empty;
                 }
+            }
+        }
+
+        private void UpdateTeams()
+        {
+            if (GameModes.TeamMode.Enabled)
+            {
+                Labels.TopCenter = Labels.TopCenter.AppendLine(Anarchy.Configuration.GameModeSetting.Lang.Format("cyanScore", AnarchyExtensions.GetCyanPoints().ToString()) + "      " + Anarchy.Configuration.GameModeSetting.Lang.Format("magentaScore", AnarchyExtensions.GetMagentaPoints().ToString()));
             }
         }
     }

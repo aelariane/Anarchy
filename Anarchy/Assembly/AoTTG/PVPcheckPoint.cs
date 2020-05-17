@@ -178,7 +178,7 @@ public class PVPcheckPoint : Photon.MonoBehaviour
             {
                 this.supply = Optimization.Caching.Pool.NetworkEnable("aot_supply", base.transform.position - Vectors.up * (base.transform.position.y - this.getHeight(base.transform.position)), base.transform.rotation, 0);
             }
-            (FengGameManagerMKII.FGM.Logic as GameLogic.PVPCaptureLogic).PVPHumanScore += 2;
+            (FengGameManagerMKII.FGM.logic as GameLogic.PVPCaptureLogic).PVPHumanScore += 2;
             FengGameManagerMKII.FGM.CheckPVPpts();
             if (this.checkIfHumanWins())
             {
@@ -304,7 +304,7 @@ public class PVPcheckPoint : Photon.MonoBehaviour
             {
                 2
             });
-            (FengGameManagerMKII.FGM.Logic as GameLogic.PVPCaptureLogic).PVPTitanScore += 2;
+            (FengGameManagerMKII.FGM.logic as GameLogic.PVPCaptureLogic).PVPTitanScore += 2;
             FengGameManagerMKII.FGM.CheckPVPpts();
             if (this.checkIfTitanWins())
             {
@@ -406,7 +406,7 @@ public class PVPcheckPoint : Photon.MonoBehaviour
                 this.getPtsTimer = 0f;
                 if (!this.isBase)
                 {
-                    (FengGameManagerMKII.FGM.Logic as GameLogic.PVPCaptureLogic).PVPTitanScore++;
+                    (FengGameManagerMKII.FGM.logic as GameLogic.PVPCaptureLogic).PVPTitanScore++;
                 }
                 FengGameManagerMKII.FGM.CheckPVPpts();
             }
@@ -427,7 +427,7 @@ public class PVPcheckPoint : Photon.MonoBehaviour
                 this.getPtsTimer = 0f;
                 if (!this.isBase)
                 {
-                    (FengGameManagerMKII.FGM.Logic as GameLogic.PVPCaptureLogic).PVPTitanScore++;
+                    (FengGameManagerMKII.FGM.logic as GameLogic.PVPCaptureLogic).PVPTitanScore++;
                 }
                 FengGameManagerMKII.FGM.CheckPVPpts();
             }

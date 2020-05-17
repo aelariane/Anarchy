@@ -27,6 +27,8 @@ public class PhotonPlayer
     public ICounter<string> RPCSpam;
     private readonly int[] targetArray; 
 
+    public bool Muted { get; set; }
+
     public bool AnarchySync
     {
         get => anarchySync;
@@ -74,7 +76,7 @@ public class PhotonPlayer
 
     public bool HasVoice { get; set; }
 
-    public bool IsMuted { get; set; }
+    public bool VCMuted { get; set; }
 
     public string ModName
     {
@@ -86,9 +88,9 @@ public class PhotonPlayer
                 return;
             }
             modName = value;
-            if (FengGameManagerMKII.FGM && FengGameManagerMKII.FGM.playerList != null)
+            if (FengGameManagerMKII.FGM && FengGameManagerMKII.FGM.PlayerList != null)
             {
-                FengGameManagerMKII.FGM.playerList.Update();
+                FengGameManagerMKII.FGM.PlayerList.Update();
             }
         }
     }
@@ -324,9 +326,9 @@ public class PhotonPlayer
         this.Properties.StripKeysWithNullValues();
     }
 
-    public void Mute()
+    public void MuteVC()
     {
-        IsMuted = true;
+        VCMuted = true;
     }
 
     private static void OnLeftRoom(Optimization.AOTEventArgs args)
@@ -416,7 +418,7 @@ public class PhotonPlayer
 
     public void Unmute()
     {
-        IsMuted = false;
+        VCMuted = false;
     }
 
     public Hashtable AllProperties

@@ -26,7 +26,7 @@ public class supplyCheck : MonoBehaviour
             {
                 if(hero != null && hero.IsLocal && Vector3.Distance(hero.baseT.position, baseT.position) < 1.5f)
                 {
-                    hero.getSupply();
+                    hero.GetSupply();
                 }
             }
         }

@@ -9,7 +9,7 @@ namespace Anarchy.UI
         private Rect windowRect;
         public float PauseWaitTime;
 
-        public PauseWindow() : base("PauseWindow", 7809)
+        public PauseWindow() : base("PauseWindow", GUILayers.PauseWindow)
         {
             windowRect = Helper.GetScreenMiddle(Width, Height);
         }
@@ -42,6 +42,11 @@ namespace Anarchy.UI
                     }
                 }
             }
+        }
+
+        public override void OnUpdateScaling()
+        {
+            windowRect = Helper.GetScreenMiddle(Width, Height);
         }
     }
 }

@@ -67,7 +67,7 @@ public class Bomb : Photon.MonoBehaviour
                     int num2 = owner.RCteam;
                     if (num == 0 || num != num2)
                     {
-                        hero.markDie();
+                        hero.MarkDie();
                         hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                         {
                             -1,
@@ -78,7 +78,7 @@ public class Bomb : Photon.MonoBehaviour
                 }
                 else
                 {
-                    hero.markDie();
+                    hero.MarkDie();
                     hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                     {
                         -1,

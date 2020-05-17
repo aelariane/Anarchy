@@ -94,7 +94,7 @@ public class Horse : Photon.MonoBehaviour
                     }
                     if (!this.myHero.animation.IsPlaying("horse_Run"))
                     {
-                        this.myHero.GetComponent<HERO>().crossFade("horse_run", 0.1f);
+                        this.myHero.GetComponent<HERO>().CrossFade("horse_run", 0.1f);
                     }
                     if (!this.dust.GetComponent<ParticleSystem>().enableEmission)
                     {
@@ -113,7 +113,7 @@ public class Horse : Photon.MonoBehaviour
                     }
                     if (!this.myHero.animation.IsPlaying("horse_idle"))
                     {
-                        this.myHero.GetComponent<HERO>().crossFade("horse_idle", 0.1f);
+                        this.myHero.GetComponent<HERO>().CrossFade("horse_idle", 0.1f);
                     }
                     if (this.dust.GetComponent<ParticleSystem>().enableEmission)
                     {
@@ -132,12 +132,12 @@ public class Horse : Photon.MonoBehaviour
                 {
                     if (!this.myHero.animation.IsPlaying("horse_Run"))
                     {
-                        this.myHero.GetComponent<HERO>().crossFade("horse_run", 0.1f);
+                        this.myHero.GetComponent<HERO>().CrossFade("horse_run", 0.1f);
                     }
                 }
                 else if (!this.myHero.animation.IsPlaying("horse_idle"))
                 {
-                    this.myHero.GetComponent<HERO>().crossFade("horse_idle", 0.1f);
+                    this.myHero.GetComponent<HERO>().CrossFade("horse_idle", 0.1f);
                 }
             }
             if ((this.controller.isAttackDown || this.controller.isAttackIIDown) && this.IsGrounded())

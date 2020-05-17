@@ -34,6 +34,10 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("clear", new ClearCommand());
             allCommands.Add("kill", new KillCommand());
             allCommands.Add("team", new ChangeTeamCommand());
+            allCommands.Add("unban", new UnbanCommand());
+            allCommands.Add("mute", new MuteCommand(true));
+            allCommands.Add("unmute", new MuteCommand(false));
+            allCommands.Add("animate", new AnimateNameCommand());
         }
 
         private void NotFound(string name)
@@ -74,18 +78,22 @@ namespace Anarchy.Commands.Chat
                 UI.Chat.Add(ChatCommand.Lang["errMC"]);
                 return;
             }
-            string[] args = new string[strArray.Length - 1];
-            for(int i = 1; i < strArray.Length; i++)
+            string[] args = CommandsExtensions.ParseCommandArgs(inputLine, 1);
+            try
             {
-                args[i - 1] = strArray[i];
+                if (cmd.Execute(args))
+                {
+                    cmd.OnSuccess();
+                }
+                else
+                {
+                    cmd.OnFail();
+                }
             }
-            if (cmd.Execute(args))
+            catch(System.Exception ex)
             {
-                cmd.OnSuccess();
-            }
-            else
-            {
-                cmd.OnFail();
+                UI.Chat.Add(ChatCommand.Lang.Format("errExecute", cmd.CommandName));
+                UnityEngine.Debug.Log($"Exception occured while executing command: {cmd.CommandName}\nException message: {ex.Message}\nStackTrace:\n{ex.StackTrace}");
             }
             cmd.OnFinalize();
         }

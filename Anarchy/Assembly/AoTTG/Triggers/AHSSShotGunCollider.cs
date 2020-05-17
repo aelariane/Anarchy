@@ -78,14 +78,14 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                         {
                             if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
                             {
-                                if (!component.transform.root.GetComponent<HERO>().isGrabbed)
+                                if (!component.transform.root.GetComponent<HERO>().IsGrabbed)
                                 {
-                                    component.transform.root.GetComponent<HERO>().die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
+                                    component.transform.root.GetComponent<HERO>().Die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
                                 }
                             }
-                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().IsGrabbed)
                             {
-                                component.transform.root.GetComponent<HERO>().markDie();
+                                component.transform.root.GetComponent<HERO>().MarkDie();
                                 component.transform.root.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
                                 {
                                 (component.transform.root.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f,
@@ -114,7 +114,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                                 FengGameManagerMKII.FGM.netShowDamage(num2);
                                 if ((float)num2 > component2.transform.root.GetComponent<TITAN>().myLevel * 100f)
                                 {
-                                    component2.transform.root.GetComponent<TITAN>().die();
+                                    component2.transform.root.GetComponent<TITAN>().Die();
                                     if (Settings.Snapshots.ToValue() && Settings.SnapshotsDamage.Value <= num2)
                                     {
                                         IN_GAME_MAIN_CAMERA.MainCamera.startSnapShot(component2.transform.position, num2, component2.transform.root.gameObject, 0.02f);
@@ -255,7 +255,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                             {
                                 if (!gameObject.GetComponent<TITAN>().hasDie)
                                 {
-                                    gameObject.GetComponent<TITAN>().hitEye();
+                                    gameObject.GetComponent<TITAN>().HitEye();
                                 }
                             }
                             else if (!PhotonNetwork.IsMasterClient || !gameObject.GetPhotonView().IsMine)
@@ -289,7 +289,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                         {
                             if (!gameObject2.GetComponent<TITAN>().hasDie)
                             {
-                                gameObject2.GetComponent<TITAN>().hitAnkle();
+                                gameObject2.GetComponent<TITAN>().HitAnkle();
                             }
                         }
                         else
@@ -306,7 +306,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
                             }
                             else if (!gameObject2.GetComponent<TITAN>().hasDie)
                             {
-                                gameObject2.GetComponent<TITAN>().hitAnkle();
+                                gameObject2.GetComponent<TITAN>().HitAnkle();
                             }
                             this.showCriticalHitFX(other.gameObject.transform.position);
                         }

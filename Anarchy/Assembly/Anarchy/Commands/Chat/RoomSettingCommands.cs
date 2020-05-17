@@ -43,7 +43,7 @@ namespace Anarchy.Commands.Chat
                             chatMessage = Lang.Format("errArg", CommandName + " time");
                             return false;
                         }
-                        FengGameManagerMKII.FGM.Logic.ServerTime = time;
+                        FengGameManagerMKII.FGM.logic.ServerTime = time;
                         chatMessage = Lang.Format("roomTimeSet", time.ToString());
                         SendLocalizedText("roomTime", new string[] { time.ToString() });
                         break;
@@ -53,8 +53,8 @@ namespace Anarchy.Commands.Chat
                         chatMessage = Lang.Format("errArg", CommandName + " time");
                         return false;
                     }
-                    FengGameManagerMKII.FGM.Logic.ServerTimeBase += time;
-                    FengGameManagerMKII.FGM.Logic.ServerTime += time;
+                    FengGameManagerMKII.FGM.logic.ServerTimeBase += time;
+                    FengGameManagerMKII.FGM.logic.ServerTime += time;
                     chatMessage = Lang.Format("roomTime", time.ToString());
                     SendLocalizedText("roomTime", new string[] { time.ToString() });
                     break;

@@ -1366,7 +1366,7 @@ public static class PhotonNetwork
     public static void SendChek(PhotonPlayer target = null)
     {
         RaiseEventOptions options = new RaiseEventOptions();
-        if(target != null)
+        if (target != null)
         {
             options.TargetActors = new int[] { target.ID };
         }

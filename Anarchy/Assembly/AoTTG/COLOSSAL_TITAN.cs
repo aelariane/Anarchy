@@ -117,10 +117,10 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 gameObject4 = array4[UnityEngine.Random.Range(0, array4.Length)];
             }
-            gameObject3.GetComponent<TITAN>().setRoute(gameObject4);
-            gameObject3.GetComponent<TITAN>().setAbnormalType(AbnormalType.Aberrant, false);
+            gameObject3.GetComponent<TITAN>().SetRoute(gameObject4);
+            gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Aberrant, false);
             gameObject3.GetComponent<TITAN>().activeRad = 0;
-            gameObject3.GetComponent<TITAN>().toCheckPoint((Vector3)gameObject3.GetComponent<TITAN>().checkPoints[0], 10f);
+            gameObject3.GetComponent<TITAN>().ToCheckPoint((Vector3)gameObject3.GetComponent<TITAN>().checkPoints[0], 10f);
         }
         else
         {
@@ -141,17 +141,17 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             }
             if (GameObject.FindGameObjectsWithTag("titan").Length == 5)
             {
-                gameObject3.GetComponent<TITAN>().setAbnormalType(AbnormalType.Jumper, false);
+                gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Jumper, false);
             }
             else if (UnityEngine.Random.Range(0f, 1f) >= num)
             {
                 if (UnityEngine.Random.Range(0f, 1f) < num2)
                 {
-                    gameObject3.GetComponent<TITAN>().setAbnormalType(AbnormalType.Jumper, false);
+                    gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Jumper, false);
                 }
                 else
                 {
-                    gameObject3.GetComponent<TITAN>().setAbnormalType(AbnormalType.Crawler, false);
+                    gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Crawler, false);
                 }
             }
             gameObject3.GetComponent<TITAN>().activeRad = 200;
@@ -309,7 +309,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 if (!hitHero.GetComponent<HERO>().HasDied())
                 {
-                    hitHero.GetComponent<HERO>().die((hitHero.transform.position - position) * 15f * 4f, false);
+                    hitHero.GetComponent<HERO>().Die((hitHero.transform.position - position) * 15f * 4f, false);
                 }
             }
             else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
@@ -318,12 +318,12 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                 {
                     if (!hitHero.GetComponent<HERO>().HasDied())
                     {
-                        hitHero.GetComponent<HERO>().markDie();
+                        hitHero.GetComponent<HERO>().MarkDie();
                     }
                 }
                 else if (!hitHero.GetComponent<HERO>().HasDied())
                 {
-                    hitHero.GetComponent<HERO>().markDie();
+                    hitHero.GetComponent<HERO>().MarkDie();
                     hitHero.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
                     {
                         (hitHero.transform.position - position) * 15f * 4f,
@@ -811,7 +811,8 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             }
             else
             {
-                FengGameManagerMKII.FGM.SendKillInfo(false, (string)photonView.owner.Properties[PhotonPlayerProperty.name], true, "Colossal Titan's neck", speed);
+                FengGameManagerMKII.FGM.SendKillInfo(false, photonView.owner.UIName, true, "Colossal Titan's neck", speed);
+                AnarchyManager.Feed.Kill(photonView.owner.UIName, "Colossal Titan's Neck", speed);
                 FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[]
                 {
                     speed

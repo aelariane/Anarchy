@@ -9,8 +9,10 @@ namespace Anarchy.UI
 {
     public static class Style
     {
-        public static float ScreenWidth => Screen.width;
-        public static float ScreenHeight => Screen.height;
+        public static float ScreenWidthDefault { get; private set; }
+        public static float ScreenHeightDefault { get; private set; }
+        public static float ScreenWidth { get; set; }
+        public static float ScreenHeight { get;set; }
 
 
 
@@ -155,6 +157,15 @@ namespace Anarchy.UI
         {
             using (ConfigFile config = new ConfigFile(Application.dataPath + "/Configuration/Visuals.ini", ':', false))
             {
+                using (ConfigFile settings = new ConfigFile(Application.dataPath + "/Configuration/Settings.ini", ' ', false))
+                {
+                    settings.Load();
+                    settings.AutoSave = true;
+                    string[] res = settings.GetString("resolution").Split('x');
+                    ScreenWidthDefault = (float)System.Convert.ToInt32(res[0]);
+                    ScreenHeightDefault = (float)System.Convert.ToInt32(res[1]);
+                    ResetScreenParameters();
+                }
                 config.Load();
                 config.AutoSave = false;
                 FontName = config.GetString("font");
@@ -242,6 +253,12 @@ namespace Anarchy.UI
             PublicSettings[21] = TextureColors[5].ColorToString();
         }
 
+        public static void ResetScreenParameters()
+        {
+            ScreenHeight = ScreenHeightDefault;
+            ScreenWidth = ScreenWidthDefault;
+        }
+
         public static void Save()
         {
             if (!wasLoaded)
@@ -312,7 +329,7 @@ namespace Anarchy.UI
             FontName = PublicSettings[0];
             BackgroundHex = PublicSettings[1];
             BackgroundTransparency = System.Convert.ToInt32(PublicSettings[2]);
-            //UseVectors = System.Convert.ToBoolean(PublicSettings[9]);
+            UseVectors = System.Convert.ToBoolean(PublicSettings[9]);
             int j = 0;
             for(int i = 3; i < 9; i++)
             {

@@ -1,352 +1,102 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Anarchy;
 using Anarchy.Commands.Chat;
 using Anarchy.Configuration;
+using Anarchy.Configuration.Presets;
 using Anarchy.Network;
+using Anarchy.Skins;
+using Anarchy.Skins.Maps;
 using Anarchy.UI;
-using ExitGames.Client.Photon;
+using Antis;
+using GameLogic;
 using Optimization;
 using Optimization.Caching;
 using RC;
 using UnityEngine;
-using Anti = Anarchy.Network.Antis;
+using MonoBehaviour = Photon.MonoBehaviour;
 
-internal class FengGameManagerMKII : Photon.MonoBehaviour
+[SuppressMessage("ReSharper", "CheckNamespace")]
+[SuppressMessage("ReSharper", "UnusedMember.Local")]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+internal partial class FengGameManagerMKII : MonoBehaviour
 {
-    private static readonly System.Collections.Hashtable itweenHash = new System.Collections.Hashtable() { { "x", 0 }, { "y", 0 }, { "z", 0 }, { "easetype", iTween.EaseType.easeInBounce }, { "time", 0.5f }, { "delay", 2f } };
-    private static Queue<KillInfoComponent> killInfoList = new Queue<KillInfoComponent>();
-    private FEMALE_TITAN annie;
-    private COLOSSAL_TITAN colossal;
-    private TITAN_EREN eren;
-    private bool gameTimesUp;
-    private List<HERO> heroes;
-    private List<Bullet> hooks;
-    private Anarchy.Skins.Maps.LevelSkin levelSkin;
-    public string LocalRacingResult;
-    private IN_GAME_MAIN_CAMERA mainCamera;
-    public string myLastHero;
-    private string myLastRespawnTag = "";
-    internal PlayerList playerList;
-    private RoomInformation roomInformation = new RoomInformation();
-    private ArrayList racingResult;
-    internal List<TITAN> titans;
+    //Basic AoTTG ApplicationID
+    //public const string ApplicationId = "f1f6195c-df4a-40f9-bae5-4744c32901ef";
+    public const string ApplicationId = "5578b046-8264-438c-99c5-fb15c71b6744";
 
-    public const string ApplicationId = "f1f6195c-df4a-40f9-bae5-4744c32901ef";
+    private static readonly Hashtable itweenHash = new Hashtable
+        {{"x", 0}, {"y", 0}, {"z", 0}, {"easetype", iTween.EaseType.easeInBounce}, {"time", 0.5f}, {"delay", 2f}};
+
+    private static readonly Queue<KillInfoComponent> killInfoList = new Queue<KillInfoComponent>();
     public static FengGameManagerMKII FGM;
     public static FPSCounter FPS = new FPSCounter();
     public static bool LAN;
     public static LevelInfo Level;
     public static StylishComponent Stylish;
+    private readonly RoomInformation roomInformation = new RoomInformation();
+    private FEMALE_TITAN annie;
     public GameObject checkpoint;
-    public int Difficulty;
-    public bool GameStart;
-    public bool JustSuicide;
-    public GameLogic.GameLogic Logic;
-    public bool NeedChooseSide;
-    public int SingleKills;
-    public int SingleMax;
-    public int SingleTotal;
-    public int Time = 600;
+    private COLOSSAL_TITAN colossal;
+    public int difficulty;
+    private TITAN_EREN eren;
+    public bool gameStart;
+    private bool gameTimesUp;
+    private List<HERO> heroes;
+    private List<Bullet> hooks;
+    public bool justSuicide;
+    private LevelSkin levelSkin;
+    public string localRacingResult;
+    public GameLogic.GameLogic logic;
+    private IN_GAME_MAIN_CAMERA mainCamera;
+    public string myLastHero;
+    private string myLastRespawnTag = "";
+    public bool needChooseSide;
+    internal PlayerList PlayerList;
+    private ArrayList racingResult;
+    public int singleKills;
+    public int singleMax;
+    public int singleTotal;
+    public int time = 600;
+    private List<TITAN> titans;
 
     public static FEMALE_TITAN Annie => FGM.annie;
     public static COLOSSAL_TITAN Colossal => FGM.colossal;
     public static TITAN_EREN Eren => FGM.eren;
     public static List<HERO> Heroes => FGM.heroes;
-    public bool IsLosing => Logic.Round.IsLosing;
-    public bool IsWinning => Logic.Round.IsWinning;
+    public bool IsLosing => logic.Round.IsLosing;
+    public bool IsWinning => logic.Round.IsWinning;
     public static List<TITAN> Titans => FGM.titans;
     public static UIReferArray UIRefer { get; private set; }
 
-    private void Awake()
-    {
-        FGM = this;
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnConnectionFail, OnConnectionFail);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnConnectedToPhoton, OnConnectedToPhoton);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnCreatedRoom, OnCreatedRoom);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnDisconnectedFromPhoton, OnDisconnectedFromPhoton);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnJoinedLobby, OnJoinedLobby);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnJoinedRoom, OnJoinedRoom);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnMasterClientSwitched, OnMasterClientSwitched);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnPhotonPlayerConnected, OnPhotonPlayerConnected);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnPhotonPlayerDisconnected, OnPhotonPlayerDisconnected);
-        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, OnPhotonPlayerPropertiesChanged);
-    }
-
-    
-
-    [RPC]
-    private void Chat(string content, string sender, PhotonMessageInfo info)
-    {
-        //TODO: Add antis here
-        string message;
-        if (sender != string.Empty) message = sender + ": " + content;
-        else message = content;
-        Anarchy.UI.Chat.Add(User.Chat(info.Sender.ID, message).RemoveSize());
-    }
-
-    [RPC]
-    private void ChatLocalized(string file, string key, string[] args, PhotonMessageInfo info)
-    {
-        if (!info.Sender.AnarchySync)
-        {
-            Log.AddLine("notAnarchyUser", MsgType.Error, "RPC", nameof(ChatLocalized), info.Sender.ID.ToString());
-            return;
-        }
-        var locale = Anarchy.Localization.Language.Find(file);
-        if (args == null)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ChatLocalized));
-            info.Sender.AnarchySync = false;
-            return;
-        }
-        if(locale == null)
-        {
-            locale = new Anarchy.Localization.Locale(file, true, ',');
-            if (!File.Exists(locale.Path))
-            {
-                Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ChatLocalized));
-                info.Sender.AnarchySync = false;
-                return;
-            }
-        }
-        if (!locale.IsOpen)
-        {
-            locale.KeepOpen(60);
-        }
-        if(args.Length > 0)
-        {
-            Anarchy.UI.Chat.Add(locale.Format(key, args));
-        }
-        else
-        {
-            Anarchy.UI.Chat.Add(locale[key]);
-        }
-    }
-
-    [RPC]
-    private void ChatPM(string sender, string content, PhotonMessageInfo info)
-    {
-        //TODO: Add antis here
-        content = sender + ": " + content;
-        Anarchy.UI.Chat.Add(User.ChatPM(info.Sender.ID, content).RemoveSize());
-    }
-
     private bool CheckIsTitanAllDie()
     {
-        foreach(TITAN tit in titans)
-        {
-            if (!tit.hasDie)
-            {
-                return false;
-            }
-        }
+        if (titans.Any(tit => !tit.hasDie)) return false;
+
         return annie == null;
     }
 
-    [RPC]
-    private void clearlevel(string[] link, int gametype, PhotonMessageInfo info)
+    private void LoadMapSkin(string n, string urls, string str, IList<string> skybox, PhotonMessageInfo info = null)
     {
-        if(info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(clearlevel));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        switch (gametype)
-        {
-            case 0:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.KILL_TITAN;
-                if (Logic == null || !(Logic is GameLogic.KillTitanLogic))
-                {
-                    Logic = new GameLogic.KillTitanLogic(Logic);
-                }
-                break;
-
-            case 1:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.SURVIVE_MODE;
-                if (Logic == null || !(Logic is GameLogic.SurviveLogic))
-                {
-                    Logic = new GameLogic.SurviveLogic(Logic);
-                }
-                break;
-
-            case 2:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.PVP_AHSS;
-                if (Logic == null || !(Logic is GameLogic.PVPLogic))
-                {
-                    Logic = new GameLogic.PVPLogic(Logic);
-                }
-                break;
-
-            case 3:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.RACING;
-                if (Logic == null || !(Logic is GameLogic.RacingLogic))
-                {
-                    Logic = new GameLogic.RacingLogic(Logic);
-                }
-                break;
-
-            default:
-            case 4:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.None;
-                if (Logic == null || !Logic.GetType().Equals(typeof(GameLogic.GameLogic)))
-                {
-                    Logic = new GameLogic.GameLogic(Logic);
-                }
-                break;
-        }
-        if (SkinSettings.CustomSkins.Value != 1)
-        {
-            return;
-        }
-        CustomLevel.LoadSkin(link, info);
-    }
-
-
-    [RPC]
-    private void customlevelRPC(string[] content, PhotonMessageInfo info = null)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(customlevelRPC));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        CustomLevel.RPC(content);
-    }
-
-    [RPC]
-    private void getRacingResult(string player, float time, PhotonMessageInfo info = null)
-    {
-        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !PhotonNetwork.IsMasterClient))
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(getRacingResult));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        (Logic as GameLogic.RacingLogic).OnPlayerFinished(time, player);
-        RacingResult racingResult = new RacingResult(player, time);
-        this.racingResult.Add(racingResult);
-        this.RefreshRacingResult();
-    }
-
-    [RPC]
-    private void ignorePlayer(int ID, PhotonMessageInfo info)
-    {
-        if (!info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ignorePlayer));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        PhotonPlayer photonPlayer = PhotonPlayer.Find(ID);
-        if (photonPlayer != null && !photonPlayer.RCIgnored)
-        {
-            photonPlayer.RCIgnored = true;
-        }
-        playerList.Update();
-    }
-
-    [RPC]
-    private void ignorePlayerArray(int[] IDS, PhotonMessageInfo info)
-    {
-        if (!info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(ignorePlayerArray));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        foreach (int ID in IDS)
-        {
-            PhotonPlayer photonPlayer = PhotonPlayer.Find(ID);
-            if (photonPlayer != null && !photonPlayer.RCIgnored)
-            {
-                photonPlayer.RCIgnored = true;
-            }
-        }
-        playerList.Update();
-    }
-
-    [RPC]
-    private void labelRPC(int setting, PhotonMessageInfo info)
-    {
-        if (info != null)
-        {
-            int checkID = info.TimeInt - 1000000;
-            checkID *= -1;
-            if (checkID == info.Sender.ID)
-            {
-                if (!info.Sender.AnarchySync)
-                {
-                    info.Sender.AnarchySync = true;
-                    playerList.Update();
-                    PhotonNetwork.SendChekInfo(info.Sender);
-                }
-                return;
-            }
-        }
-        if (PhotonView.Find(setting) != null) 
-        {
-            return;
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (this.GameStart)
-        {
-            foreach (var h in heroes)
-            {
-                h.lateUpdate();
-            }
-            foreach (var t in titans)
-            {
-                t.lateUpdate();
-            }
-            Logic.OnLateUpdate();
-            roomInformation.Update();
-        }
-    }
-
-    private void LoadMapSkin(string n, string urls, string str, string[] skybox, PhotonMessageInfo info = null)
-    {
-        string[] checkUrls = urls.Split(',');
-        string[] checkStr = str.Split(',');
-        string[] checkData = new string[1 + 8 + checkStr.Length + 6];
+        var checkUrls = urls.Split(',');
+        var checkStr = str.Split(',');
+        var checkData = new string[1 + 8 + checkStr.Length + 6];
         checkData[0] = n;
-        int i = 1;
-        for (int j = 0; i < 1 + 8; i++, j++)
-        {
-            checkData[i] = checkUrls[j];
-        }
-        for (int j = 0; i < 1 + 8 + checkStr.Length; i++, j++)
-        {
-            checkData[i] = checkStr[j];
-        }
-        for (int j = 0; i < checkData.Length; i++, j++)
-        {
-            checkData[i] = skybox[j];
-        }
+        var i = 1;
+        for (var j = 0; i < 1 + 8; i++, j++) checkData[i] = checkUrls[j];
+        for (var j = 0; i < 1 + 8 + checkStr.Length; i++, j++) checkData[i] = checkStr[j];
+        for (var j = 0; i < checkData.Length; i++, j++) checkData[i] = skybox[j];
         if (levelSkin == null)
         {
             if (Level.Name.Contains("City"))
-            {
-                levelSkin = new Anarchy.Skins.Maps.CitySkin(checkData);
-            }
-            else if (Level.Name.Contains("Forest"))
-            {
-                levelSkin = new Anarchy.Skins.Maps.ForestSkin(checkData);
-            }
+                levelSkin = new CitySkin(checkData);
+            else if (Level.Name.Contains("Forest")) levelSkin = new ForestSkin(checkData);
         }
-        if (levelSkin == null)
-        {
-            return;
-        }
-        Anarchy.Skins.Skin.Check(levelSkin, checkData);
+
+        if (levelSkin == null) return;
+        Skin.Check(levelSkin, checkData);
     }
 
     private void LoadSkinCheck()
@@ -354,556 +104,98 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
         if (Level.Name.Contains("City"))
         {
             if (SkinSettings.SkinsCheck(SkinSettings.CitySkins))
-            {
-                if (SkinSettings.CitySet.Value != Anarchy.Configuration.StringSetting.NotDefine)
+                if (SkinSettings.CitySet.Value != StringSetting.NotDefine)
                 {
-                    var set = new Anarchy.Configuration.Presets.CityPreset(SkinSettings.CitySet);
+                    var set = new CityPreset(SkinSettings.CitySet);
                     set.Load();
-                    string n = "";
-                    for (int i = 0; i < 250; i++)
+                    var n = "";
+                    for (var i = 0; i < 250; i++)
                     {
-                        int val = UnityEngine.Random.Range(0, 8);
+                        var val = Random.Range(0, 8);
                         n += val.ToString();
                     }
-                    string urls = string.Join(",", set.Houses) + ",";
-                    string urls2 = $"{set.Ground},{set.Wall},{set.Gate}";
-                    string[] box = new string[6].Select(x => "").ToArray();
-                    if (set.LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
+
+                    var urls = string.Join(",", set.Houses) + ",";
+                    var urls2 = $"{set.Ground},{set.Wall},{set.Gate}";
+                    var box = new string[6].Select(x => "").ToArray();
+                    if (set.LinkedSkybox != StringSetting.NotDefine)
                     {
-                        var boxSet = new Anarchy.Configuration.Presets.SkyboxPreset(set.LinkedSkybox);
+                        var boxSet = new SkyboxPreset(set.LinkedSkybox);
                         boxSet.Load();
                         box = boxSet.ToSkinData();
                     }
+
                     LoadMapSkin(n, urls, urls2, box);
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.CitySkins.Value != 2)
-                    {
-                        BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { n, urls, urls2, box });
-                    }
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
+                        SkinSettings.CitySkins.Value != 2)
+                        BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, n, urls, urls2, box);
                 }
-            }
         }
         else if (Level.MapName.Contains("Forest"))
         {
             if (SkinSettings.SkinsCheck(SkinSettings.ForestSkins))
-            {
-                if (SkinSettings.ForestSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
+                if (SkinSettings.ForestSet.Value != StringSetting.NotDefine)
                 {
-                    var set = new Anarchy.Configuration.Presets.ForestPreset(SkinSettings.ForestSet);
+                    var set = new ForestPreset(SkinSettings.ForestSet);
                     set.Load();
-                    string n = "";
-                    for (int i = 0; i < 150; i++)
+                    var n = "";
+                    for (var i = 0; i < 150; i++)
                     {
-                        int val = UnityEngine.Random.Range(0, 8);
+                        var val = Random.Range(0, 8);
                         n += val.ToString();
                         if (set.RandomizePairs)
-                        {
-                            n += UnityEngine.Random.Range(0, 8).ToString();
-                        }
+                            n += Random.Range(0, 8).ToString();
                         else
-                        {
                             n += val.ToString();
-                        }
                     }
-                    string urls = string.Join(",", set.Trees) + ",";
-                    string urls2 = string.Join(",", set.Leaves);
+
+                    var urls = string.Join(",", set.Trees) + ",";
+                    var urls2 = string.Join(",", set.Leaves);
                     urls2 += "," + set.Ground;
-                    string[] box = new string[6].Select(x => "").ToArray();
-                    if (set.LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
+                    var box = new string[6].Select(x => "").ToArray();
+                    if (set.LinkedSkybox != StringSetting.NotDefine)
                     {
-                        var boxSet = new Anarchy.Configuration.Presets.SkyboxPreset(set.LinkedSkybox);
+                        var boxSet = new SkyboxPreset(set.LinkedSkybox);
                         boxSet.Load();
                         box = boxSet.ToSkinData();
                     }
+
                     LoadMapSkin(n, urls, urls2, box);
-                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && SkinSettings.ForestSkins.Value != 2)
-                    {
-                        BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { n, urls, urls2, box });
-                    }
+                    if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
+                        SkinSettings.ForestSkins.Value != 2)
+                        BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, n, urls, urls2, box);
                 }
-            }
-        }
-    }
-
-    [RPC]
-    public void loadskinRPC(string n, string urls, string str, string[] skybox, PhotonMessageInfo info = null)
-    {
-        if(info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(FengGameManagerMKII) + "." + nameof(loadskinRPC));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        if (!Level.MapName.Contains("City") && !Level.MapName.Contains("Forest"))
-        {
-            return;
-        }
-        if (Level.MapName.Contains("City") && SkinSettings.CitySkins.Value != 1)
-        {
-            return;
-        }
-        else if (Level.MapName.Contains("Forest") && SkinSettings.ForestSkins.Value != 1)
-        {
-            return;
-        }
-        LoadMapSkin(n, urls, str, skybox);
-    }
-
-    [RPC]
-    private void netGameLose(int score, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netGameLose));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.NetGameLose(score);
-    }
-
-    [RPC]
-    private void netGameWin(int score, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netGameWin));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.NetGameWin(score);
-    }
-
-    [RPC]
-    private void netRefreshRacingResult(string tmp, PhotonMessageInfo info)
-    {
-        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !info.Sender.IsMasterClient))
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netRefreshRacingResult));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        this.LocalRacingResult = tmp;
-        if(Logic is GameLogic.RacingLogic rac)
-        {
-            rac.OnUpdateRacingResult();
-        }
-    }
-
-    private void OnApplicationFocus(bool focus)
-    {
-        if (focus)
-        {
-            if(Application.loadedLevelName == "menu" || AnarchyManager.SettingsPanel.Active || AnarchyManager.CharacterSelectionPanel.Active || IN_GAME_MAIN_CAMERA.isPausing)
-            {
-                Screen.showCursor = true;
-                Screen.lockCursor = false;
-            }
-            else if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single || (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !PhotonNetwork.player.Dead))
-            {
-                Screen.showCursor = false;
-                Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-                if (GameObject.Find("cross1"))
-                {
-                    GameObject.Find("cross1").GetComponent<Transform>().position = Input.mousePosition;
-                }
-            }
-        }
-    }
-
-    private void OnLevelWasLoaded(int level)
-    {
-        if (level == 0)
-        {
-            return;
-        }
-        if (Application.loadedLevelName == "characterCreation" || Application.loadedLevelName == "SnapShot")
-        {
-            return;
-        }
-        GameObject[] array = GameObject.FindGameObjectsWithTag("titan");
-        foreach (GameObject gameObject in array)
-        {
-            if (gameObject.GetPhotonView() == null || !gameObject.GetPhotonView().owner.IsMasterClient)
-            {
-                UnityEngine.Object.Destroy(gameObject);
-            }
-        }
-        this.GameStart = true;
-        Pool.Clear();
-        RespawnPositions.Dispose();
-        this.ShowHUDInfoCenter(string.Empty);
-        GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("MainCamera_mono"), CacheGameObject.Find("cameraDefaultPosition").transform.position, CacheGameObject.Find("cameraDefaultPosition").transform.rotation);
-        UnityEngine.Object.Destroy(CacheGameObject.Find("cameraDefaultPosition"));
-        gameObject2.name = "MainCamera";
-        Screen.lockCursor = true;
-        Screen.showCursor = true;
-        var ui = (GameObject)Instantiate(CacheResources.Load("UI_IN_GAME"));
-        ui.name = "UI_IN_GAME";
-        ui.SetActive(true);
-        UIRefer = ui.GetComponent<UIReferArray>();
-        NGUITools.SetActive(UIRefer.panels[0], true);
-        NGUITools.SetActive(UIRefer.panels[1], false);
-        NGUITools.SetActive(UIRefer.panels[2], false);
-        NGUITools.SetActive(UIRefer.panels[3], false);
-        IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
-        IN_GAME_MAIN_CAMERA.MainCamera.setDayLight(IN_GAME_MAIN_CAMERA.DayLight);
-        LevelInfo info = Level;
-        ClothFactory.ClearClothCache();
-        Logic.OnGameRestart();
-        playerList = new PlayerList();
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
-        {
-            LoadSkinCheck();
-            CustomLevel.OnLoadLevel();
-            this.SingleKills = 0;
-            this.SingleMax = 0;
-            this.SingleTotal = 0;
-            IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
-            IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
-            IN_GAME_MAIN_CAMERA.Look.disable = true;
-            IN_GAME_MAIN_CAMERA.GameMode = FengGameManagerMKII.Level.Mode;
-            this.SpawnPlayer(IN_GAME_MAIN_CAMERA.singleCharacter.ToUpper());
-            Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-            Screen.showCursor = false;
-            int rate = 90;
-            if (this.Difficulty == 1)
-            {
-                rate = 70;
-            }
-            SpawnTitansCustom(rate, info.EnemyNumber, false);
-            return;
-        }
-        PVPcheckPoint.chkPts = new ArrayList();
-        IN_GAME_MAIN_CAMERA.MainCamera.enabled = false;
-        IN_GAME_MAIN_CAMERA.BaseCamera.GetComponent<CameraShake>().enabled = false;
-        IN_GAME_MAIN_CAMERA.GameType = GameType.MultiPlayer;
-        LoadSkinCheck();
-        CustomLevel.OnLoadLevel();
-        if (info.Mode == GameMode.TROST)
-        {
-            CacheGameObject.Find("playerRespawn").SetActive(false);
-            UnityEngine.Object.Destroy(CacheGameObject.Find("playerRespawn"));
-            GameObject gameObject3 = CacheGameObject.Find("rock");
-            gameObject3.animation["lift"].speed = 0f;
-            CacheGameObject.Find("door_fine").SetActive(false);
-            CacheGameObject.Find("door_broke").SetActive(true);
-            UnityEngine.Object.Destroy(CacheGameObject.Find("ppl"));
-        }
-        else if (info.Mode == GameMode.BOSS_FIGHT_CT)
-        {
-            CacheGameObject.Find("playerRespawnTrost").SetActive(false);
-            UnityEngine.Object.Destroy(CacheGameObject.Find("playerRespawnTrost"));
-        }
-        if (this.NeedChooseSide)
-        {
-            this.ShowHUDInfoTopCenterADD("\n\nPRESS 1 TO ENTER GAME");
-        }
-        else
-        {
-            Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-            if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
-            {
-                if ((int)PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
-                {
-                    this.checkpoint = CacheGameObject.Find("PVPchkPtT");
-                }
-                else
-                {
-                    this.checkpoint = CacheGameObject.Find("PVPchkPtH");
-                }
-            }
-            if ((int)PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
-            {
-                this.SpawnNonAITitan(this.myLastHero, "titanRespawn");
-            }
-            else
-            {
-                this.SpawnPlayer(this.myLastHero);
-            }
-        }
-        if (info.Mode == GameMode.BOSS_FIGHT_CT)
-        {
-            UnityEngine.Object.Destroy(CacheGameObject.Find("rock"));
-        }
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (info.Mode == GameMode.TROST)
-            {
-                if (!this.IsPlayerAllDead())
-                {
-                    GameObject gameObject4 = Optimization.Caching.Pool.NetworkEnable("TITAN_EREN_trost", new Vector3(-200f, 0f, -194f), Quaternion.Euler(0f, 180f, 0f), 0);
-                    gameObject4.GetComponent<TITAN_EREN>().rockLift = true;
-                    int rate2 = 90;
-                    if (this.Difficulty == 1)
-                    {
-                        rate2 = 70;
-                    }
-                    GameObject[] array3 = GameObject.FindGameObjectsWithTag("titanRespawn");
-                    GameObject gameObject5 = CacheGameObject.Find("titanRespawnTrost");
-                    if (gameObject5 != null)
-                    {
-                        foreach (GameObject gameObject6 in array3)
-                        {
-                            if (gameObject6.transform.parent.gameObject == gameObject5)
-                            {
-                                this.SpawnTitan(rate2, gameObject6.transform.position, gameObject6.transform.rotation, false);
-                            }
-                        }
-                    }
-                }
-            }
-            else if (info.Mode == GameMode.BOSS_FIGHT_CT)
-            {
-                if (!this.IsPlayerAllDead())
-                {
-                    Optimization.Caching.Pool.NetworkEnable("COLOSSAL_TITAN", -Vectors.up * 10000f, Quaternion.Euler(0f, 180f, 0f), 0);
-                }
-            }
-            else if (info.Mode == GameMode.KILL_TITAN || info.Mode == GameMode.ENDLESS_TITAN || info.Mode == GameMode.SURVIVE_MODE)
-            {
-                if (info.Name == "Annie" || info.Name == "Annie II")
-                {
-                    Optimization.Caching.Pool.NetworkEnable("FEMALE_TITAN", CacheGameObject.Find("titanRespawn").transform.position, CacheGameObject.Find("titanRespawn").transform.rotation, 0);
-                }
-                else
-                {
-                    int rate3 = 90;
-                    if (this.Difficulty == 1)
-                    {
-                        rate3 = 70;
-                    }
-                    SpawnTitansCustom( rate3, info.EnemyNumber, false);
-                }
-            }
-            else if (info.Mode != GameMode.TROST)
-            {
-                if (info.Mode == GameMode.PVP_CAPTURE && FengGameManagerMKII.Level.MapName == "OutSide")
-                {
-                    GameObject[] array5 = GameObject.FindGameObjectsWithTag("titanRespawn");
-                    if (array5.Length <= 0)
-                    {
-                        return;
-                    }
-                    for (int k = 0; k < array5.Length; k++)
-                    {
-                        this.spawnTitanRaw(array5[k].transform.position, array5[k].transform.rotation).setAbnormalType(AbnormalType.Crawler, true);
-                    }
-                }
-            }
-        }
-        if (!info.Supply)
-        {
-            UnityEngine.Object.Destroy(CacheGameObject.Find("aot_supply"));
-        }
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            BasePV.RPC("RequireStatus", PhotonTargets.MasterClient, new object[0]);
-        }
-        if (Stylish != null)
-        {
-            Stylish.enabled = true;
-        }
-        if (FengGameManagerMKII.Level.LavaMode)
-        {
-            UnityEngine.Object.Instantiate(CacheResources.Load("levelBottom"), new Vector3(0f, -29.5f, 0f), Quaternion.Euler(0f, 0f, 0f));
-            CacheGameObject.Find("aot_supply").transform.position = CacheGameObject.Find("aot_supply_lava_position").transform.position;
-            CacheGameObject.Find("aot_supply").transform.rotation = CacheGameObject.Find("aot_supply_lava_position").transform.rotation;
-        }
-        roomInformation.UpdateLabels();
-        Resources.UnloadUnusedAssets();
-    }
-
-    [RPC]
-    private void pauseRPC(bool pause, PhotonMessageInfo info = null)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(pauseRPC));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        if (pause)
-        {
-            AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
-            UnityEngine.Time.timeScale = 1E-06f;
-            if (!AnarchyManager.PauseWindow.Active)
-            {
-                AnarchyManager.PauseWindow.EnableImmediate();
-            }
-        }
-        else
-        {
-            AnarchyManager.PauseWindow.PauseWaitTime = 3f;
-        }
-    }
-
-    [RPC]
-    private void refreshPVPStatus(int score1, int score2, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient && Logic.Mode != GameMode.PVP_CAPTURE)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshPVPStatus));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        if (Logic is GameLogic.PVPCaptureLogic log)
-        {
-            log.PVPHumanScore = score1;
-            log.PVPTitanScore = score2;
-        }
-    }
-
-    [RPC]
-    private void refreshPVPStatus_AHSS(int[] score1, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshPVPStatus_AHSS));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        if (Logic is GameLogic.PVPLogic log)
-        {
-            log.Scores = score1;
         }
     }
 
     private void RefreshRacingResult()
     {
-        this.LocalRacingResult = "Result\n";
+        localRacingResult = "Result\n";
         IComparer comparer = new IComparerRacingResult();
-        this.racingResult.Sort(comparer);
-        int num = this.racingResult.Count;
-        num = Mathf.Min(num, GameLogic.RacingLogic.MaxFinishers);
-        for (int i = 0; i < num; i++)
+        racingResult.Sort(comparer);
+        var num = racingResult.Count;
+        num = Mathf.Min(num, RacingLogic.MaxFinishers);
+        for (var i = 0; i < num; i++)
         {
-            string text = this.LocalRacingResult;
-            this.LocalRacingResult = string.Concat(new object[]
-            {
-                text,
-                "Rank ",
-                i + 1,
-                " : "
-            });
-            this.LocalRacingResult += (this.racingResult[i] as RacingResult).Name;
-            this.LocalRacingResult = this.LocalRacingResult + "   " + ((float)((int)((this.racingResult[i] as RacingResult).Time * 100f)) * 0.01f).ToString() + "s";
-            this.LocalRacingResult += "\n";
+            var text = localRacingResult;
+            localRacingResult = string.Concat(text, "Rank ", i + 1, " : ");
+            localRacingResult += (racingResult[i] as RacingResult)?.Name;
+            localRacingResult = localRacingResult + "   " +
+                                (int) (((RacingResult) racingResult[i]).Time * 100f) * 0.01f + "s";
+            localRacingResult += "\n";
         }
-        BasePV.RPC("netRefreshRacingResult", PhotonTargets.All, new object[]
-        {
-            this.LocalRacingResult
-        });
+
+        BasePV.RPC("netRefreshRacingResult", PhotonTargets.All, localRacingResult);
     }
 
-    [RPC]
-    private void refreshStatus(int score1, int score2, int wav, int highestWav, float time1, float time2, bool startRacin, bool endRacin, PhotonMessageInfo info)
+    private void SetTeam(int team)
     {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(refreshStatus));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.OnRefreshStatus(score1, score2, wav, highestWav, time1, time2, startRacin, endRacin);
-    }
-
-    [RPC]
-    private void RequireStatus(PhotonMessageInfo info)
-    {
-        if (info != null && !PhotonNetwork.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(RequireStatus));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.OnRequireStatus();
-    }
-
-    [RPC]
-    private void respawnHeroInNewRound()
-    {
-        if (this.NeedChooseSide)
-        {
-            return;
-        }
-        if (IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
-        {
-            this.SpawnPlayer(this.myLastHero);
-            IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
-            this.ShowHUDInfoCenter(string.Empty);
-        }
-    }
-
-    [RPC]
-    private void restartGameByClient(PhotonMessageInfo info = null)
-    {
-    }
-
-    [RPC]
-    private void RPCLoadLevel(PhotonMessageInfo info = null)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(RPCLoadLevel));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        AnarchyManager.Log.Disable();
-        AnarchyManager.Chat.Disable();
-        DestroyAllExistingCloths();
-        PhotonNetwork.LoadLevel(FengGameManagerMKII.Level.MapName);
-    }
-
-    //En: Do not touch this. NEVER. To prevent erros from both sides, to you and from you.
-    //Ru: Не трогать это. НИКОГДА. Во избежание ошибок с вашей стороны и стороны других.
-    [RPC]
-    private void SetAnarchyMod(bool isCustom, bool useSync, string customName, string version, PhotonMessageInfo info)
-    {
-        if (info.Sender.AnarchySync)
-        {
-            if (isCustom)
-            {
-                string customNameShow = customName == string.Empty ? "Custom" : customName;
-                info.Sender.AnarchySync = version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
-
-                info.Sender.ModName = string.Format(ModNames.AnarchyCustom, customNameShow);
-                return;
-            }
-            if (version == AnarchyManager.AnarchyVersion.ToString())
-            {
-                return;
-            }
-            info.Sender.AnarchySync = false;
-            info.Sender.ModName = string.Format(ModNames.AnarchyCustom, version);
-        }
-    }
-
-
-    [RPC]
-    private void setMasterRC(PhotonMessageInfo info)
-    {
-        if(!info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(setMasterRC));
-            Anti.Kick(info.Sender, true);
-        }
-    }
-
-    private void setTeam(int team)
-    {
-        string nameColor = string.Empty;
+        var nameColor = string.Empty;
         switch (team)
         {
             case 0:
-                int cyans = 0;
-                int magentas = 0;
-                foreach(PhotonPlayer player in PhotonNetwork.playerList)
-                {
-                    if (player.RCteam == 1)
-                        cyans++;
-                    else if (player.RCteam == 2)
-                        magentas++;
-                }
-                setTeam(cyans > magentas ? 1 : 2);
+                PhotonNetwork.player.RCteam = 0;
+                PhotonNetwork.player.UIName = User.Name.Value;
                 return;
 
             case 1:
@@ -914,55 +206,787 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
                 nameColor = Colors.magenta.ColorToString();
                 break;
 
-            default:
-                break;
+            case 3:
+                var cyans = 0;
+                var magentas = 0;
+                foreach (var player in PhotonNetwork.playerList)
+                    switch (player.RCteam)
+                    {
+                        case 1:
+                            cyans++;
+                            break;
+                        case 2:
+                            magentas++;
+                            break;
+                    }
+                SetTeam(cyans > magentas ? 1 : 2);
+                return;
         }
-        if(nameColor != string.Empty)
+
+        PhotonNetwork.player.UIName = nameColor != string.Empty ? $"[{nameColor}]{PhotonNetwork.player.UIName.RemoveHex()}" : User.Name.Value;
+        PhotonNetwork.player.RCteam = team;
+        if (team >= 0 && team < 3)
+            foreach (var hero in heroes.Where(hero => hero.IsLocal))
+                BasePV.RPC("labelRPC", PhotonTargets.All, hero.BasePV.viewID);
+    }
+
+    private static TITAN SpawnTitanRaw(Vector3 position, Quaternion rotation)
+    {
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            return ((GameObject) Instantiate(CacheResources.Load("TITAN_VER3.1"), position, rotation))
+                .GetComponent<TITAN>();
+        return Pool.NetworkEnable("TITAN_VER3.1", position, rotation).GetComponent<TITAN>();
+    }
+
+    public void AddCamera(IN_GAME_MAIN_CAMERA c)
+    {
+        mainCamera = c;
+    }
+
+    public void AddCT(COLOSSAL_TITAN titan)
+    {
+        colossal = titan;
+    }
+
+    public void AddET(TITAN_EREN hero)
+    {
+        eren = hero;
+    }
+
+    public void AddFT(FEMALE_TITAN titan)
+    {
+        annie = titan;
+    }
+
+    public void AddHero(HERO hero)
+    {
+        heroes.Add(hero);
+    }
+
+    public void AddHook(Bullet h)
+    {
+        hooks.Add(h);
+    }
+
+    public void AddTitan(TITAN titan)
+    {
+        titans.Add(titan);
+    }
+
+    public void CheckPVPpts()
+    {
+        if (logic is PVPCaptureLogic cap) cap.CheckPVPpts();
+    }
+
+    public void DestroyAllExistingCloths()
+    {
+        var array = FindObjectsOfType<Cloth>();
+        var flag = array.Length != 0;
+        if (flag)
+            for (var i = 0; i < array.Length; i++)
+                ClothFactory.DisposeObject(array[i].gameObject);
+    }
+
+    public void GameLose()
+    {
+        logic.GameLose();
+    }
+
+    public void GameWin()
+    {
+        Debug.Log("GameWin");
+        logic.GameWin();
+    }
+
+    public static bool IsPlayerAllDead()
+    {
+        return PhotonNetwork.playerList.All(player => player.IsTitan || player.Dead);
+    }
+
+    public bool IsTeamAllDead(int team)
+    {
+        return PhotonNetwork.playerList.Where(player => !player.IsTitan).All(player => player.Team != team || player.Dead);
+    }
+
+    public void KillInfoUpdate()
+    {
+        if (killInfoList.Count > 0 && killInfoList.Peek() == null)
+            killInfoList.Dequeue();
+    }
+
+    public void MultiplayerRacingFinish()
+    {
+        var num = logic.RoundTime - ((RacingLogic) logic).StartTime;
+        if (PhotonNetwork.IsMasterClient)
+            getRacingResult(User.RaceName, num);
+        else
+            BasePV.RPC("getRacingResult", PhotonTargets.MasterClient, User.RaceName, num);
+        GameWin();
+    }
+
+    public void NotSpawnNonAiTitan(string id)
+    {
+        myLastHero = id.ToUpper();
+        PhotonNetwork.player.Dead = true;
+        PhotonNetwork.player.IsTitan = true;
+        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+        Screen.showCursor = true;
+        ShowHUDInfoCenter(
+            "the game has started for 60 seconds.\n please wait for next round.\n Click Right Mouse Key to Enter or Exit the Spectator Mode.");
+        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
+        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null);
+        IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
+        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
+    }
+
+    public void NotSpawnPlayer(string id)
+    {
+        myLastHero = id.ToUpper();
+        PhotonNetwork.player.Dead = true;
+        PhotonNetwork.player.IsTitan = false;
+        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+        Screen.showCursor = false;
+        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
+        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null);
+        IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
+        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
+    }
+
+    private IEnumerator OnPhotonPlayerConnectedE(PhotonPlayer player)
+    {
+        if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.player.UIName = $"[{nameColor}]{PhotonNetwork.player.UIName.RemoveHex()}";
+            if (AnarchyManager.PauseWindow.Active) BasePV.RPC("pauseRPC", player, true);
+            if (Level.Name.StartsWith("Custom")) StartCoroutine(CustomLevel.SendRPCToPlayer(player));
+        }
+
+        yield return new WaitForSeconds(1f);
+        if (player.Properties[PhotonPlayerProperty.name] == null) yield return new WaitForSeconds(0.15f);
+        Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
+        PlayerList?.Update();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            yield return new WaitForSeconds(0.5f);
+            GameModes.SendRpcToPlayer(player);
+            if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().ToUpper().StartsWith("GUEST"))
+                AntisManager.Response(player.ID, false, "Anti-Guest");
+            else if (BanList.Banned(player.UIName.RemoveHex())) AntisManager.Response(player.ID, false, "Banned");
+        }
+    }
+
+    public void PlayerKillInfoSingleUpdate(int dmg)
+    {
+        singleKills++;
+        singleMax = Mathf.Max(dmg, singleMax);
+        singleTotal += dmg;
+
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single) SingleRunStats.OnKill();
+    }
+
+    public void PlayerKillInfoUpdate(PhotonPlayer player, int dmg)
+    {
+        player.Kills++;
+        player.Max_Dmg = Mathf.Max(dmg, player.Max_Dmg);
+        player.Total_Dmg += dmg;
+    }
+
+    public TITAN RandomSpawnOneTitan(int rate)
+    {
+        return SpawnTitan(rate, RespawnPositions.RandomTitanPos, Quaternion.identity);
+    }
+
+    public void RandomSpawnTitans(string place, int rate, int num, bool punk = false)
+    {
+        if (num == -1) num = 1;
+        var list = new List<Vector3>(RespawnPositions.TitanPositions);
+        if (list.Count <= 0) return;
+        for (var i = 0; i < num; i++)
+        {
+            if (list.Count <= 0) return;
+            var pos = Random.Range(0, list.Count);
+            SpawnTitan(rate, list[pos], Quaternion.identity, punk);
+            list.RemoveAt(pos);
+        }
+    }
+
+    public void RemoveCT(COLOSSAL_TITAN titan)
+    {
+        titan = null;
+    }
+
+    public void RemoveET(TITAN_EREN hero)
+    {
+        eren = null;
+    }
+
+    public void RemoveFT(FEMALE_TITAN titan)
+    {
+        titan = null;
+    }
+
+    public void RemoveHero(HERO hero)
+    {
+        heroes.Remove(hero);
+    }
+
+    public void RemoveHook(Bullet h)
+    {
+        hooks.Remove(h);
+    }
+
+    public void RemoveTitan(TITAN titan)
+    {
+        titans.Remove(titan);
+    }
+
+    public void RestartGame(bool masterclientSwitched, bool restartManually)
+    {
+        if (gameTimesUp || logic.Restarting) return;
+        GameModes.OnRestart();
+        checkpoint = null;
+        logic.Restarting = true;
+        logic.RoundTime = 0f;
+        logic.MyRespawnTime = 0f;
+        foreach (var info in killInfoList) info.destroy();
+        killInfoList.Clear();
+        racingResult = new ArrayList();
+        RCManager.ClearVariables();
+        ShowHUDInfoCenter(string.Empty);
+        DestroyAllExistingCloths();
+        GameModes.SendRpc();
+        PhotonNetwork.DestroyAll();
+        BasePV.RPC("RPCLoadLevel", PhotonTargets.All);
+        if (masterclientSwitched)
+        {
+            SendChatContentInfo(User.MasterClientSwitch);
         }
         else
         {
-            PhotonNetwork.player.UIName = User.Name.Value;
+            if (!restartManually && User.MsgRestart.Length > 0) SendChatContentInfo(User.MsgRestart);
         }
-        PhotonNetwork.player.RCteam = team;
-        if (team >= 0 && team < 3)
+    }
+
+    public void RestartGameSingle()
+    {
+        checkpoint = null;
+        singleKills = 0;
+        singleMax = 0;
+        singleTotal = 0;
+        logic.RoundTime = 0f;
+        logic.MyRespawnTime = 0f;
+        ShowHUDInfoCenter(string.Empty);
+        DestroyAllExistingCloths();
+        Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void SendChatContentInfo(string content)
+    {
+        BasePV.RPC("Chat", PhotonTargets.All, content, string.Empty);
+    }
+
+    public void SendKillInfo(bool t1, string killer, bool t2, string victim, int dmg = 0)
+    {
+        BasePV.RPC("updateKillInfo", PhotonTargets.All, t1, killer, t2, victim, dmg);
+    }
+
+    public void SpawnNonAiTitan(string id, string find = "titanRespawn")
+    {
+        var array = GameObject.FindGameObjectsWithTag(find);
+        var go = array[Random.Range(0, array.Length)];
+        myLastHero = id.ToUpper();
+        GameObject gameObject2;
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+            gameObject2 = Pool.NetworkEnable("TITAN_VER3.1",
+                checkpoint.transform.position + new Vector3(Random.Range(-20, 20), 2f, Random.Range(-20, 20)),
+                checkpoint.transform.rotation);
+        else
+            gameObject2 = Pool.NetworkEnable("TITAN_VER3.1", go.transform.position,
+                go.transform.rotation);
+        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(gameObject2.GetComponent<TITAN>());
+        gameObject2.GetComponent<TITAN>().nonAI = true;
+        gameObject2.GetComponent<TITAN>().speed = 30f;
+        gameObject2.GetComponent<TITAN_CONTROLLER>().enabled = true;
+        if (id == "RANDOM" && Random.Range(0, 100) < 7)
+            gameObject2.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Crawler, true);
+        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
+        IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
+        IN_GAME_MAIN_CAMERA.Look.disable = true;
+        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
+        var customProperties = new ExitGames.Client.Photon.Hashtable
         {
-            foreach (HERO hero in heroes)
             {
-                if (hero.IsLocal)
+                "dead",
+                false
+            }
+        };
+        PhotonNetwork.player.SetCustomProperties(customProperties);
+        customProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            {
+                PhotonPlayerProperty.isTitan,
+                2
+            }
+        };
+        PhotonNetwork.player.SetCustomProperties(customProperties);
+        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+        Screen.showCursor = true;
+        ShowHUDInfoCenter(string.Empty);
+    }
+
+    public void SpawnPlayer(string id)
+    {
+        SpawnPlayerAt(id, myLastRespawnTag);
+    }
+
+    public void SpawnPlayerAt(string id, string find = "")
+    {
+        if (!CustomLevel.logicLoaded || !CustomLevel.customLevelLoaded)
+        {
+            NotSpawnPlayer(id);
+            return;
+        }
+
+        myLastRespawnTag = find;
+        Vector3 pos;
+        var rot = Quaternion.identity;
+        if (find != string.Empty)
+        {
+            var positions = GameObject.FindGameObjectsWithTag(find);
+            if (positions.Length > 0)
+                pos = positions[Random.Range(0, positions.Length)].transform.position;
+            else
+                pos = RespawnPositions.RandomHeroPos;
+        }
+        else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+        {
+            pos = checkpoint.transform.position;
+        }
+        else if (RCManager.racingSpawnPointSet)
+        {
+            pos = RCManager.racingSpawnPoint;
+            rot = RCManager.racingSpawnPointRotation;
+        }
+        else if (Level.Name.StartsWith("Custom"))
+        {
+            var list = new List<Vector3>();
+            switch (PhotonNetwork.player.RCteam)
+            {
+                case 0:
+                    for (var i = 0; i < 2; i++)
+                    {
+                        var type = i == 0 ? "C" : "M";
+                        foreach (var vec in CustomLevel.spawnPositions["Player" + type]) list.Add(vec);
+                    }
+
+                    break;
+                case 1:
+                    using (var enumerator = CustomLevel.spawnPositions["PlayerC"].GetEnumerator())
+                    {
+                        while (enumerator.MoveNext())
+                        {
+                            var vec2 = enumerator.Current;
+                            list.Add(vec2);
+                        }
+                    }
+
+                    break;
+                case 2:
+                    using (var enumerator = CustomLevel.spawnPositions["PlayerM"].GetEnumerator())
+                    {
+                        while (enumerator.MoveNext())
+                        {
+                            var vec2 = enumerator.Current;
+                            list.Add(vec2);
+                        }
+                    }
+
+                    break;
+                default:
+                    foreach (var vec3 in CustomLevel.spawnPositions["PlayerM"]) list.Add(vec3);
+                    break;
+            }
+
+            if (list.Count > 0)
+                pos = list[Random.Range(0, list.Count)];
+            else
+                pos = RespawnPositions.RandomHeroPos;
+        }
+        else
+        {
+            pos = RespawnPositions.RandomHeroPos;
+        }
+
+        var component = IN_GAME_MAIN_CAMERA.MainCamera;
+        myLastHero = id.ToUpper();
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+        {
+            if (IN_GAME_MAIN_CAMERA.singleCharacter == "TITAN_EREN")
+            {
+                component.SetMainObject(
+                    ((GameObject) Instantiate(CacheResources.Load("TITAN_EREN"), pos, Quaternion.identity))
+                    .GetComponent<TITAN_EREN>());
+            }
+            else
+            {
+                component.SetMainObject(((GameObject) Instantiate(CacheResources.Load("AOTTG_HERO 1"), pos, rot))
+                    .GetComponent<HERO>());
+                if (IN_GAME_MAIN_CAMERA.singleCharacter == "SET 1" || IN_GAME_MAIN_CAMERA.singleCharacter == "SET 2" ||
+                    IN_GAME_MAIN_CAMERA.singleCharacter == "SET 3")
                 {
-                    BasePV.RPC("labelRPC", PhotonTargets.All, new object[] { hero.BasePV.viewID });
+                    var heroCostume = CostumeConeveter.LocalDataToHeroCostume(IN_GAME_MAIN_CAMERA.singleCharacter);
+                    heroCostume.Checkstat();
+                    CostumeConeveter.HeroCostumeToLocalData(heroCostume, IN_GAME_MAIN_CAMERA.singleCharacter);
+                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
+                    
+                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume;
+                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume.stat;
+
+                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
+                    IN_GAME_MAIN_CAMERA.MainHERO.SetStat();
+                    IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
                 }
+                else
+                {
+                    for (var i = 0; i < HeroCostume.costume.Length; i++)
+                        if (HeroCostume.costume[i].name.ToUpper() == IN_GAME_MAIN_CAMERA.singleCharacter.ToUpper())
+                        {
+                            var num = HeroCostume.costume[i].id + CheckBoxCostume.costumeSet - 1;
+                            if (HeroCostume.costume[num].name != HeroCostume.costume[i].name)
+                                num = HeroCostume.costume[i].id + 1;
+                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
+                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num];
+                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat =
+                                HeroStat.getInfo(HeroCostume.costume[num].name.ToUpper());
+                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
+                            IN_GAME_MAIN_CAMERA.MainHERO.SetStat();
+                            IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
+                            break;
+                        }
+                }
+            }
+        }
+        else
+        {
+            var hero = Pool.NetworkEnable("AOTTG_HERO 1", pos, Quaternion.identity).GetComponent<HERO>();
+            component.SetMainObject(hero);
+            id = id.ToUpper();
+            if (id == "SET 1" || id == "SET 2" || id == "SET 3")
+            {
+                var heroCostume2 = CostumeConeveter.LocalDataToHeroCostume(id);
+                heroCostume2.Checkstat();
+                CostumeConeveter.HeroCostumeToLocalData(heroCostume2, id);
+                IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
+                
+                IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
+                IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume2.stat;
+
+                IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
+                IN_GAME_MAIN_CAMERA.MainHERO.SetStat();
+                IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
+            }
+            else
+            {
+                for (var j = 0; j < HeroCostume.costume.Length; j++)
+                    if (HeroCostume.costume[j].name.ToUpper() == id.ToUpper())
+                    {
+                        var num2 = HeroCostume.costume[j].id;
+                        if (id.ToUpper() != "AHSS") num2 += CheckBoxCostume.costumeSet - 1;
+                        if (HeroCostume.costume[num2].name != HeroCostume.costume[j].name)
+                            num2 = HeroCostume.costume[j].id + 1;
+                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
+                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num2];
+                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat =
+                            HeroStat.getInfo(HeroCostume.costume[num2].name.ToUpper());
+                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
+                        IN_GAME_MAIN_CAMERA.MainHERO.SetStat();
+                        IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
+                        break;
+                    }
+            }
+
+            CostumeConeveter.HeroCostumeToPhotonData(IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume,
+                PhotonNetwork.player);
+            if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+                IN_GAME_MAIN_CAMERA.MainT.position += new Vector3(Random.Range(-20, 20), 2f, Random.Range(-20, 20));
+            PhotonNetwork.player.Dead = false;
+            PhotonNetwork.player.IsTitan = false;
+        }
+
+        component.enabled = true;
+
+        IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
+        IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
+        IN_GAME_MAIN_CAMERA.Look.disable = true;
+        component.gameOver = false;
+        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+        Screen.showCursor = false;
+        ShowHUDInfoCenter(string.Empty);
+    }
+
+    public TITAN SpawnTitan(int rate, Vector3 position, Quaternion rotation, bool punk = false)
+    {
+        var tit = SpawnTitanRaw(position, rotation);
+        if (punk)
+        {
+            tit.SetAbnormalType(AbnormalType.Punk);
+        }
+        else if (Random.Range(0, 100) < rate)
+        {
+            if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
+            {
+                if (Random.Range(0f, 1f) < 0.7f || Level.NoCrawler)
+                    tit.SetAbnormalType(AbnormalType.Jumper);
+                else
+                    tit.SetAbnormalType(AbnormalType.Crawler);
+            }
+        }
+        else if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
+        {
+            if (Random.Range(0f, 1f) < 0.7f || Level.NoCrawler)
+                tit.SetAbnormalType(AbnormalType.Jumper);
+            else
+                tit.SetAbnormalType(AbnormalType.Crawler);
+        }
+        else if (Random.Range(0, 100) < rate)
+        {
+            if (Random.Range(0f, 1f) < 0.8f || Level.NoCrawler)
+                tit.SetAbnormalType(AbnormalType.Aberrant);
+            else
+                tit.SetAbnormalType(AbnormalType.Crawler);
+        }
+        else if (Random.Range(0f, 1f) < 0.8f || Level.NoCrawler)
+        {
+            tit.SetAbnormalType(AbnormalType.Jumper);
+        }
+        else
+        {
+            tit.SetAbnormalType(AbnormalType.Crawler);
+        }
+
+        GameObject gameObject2;
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            gameObject2 =
+                Pool.Enable("FX/FXtitanSpawn", tit.transform.position,
+                    Quaternion.Euler(-90f, 0f,
+                        0f)); //(GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("FX/FXtitanSpawn"), tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        else
+            gameObject2 = Pool.NetworkEnable("FX/FXtitanSpawn", tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        gameObject2.transform.localScale = tit.transform.localScale;
+        return tit;
+    }
+
+    public void SpawnTitanAction(int type, float size, int health, int number)
+    {
+        var position = new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f));
+        var rotation = new Quaternion(0f, 0f, 0f, 1f);
+        if (Level.Name.StartsWith("Custom") && CustomLevel.spawnPositions["Titan"].Count > 0)
+        {
+            position = CustomLevel.spawnPositions["Titan"][Random.Range(0, CustomLevel.spawnPositions["Titan"].Count)];
+        }
+        else
+        {
+            var objArray = GameObject.FindGameObjectsWithTag("titanRespawn");
+            if (objArray.Length != 0)
+            {
+                var index = Random.Range(0, objArray.Length);
+                var obj2 = objArray[index];
+                while (objArray[index] == null)
+                {
+                    index = Random.Range(0, objArray.Length);
+                    obj2 = objArray[index];
+                }
+
+                objArray[index] = null;
+                position = obj2.transform.position;
+                rotation = obj2.transform.rotation;
+            }
+        }
+
+        for (var i = 0; i < number; i++)
+        {
+            var titan = SpawnTitanRaw(position, rotation);
+            titan.hasSetLevel = true;
+            titan.ResetLevel(size);
+            if (health > 0f) titan.armor = health;
+            titan.SetAbnormalType((AbnormalType) type);
+        }
+    }
+
+    public void SpawnTitanAtAction(int type, float size, int health, int number, float posX, float posY, float posZ)
+    {
+        var position = new Vector3(posX, posY, posZ);
+        var rotation = new Quaternion(0f, 0f, 0f, 1f);
+        for (var i = 0; i < number; i++)
+        {
+            var obj2 = SpawnTitanRaw(position, rotation);
+            obj2.ResetLevel(size);
+            obj2.hasSetLevel = true;
+            if (health > 0f) obj2.armor = health;
+            obj2.SetAbnormalType((AbnormalType) type);
+        }
+    }
+
+    public void SpawnTitansCustom(int rate, int count, bool punk = false)
+    {
+        var num = count;
+        if (Level.Name.Contains("Custom"))
+        {
+            num = 5;
+            if (RCManager.GameType.Value == 1)
+                num = 3;
+            else if (RCManager.GameType.Value == 2 || RCManager.GameType.Value == 3) num = 0;
+        }
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
+        {
+            
+            if (count == 3 && !punk && GameModes.CustomAmount.Enabled)
+            {
+                num = GameModes.CustomAmount.GetInt(0);
+            }
+            else
+            {
+                num = GameModes.CustomAmount.Enabled ? GameModes.CustomAmount.GetInt(0) : count;
+                if (punk)
+                {
+                    num = count;
+                }
+                else
+                {
+                    if (GameModes.TitansWaveAmount.Enabled)
+                        num += logic.Round.Wave * GameModes.TitansWaveAmount.GetInt(0);
+                }
+            }
+        }
+        else if (GameModes.CustomAmount.Enabled)
+        {
+            num = GameModes.CustomAmount.GetInt(0);
+        }
+
+        num = Mathf.Min(50, num);
+        if (GameModes.SpawnRate.Enabled)
+        {
+            var rates = new float[5];
+            for (var i = 0; i < rates.Length; i++) rates[i] = GameModes.SpawnRate.GetFloat(i);
+            if (punk && GameModes.PunkOverride.Enabled) rates = new[] {0f, 0f, 0f, 0f, 100f};
+            List<Vector3> positions;
+            if (Level.Name.StartsWith("Custom") && CustomLevel.spawnPositions["Titan"].Count > 0)
+            {
+                positions = new List<Vector3>(CustomLevel.spawnPositions["Titan"]);
+            }
+            else
+            {
+                if (RespawnPositions.TitanPositions.Length > 0)
+                    positions = new List<Vector3>(RespawnPositions.TitanPositions);
+                else
+                {
+                    positions = new List<Vector3>(new Vector3[num].Select(x => new Vector3(Random.Range(-100f, 100f), 0f, Random.Range(-100f, 100f))).ToArray());
+                }
+            }
+
+            var summ = rates[0] + rates[1] + rates[2] + rates[3] + rates[4];
+            for (var i = 0; i < num; i++)
+            {
+                Vector3 position;
+                if (positions.Count == 0)
+                {
+                    position = RespawnPositions.RandomTitanPos;
+                }
+                else
+                {
+                    var index = Random.Range(0, positions.Count);
+                    position = positions[index];
+                    positions.RemoveAt(index);
+                }
+
+                var cRate = Random.Range(0, 100f);
+                if (cRate <= summ)
+                {
+                    var startRate = 0f;
+                    var endRate = 0f;
+                    var type = 0;
+                    for (var j = 0; j < 5; j++)
+                    {
+                        endRate += rates[j];
+                        if (cRate >= startRate && cRate < endRate)
+                        {
+                            type = j;
+                            break;
+                        }
+
+                        startRate += rates[j];
+                    }
+
+                    SpawnTitanRaw(position, Quaternion.identity).SetAbnormalType((AbnormalType) type);
+                }
+                else
+                {
+                    SpawnTitan(rate, position, Quaternion.identity, punk);
+                }
+            }
+        }
+        else
+        {
+            if (Level.Name.Contains("Custom"))
+            {
+                List<Vector3> positions;
+                if (CustomLevel.spawnPositions["Titan"].Count > 0)
+                {
+                    positions = new List<Vector3>(CustomLevel.spawnPositions["Titan"]);
+                }
+                else
+                {
+                    if (RespawnPositions.TitanPositions.Length > 0)
+                        positions = new List<Vector3>(RespawnPositions.TitanPositions);
+                    else
+                        positions = new List<Vector3>(new Vector3[num].Select(x =>
+                            new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f))).ToArray());
+                }
+
+                for (var i = 0; i < num; i++)
+                {
+                    Vector3 position;
+                    if (positions.Count == 0)
+                    {
+                        position = new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f));
+                    }
+                    else
+                    {
+                        var index = Random.Range(0, positions.Count);
+                        position = positions[index];
+                        positions.RemoveAt(index);
+                    }
+
+                    SpawnTitan(rate, position, Quaternion.identity, punk);
+                }
+            }
+            else
+            {
+                RandomSpawnTitans("titanRespawn", rate, num, punk);
             }
         }
     }
 
-    [RPC]
-    private void setTeamRPC(int team, PhotonMessageInfo info)
+    public void TitanGetKill(PhotonPlayer player, int damage, string titanName)
     {
-        if(info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(setTeamRPC));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        setTeam(team);
+        damage = Mathf.Max(10, damage);
+        BasePV.RPC("netShowDamage", player, damage);
+        BasePV.RPC("oneTitanDown", PhotonTargets.MasterClient, titanName, false);
+        SendKillInfo(false, player.UIName, true, titanName, damage);
+        PlayerKillInfoUpdate(player, damage);
+        AnarchyManager.Feed.Kill(player.UIName.ToHTMLFormat(), titanName, damage);
     }
 
-    [RPC]
-    private void settingRPC(ExitGames.Client.Photon.Hashtable hash, PhotonMessageInfo info)
+    public void TitanGetKillbyServer(int Damage, string titanName)
     {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(settingRPC));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        GameModes.HandleRPC(hash);
+        Damage = Mathf.Max(10, Damage);
+        SendKillInfo(false, LoginFengKAI.player.name, true, titanName, Damage);
+        netShowDamage(Damage);
+        oneTitanDown(titanName);
+        PlayerKillInfoUpdate(PhotonNetwork.player, Damage);
     }
 
-#region Show UILabels
+    #region Show UILabels
+
     internal void ShowHUDInfoCenter(string content)
     {
         Labels.Center = content.ToHTMLFormat();
@@ -985,7 +1009,7 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
 
     internal void ShowHUDInfoTopLeft(string content)
     {
-        Labels.TopLeft= content.ToHTMLFormat();
+        Labels.TopLeft = content.ToHTMLFormat();
     }
 
     internal void ShowHUDInfoTopRight(string content)
@@ -997,1431 +1021,6 @@ internal class FengGameManagerMKII : Photon.MonoBehaviour
     {
         Labels.TopRight += content.ToHTMLFormat();
     }
-#endregion
 
-    [RPC]
-    private void showResult(string text0, string text1, string text2, string text3, string text4, string text6, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(showResult));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        if (this.gameTimesUp)
-        {
-            return;
-        }
-        this.gameTimesUp = true;
-        NGUITools.SetActive(UIRefer.panels[0], false);
-        NGUITools.SetActive(UIRefer.panels[1], false);
-        NGUITools.SetActive(UIRefer.panels[2], true);
-        NGUITools.SetActive(UIRefer.panels[3], false);
-        CacheGameObject.Find<UILabel>("LabelName").text = text0;
-        CacheGameObject.Find<UILabel>("LabelKill").text = text1;
-        CacheGameObject.Find<UILabel>("LabelDead").text = text2;
-        CacheGameObject.Find<UILabel>("LabelMaxDmg").text = text3;
-        CacheGameObject.Find<UILabel>("LabelTotalDmg").text = text4;
-        CacheGameObject.Find<UILabel>("LabelResultTitle").text = text6;
-        Screen.lockCursor = false;
-        Screen.showCursor = true;
-        IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-        this.GameStart = false;
-    }
-
-    [RPC]
-    private void spawnPlayerAtRPC(float posX, float posY, float posZ, PhotonMessageInfo info)
-    {
-        if(info.Sender.IsMasterClient && CustomLevel.logicLoaded && CustomLevel.customLevelLoaded && !NeedChooseSide && IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
-        {
-            Vector3 pos = new Vector3(posX, posY, posZ);
-            IN_GAME_MAIN_CAMERA component = IN_GAME_MAIN_CAMERA.MainCamera;
-            string id = myLastHero.ToUpper();
-            this.myLastHero = id;
-            component.SetMainObject(Pool.NetworkEnable("AOTTG_HERO 1", pos, Quaternion.identity, 0).GetComponent<HERO>(), true, false);
-            id = id.ToUpper();
-            if (id == "SET 1" || id == "SET 2" || id == "SET 3")
-            {
-                HeroCostume heroCostume2 = CostumeConeveter.LocalDataToHeroCostume(id);
-                heroCostume2.Checkstat();
-                CostumeConeveter.HeroCostumeToLocalData(heroCostume2, id);
-                IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                if (heroCostume2 != null)
-                {
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume2.stat;
-                }
-                else
-                {
-                    heroCostume2 = HeroCostume.costumeOption[3];
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(heroCostume2.name.ToUpper());
-                }
-                IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-            }
-            else
-            {
-                for (int j = 0; j < HeroCostume.costume.Length; j++)
-                {
-                    if (HeroCostume.costume[j].name.ToUpper() == id.ToUpper())
-                    {
-                        int num2 = HeroCostume.costume[j].id;
-                        if (id.ToUpper() != "AHSS")
-                        {
-                            num2 += CheckBoxCostume.costumeSet - 1;
-                        }
-                        if (HeroCostume.costume[num2].name != HeroCostume.costume[j].name)
-                        {
-                            num2 = HeroCostume.costume[j].id + 1;
-                        }
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num2];
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(HeroCostume.costume[num2].name.ToUpper());
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                        IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                        IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-                        break;
-                    }
-                }
-            }
-            CostumeConeveter.HeroCostumeToPhotonData(IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume, PhotonNetwork.player);
-            if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
-            {
-                IN_GAME_MAIN_CAMERA.MainT.position += new Vector3((float)UnityEngine.Random.Range(-20, 20), 2f, (float)UnityEngine.Random.Range(-20, 20));
-            }
-            PhotonNetwork.player.Dead = false;
-            PhotonNetwork.player.IsTitan = false;
-            component.enabled = true;
-            IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
-            IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
-            IN_GAME_MAIN_CAMERA.Look.disable = true;
-            component.gameOver = false;
-            Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-            Screen.showCursor = false;
-            this.ShowHUDInfoCenter(string.Empty);
-        }
-    }
-
-    private TITAN spawnTitanRaw(Vector3 position, Quaternion rotation)
-    {
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
-        {
-            return ((GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("TITAN_VER3.1"), position, rotation)).GetComponent<TITAN>();
-        }
-        else
-        {
-            return Optimization.Caching.Pool.NetworkEnable("TITAN_VER3.1", position, rotation, 0).GetComponent<TITAN>();
-        }
-    }
-
-    [RPC]
-    private void spawnTitanRPC(PhotonMessageInfo info)
-    {
-        if (info.Sender.IsMasterClient)
-        {
-            foreach (TITAN obj in titans)
-            {
-                if(obj.BasePV.IsMine && (!PhotonNetwork.IsMasterClient || obj.nonAI))
-                {
-                    PhotonNetwork.Destroy(obj.BasePV);
-                }
-            }
-            SpawnNonAITitan(this.myLastHero, "titanRespawn");
-        }
-        else
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(spawnTitanRPC));
-            Anti.Kick(info.Sender, true);
-        }
-    }
-
-    private void Start()
-    {
-        ChangeQuality.setCurrentQuality();
-        name = "MultiplayerManager";
-        DontDestroyOnLoad(this);
-        HeroCostume.Init();
-        CharacterMaterials.Init();
-        RCManager.ClearAll();
-        this.heroes = new List<HERO>();
-        this.titans = new List<TITAN>();
-        this.hooks = new List<Bullet>();
-        AnarchyManager.DestroyMainScene();
-    }
-
-    private void Update()
-    {
-        FPS.FPSUpdate();
-        if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
-        {
-            Labels.NetworkStatus = PhotonNetwork.connectionStateDetailed.ToString() + (PhotonNetwork.connected ? " ping: " + PhotonNetwork.GetPing() : "");
-        }
-        if (!GameStart)
-            return;
-
-        int i;
-        for (i = 0; i < hooks.Count; i++)
-        {
-            hooks[i].update();
-        }
-        for (i = 0; i < heroes.Count; i++)
-        {
-            heroes[i].update();
-        }
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || PhotonNetwork.IsMasterClient)
-        {
-            for (i = 0; i < titans.Count; i++)
-            {
-                titans[i].update();
-            }
-        }
-        else if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.player.IsTitan)
-        {
-            for (i = 0; i < titans.Count; i++)
-            {
-                if (titans[i].IsLocal)
-                {
-                    titans[i].update();
-                }
-            }
-        }
-        if (mainCamera != null)
-        {
-            mainCamera.update();
-            mainCamera.snapShotUpdate();
-        }
-        Logic.OnUpdate();
-    }
-
-    [RPC]
-    private void updateKillInfo(bool t1, string killer, bool t2, string victim, int dmg, PhotonMessageInfo info)
-    {
-        if (info != null && !info.Sender.IsMasterClient && dmg != 0 && !t1 && !info.Sender.IsTitan)
-        {
-            Log.AddLineRaw($"t1:{t1},killer:{killer},t2:{t2},victim:{victim},dmg:{dmg},sender:{info.Sender.ID},isTitan:{info.Sender.IsTitan}", MsgType.Warning);
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(updateKillInfo));
-            return;
-        }
-        killer = killer.LimitToLengthStripped(50);
-        victim = victim.LimitToLengthStripped(50);
-        var killInfo = ((GameObject)Instantiate(CacheResources.Load("UI/KillInfo"))).GetComponent<KillInfoComponent>();
-        using (var ien = killInfoList.GetEnumerator())
-        {
-            while (ien.MoveNext())
-            {
-                if (ien.Current != null)
-                {
-                    ien.Current.moveOn();
-                }
-            }
-        }
-        if (killInfoList.Count > 4)
-        {
-            killInfoList.Dequeue().destroy();
-        }
-        killInfo.SetParent(UIRefer.panels[0].transform);
-        killInfo.Show(t1, killer, t2, victim, dmg);
-        killInfoList.Enqueue(killInfo);
-        if (Settings.GameFeed)
-        {
-            Anarchy.UI.Chat.Add($"<color=#FFC000>({Logic.RoundTime.ToString("F2")})</color> {killer.ToHTMLFormat()} killed {victim.ToHTMLFormat()} for {dmg} damage.");
-        }
-    }
-
-    [RPC]
-    private void verifyPlayerHasLeft(int ID, PhotonMessageInfo info)
-    {
-        if (ID < 0)
-        {
-            string ver = ID.ToString().Replace("-", "");
-            info.Sender.ModName = string.Format(ModNames.Cyan, $"{ver[0]}.{ver[1]}.{ver[2]}");
-        }
-    }
-
-    public void AddCamera(IN_GAME_MAIN_CAMERA c)
-    {
-        this.mainCamera = c;
-    }
-
-    public void AddCT(COLOSSAL_TITAN titan)
-    {
-        colossal = titan;
-    }
-
-    public void AddET(TITAN_EREN hero)
-    {
-        eren = hero;
-    }
-
-    public void AddFT(FEMALE_TITAN titan)
-    {
-        annie = titan;
-    }
-
-    public void AddHero(HERO hero)
-    {
-        this.heroes.Add(hero);
-    }
-
-    public void AddHook(Bullet h)
-    {
-        this.hooks.Add(h);
-    }
-
-    public void AddTitan(TITAN titan)
-    {
-        this.titans.Add(titan);
-    }
-
-    public void CheckPVPpts()
-    {
-        if(Logic is GameLogic.PVPCaptureLogic cap)
-        {
-            cap.CheckPVPpts();
-        }
-    }
-
-    public void DestroyAllExistingCloths()
-    {
-        Cloth[] array = UnityEngine.Object.FindObjectsOfType<Cloth>();
-        bool flag = array.Length != 0;
-        if (flag)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                ClothFactory.DisposeObject(array[i].gameObject);
-            }
-        }
-    }
-
-    public void GameLose()
-    {
-        Logic.GameLose();
-    }
-
-    public void GameWin()
-    {
-        Debug.Log("GameWin");
-        Logic.GameWin();
-    }
-
-    public bool IsPlayerAllDead()
-    {
-        foreach(PhotonPlayer player in PhotonNetwork.playerList)
-        {
-            if (player.IsTitan || player.Dead) continue;
-            return false;
-        }
-        return true;
-    }
-
-    public bool IsTeamAllDead(int team)
-    {
-        foreach(PhotonPlayer player in PhotonNetwork.playerList)
-        {
-            if (player.IsTitan) continue;
-            if (player.Team == team && !player.Dead) return false;
-
-        }
-        return true;
-    }
-
-    public void KillInfoUpdate()
-    {
-        if (killInfoList.Count > 0 && killInfoList.Peek() == null)
-            killInfoList.Dequeue();
-    }
-
-    public void MultiplayerRacingFinsih()
-    {
-        float num = Logic.RoundTime - (Logic as GameLogic.RacingLogic).StartTime;
-        if (PhotonNetwork.IsMasterClient)
-        {
-            this.getRacingResult(User.RaceName, num);
-        }
-        else
-        {
-            BasePV.RPC("getRacingResult", PhotonTargets.MasterClient, new object[]
-            {
-                User.RaceName,
-                num
-            });
-        }
-        this.GameWin();
-    }
-
-    [RPC]
-    public void netShowDamage(int speed, PhotonMessageInfo info = null)
-    {
-        if (info != null && !info.Sender.IsMasterClient && !info.Sender.IsTitan)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netShowDamage));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Stylish?.Style(speed);
-        //CacheGameObject.Find<StylishComponent>("Stylish").Style(speed);
-        var target = CacheGameObject.Find<UILabel>("LabelScore");
-        if (target != null)
-        {
-            target.text = speed.ToString();
-            target.transform.localScale = Vectors.zero;
-            speed = (int)(speed * 0.1f);
-            speed = Mathf.Max(40, speed);
-            speed = Mathf.Min(150, speed);
-            iTween.Stop(target.cachedGameObject);
-            iTween.ScaleTo(target.cachedGameObject, new System.Collections.Hashtable() { { "x", speed }, { "y", speed }, { "z", speed }, { "easetype", iTween.EaseType.easeOutElastic }, { "time", 1f } });
-            iTween.ScaleTo(target.cachedGameObject, itweenHash);
-        }
-    }
-
-    public void NOTSpawnNonAITitan(string id)
-    {
-        this.myLastHero = id.ToUpper();
-        PhotonNetwork.player.Dead = true;
-        PhotonNetwork.player.IsTitan = true;
-        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-        Screen.showCursor = true;
-        this.ShowHUDInfoCenter("the game has started for 60 seconds.\n please wait for next round.\n Click Right Mouse Key to Enter or Exit the Spectator Mode.");
-        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
-        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null, true, false);
-        IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
-        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
-    }
-
-    public void NOTSpawnPlayer(string id)
-    {
-        this.myLastHero = id.ToUpper();
-        PhotonNetwork.player.Dead = true;
-        PhotonNetwork.player.IsTitan = false;
-        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-        Screen.showCursor = false;
-        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
-        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null, true, false);
-        IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
-        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
-    }
-
-    public void OnConnectedToMaster(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnConnectedToMaster");
-    }
-
-    public void OnConnectedToPhoton(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnConnectedToPhoton");
-    }
-
-    public void OnConnectionFail(AOTEventArgs args)
-    {
-
-        UnityEngine.MonoBehaviour.print("OnConnectionFail : " + args.DisconnectCause.ToString());
-        Screen.lockCursor = false;
-        Screen.showCursor = true;
-        IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-        this.GameStart = false;
-        NGUITools.SetActive(UIRefer.panels[0], false);
-        NGUITools.SetActive(UIRefer.panels[1], false);
-        NGUITools.SetActive(UIRefer.panels[2], false);
-        NGUITools.SetActive(UIRefer.panels[3], false);
-        NGUITools.SetActive(UIRefer.panels[4], true);
-        CacheGameObject.Find("LabelDisconnectInfo").GetComponent<UILabel>().text = "OnConnectionFail : " + args.DisconnectCause.ToString();
-    }
-
-    public void OnCreatedRoom(AOTEventArgs args)
-    {
-        this.racingResult = new ArrayList();
-    }
-
-    public void OnCustomAuthenticationFailed()
-    {
-        UnityEngine.MonoBehaviour.print("OnCustomAuthenticationFailed");
-    }
-
-    private void OnDestroy()
-    {
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnConnectionFail, OnConnectionFail);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnConnectedToPhoton, OnConnectedToPhoton);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnCreatedRoom, OnCreatedRoom);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnDisconnectedFromPhoton, OnDisconnectedFromPhoton);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnJoinedLobby, OnJoinedLobby);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnJoinedRoom, OnJoinedRoom);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnLeftRoom, OnLeftRoom);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnMasterClientSwitched, OnMasterClientSwitched);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnPhotonPlayerConnected, OnPhotonPlayerConnected);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnPhotonPlayerDisconnected, OnPhotonPlayerDisconnected);
-        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, OnPhotonPlayerPropertiesChanged);
-        levelSkin = null;
-    }
-
-    public void OnDisconnectedFromPhoton(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnDisconnectedFromPhoton");
-        Screen.lockCursor = false;
-        Screen.showCursor = true;
-    }
-
-    [RPC]
-    public void oneTitanDown(string name1 = "", bool onPlayerLeave = false, PhotonMessageInfo info = null)
-    {
-        if(info != null && !PhotonNetwork.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(oneTitanDown));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.OnTitanDown(name1, onPlayerLeave);
-    }
-
-    public void OnFailedToConnectToPhoton(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnFailedToConnectToPhoton");
-    }
-
-    public void OnJoinedLobby(AOTEventArgs args)
-    {
-
-    }
-
-    public void OnJoinedRoom(AOTEventArgs args)
-    {
-        Debug.Log("OnJoinedRoom >> " + PhotonNetwork.room.Name);
-        string[] strArray = PhotonNetwork.room.Name.Split('`');
-        gameTimesUp = false;
-        Level = LevelInfo.GetInfo(strArray[1]);
-        switch (strArray[2].ToLower())
-        {
-            case "normal":  
-                Difficulty = 0;
-                break;
-            case "hard":
-                Difficulty = 1;
-                break;
-            case "abnormal":
-                Difficulty = 2;
-                break;
-            default:
-                Difficulty = 1;
-                break;
-        }
-        IN_GAME_MAIN_CAMERA.Difficulty = this.Difficulty;
-        Time = int.Parse(strArray[3]) * 60;
-        Logic.ServerTimeBase = (float)Time;
-        Logic.ServerTime = Time;
-        switch (strArray[4].ToLower())
-        {
-            case "day":
-            case "день":
-                IN_GAME_MAIN_CAMERA.DayLight = DayLight.Day;
-                break;
-            case "dawn":
-            case "вечер":
-                IN_GAME_MAIN_CAMERA.DayLight = DayLight.Dawn;
-                break;
-            case "night":
-            case "ночь":
-                IN_GAME_MAIN_CAMERA.DayLight = DayLight.Night;
-                break;
-            default:
-                IN_GAME_MAIN_CAMERA.DayLight = DayLight.Dawn;
-                break;
-        }
-        IN_GAME_MAIN_CAMERA.GameMode = Level.Mode;
-        PhotonNetwork.LoadLevel(Level.MapName);
-        if (PhotonNetwork.IsMasterClient)
-        {
-            GameModes.Load();
-            GameModes.ForceChange();
-            GameModes.SendRPC();
-        }
-        PhotonPlayer player = PhotonNetwork.player;
-        player.RCIgnored = false;
-        player.UIName = User.Name;
-        player.GuildName = User.AllGuildNames;
-        player.Kills = player.Deaths = player.Max_Dmg = player.Total_Dmg = 0;
-        player.RCteam = 0;
-        player.Dead = true;
-        player.IsTitan = false;
-        LocalRacingResult = string.Empty;
-        NeedChooseSide = true;
-        foreach(var info in killInfoList)
-        {
-            info.destroy();
-        }
-        killInfoList.Clear();
-        RCManager.racingSpawnPointSet = false;
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            BasePV.RPC("RequireStatus", PhotonTargets.MasterClient, new object[0]);
-        }
-        foreach (HERO her in heroes)
-        {
-            if(her.BasePV != null && her.BasePV.owner.GameObject == null)
-            {
-                her.BasePV.owner.GameObject = her.baseG;
-            }
-        }
-    }
-
-    public void OnLeftLobby(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnLeftLobby");
-    }
-
-    public void OnLeftRoom(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnLeftRoom");
-        if (Application.loadedLevel != 0)
-        {
-            UnityEngine.Time.timeScale = 1f;
-            if (PhotonNetwork.connected)
-            {
-                PhotonNetwork.Disconnect();
-            }
-            IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-            this.GameStart = false;
-            Screen.lockCursor = false;
-            Screen.showCursor = true;
-            InputManager.MenuOn = false;
-            levelSkin = null;
-            DestroyAllExistingCloths();
-            UnityEngine.Object.Destroy(FengGameManagerMKII.FGM);
-            Application.LoadLevel("menu");
-        }
-        RCManager.racingSpawnPointSet = false;
-    }
-
-    public void OnMasterClientSwitched(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnMasterClientSwitched");
-        if (this.gameTimesUp)
-        {
-            return;
-        }
-        if (PhotonNetwork.IsMasterClient)
-        {
-            GameModes.Load();
-            GameModes.ForceChange();
-            RCManager.ClearAll();
-            this.RestartGame(true, false);
-        }
-    }
-
-    public void OnPhotonCreateRoomFailed(AOTEventArgs args)
-    {
-        UnityEngine.Debug.LogError("OnPhotonCreateRoomFailed");
-    }
-
-    public void OnPhotonCustomRoomPropertiesChanged(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnPhotonCustomRoomPropertiesChanged");
-    }
-
-    public void OnPhotonJoinRoomFailed(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnPhotonJoinRoomFailed");
-    }
-
-    public void OnPhotonPlayerConnected(AOTEventArgs args)
-    {
-        StartCoroutine(OnPhotonPlayerConnectedE(args.Player));
-    }
-
-    private IEnumerator OnPhotonPlayerConnectedE(PhotonPlayer player)
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (AnarchyManager.PauseWindow.Active)
-            {
-                BasePV.RPC("pauseRPC", player, new object[] { true });
-            }
-            if (Level.Name.StartsWith("Custom"))
-            {
-                StartCoroutine(CustomLevel.SendRPCToPlayer(player));
-            }
-        }
-        yield return new WaitForSeconds(0.5f);
-        Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
-        playerList?.Update();
-        if (player.Properties[PhotonPlayerProperty.name] == null)
-        {
-            while (player.Properties[PhotonPlayerProperty.name] == null)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
-        }
-        if (PhotonNetwork.IsMasterClient)
-        {
-            GameModes.SendRPCToPlayer(player);
-            if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().ToUpper().StartsWith("GUEST"))
-            {
-                Anti.Kick(player, false, "Anti-guest");
-            }
-            else if (BanList.Banned(player.UIName.RemoveHex()))
-            {
-                Anti.Kick(player, false, "Banned");
-            }
-        }
-    }
-
-    public void OnPhotonPlayerDisconnected(AOTEventArgs args)
-    {
-        PhotonPlayer player = args.Player;
-        if (player != null)
-        {
-            if (player.RCIgnored)
-            {
-                Log.AddLine("playerKicked", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
-            }
-            else
-            {
-                Log.AddLine("playerLeft", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
-            }
-        }
-        playerList?.Update();
-        if (!this.gameTimesUp)
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                this.oneTitanDown(string.Empty, true);
-                this.someOneIsDead(0);
-            }
-        }
-    }
-
-    public void OnPhotonPlayerPropertiesChanged(AOTEventArgs args)
-    {
-        playerList?.Update();
-    }
-
-    public void OnPhotonRandomJoinFailed(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnPhotonRandomJoinFailed");
-    }
-
-    public void OnPhotonSerializeView(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnPhotonSerializeView");
-    }
-
-    public void OnReceivedRoomListUpdate(AOTEventArgs args)
-    {
-    }
-
-    public void OnUpdatedFriendList(AOTEventArgs args)
-    {
-        UnityEngine.MonoBehaviour.print("OnUpdatedFriendList");
-    }
-
-    public void PlayerKillInfoSingleUpdate(int dmg)
-    {
-        this.SingleKills++;
-        this.SingleMax = Mathf.Max(dmg, this.SingleMax);
-        this.SingleTotal += dmg;
-    }
-
-    public void PlayerKillInfoUpdate(PhotonPlayer player, int dmg)
-    {
-        player.Kills++;
-        player.Max_Dmg = Mathf.Max(dmg, player.Max_Dmg);
-        player.Total_Dmg += dmg;
-    }
-
-    public TITAN RandomSpawnOneTitan(int rate)
-    {
-        return this.SpawnTitan(rate, RespawnPositions.RandomTitanPos, Quaternion.identity, false);
-    }
-
-    public void RandomSpawnTitans(string place, int rate, int num, bool punk = false)
-    {
-        if (num == -1)
-        {
-            num = 1;
-        }
-        List<Vector3> list = new List<Vector3>(RespawnPositions.TitanPositions);
-        if (list.Count <= 0)
-        {
-            return;
-        }
-        for (int i = 0; i < num; i++)
-        {
-            if (list.Count <= 0)
-            {
-                return;
-            }
-            int pos = Random.Range(0, list.Count);
-            this.SpawnTitan(rate, list[pos], Quaternion.identity, punk);
-            list.RemoveAt(pos);
-        }
-    }
-
-    public void RemoveCT(COLOSSAL_TITAN titan)
-    {
-        titan = null;
-    }
-
-    public void RemoveET(TITAN_EREN hero)
-    {
-        eren = null;
-    }
-
-    public void RemoveFT(FEMALE_TITAN titan)
-    {
-        titan = null;
-    }
-
-    public void RemoveHero(HERO hero)
-    {
-        this.heroes.Remove(hero);
-    }
-
-    public void RemoveHook(Bullet h)
-    {
-        this.hooks.Remove(h);
-    }
-
-    public void RemoveTitan(TITAN titan)
-    {
-        this.titans.Remove(titan);
-    }
-
-    public void RestartGame(bool masterclientSwitched, bool restartManually)
-    {
-        if (this.gameTimesUp || Logic.Restarting)
-        {
-            return;
-        }
-        GameModes.OnRestart();
-        this.checkpoint = null;
-        Logic.Restarting = true;
-        Logic.RoundTime = 0f;
-        Logic.MyRespawnTime = 0f;
-        foreach (var info in killInfoList)
-        {
-            info.destroy();
-        }
-        killInfoList.Clear();
-        this.racingResult = new ArrayList();
-        RCManager.ClearVariables();
-        this.ShowHUDInfoCenter(string.Empty);
-        DestroyAllExistingCloths();
-        GameModes.SendRPC();
-        PhotonNetwork.DestroyAll();
-        BasePV.RPC("RPCLoadLevel", PhotonTargets.All, new object[0]);
-        if (masterclientSwitched)
-        {
-            this.SendChatContentInfo(User.MasterClientSwitch);
-        }
-        else
-        {
-            if (!restartManually && User.MsgRestart.Length > 0)
-            { 
-                this.SendChatContentInfo(User.MsgRestart); 
-            }
-        }
-    }
-
-    public void RestartGameSingle()
-    {
-        this.checkpoint = null;
-        this.SingleKills = 0;
-        this.SingleMax = 0;
-        this.SingleTotal = 0;
-        Logic.RoundTime = 0f;
-        Logic.MyRespawnTime = 0f;
-        this.ShowHUDInfoCenter(string.Empty);
-        DestroyAllExistingCloths();
-        Application.LoadLevel(Application.loadedLevel);
-    }
-
-    public void SendChatContentInfo(string content)
-    {
-        BasePV.RPC("Chat", PhotonTargets.All, new object[]
-        {
-            content,
-            string.Empty
-        });
-    }
-
-    public void SendKillInfo(bool t1, string killer, bool t2, string victim, int dmg = 0)
-    {
-        BasePV.RPC("updateKillInfo", PhotonTargets.All, new object[]
-        {
-            t1,
-            killer,
-            t2,
-            victim,
-            dmg
-        });
-    }
-
-    [RPC]
-    public void someOneIsDead(int id, PhotonMessageInfo info = null)
-    {
-        if (info != null && !PhotonNetwork.IsMasterClient)
-        {
-            Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(someOneIsDead));
-            Anti.Kick(info.Sender, true);
-            return;
-        }
-        Logic.OnSomeOneIsDead(id);
-    }
-
-    public void SpawnNonAITitan(string id, string tag = "titanRespawn")
-    {
-        GameObject[] array = GameObject.FindGameObjectsWithTag(tag);
-        GameObject gameObject = array[UnityEngine.Random.Range(0, array.Length)];
-        this.myLastHero = id.ToUpper();
-        GameObject gameObject2;
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
-        {
-            gameObject2 = Optimization.Caching.Pool.NetworkEnable("TITAN_VER3.1", this.checkpoint.transform.position + new Vector3((float)UnityEngine.Random.Range(-20, 20), 2f, (float)UnityEngine.Random.Range(-20, 20)), this.checkpoint.transform.rotation, 0);
-        }
-        else
-        {
-            gameObject2 = Optimization.Caching.Pool.NetworkEnable("TITAN_VER3.1", gameObject.transform.position, gameObject.transform.rotation, 0);
-        }
-        IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(gameObject2.GetComponent<TITAN>());
-        gameObject2.GetComponent<TITAN>().nonAI = true;
-        gameObject2.GetComponent<TITAN>().speed = 30f;
-        gameObject2.GetComponent<TITAN_CONTROLLER>().enabled = true;
-        if (id == "RANDOM" && UnityEngine.Random.Range(0, 100) < 7)
-        {
-            gameObject2.GetComponent<TITAN>().setAbnormalType(AbnormalType.Crawler, true);
-        }
-        IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
-        IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
-        IN_GAME_MAIN_CAMERA.Look.disable = true;
-        IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
-        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable
-        {
-            {
-                "dead",
-                false
-            }
-        };
-        PhotonNetwork.player.SetCustomProperties(customProperties);
-        customProperties = new ExitGames.Client.Photon.Hashtable
-        {
-            {
-                PhotonPlayerProperty.isTitan,
-                2
-            }
-        };
-        PhotonNetwork.player.SetCustomProperties(customProperties);
-        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-        Screen.showCursor = true;
-        this.ShowHUDInfoCenter(string.Empty);
-    }
-
-    public void SpawnPlayer(string id)
-    {
-        this.SpawnPlayerAt(id, myLastRespawnTag);
-    }
-
-    public void SpawnPlayerAt(string id, string tag = "")
-    {
-        if(!CustomLevel.logicLoaded  || !CustomLevel.customLevelLoaded)
-        {
-            NOTSpawnPlayer(id);
-            return;
-        }
-        myLastRespawnTag = tag;
-        Vector3 pos;
-        Quaternion rot = Quaternion.identity;
-        if(tag != string.Empty)
-        {
-            GameObject[] positions = GameObject.FindGameObjectsWithTag(tag);
-            if(positions.Length > 0)
-            {
-                pos = positions[UnityEngine.Random.Range(0, positions.Length)].transform.position;
-            }
-            else
-            {
-                pos = RespawnPositions.RandomHeroPos;
-            }
-        }
-        else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
-        {
-            pos = this.checkpoint.transform.position;
-        }
-        else if (RCManager.racingSpawnPointSet)
-        {
-            pos = RCManager.racingSpawnPoint;
-            rot = RCManager.racingSpawnPointRotation;
-        }
-        else if (Level.Name.StartsWith("Custom"))
-        {
-            List<Vector3> list = new List<Vector3>();
-            switch (PhotonNetwork.player.RCteam)
-            {
-                case 0:
-                    for (int i = 0; i < 2; i++)
-                    {
-                        string type = (i == 0) ? "C" : "M";
-                        foreach (Vector3 vec in CustomLevel.spawnPositions["Player" + type])
-                        {
-                            list.Add(vec);
-                        }
-                    }
-                    break;
-                case 1:
-                    using (List<Vector3>.Enumerator enumerator = CustomLevel.spawnPositions["PlayerC"].GetEnumerator())
-                    {
-                        while (enumerator.MoveNext())
-                        {
-                            Vector3 vec2 = enumerator.Current;
-                            list.Add(vec2);
-                        }
-                    }
-                    break;
-                case 2:
-                    using (List<Vector3>.Enumerator enumerator = CustomLevel.spawnPositions["PlayerM"].GetEnumerator())
-                    {
-                        while (enumerator.MoveNext())
-                        {
-                            Vector3 vec2 = enumerator.Current;
-                            list.Add(vec2);
-                        }
-                    }
-                    break;
-                default:
-                    foreach (Vector3 vec3 in CustomLevel.spawnPositions["PlayerM"])
-                    {
-                        list.Add(vec3);
-                    }
-                    break;
-            }
-            if (list.Count > 0)
-            {
-                pos = list[UnityEngine.Random.Range(0, list.Count)];
-            }
-            else
-            {
-                pos = RespawnPositions.RandomHeroPos;
-            }
-        }
-        else
-        {
-            pos = RespawnPositions.RandomHeroPos;
-        }
-        IN_GAME_MAIN_CAMERA component = IN_GAME_MAIN_CAMERA.MainCamera;
-        this.myLastHero = id.ToUpper();
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
-        {
-            if (IN_GAME_MAIN_CAMERA.singleCharacter == "TITAN_EREN")
-            {
-                component.SetMainObject(((GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("TITAN_EREN"), pos, Quaternion.identity)).GetComponent<TITAN_EREN>(), true, false);
-            }
-            else
-            {
-                component.SetMainObject(((GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("AOTTG_HERO 1"), pos, rot)).GetComponent<HERO>(), true, false);
-                if (IN_GAME_MAIN_CAMERA.singleCharacter == "SET 1" || IN_GAME_MAIN_CAMERA.singleCharacter == "SET 2" || IN_GAME_MAIN_CAMERA.singleCharacter == "SET 3")
-                {
-                    HeroCostume heroCostume = CostumeConeveter.LocalDataToHeroCostume(IN_GAME_MAIN_CAMERA.singleCharacter);
-                    heroCostume.Checkstat();
-                    CostumeConeveter.HeroCostumeToLocalData(heroCostume, IN_GAME_MAIN_CAMERA.singleCharacter);
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                    if (heroCostume != null)
-                    {
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume;
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume.stat;
-                    }
-                    else
-                    {
-                        heroCostume = HeroCostume.costumeOption[3];
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume;
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(heroCostume.name.ToUpper());
-                    }
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                    IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                    IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-                }
-                else
-                {
-                    for (int i = 0; i < HeroCostume.costume.Length; i++)
-                    {
-                        if (HeroCostume.costume[i].name.ToUpper() == IN_GAME_MAIN_CAMERA.singleCharacter.ToUpper())
-                        {
-                            int num = HeroCostume.costume[i].id + CheckBoxCostume.costumeSet - 1;
-                            if (HeroCostume.costume[num].name != HeroCostume.costume[i].name)
-                            {
-                                num = HeroCostume.costume[i].id + 1;
-                            }
-                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num];
-                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(HeroCostume.costume[num].name.ToUpper());
-                            IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                            IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                            IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        else
-        {
-            HERO hero = Optimization.Caching.Pool.NetworkEnable("AOTTG_HERO 1", pos, Quaternion.identity, 0).GetComponent<HERO>();
-            component.SetMainObject(hero, true, false);
-            id = id.ToUpper();
-            if (id == "SET 1" || id == "SET 2" || id == "SET 3")
-            {
-                HeroCostume heroCostume2 = CostumeConeveter.LocalDataToHeroCostume(id);
-                heroCostume2.Checkstat();
-                CostumeConeveter.HeroCostumeToLocalData(heroCostume2, id);
-                IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                if (heroCostume2 != null)
-                {
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume2.stat;
-                }
-                else
-                {
-                    heroCostume2 = HeroCostume.costumeOption[3];
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
-                    IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(heroCostume2.name.ToUpper());
-                }
-                IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-            }
-            else
-            {
-                for (int j = 0; j < HeroCostume.costume.Length; j++)
-                {
-                    if (HeroCostume.costume[j].name.ToUpper() == id.ToUpper())
-                    {
-                        int num2 = HeroCostume.costume[j].id;
-                        if (id.ToUpper() != "AHSS")
-                        {
-                            num2 += CheckBoxCostume.costumeSet - 1;
-                        }
-                        if (HeroCostume.costume[num2].name != HeroCostume.costume[j].name)
-                        {
-                            num2 = HeroCostume.costume[j].id + 1;
-                        }
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num2];
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = HeroStat.getInfo(HeroCostume.costume[num2].name.ToUpper());
-                        IN_GAME_MAIN_CAMERA.MainHERO.Setup.SetCharacterComponent();
-                        IN_GAME_MAIN_CAMERA.MainHERO.setStat();
-                        IN_GAME_MAIN_CAMERA.MainHERO.setSkillHUDPosition();
-                        break;
-                    }
-                }
-            }
-            CostumeConeveter.HeroCostumeToPhotonData(IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume, PhotonNetwork.player);
-            if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
-            {
-                IN_GAME_MAIN_CAMERA.MainT.position += new Vector3((float)UnityEngine.Random.Range(-20, 20), 2f, (float)UnityEngine.Random.Range(-20, 20));
-            }
-            PhotonNetwork.player.Dead = false;
-            PhotonNetwork.player.IsTitan = false;
-        }
-        component.enabled = true;
-
-        IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
-        IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
-        IN_GAME_MAIN_CAMERA.Look.disable = true;
-        component.gameOver = false;
-        Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
-        Screen.showCursor = false;
-        this.ShowHUDInfoCenter(string.Empty);
-    }
-
-    public TITAN SpawnTitan(int rate, Vector3 position, Quaternion rotation, bool punk = false)
-    {
-        TITAN tit = this.spawnTitanRaw(position, rotation);
-        if (punk)
-        {
-            tit.setAbnormalType(AbnormalType.Punk, false);
-        }
-        else if (UnityEngine.Random.Range(0, 100) < rate)
-        {
-            if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
-            {
-                if (UnityEngine.Random.Range(0f, 1f) < 0.7f || FengGameManagerMKII.Level.NoCrawler)
-                {
-                    tit.setAbnormalType(AbnormalType.Jumper, false);
-                }
-                else
-                {
-                    tit.setAbnormalType(AbnormalType.Crawler, false);
-                }
-            }
-        }
-        else if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
-        {
-            if (UnityEngine.Random.Range(0f, 1f) < 0.7f || FengGameManagerMKII.Level.NoCrawler)
-            {
-                tit.setAbnormalType(AbnormalType.Jumper, false);
-            }
-            else
-            {
-                tit.setAbnormalType(AbnormalType.Crawler, false);
-            }
-        }
-        else if (UnityEngine.Random.Range(0, 100) < rate)
-        {
-            if (UnityEngine.Random.Range(0f, 1f) < 0.8f || FengGameManagerMKII.Level.NoCrawler)
-            {
-                tit.setAbnormalType(AbnormalType.Aberrant, false);
-            }
-            else
-            {
-                tit.setAbnormalType(AbnormalType.Crawler, false);
-            }
-        }
-        else if (UnityEngine.Random.Range(0f, 1f) < 0.8f || FengGameManagerMKII.Level.NoCrawler)
-        {
-            tit.setAbnormalType(AbnormalType.Jumper, false);
-        }
-        else
-        {
-            tit.setAbnormalType(AbnormalType.Crawler, false);
-        }
-        GameObject gameObject2;
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
-        {
-            gameObject2 = Pool.Enable("FX/FXtitanSpawn", tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));//(GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("FX/FXtitanSpawn"), tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));
-        }
-        else
-        {
-            gameObject2 = Optimization.Caching.Pool.NetworkEnable("FX/FXtitanSpawn", tit.transform.position, Quaternion.Euler(-90f, 0f, 0f), 0);
-        }
-        gameObject2.transform.localScale = tit.transform.localScale;
-        return tit;
-    }
-
-    public void SpawnTitanAction(int type, float size, int health, int number)
-    {
-        Vector3 position = new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f));
-        Quaternion rotation = new Quaternion(0f, 0f, 0f, 1f);
-        if (CustomLevel.spawnPositions["Titan"].Count > 0)
-        {
-            position = CustomLevel.spawnPositions["Titan"][Random.Range(0, CustomLevel.spawnPositions["Titan"].Count)];
-        }
-        else
-        {
-            GameObject[] objArray = GameObject.FindGameObjectsWithTag("titanRespawn");
-            if (objArray.Length != 0)
-            {
-                int index = UnityEngine.Random.Range(0, objArray.Length);
-                GameObject obj2 = objArray[index];
-                while (objArray[index] == null)
-                {
-                    index = UnityEngine.Random.Range(0, objArray.Length);
-                    obj2 = objArray[index];
-                }
-                objArray[index] = null;
-                position = obj2.transform.position;
-                rotation = obj2.transform.rotation;
-            }
-        }
-        for (int i = 0; i < number; i++)
-        {
-            TITAN titan = this.spawnTitanRaw(position, rotation);
-            titan.hasSetLevel = true;
-            titan.resetLevel(size);
-            if ((float)health > 0f)
-            {
-                titan.armor = health;
-            }
-            titan.setAbnormalType((AbnormalType)type);
-        }
-    }
-
-    public void SpawnTitanAtAction(int type, float size, int health, int number, float posX, float posY, float posZ)
-    {
-        Vector3 position = new Vector3(posX, posY, posZ);
-        Quaternion rotation = new Quaternion(0f, 0f, 0f, 1f);
-        for (int i = 0; i < number; i++)
-        {
-            TITAN obj2 = this.spawnTitanRaw(position, rotation);
-            obj2.resetLevel(size);
-            obj2.hasSetLevel = true;
-            if ((float)health > 0f)
-            {
-                obj2.armor = health;
-            }
-            obj2.setAbnormalType((AbnormalType)type);
-        }
-    }
-
-    public void SpawnTitansCustom(int rate, int count, bool punk = false)
-    {
-        int num = count;
-        if (Level.Name.Contains("Custom"))
-        {
-            num = 5;
-            if (RCManager.GameType.Value == 1)
-            {
-                num = 3;
-            }
-            else if(RCManager.GameType.Value == 2 || RCManager.GameType.Value == 3)
-            {
-                num = 0;
-            }
-        }
-        else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
-        {
-            if (count == 3 && !punk && GameModes.CustomAmount.Enabled)
-            {
-                 num = GameModes.CustomAmount.GetInt(0);
-            }
-            else
-            {
-                if (punk)
-                {
-                    num = count;
-                }
-                else
-                {
-                    if (GameModes.TitansWaveAmount.Enabled)
-                    {
-                        num = Logic.Round.Wave * GameModes.TitansWaveAmount.GetInt(0);
-                    }
-                }
-            }
-        }
-        else if (GameModes.CustomAmount.Enabled)
-        {
-            num = GameModes.CustomAmount.GetInt(0);
-        }
-        num = Mathf.Min(50, num);
-        if (GameModes.SpawnRate.Enabled)
-        {
-            float[] rates = new float[5];
-            for (int i = 0; i < rates.Length; i++)
-            {
-                rates[i] = GameModes.SpawnRate.GetFloat(i);
-            }
-            if (punk && GameModes.PunkOverride.Enabled)
-            {
-                rates = new float[5] { 0f, 0f, 0f, 0f, 100f };
-            }
-            List<Vector3> positions;
-            if (CustomLevel.spawnPositions["Titan"].Count > 0)
-            {
-                positions = new List<Vector3>(CustomLevel.spawnPositions["Titan"]);
-            }
-            else
-            {
-                if(RespawnPositions.TitanPositions.Length > 0)
-                {
-                    positions = new List<Vector3>(RespawnPositions.TitanPositions);
-                }
-                else
-                {
-                    positions = new List<Vector3>(new Vector3[num].Select(x => new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f))).ToArray());
-                }
-            }
-            float summ = rates[0] + rates[1] + rates[2] + rates[3] + rates[4];
-            for (int i = 0; i < num; i++)
-            {
-                Vector3 position;
-                if (positions.Count == 0)
-                {
-                    position = new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f));
-                }
-                else
-                {
-                    int index = Random.Range(0, positions.Count);
-                    position = positions[index];
-                    positions.RemoveAt(index);
-                }
-                float cRate = Random.Range(0, 100f);
-                if(cRate <= summ)
-                {
-                    float startRate = 0f;
-                    float endRate = 0f;
-                    int type = 0;
-                    for(int j = 0; j < 5; j++)
-                    {
-                        endRate += rates[j];
-                        if(cRate >= startRate && cRate < endRate)
-                        {
-                            type = j;
-                            break;
-                        }
-                        startRate += rates[j];
-                    }
-                    spawnTitanRaw(position, Quaternion.identity).setAbnormalType((AbnormalType)type, false);
-                }
-                else
-                {
-                    SpawnTitan(rate, position, Quaternion.identity, punk);
-                }
-            }
-        }
-        else
-        {
-            if (Level.Name.Contains("Custom"))
-            {
-                List<Vector3> positions;
-                if (CustomLevel.spawnPositions["Titan"].Count > 0)
-                {
-                    positions = new List<Vector3>(CustomLevel.spawnPositions["Titan"]);
-                }
-                else
-                {
-                    if (RespawnPositions.TitanPositions.Length > 0)
-                    {
-                        positions = new List<Vector3>(RespawnPositions.TitanPositions);
-                    }
-                    else
-                    {
-                        positions = new List<Vector3>(new Vector3[num].Select(x => new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f))).ToArray());
-                    }
-                }
-                for (int i = 0; i < num; i++)
-                {
-                    Vector3 position;
-                    if (positions.Count == 0)
-                    {
-                        position = new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f));
-                    }
-                    else
-                    {
-                        int index = Random.Range(0, positions.Count);
-                        position = positions[index];
-                        positions.RemoveAt(index);
-                    }
-                    SpawnTitan(rate, position, Quaternion.identity, punk);
-                }
-            }
-            else
-            {
-                RandomSpawnTitans("titanRespawn", rate, num, punk);
-            }
-        }
-    }
-
-    public void TitanGetKill(PhotonPlayer player, int Damage, string name)
-    {
-        Damage = Mathf.Max(10, Damage);
-        BasePV.RPC("netShowDamage", player, new object[]
-        {
-            Damage
-        });
-        BasePV.RPC("oneTitanDown", PhotonTargets.MasterClient, new object[]
-        {
-            name,
-            false
-        });
-        this.SendKillInfo(false, player.UIName, true, name, Damage);
-        this.PlayerKillInfoUpdate(player, Damage);
-    }
-
-    public void TitanGetKillbyServer(int Damage, string name)
-    {
-        Damage = Mathf.Max(10, Damage);
-        this.SendKillInfo(false, LoginFengKAI.player.name, true, name, Damage);
-        this.netShowDamage(Damage);
-        this.oneTitanDown(name, false);
-        this.PlayerKillInfoUpdate(PhotonNetwork.player, Damage);
-    }
+    #endregion
 }

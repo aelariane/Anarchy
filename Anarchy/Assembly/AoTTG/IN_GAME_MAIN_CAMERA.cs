@@ -151,7 +151,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         isPausing = false;
         SpecMov = GetComponent<SpectatorMovement>();
         Look = GetComponent<MouseLook>();
-        CameraMode = (CameraType)Anarchy.Configuration.Settings.CameraMode.Value;
+        CameraMode = (CameraType)Settings.CameraMode.Value;
         CreateMinimap();
         VideoSettings.Apply();
     }
@@ -160,7 +160,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     {
         this.distanceOffsetMulti = (cameraDistance * (200f - BaseCamera.fieldOfView)) / 150f;
         BaseT.position = (Head ?? MainT).position + (Vectors.up * (this.heightMulti - ((0.6f - cameraDistance) * 2f)));
-        if (!AnarchyManager.Pause.Active && !AnarchyManager.SettingsPanel.Active)
+        if (!InputManager.MenuOn)
         {
             switch (CameraMode)
             {
@@ -395,17 +395,15 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     {
         CacheGameObject.Find("Flare").transform.localPosition = new Vector3((float)(((int)(-Screen.width * 0.5f)) + 14), (float)((int)(-Screen.height * 0.5f)), 0f);
         var obj2 = CacheGameObject.Find("LabelInfoBottomRight");
-        obj2.transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f);
+        if (obj2 != null)
+        {
+            obj2.transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f);
+        }
         Optimization.Labels.BottomRight = "Pause : " + InputManager.Settings[InputCode.Pause] + " ";
         GameObject.Find("LabelInfoTopCenter").transform.localPosition = new Vector3(0f, (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelInfoTopRight").transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelNetworkStatus").transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelInfoTopLeft").transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)((Screen.height * 0.5f) - 20f)), 0f);
-        //if (InRoomChat.Chat != null)
-        //{
-        //    InRoomChat.Chat.transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f);
-        //    InRoomChat.Chat.SetPosition();
-        //}
         if (!usingTitan || GameType == GameType.Single)
         {
             CacheGameObject.Find("skill_cd_bottom").transform.localPosition = new Vector3(0f, (float)((int)((-Screen.height * 0.5f) + 5f)), 0f);
@@ -432,7 +430,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         }
         if ((MainObject != null) && (MainHERO != null))
         {
-            MainHERO.setSkillHUDPosition();
+            MainHERO.SetSkillHudPosition();
         }
         this.createSnapShotRT();
     }
@@ -769,10 +767,13 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             if (Screen.fullScreen)
             {
                 Screen.SetResolution(960, 600, false);
+                Anarchy.UI.Style.ScreenWidth = 960;
+                Anarchy.UI.Style.ScreenHeight = 960;
             }
             else
             {
-                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+                Screen.SetResolution((int)Anarchy.UI.Style.ScreenWidthDefault, (int)Anarchy.UI.Style.ScreenHeightDefault, true);
+                Anarchy.UI.Style.ResetScreenParameters();
             }
             this.needSetHUD = true;
             Anarchy.UI.UIManager.UpdateGUIScaling();

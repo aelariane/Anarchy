@@ -13,6 +13,7 @@ namespace Anarchy.UI
 
         protected Animation.Animation animator;
         public readonly string Directory;
+        public readonly GUIDrawer Drawer;
         public readonly int Layer;
         protected readonly Localization.Locale locale;
         public readonly string Name;
@@ -57,6 +58,7 @@ namespace Anarchy.UI
                 AllBases = new List<GUIBase>();
             }
             AllBases.Add(this);
+            Drawer = new GUIDrawer(this);
         }
 
         ~GUIBase()

@@ -21,7 +21,7 @@ namespace Anarchy.UI
         private string character;
         private Texture2D avatar = null;
 
-        public CharacterSelectionPanel() : base(nameof(CharacterSelectionPanel), 370)
+        public CharacterSelectionPanel() : base(nameof(CharacterSelectionPanel), GUILayers.CharacterSelection)
         {
             animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
@@ -52,25 +52,23 @@ namespace Anarchy.UI
                 DisableImmediate();
                 return;
             }
+
+            if (FengGameManagerMKII.Level.TeamTitan && IN_GAME_MAIN_CAMERA.GameMode != GameMode.PVP_AHSS)
+            {
+                if (Button(left, locale["titanStart"], true))
+                {
+                    SpawnTitan();
+                    DisableImmediate();
+                    return;
+                }
+            }
             if (FengGameManagerMKII.Level.PVPEnabled)
             {
-                if (FengGameManagerMKII.Level.TeamTitan && IN_GAME_MAIN_CAMERA.GameMode != GameMode.PVP_AHSS)
+                if (Button(left, locale["ahssStart"], true))
                 {
-                    if (Button(left, locale["titanStart"], true))
-                    {
-                        SpawnTitan();
-                        DisableImmediate();
-                        return;
-                    }
-                }
-                else
-                {
-                    if (Button(left, locale["ahssStart"], true))
-                    {
-                        SpawnAHSS();
-                        DisableImmediate();
-                        return;
-                    }
+                    SpawnAHSS();
+                    DisableImmediate();
+                    return;
                 }
             }
             if (Button(left, locale["back"], true))
@@ -103,7 +101,7 @@ namespace Anarchy.UI
             if (character.Contains("SET"))
             {
                 var set = CostumeConeveter.LocalDataToHeroCostume(character);
-                if(set.costumeId != 25 && set.costumeId != 26)
+                if (set.costumeId != 25 && set.costumeId != 26)
                 {
                     character = "AHSS";
                 }
@@ -112,10 +110,10 @@ namespace Anarchy.UI
             {
                 character = "AHSS";
             }
-            FengGameManagerMKII.FGM.NeedChooseSide = false;
-            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f)
+            FengGameManagerMKII.FGM.needChooseSide = false;
+            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f)
             {
-                FengGameManagerMKII.FGM.NOTSpawnPlayer(character);
+                FengGameManagerMKII.FGM.NotSpawnPlayer(character);
                 FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
             }
             else
@@ -137,28 +135,28 @@ namespace Anarchy.UI
         private void SpawnHero()
         {
             CheckBoxCostume.costumeSet = costumeSelection.ToValue() + 1;
-            FengGameManagerMKII.FGM.NeedChooseSide = false;
+            FengGameManagerMKII.FGM.needChooseSide = false;
             if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
             {
                 FengGameManagerMKII.FGM.checkpoint = CacheGameObject.Find("PVPchkPtH");
             }
-            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f)
+            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f)
             {
-                if (!FengGameManagerMKII.FGM.IsPlayerAllDead())
+                if (!FengGameManagerMKII.IsPlayerAllDead())
                 {
-                    FengGameManagerMKII.FGM.NOTSpawnPlayer(character);
+                    FengGameManagerMKII.FGM.NotSpawnPlayer(character);
                 }
                 else
                 {
-                    FengGameManagerMKII.FGM.NOTSpawnPlayer(character);
+                    FengGameManagerMKII.FGM.NotSpawnPlayer(character);
                     FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
                 }
             }
             else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.BOSS_FIGHT_CT || IN_GAME_MAIN_CAMERA.GameMode == GameMode.TROST || IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
             {
-                if (FengGameManagerMKII.FGM.IsPlayerAllDead())
+                if (FengGameManagerMKII.IsPlayerAllDead())
                 {
-                    FengGameManagerMKII.FGM.NOTSpawnPlayer(character);
+                    FengGameManagerMKII.FGM.NotSpawnPlayer(character);
                     FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
                 }
                 else
@@ -188,16 +186,16 @@ namespace Anarchy.UI
             {
                 FengGameManagerMKII.FGM.checkpoint = CacheGameObject.Find("PVPchkPtT");
             }
-            if ((!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f) || FengGameManagerMKII.FGM.JustSuicide)
+            if ((!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f) || FengGameManagerMKII.FGM.justSuicide)
             {
-                FengGameManagerMKII.FGM.JustSuicide = false;
-                FengGameManagerMKII.FGM.NOTSpawnNonAITitan(character);
+                FengGameManagerMKII.FGM.justSuicide = false;
+                FengGameManagerMKII.FGM.NotSpawnNonAiTitan(character);
             }
             else
             {
-                FengGameManagerMKII.FGM.SpawnNonAITitan(character, "titanRespawn");
+                FengGameManagerMKII.FGM.SpawnNonAiTitan(character, "titanRespawn");
             }
-            FengGameManagerMKII.FGM.NeedChooseSide = false;
+            FengGameManagerMKII.FGM.needChooseSide = false;
             IN_GAME_MAIN_CAMERA.usingTitan = true;
             IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
         }
@@ -227,6 +225,14 @@ namespace Anarchy.UI
         public override void OnUpdateScaling()
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+        }
+
+        public override void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Disable();
+            }
         }
     }
 }

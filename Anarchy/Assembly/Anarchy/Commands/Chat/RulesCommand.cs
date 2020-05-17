@@ -17,7 +17,7 @@ namespace Anarchy.Commands.Chat
             string toAdd = GameModes.GetGameModesInfo();
             if (toAdd.Length > 0)
             {
-                UI.Chat.Add(toAdd);
+                UI.Chat.Add(Lang["activatedGameModes"] + "\n" + toAdd);
             }
             return true;
         }

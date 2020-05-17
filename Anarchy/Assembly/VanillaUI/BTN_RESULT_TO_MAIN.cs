@@ -11,7 +11,7 @@ public class BTN_RESULT_TO_MAIN : MonoBehaviour
             PhotonNetwork.Disconnect();
         }
         IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-        FengGameManagerMKII.FGM.GameStart = false;
+        FengGameManagerMKII.FGM.gameStart = false;
         Screen.lockCursor = false;
         Screen.showCursor = true;
         InputManager.MenuOn = false;

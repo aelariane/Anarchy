@@ -9,14 +9,14 @@
 
         public override bool Execute(string[] args)
         {
-            if(FengGameManagerMKII.FGM.Logic.Mode != GameMode.RACING)
+            if(FengGameManagerMKII.FGM.logic.Mode != GameMode.RACING)
             {
                 chatMessage = Lang["notRacingMode"];
                 return false;
             }
-            GameModes.ASORacing.State = !GameModes.ASORacing.State;
-            chatMessage = Lang["asorace" + GameModes.ASORacing.State.ToString()];
-            SendLocalizedText("asorace" + GameModes.ASORacing.State.ToString(), null);
+            GameModes.AsoRacing.State = !GameModes.AsoRacing.State;
+            chatMessage = Lang["asorace" + GameModes.AsoRacing.State.ToString()];
+            SendLocalizedText("asorace" + GameModes.AsoRacing.State.ToString(), null);
             return true;
         }
     }

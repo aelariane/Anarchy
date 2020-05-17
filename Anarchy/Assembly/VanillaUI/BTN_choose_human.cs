@@ -8,20 +8,20 @@ public class BTN_choose_human : MonoBehaviour
     {
         string selection = CacheGameObject.Find("PopupListCharacterHUMAN").GetComponent<UIPopupList>().selection;
         NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[0], true);
-        FengGameManagerMKII.FGM.NeedChooseSide = false;
+        FengGameManagerMKII.FGM.needChooseSide = false;
         if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
         {
             FengGameManagerMKII.FGM.checkpoint = CacheGameObject.Find("PVPchkPtH");
         }
-        if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f)
+        if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f)
         {
             if (!this.isPlayerAllDead())
             {
-                FengGameManagerMKII.FGM.NOTSpawnPlayer(selection);
+                FengGameManagerMKII.FGM.NotSpawnPlayer(selection);
             }
             else
             {
-                FengGameManagerMKII.FGM.NOTSpawnPlayer(selection);
+                FengGameManagerMKII.FGM.NotSpawnPlayer(selection);
                 FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
             }
         }
@@ -29,7 +29,7 @@ public class BTN_choose_human : MonoBehaviour
         {
             if (this.isPlayerAllDead())
             {
-                FengGameManagerMKII.FGM.NOTSpawnPlayer(selection);
+                FengGameManagerMKII.FGM.NotSpawnPlayer(selection);
                 FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
             }
             else

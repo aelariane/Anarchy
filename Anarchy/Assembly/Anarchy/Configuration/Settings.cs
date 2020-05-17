@@ -14,7 +14,6 @@ namespace Anarchy.Configuration
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);
         public static BoolSetting SnapshotsInGame = new BoolSetting("SnapshotsInGame", false);
         public static BoolSetting Speedometer = new BoolSetting("Speedometer", false);
-        public static BoolSetting GameFeed = new BoolSetting("GameFeed", false);
         public static BoolSetting Minimap = new BoolSetting("Minimap", false);
 
         public static IntSetting CameraMode = new IntSetting("CameraMode", 0);

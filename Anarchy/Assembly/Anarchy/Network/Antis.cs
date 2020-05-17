@@ -14,8 +14,6 @@ namespace Anarchy.Network
             "sun9-25.userapi.com", "sun9-35.userapi.com", "sun9-65.userapi.com", "sun9-6.userapi.com", "images.ourclipart.com", "pictureshack.ru", "savepice.ru"
         };
 
-        
-
         public static void Kick(PhotonPlayer player, bool ban, string reason = "")
         {
             if (!PhotonNetwork.IsMasterClient)

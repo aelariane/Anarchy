@@ -36,8 +36,8 @@ namespace Anarchy.Commands.Chat
                 }
                 string[] array2 = new string[]
                 {
-                "Flare",
-                "LabelInfoBottomRight"
+                    "Flare",
+                    "LabelInfoBottomRight"
                 };
                 foreach (string text2 in array2)
                 {
@@ -51,29 +51,10 @@ namespace Anarchy.Commands.Chat
                         gameObject2.SetActive(false);
                     }
                 }
-                foreach (object obj in FengGameManagerMKII.Heroes)
-                {
-                    HERO hero = (HERO)obj;
-                    if (hero.BasePV.IsMine) 
-                    {
-                        PhotonNetwork.Destroy(hero.BasePV);
-                    }
-                }
-                if (PhotonNetwork.player.IsTitan && !PhotonNetwork.player.Dead)
-                {
-                    foreach (object obj2 in FengGameManagerMKII.Titans)
-                    {
-                        TITAN titan = (TITAN)obj2;
-                        if (titan.BasePV.IsMine)
-                        {
-                            PhotonNetwork.Destroy(titan.BasePV);
-                        }
-                    }
-                }
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[1], false);
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[2], false);
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[3], false);
-                FengGameManagerMKII.FGM.NeedChooseSide = false;
+                FengGameManagerMKII.FGM.needChooseSide = false;
                 Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().enabled = true;
                 if (IN_GAME_MAIN_CAMERA.CameraMode == CameraType.ORIGINAL)
                 {
@@ -114,10 +95,18 @@ namespace Anarchy.Commands.Chat
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[1], false);
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[2], false);
                 NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[3], false);
-                FengGameManagerMKII.FGM.NeedChooseSide = true;
-                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(null, true, false);
+                FengGameManagerMKII.FGM.needChooseSide = false;
+                foreach (object obj in FengGameManagerMKII.Heroes)
+                {
+                    HERO hero = (HERO)obj;
+                    if (hero != null && hero.BasePV.IsMine)
+                    {
+                        Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(hero, true, false);
+                    }
+                }
                 Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().setSpectorMode(true);
-                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().gameOver = true;
+                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().gameOver = false;
+                //IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition(); //Maybe this will fix camera sensitivity, at least player no longer respawn when using command...
             }
         }
 
@@ -130,4 +119,3 @@ namespace Anarchy.Commands.Chat
         }
     }
 }
-    

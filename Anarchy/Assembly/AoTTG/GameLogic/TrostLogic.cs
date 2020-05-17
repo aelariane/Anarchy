@@ -11,7 +11,7 @@
         {
             if (!Round.IsWinning && !Round.IsLosing)
             {
-                FengGameManagerMKII.FGM.StartCoroutine(Anarchy.GameModes.CheckGameEnd());
+                Anarchy.GameModes.CheckGameEnd();
             }
         }
     }

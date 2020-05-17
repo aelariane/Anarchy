@@ -19,7 +19,7 @@ public class LevelTriggerRacingEnd : MonoBehaviour
             }
             else if (other.gameObject.GetComponent<HERO>().BasePV.IsMine)
             {
-                FengGameManagerMKII.FGM.MultiplayerRacingFinsih();
+                FengGameManagerMKII.FGM.MultiplayerRacingFinish();
                 this.disable = true;
             }
         }

@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Anarchy;
 using Anarchy.Configuration;
 using Optimization;
 using UnityEngine;
 using GUI = Anarchy.UI.GUI;
 using GUILayout = Anarchy.UI.GUILayout;
 using static Anarchy.UI.GUI;
+using ExitGames.Client.Photon;
 
 
 namespace Anarchy.UI
 {
-    public class DebugPanel : GUIBase
+    public class DebugPanel : GUIPanel
     {
         private const int Debug = 0;
         private const int Terminal = 1;
-        private const int Players = 3;
-        private const int Traffic = 2;
+        private const int Players = 2;
+        private const int Traffic = 3;
 
         internal static IntSetting DebugLevel = new IntSetting(nameof(DebugLevel), 0);
         internal static IntSetting LogLevel = new IntSetting(nameof(LogLevel), 0);
         internal static IntSetting LogMessagesCount = new IntSetting(nameof(LogMessagesCount), 50);
+        public static BoolSetting PlayersColor = new BoolSetting(nameof(PlayersColor), true);
+        internal static StringSetting ColorKey = new StringSetting(nameof(ColorKey), "FFFF00");
+        internal static StringSetting ColorValue = new StringSetting(nameof(ColorValue), "FF5900");
+        internal static BoolSetting NetworkStats = new BoolSetting(nameof(NetworkStats), false);
 
         private static readonly Dictionary<LogType, string> TypeColors = new Dictionary<LogType, string>
         {
@@ -33,14 +39,32 @@ namespace Anarchy.UI
 
         private List<LogMessage> messages;
         private SmartRect rect;
+        private SmartRect left;
+        private SmartRect right;
 
         private Vector2 scroll;
         private Rect scrollArea;
         private Rect scrollAreaView;
         private SmartRect scrollRect;
 
-        public DebugPanel() : base(nameof(DebugPanel), 369)
+        private Vector2 scrollName;
+        private Rect scrollAreaName;
+        private Rect scrollAreaViewName;
+        private SmartRect scrollRectName;
+
+        private Vector2 scrollProperties;
+        private Rect scrollAreaProperties;
+        private Rect scrollAreaViewProperties;
+        private SmartRect scrollRectProperties;
+
+        private Rect pagePosition;
+        private string[] pagesSelection;
+
+        private int selectedPlayer = 0;
+
+        public DebugPanel() : base(nameof(DebugPanel), GUILayers.DebugPanel)
         {
+            PhotonNetwork.networkingPeer.TrafficStatsEnabled = NetworkStats.Value;
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
             messages = new List<LogMessage>();
             Application.RegisterLogCallback(Log);
@@ -48,25 +72,14 @@ namespace Anarchy.UI
 
         public void Log(string message, string trace, LogType type)
         {
-
             messages.Add(new LogMessage(message, trace, type));
-        }
-
-        protected override void OnEnable()
-        {
-            //rect = Helper.GetSmartRects(BoxPosition, 1)[0];
-            //scroll = Optimization.Caching.Vectors.v2zero;
-            //scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
-            //scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
-            //scrollAreaView = new Rect(0f, 0f, rect.width, 5000f);
-            //head = locale["title"];
         }
 
         [GUIPage(Debug)]
         private void DebugPage()
         {
             rect.Reset();
-            rect.MoveY(Style.VerticalMargin);
+            rect.MoveY();
             scrollRect.Reset();
             scrollArea.y = rect.y;
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
@@ -77,29 +90,64 @@ namespace Anarchy.UI
             EndScrollView();
         }
 
-        protected internal override void Draw()
+        [GUIPage(Players)]
+        private void PlayerPage()
         {
+            left.Reset();
+            LabelCenter(left, locale["players"], true);
+            scrollRectName.Reset();
+            scrollAreaName.x = left.x;
+            scrollAreaName.y = left.y;
+            scrollName = BeginScrollView(scrollAreaName, scrollName, scrollAreaViewName);
+            for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+            {
+                var player = PhotonNetwork.playerList[i];
+                if (Button(left, player.UIName.ToHTMLFormat(), true))
+                {
+                    selectedPlayer = i;
+                }
+            }
+            EndScrollView();
+
+            right.Reset();
+            LabelCenter(right, locale["properties"], true);
+            scrollRectProperties.Reset();
+            scrollAreaProperties.x = right.x;
+            scrollAreaProperties.y = right.y;
+            scrollProperties = BeginScrollView(scrollAreaProperties, scrollProperties, scrollAreaViewProperties);
+            foreach (var test in PhotonNetwork.playerList[selectedPlayer].AllProperties)
+            {
+                string val = test.Value == null ? "<color=lightblue>Null</color>" : test.Value.ToString();
+                if (PlayersColor)
+                {
+                    val = val.ToHTMLFormat();
+                }
+                GUILayout.Label($"<b><color=#{ColorKey}>{test.Key}</color>: <color=#{ColorValue}>{val}</color></b>", new GUILayoutOption[] {UnityEngine.GUILayout.MaxWidth(right.width) });
+            }
+            EndScrollView();
         }
 
-        //protected override void DrawMainPart()
-        //{
-        //    DrawLowerButtons();
-        //}
-
-        protected override void OnDisable()
+        private void DrawSelectionButtons()
         {
+            rect.Reset();
+            pageSelection = SelectionGrid(rect, pageSelection, pagesSelection, pagesSelection.Length, true);
         }
 
         private void DrawLowerButtons()
         {
-            //rect.MoveToEndY(BoxPosition, Style.Height);
-            //rect.MoveToEndX(BoxPosition, Style.LabelOffset);
-            //rect.width = Style.LabelOffset;
-            //if (Button(rect, locale["btnClose"]))
-            //{
-            //    Disable();
-            //    return;
-            //}
+            rect.MoveToEndY(BoxPosition, Style.Height);
+            if(pageSelection == Players)
+            {
+                rect.width = left.width;
+                ToggleButton(rect, PlayersColor, "Use coloring:", false);
+            }
+            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            rect.width = Style.LabelOffset;
+            if (Button(rect, locale["btnClose"]))
+            {
+                Disable();
+                return;
+            }
         }
 
         public override void Update()
@@ -114,6 +162,130 @@ namespace Anarchy.UI
         public override void OnUpdateScaling()
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+        }
+
+        protected override void DrawMainPart()
+        {
+            DrawSelectionButtons();
+            DrawLowerButtons();
+        }
+
+        protected override void OnPanelDisable()
+        {
+            Screen.lockCursor = Application.loadedLevelName == "menu" ? false : (IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS);
+            Screen.showCursor = Application.loadedLevelName == "menu";
+            if (!AnarchyManager.Pause.Active)
+            {
+                IN_GAME_MAIN_CAMERA.isPausing = false;
+                InputManager.MenuOn = false;
+            }
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            {
+                Time.timeScale = 1f;
+            }
+            //Anarchy.Configuration.Settings.Apply();
+        }
+
+        protected override void OnPanelEnable()
+        {
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            {
+                Time.timeScale = 0f;
+            }
+            if (!AnarchyManager.Pause.Active)
+            {
+                IN_GAME_MAIN_CAMERA.isPausing = true;
+                InputManager.MenuOn = true;
+                if (Screen.lockCursor)
+                {
+                    Screen.lockCursor = false;
+                }
+                if (!Screen.showCursor)
+                {
+                    Screen.showCursor = true;
+                }
+            }
+            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+
+
+            scroll = Optimization.Caching.Vectors.v2zero;
+            scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
+            scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollAreaView = new Rect(0f, 0f, rect.width, int.MaxValue);
+
+            head = locale["title"];
+            pagesSelection = locale.GetArray("buttons");
+            pagePosition = new Rect(BoxPosition.x, BoxPosition.y + ((rect.height + Style.VerticalMargin) * 2f), BoxPosition.width, BoxPosition.height - (rect.y + rect.height + Style.VerticalMargin) - Style.WindowBottomOffset - Style.WindowTopOffset);
+            SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
+            left = rects[0];
+            right = rects[1];
+
+            scrollName = Optimization.Caching.Vectors.v2zero;
+            scrollRectName = new SmartRect(left.x, left.y, left.width, left.height, 0f, Style.VerticalMargin);
+            scrollAreaName = new Rect(left.x, left.y, left.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollAreaViewName = new Rect(left.x, left.y, left.width, int.MaxValue);
+
+            scrollProperties = Optimization.Caching.Vectors.v2zero;
+            scrollRectProperties = new SmartRect(right.x, right.y, right.width, right.height, 0f, Style.VerticalMargin);
+            scrollAreaProperties = new Rect(right.x, right.y, right.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollAreaViewProperties = new Rect(0, 0, right.width, int.MaxValue);
+        }
+
+        [GUIPage(Traffic)]
+        private void TrafficPage()
+        {
+            TrafficStatsGameLevel trafficStatsGameLevel = PhotonNetwork.networkingPeer.TrafficStatsGameLevel;
+            long num = PhotonNetwork.networkingPeer.TrafficStatsElapsedMs / 1000L;
+            if (num == 0L)
+            {
+                num = 1L;
+            }
+            left.Reset();
+            right.Reset();
+            bool cache = NetworkStats.Value;
+            ToggleButton(left, NetworkStats, locale["statsOn"], true);
+            if (NetworkStats.Value != cache)
+            {
+                PhotonNetwork.networkingPeer.TrafficStatsEnabled = NetworkStats.Value;
+                return;
+            }
+            if (!NetworkStats.Value)
+            {
+                return;
+            }
+            Label(left, locale.Format("statString", trafficStatsGameLevel.TotalOutgoingMessageCount.ToString(), trafficStatsGameLevel.TotalIncomingMessageCount.ToString(), trafficStatsGameLevel.TotalMessageCount.ToString()), true);
+            Label(left, locale.Format("avgSec", num.ToString()), true);
+            Label(left, locale.Format("statString", (trafficStatsGameLevel.TotalOutgoingMessageCount / num).ToString(), (trafficStatsGameLevel.TotalIncomingMessageCount / num).ToString(), (trafficStatsGameLevel.TotalMessageCount / num).ToString()), true);
+
+            Label(left, locale.Format("ping", PhotonNetwork.networkingPeer.RoundTripTime.ToString(), PhotonNetwork.networkingPeer.RoundTripTimeVariance.ToString()), true);
+            Label(left, locale.Format("deltaSend", trafficStatsGameLevel.LongestDeltaBetweenSending.ToString()), true);
+            Label(left, locale.Format("deltaDispatch", trafficStatsGameLevel.LongestDeltaBetweenDispatching.ToString()), true);
+            Label(left, locale.Format("deltaEvent", trafficStatsGameLevel.LongestEventCallbackCode.ToString(), trafficStatsGameLevel.LongestEventCallback.ToString()), true);
+            Label(left, locale.Format("deltaOperation", trafficStatsGameLevel.LongestOpResponseCallbackOpCode.ToString(), trafficStatsGameLevel.LongestOpResponseCallback.ToString()), true);
+
+            left.MoveToEndY(BoxPosition, Style.Height);
+            if (Button(left, locale["btnReset"]))
+            {
+                PhotonNetwork.networkingPeer.TrafficStatsReset();
+                PhotonNetwork.networkingPeer.TrafficStatsEnabled = true;
+            }
+
+
+            LabelCenter(right, locale["in"], true);
+            var stats = PhotonNetwork.networkingPeer.TrafficStatsIncoming;
+            Label(right, locale.Format("bytesCountPackets", stats.TotalPacketBytes.ToString()), true);
+            Label(right, locale.Format("bytesCountCmd", stats.TotalCommandBytes.ToString()), true);
+            Label(right, locale.Format("packetsCount", stats.TotalPacketCount.ToString()), true);
+            Label(right, locale.Format("cmdCount", stats.TotalCommandsInPackets.ToString()), true);
+
+
+            LabelCenter(right, locale["out"], true);
+            stats = PhotonNetwork.networkingPeer.TrafficStatsOutgoing;
+            Label(right, locale.Format("bytesCountPackets", stats.TotalPacketBytes.ToString()), true);
+            Label(right, locale.Format("bytesCountCmd", stats.TotalCommandBytes.ToString()), true);
+            Label(right, locale.Format("packetsCount", stats.TotalPacketCount.ToString()), true);
+            Label(right, locale.Format("cmdCount", stats.TotalCommandsInPackets.ToString()), true);
+
         }
 
         internal class LogMessage

@@ -387,7 +387,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
         {
             if (Vector3.Distance(gameObject.transform.position, base.transform.position) < distance && gameObject.GetComponent<TITAN>())
             {
-                gameObject.GetComponent<TITAN>().beTauntedBy(base.gameObject, tauntTime);
+                gameObject.GetComponent<TITAN>().BeTauntedBy(base.gameObject, tauntTime);
             }
             if (gameObject.GetComponent<FEMALE_TITAN>())
             {
@@ -952,7 +952,7 @@ public class TITAN_EREN : Photon.MonoBehaviour
             {
                 if (this.realBody != null)
                 {
-                    this.realBody.GetComponent<HERO>().backToHuman();
+                    this.realBody.GetComponent<HERO>().BackToHuman();
                     this.realBody.transform.position = base.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck").position + Vectors.up * 2f;
                     this.realBody = null;
                 }
@@ -1185,20 +1185,20 @@ public class TITAN_EREN : Photon.MonoBehaviour
                                     if (this.attackAnimation == "attack_combo_002")
                                     {
                                         this.hitPause = 0.05f;
-                                        array[i].gameObject.transform.root.GetComponent<TITAN>().hitL(base.transform.position, this.hitPause);
+                                        array[i].gameObject.transform.root.GetComponent<TITAN>().HitL(base.transform.position, this.hitPause);
                                         IN_GAME_MAIN_CAMERA.MainCamera.startShake(1f, 0.03f, 0.95f);
                                     }
                                     else if (this.attackAnimation == "attack_combo_001")
                                     {
                                         IN_GAME_MAIN_CAMERA.MainCamera.startShake(1.2f, 0.04f, 0.95f);
                                         this.hitPause = 0.08f;
-                                        array[i].gameObject.transform.root.GetComponent<TITAN>().hitR(base.transform.position, this.hitPause);
+                                        array[i].gameObject.transform.root.GetComponent<TITAN>().HitR(base.transform.position, this.hitPause);
                                     }
                                     else if (this.attackAnimation == "attack_combo_003")
                                     {
                                         IN_GAME_MAIN_CAMERA.MainCamera.startShake(3f, 0.1f, 0.95f);
                                         this.hitPause = 0.3f;
-                                        array[i].gameObject.transform.root.GetComponent<TITAN>().dieHeadBlow(base.transform.position, this.hitPause);
+                                        array[i].gameObject.transform.root.GetComponent<TITAN>().DieHeadBlow(base.transform.position, this.hitPause);
                                     }
                                     else if (this.attackAnimation == "attack_kick")
                                     {
@@ -1206,15 +1206,15 @@ public class TITAN_EREN : Photon.MonoBehaviour
                                         this.hitPause = 0.2f;
                                         if (array[i].gameObject.transform.root.GetComponent<TITAN>().abnormalType == AbnormalType.Crawler)
                                         {
-                                            array[i].gameObject.transform.root.GetComponent<TITAN>().dieBlow(base.transform.position, this.hitPause);
+                                            array[i].gameObject.transform.root.GetComponent<TITAN>().DieBlow(base.transform.position, this.hitPause);
                                         }
                                         else if (array[i].gameObject.transform.root.transform.localScale.x < 2f)
                                         {
-                                            array[i].gameObject.transform.root.GetComponent<TITAN>().dieBlow(base.transform.position, this.hitPause);
+                                            array[i].gameObject.transform.root.GetComponent<TITAN>().DieBlow(base.transform.position, this.hitPause);
                                         }
                                         else
                                         {
-                                            array[i].gameObject.transform.root.GetComponent<TITAN>().hitR(base.transform.position, this.hitPause);
+                                            array[i].gameObject.transform.root.GetComponent<TITAN>().HitR(base.transform.position, this.hitPause);
                                         }
                                     }
                                     this.hitTargets.Add(array[i].gameObject.transform.root);

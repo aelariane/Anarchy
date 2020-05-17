@@ -28,7 +28,7 @@ namespace Anarchy.UI.Animation
         protected override bool Close()
         {
             Draw();
-            float speed = Time.timeScale == 0f ? CloseSpeed / 60f : Time.deltaTime * CloseSpeed;
+            float speed = Time.unscaledDeltaTime * CloseSpeed;
             position.x += speed;
             position.y += speed * heightKoeff;
             position.width -= (speed * 2f);
@@ -56,7 +56,7 @@ namespace Anarchy.UI.Animation
         protected override bool Open()
         {
             Draw();
-            float speed = Time.timeScale == 0f ? OpenSpeed / 60f : Time.deltaTime * OpenSpeed;
+            float speed = Time.unscaledDeltaTime * OpenSpeed;
             position.x -= speed;
             position.y -= speed * heightKoeff;
             position.width += (speed * 2f);

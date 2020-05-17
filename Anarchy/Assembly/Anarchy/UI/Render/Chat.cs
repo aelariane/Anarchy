@@ -44,7 +44,7 @@ namespace Anarchy.UI
 
         internal Commands.Chat.ChatCommandHandler CMDHandler = new Commands.Chat.ChatCommandHandler();
 
-        internal Chat() : base("Chat", 5)
+        internal Chat() : base("Chat", GUILayers.Chat)
         {
             Instance = this;
             messages = new List<string>();
@@ -56,10 +56,16 @@ namespace Anarchy.UI
             {
                 return;
             }
+            FengGameManagerMKII.FGM.StartCoroutine(AddI(message));
+        }
+
+        private static System.Collections.IEnumerator AddI(string message)
+        {
+            yield return new WaitForEndOfFrame();
             List<string> messages = Instance.messages;
             if (message == null)
             {
-                return;
+                yield break;
             }
             if (messages.Count > MessageCount.Value)
             {
@@ -70,7 +76,13 @@ namespace Anarchy.UI
 
         public static void Clear()
         {
-            if(Instance != null && Instance.messages != null)
+            FengGameManagerMKII.FGM.StartCoroutine(ClearI());
+        }
+
+        private static System.Collections.IEnumerator ClearI()
+        {
+            yield return new WaitForEndOfFrame(); 
+            if (Instance != null && Instance.messages != null)
             {
                 Instance.messages.Clear();
             }
@@ -265,6 +277,35 @@ namespace Anarchy.UI
                 }
             }
             FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", PhotonTargets.AnarchyUsersOthers, new object[] { file, key, sendArgs });
+        }
+
+        public static void SendLocalizedTextAll(string file, string key, string[] args)
+        {
+            string[] sendArgs = args ?? new string[0]; if (Localization.Language.SelectedLanguage != Localization.Language.DefaultLanguage)
+            {
+                Localization.Locale loc = new Localization.Locale("English", file, true, ',');
+                loc.Load();
+                string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.NotAnarchy, new object[] { content, string.Empty });
+                loc.Unload();
+            }
+            else
+            {
+                Localization.Locale loc = Localization.Language.Find(file);
+                bool needClose = false;
+                if (!loc.IsOpen)
+                {
+                    loc.Load();
+                    needClose = true;
+                }
+                string content = sendArgs.Length <= 0 ? loc[key] : loc.Format(key, sendArgs);
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.NotAnarchy, new object[] { content, string.Empty });
+                if (needClose)
+                {
+                    loc.Unload();
+                }
+            }
+            FengGameManagerMKII.FGM.BasePV.RPC("ChatLocalized", PhotonTargets.AnarchyUsers, new object[] { file, key, sendArgs });
         }
     }
 }

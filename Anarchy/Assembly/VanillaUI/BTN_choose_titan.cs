@@ -10,10 +10,10 @@ public class BTN_choose_titan : MonoBehaviour
         {
             string text = "AHSS";
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[0], true);
-            FengGameManagerMKII.FGM.NeedChooseSide = false;
-            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f)
+            FengGameManagerMKII.FGM.needChooseSide = false;
+            if (!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f)
             {
-                FengGameManagerMKII.FGM.NOTSpawnPlayer(text);
+                FengGameManagerMKII.FGM.NotSpawnPlayer(text);
                 FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
             }
             else
@@ -43,16 +43,16 @@ public class BTN_choose_titan : MonoBehaviour
             string selection = CacheGameObject.Find("PopupListCharacterTITAN").GetComponent<UIPopupList>().selection;
             NGUITools.SetActive(base.transform.parent.gameObject, false);
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[0], true);
-            if ((!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.Logic.RoundTime > 60f) || FengGameManagerMKII.FGM.JustSuicide)
+            if ((!PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.logic.RoundTime > 60f) || FengGameManagerMKII.FGM.justSuicide)
             {
-                FengGameManagerMKII.FGM.JustSuicide = false;
-                FengGameManagerMKII.FGM.NOTSpawnNonAITitan(selection);
+                FengGameManagerMKII.FGM.justSuicide = false;
+                FengGameManagerMKII.FGM.NotSpawnNonAiTitan(selection);
             }
             else
             {
-                FengGameManagerMKII.FGM.SpawnNonAITitan(selection, "titanRespawn");
+                FengGameManagerMKII.FGM.SpawnNonAiTitan(selection, "titanRespawn");
             }
-            FengGameManagerMKII.FGM.NeedChooseSide = false;
+            FengGameManagerMKII.FGM.needChooseSide = false;
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[1], false);
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[2], false);
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[3], false);

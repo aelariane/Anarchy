@@ -10,9 +10,12 @@ namespace Anarchy.Configuration
         private bool isAxis = false;
         private float modifier = 0f;
 
+        public readonly string LanguageFileKey;
+
         public KeySetting(string key, KeyCode defaultValue) : base(key, defaultValue, true)
         {
             Load();
+            LanguageFileKey = key.Replace(" ", string.Empty);
             InputManager.AddToList(this);
         }
 

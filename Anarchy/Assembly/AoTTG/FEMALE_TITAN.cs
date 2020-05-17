@@ -560,7 +560,7 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
 
     private void eatSet(GameObject grabTarget)
     {
-        if (grabTarget.GetComponent<HERO>().isGrabbed)
+        if (grabTarget.GetComponent<HERO>().IsGrabbed)
         {
             return;
         }
@@ -580,14 +580,14 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
         }
         else
         {
-            grabTarget.GetComponent<HERO>().grabbed(baseG, false);
+            grabTarget.GetComponent<HERO>().Grabbed(baseG, false);
             grabTarget.GetComponent<HERO>().animation.Play("grabbed");
         }
     }
 
     private void eatSetL(GameObject grabTarget)
     {
-        if (grabTarget.GetComponent<HERO>().isGrabbed)
+        if (grabTarget.GetComponent<HERO>().IsGrabbed)
         {
             return;
         }
@@ -607,7 +607,7 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
         }
         else
         {
-            grabTarget.GetComponent<HERO>().grabbed(baseG, true);
+            grabTarget.GetComponent<HERO>().Grabbed(baseG, true);
             grabTarget.GetComponent<HERO>().animation.Play("grabbed");
         }
     }
@@ -840,7 +840,7 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
         {
             if (!target.GetComponent<HERO>().HasDied())
             {
-                target.GetComponent<HERO>().markDie();
+                target.GetComponent<HERO>().MarkDie();
                 target.GetComponent<HERO>().BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                 {
                     -1,
@@ -850,7 +850,7 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
         }
         else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
         {
-            target.GetComponent<HERO>().die2(hand);
+            target.GetComponent<HERO>().Die2(hand);
         }
     }
 
@@ -868,12 +868,12 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 if (!hitHero.GetComponent<HERO>().HasDied())
                 {
-                    hitHero.GetComponent<HERO>().die((hitHero.transform.position - position) * 15f * 4f, false);
+                    hitHero.GetComponent<HERO>().Die((hitHero.transform.position - position) * 15f * 4f, false);
                 }
             }
             else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && !hitHero.GetComponent<HERO>().HasDied())
             {
-                hitHero.GetComponent<HERO>().markDie();
+                hitHero.GetComponent<HERO>().MarkDie();
                 hitHero.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
                 {
                     (hitHero.transform.position - position) * 15f * 4f,
@@ -1315,7 +1315,8 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 this.getDown();
             }
-            FengGameManagerMKII.FGM.SendKillInfo(false, (string)photonView.owner.Properties[PhotonPlayerProperty.name], true, "Female Titan's ankle", dmg);
+            FengGameManagerMKII.FGM.SendKillInfo(false, photonView.owner.UIName, true, "Female Titan's ankle", dmg);
+            AnarchyManager.Feed.Kill(photonView.owner.UIName, "Female Titan's ankle", dmg);
             FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[]
             {
                 dmg
@@ -1368,7 +1369,8 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 this.getDown();
             }
-            FengGameManagerMKII.FGM.SendKillInfo(false, (string)photonView.owner.Properties[PhotonPlayerProperty.name], true, "Female Titan's ankle", dmg);
+            FengGameManagerMKII.FGM.SendKillInfo(false, photonView.owner.UIName, true, "Female Titan's ankle", dmg);
+            AnarchyManager.Feed.Kill(photonView.owner.UIName, "Female Titan's ankle", dmg);
             FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[]
             {
                 dmg
@@ -1497,7 +1499,8 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
             }
             else
             {
-                FengGameManagerMKII.FGM.SendKillInfo(false, (string)photonView.owner.Properties[PhotonPlayerProperty.name], true, "Female Titan's neck", speed);
+                FengGameManagerMKII.FGM.SendKillInfo(false, photonView.owner.UIName, true, "Female Titan's neck", speed);
+                AnarchyManager.Feed.Kill(photonView.owner.UIName, "Female Titan's neck", speed);
                 FengGameManagerMKII.FGM.BasePV.RPC("netShowDamage", photonView.owner, new object[]
                 {
                     speed
@@ -1822,7 +1825,7 @@ public class FEMALE_TITAN : Optimization.Caching.Bases.TitanBase
             {
                 for (int j = 0; j < 15; j++)
                 {
-                    FengGameManagerMKII.FGM.RandomSpawnOneTitan(50).beTauntedBy(baseG, 20f);
+                    FengGameManagerMKII.FGM.RandomSpawnOneTitan(50).BeTauntedBy(baseG, 20f);
                 }
             }
         }

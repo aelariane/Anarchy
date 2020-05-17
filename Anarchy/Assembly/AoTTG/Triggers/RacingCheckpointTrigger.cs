@@ -18,7 +18,7 @@ public class RacingCheckpointTrigger : MonoBehaviour
                     RCManager.racingSpawnPointRotation = gameObj.transform.rotation;
                     Anarchy.UI.Chat.Add($"<color=#{User.MainColor}>Checkpoint[<color=#{User.SubColor}>" + CustomLevel.RacingCP.Count + "</color>] set</color>");
                 }
-                gameObj.GetComponent<HERO>().fillGas();
+                gameObj.GetComponent<HERO>().FillGas();
                 RCManager.racingSpawnPoint = base.gameObject.transform.position;
                 RCManager.racingSpawnPointSet = true;
             }

@@ -27,6 +27,10 @@ namespace Anarchy.Network
 
         public static bool Banned(string name)
         {
+            if(name.Length == 0)
+            {
+                return false;
+            }
             string hexRemoved = name.RemoveHex();
             for(int i = 0; i < BannedPlayers.Count; i++)
             {
@@ -45,7 +49,7 @@ namespace Anarchy.Network
                 return false;
             }
             BannedPlayers.Add(new BanInfo(player, reason == string.Empty ? "Manual ban" : reason));
-            BanFile.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Player [{player.ID}] {player.UIName.RemoveHex()} banned. Reason: {(reason == string.Empty ? "Manual ban" : reason)}");
+            InfoLine($"Player [{player.ID}] {player.UIName.RemoveHex()} banned. Reason: {(reason == string.Empty ? "Manual ban" : reason)}");
             return true;
         }
 
@@ -56,8 +60,13 @@ namespace Anarchy.Network
                 return false;
             }
             BannedPlayers.Add(new BanInfo(player, reason == string.Empty ? "Manual ban" : reason, true));
-            BanFile.WriteLine($"[{DateTime.Now.ToLongTimeString()}] Player [{player.ID}] {player.UIName.RemoveHex()} permabanned. Reason: {(reason == string.Empty ? "Manual ban" : reason)}");
+            InfoLine($"Player [{player.ID}] {player.UIName.RemoveHex()} permabanned. Reason: {(reason == string.Empty ? "Manual ban" : reason)}");
             return true;
+        }
+
+        private static void InfoLine(string str)
+        {
+            BanFile.WriteLine($"[{DateTime.Now.ToLongTimeString()}] " +str);
         }
 
         public static void Load()
@@ -111,14 +120,45 @@ namespace Anarchy.Network
             Load();
         }
 
+        public static bool Unban(string name)
+        {
+            name = name.ToLower().RemoveHex();
+            for (int i = 0; i < BannedPlayers.Count; i++)
+            {
+                if (BannedPlayers[i].Name.ToLower() == name)
+                {
+                    InfoLine($"Player [{BannedPlayers[i].ID}] {BannedPlayers[i].Name} unbanned. Ban reason was: {BannedPlayers[i].Reason}");
+                    BannedPlayers.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool Unban(int id)
+        {
+            for(int i = 0; i < BannedPlayers.Count; i++)
+            {
+                if(BannedPlayers[i].ID == id)
+                {
+                    InfoLine($"Player [{id}] {BannedPlayers[i].Name} unbanned. Ban reason was: {BannedPlayers[i].Reason}");
+                    BannedPlayers.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public class BanInfo
         {
+            public readonly int ID = -1;
             public string Name = string.Empty;
             public bool Perma = false;
             public string Reason = string.Empty;
 
             public BanInfo(PhotonPlayer player, string reason, bool perma = false) : this(player.UIName.RemoveHex(), reason, perma)
             {
+                ID = player.ID;
             }
 
             public BanInfo(string player, string reason, bool perma = false)

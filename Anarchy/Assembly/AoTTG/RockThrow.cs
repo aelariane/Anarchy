@@ -51,14 +51,14 @@ public class RockThrow : Photon.MonoBehaviour
         {
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
-                if (!hero.isGrabbed)
+                if (!hero.IsGrabbed)
                 {
-                    hero.die(this.v.normalized * 1000f + Vectors.up * 50f, false);
+                    hero.Die(this.v.normalized * 1000f + Vectors.up * 50f, false);
                 }
             }
-            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !hero.HasDied() && !hero.isGrabbed)
+            else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !hero.HasDied() && !hero.IsGrabbed)
             {
-                hero.markDie();
+                hero.MarkDie();
                 int num = -1;
                 string text = string.Empty;
                 if (baseT.root.gameObject.GetComponent<EnemyfxIDcontainer>() != null)
@@ -133,11 +133,11 @@ public class RockThrow : Photon.MonoBehaviour
                     GameObject gameObject = raycastHit.collider.gameObject.transform.root.gameObject;
                     if (gameObject.GetComponent<TITAN>() && !gameObject.GetComponent<TITAN>().hasDie)
                     {
-                        gameObject.GetComponent<TITAN>().hitAnkle();
+                        gameObject.GetComponent<TITAN>().HitAnkle();
                         Vector3 position = baseT.position;
                         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
                         {
-                            gameObject.GetComponent<TITAN>().hitAnkle();
+                            gameObject.GetComponent<TITAN>().HitAnkle();
                         }
                         else
                         {

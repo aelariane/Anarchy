@@ -60,6 +60,11 @@
         HorseRight,
         HorseWalk,
         HorseJump,
-        HorseMount
+        HorseMount,
+        //Mod
+        ModCleanChat,
+        ModCleanConsole,
+        ModDebugPanel,
+        ModStatsPanel
     }
 }

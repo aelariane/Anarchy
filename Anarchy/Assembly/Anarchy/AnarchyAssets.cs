@@ -17,34 +17,39 @@ namespace Anarchy
         private static readonly Dictionary<string, Object> cache = new Dictionary<string, Object>();
 
         public static readonly string BundlePath = Application.dataPath + "/Resources/AnarchyAssets.unity3d";
-        public static readonly string[] FontNames = new string[] 
+
+        public static readonly string[] FontNames = new string[]
         {
-            "Consola-Bold", "Consola-BoldItalic", "Consola-Italic", "Consola-Regular", 
+            "Consola-Bold", "Consola-BoldItalic", "Consola-Italic", "Consola-Regular",
             "Hack-Bold", "Hack-BoldItalic", "Hack-Italic", "Hack-Regular",
             "FantasqueSans-Bold", "FantasqueSans-BoldItalic", "FantasqueSans-Italic", "FantasqueSans-Regular",
-            "Snowstorm-Black", "Snowstorm-Bold", "Snowstorm-Inline", "Snowstorm-Kraft", "Snowstorm-Light", "Snowstorm-Regular",
+            "Snowstorm-Black", "Snowstorm-Bold", "Snowstorm-Inline", "Snowstorm-Kraft", "Snowstorm-Light",
+            "Snowstorm-Regular",
             "Mono-Bold", "Mono-BoldItalic", "Mono-Italic", "Mono-Regular",
             "Inconsolata", "Mandatory", "Prototype", "Russian", "Tahoma", "WhiteRabbit"
         };
 
-        public static AssetBundle Bundle { get; private set; }
+        private static AssetBundle Bundle { get; set; }
 
         public static Object Load(string name)
         {
-            if(Bundle == null)
+            if (Bundle == null)
             {
                 Debug.Log("AnarchyAssets bundle is null");
                 return null;
             }
-            if(cache.TryGetValue(name, out Object result) && result != null)
+
+            if (cache.TryGetValue(name, out Object result) && result != null)
             {
                 return result;
             }
+
             result = Bundle.Load(name);
-            if(result != null)
+            if (result != null)
             {
                 cache.Add(name, result);
             }
+
             return result;
         }
 
@@ -60,7 +65,9 @@ namespace Anarchy
             if (bundle == null)
             {
                 Debug.LogError($"Error while loading AnarchyAssets. Make sure that file \"{BundlePath}\" exists.");
+                yield break;
             }
+
             Bundle = bundle.assetBundle;
         }
     }

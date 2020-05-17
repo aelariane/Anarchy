@@ -21,7 +21,7 @@ namespace Anarchy.UI
         private readonly IntSetting mapSelection = new IntSetting("SingleMapSelection");
         private SmartRect right;
 
-        public SinglePanel() : base(nameof(SinglePanel), 2)
+        public SinglePanel() : base(nameof(SinglePanel), GUILayers.SinglePanel)
         {
             animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }

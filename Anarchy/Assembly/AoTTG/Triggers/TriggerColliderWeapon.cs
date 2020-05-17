@@ -95,14 +95,14 @@ public class TriggerColliderWeapon : MonoBehaviour
                     {
                         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
                         {
-                            if (!component.transform.root.GetComponent<HERO>().isGrabbed)
+                            if (!component.transform.root.GetComponent<HERO>().IsGrabbed)
                             {
-                                component.transform.root.GetComponent<HERO>().die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
+                                component.transform.root.GetComponent<HERO>().Die((component.transform.root.transform.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f, false);
                             }
                         }
-                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().IsGrabbed)
                         {
-                            component.transform.root.GetComponent<HERO>().markDie();
+                            component.transform.root.GetComponent<HERO>().MarkDie();
                             component.transform.root.GetComponent<HERO>().BasePV.RPC("netDie", PhotonTargets.All, new object[]
                             {
                                 (component.transform.root.position - baseT.position).normalized * num * 1000f + Vectors.up * 50f,
@@ -133,7 +133,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                             {
                                 IN_GAME_MAIN_CAMERA.MainCamera.startSnapShot(component2.transform.position, num2, component2.transform.root.gameObject, 0.02f);
                             }
-                            component2.transform.root.GetComponent<TITAN>().die();
+                            component2.transform.root.GetComponent<TITAN>().Die();
                             this.napeMeat(IN_GAME_MAIN_CAMERA.MainR.velocity, component2.transform.root);
                             FengGameManagerMKII.FGM.netShowDamage(num2);
                             FengGameManagerMKII.FGM.PlayerKillInfoSingleUpdate(num2);
@@ -268,7 +268,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                         {
                             if (!gameObject2.GetComponent<TITAN>().hasDie)
                             {
-                                gameObject2.GetComponent<TITAN>().hitEye();
+                                gameObject2.GetComponent<TITAN>().HitEye();
                             }
                         }
                         else if (!PhotonNetwork.IsMasterClient || !gameObject2.GetPhotonView().IsMine)
@@ -302,7 +302,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                     {
                         if (!gameObject3.GetComponent<TITAN>().hasDie)
                         {
-                            gameObject3.GetComponent<TITAN>().hitAnkle();
+                            gameObject3.GetComponent<TITAN>().HitAnkle();
                         }
                     }
                     else
@@ -319,7 +319,7 @@ public class TriggerColliderWeapon : MonoBehaviour
                         }
                         else if (!gameObject3.GetComponent<TITAN>().hasDie)
                         {
-                            gameObject3.GetComponent<TITAN>().hitAnkle();
+                            gameObject3.GetComponent<TITAN>().HitAnkle();
                         }
                         this.showCriticalHitFX();
                     }

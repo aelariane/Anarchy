@@ -1894,7 +1894,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                Anarchy.Network.Antis.Kick(sender, true, $"{Log.GetString("eventName", curr.Code.ToString())} {reason}");
+                Antis.AntisManager.Response(sender.ID, true, $"{Log.GetString("eventName", curr.Code.ToString())} {reason}");
             }
             else
             {
@@ -2024,6 +2024,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                     SendMonoMessage(PhotonNetworkingMessage.OnUpdatedFriendList, new object[0]);
                     goto Label_0949;
                 }
+
+
             case OperationCode.JoinRandomGame:
                 if (operationResponse.ReturnCode == 0)
                 {
@@ -2175,6 +2177,27 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                         {
                             ExitGames.Client.Photon.Hashtable pActorProperties = (ExitGames.Client.Photon.Hashtable)operationResponse[0xf9];
                             ExitGames.Client.Photon.Hashtable gameProperties = (ExitGames.Client.Photon.Hashtable)operationResponse[0xf8];
+                            if (needCheck)
+                            {
+                                if (pActorProperties != null)
+                                {
+                                    var str = new System.Text.StringBuilder();
+                                    foreach(var idk in pActorProperties)
+                                    {
+                                        if(idk.Value is ExitGames.Client.Photon.Hashtable hash)
+                                        {
+                                            str.Append("ID: " + idk.Key + "\n");
+                                            foreach(var k in hash)
+                                            {
+                                                str.Append(k.Key + ": " + (k.Value == null ? "null" : k.ToString()) + "\n");
+                                            }
+                                            str.AppendLine();
+                                        }
+                                    }
+                                    new Anarchy.IO.LogFile("LogName").WriteLine(str.ToString());
+                                    needCheck = false;
+                                }
+                            }
                             PropertiesChecker.CheckRoomProperties(gameProperties, null);
                             PropertiesChecker.CheckPlayersProperties(pActorProperties, 0, null);
                             goto Label_0949;
@@ -2225,6 +2248,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
     Label_0949:
         this.externalListener.OnOperationResponse(operationResponse);
     }
+
+    public static bool needCheck;
 
     public void OnStatusChanged(StatusCode statusCode)
     {

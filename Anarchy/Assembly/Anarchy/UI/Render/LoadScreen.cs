@@ -46,8 +46,6 @@ namespace Anarchy.UI
                 profile = file.GetString("profile");
                 int fps = file.GetInt("fps");
                 Application.targetFrameRate = fps >= 30 ? fps : -1;
-                Time.fixedDeltaTime = (float)Math.Round(1f / file.GetInt("fixedUpdateCount"), 8);
-                PhotonNetwork.sendRate = file.GetInt("fixedUpdateCount");
                 QualitySettings.SetQualityLevel(file.GetInt("graphics"), true);
                 Localization.Language.SetLanguage(file.GetString("language"));
 
@@ -72,6 +70,7 @@ namespace Anarchy.UI
 
             Info.text = "Loading visuals..";
             Style.Load();
+            Style.ResetScreenParameters();
             UIManager.UpdateGUIScaling();
             Optimization.Labels.Font = Style.Font;
             yield return new WaitForSeconds(0.5f);

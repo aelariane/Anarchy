@@ -1,4 +1,5 @@
-﻿using Anarchy.Configuration;
+﻿using System.Linq;
+using Anarchy.Configuration;
 using Anarchy.IO;
 using UnityEngine;
 
@@ -6,124 +7,149 @@ namespace Anarchy
 {
     public static class User
     {
-        private const string DefaultProfile = "Default";
         private const string Example = "DefaultExample";
         private const string Extension = ".profile";
-        private static readonly string Directory = Application.dataPath + "/Profiles/";
+        
+        private static readonly string directory = Application.dataPath + "/Profiles/";
 
-        public static UserSetting AkinaKillTrigger = new UserSetting("akinaKillTrigger");
-        public static UserSetting ChatFormat = new UserSetting("chatFormat");
-        public static UserSetting ChatFormatSend = new UserSetting("chatFormatSend");
-        public static UserSetting ChatPMFormat = new UserSetting("chatPMFormat");
-        public static UserSetting ChatPMFormatSend = new UserSetting("chatPMFormatSend");
-        public static UserSetting ChatName = new UserSetting("chatName");
-        public static UserSetting DieName = new UserSetting("diename");
-        public static UserSetting DieNameFormat = new UserSetting("dieStyle");
-        public static UserSetting ForestLava = new UserSetting("forestKillTrigger");
-        public static UserSetting[] GuildNames = new UserSetting[3] { new UserSetting("guildName"), new UserSetting("guildName2"), new UserSetting("guildName3") };
-        public static UserSetting MainColor = new UserSetting("mainColor");
-        public static UserSetting MCSwitch = new UserSetting("mcSwitch");
-        public static UserSetting Name = new UserSetting("name");
-        public static UserSetting RaceFinish = new UserSetting("raceFinish");
-        public static UserSetting RacingKillTrigger = new UserSetting("racingKillTrigger");
-        public static UserSetting RestartMessage = new UserSetting("restartMsg");
-        public static UserSetting SubColor = new UserSetting("subColor");
-        public static UserSetting Suicide = new UserSetting("suicide");
-        public static UserSetting[] TitanNames = new UserSetting[5] { new UserSetting("titan"), new UserSetting("aberrant"), new UserSetting("jumper"), new UserSetting("crawler"), new UserSetting("punk") };
-        public static UserSetting WaveFormat = new UserSetting("wave");
+        public static readonly UserSetting Name = new UserSetting("name");
+        public static readonly UserSetting[] GuildNames =
+        { 
+            new UserSetting("guildName"),
+            new UserSetting("guildName2"), 
+            new UserSetting("guildName3") 
+        };
+        
+        public static readonly UserSetting ChatName = new UserSetting("chatName");
+        public static readonly UserSetting MainColor = new UserSetting("mainColor");
+        public static readonly UserSetting SubColor = new UserSetting("subColor");
+        
+        public static readonly UserSetting Suicide = new UserSetting("suicide");
+        public static readonly UserSetting AkinaKillTrigger = new UserSetting("akinaKillTrigger");
+        public static readonly UserSetting ForestLavaKillTrigger = new UserSetting("forestKillTrigger");
+        public static readonly UserSetting RacingKillTrigger = new UserSetting("racingKillTrigger");
 
+        public static readonly UserSetting[] TitanNames = 
+        { 
+            new UserSetting("titan"),
+            new UserSetting("aberrant"), new UserSetting("jumper"),
+            new UserSetting("crawler"), new UserSetting("punk") 
+        };
+        
+        public static readonly UserSetting DieName = new UserSetting("diename");
+        public static readonly UserSetting RaceFinish = new UserSetting("raceFinish");
+        public static readonly UserSetting DieNameFormat = new UserSetting("dieStyle");
+        public static readonly UserSetting WaveFormat = new UserSetting("wave");
+        
+        public static readonly UserSetting ChatFormat = new UserSetting("chatFormat");
+        public static readonly UserSetting ChatFormatSend = new UserSetting("chatFormatSend");
+        public static readonly UserSetting ChatPmFormat = new UserSetting("chatPMFormat");
+        public static readonly UserSetting ChatPmFormatSend = new UserSetting("chatPMFormatSend");
+        
+        public static readonly UserSetting McSwitch = new UserSetting("mcSwitch");
+        public static readonly UserSetting RestartMessage = new UserSetting("restartMsg");
+        
+        public static string[] AllProfiles { get; private set; }
+        
         public static string AllGuildNames
         {
             get
             {
-                string guild = string.Empty;
-                if(GuildNames[2].Value.Length > 0)
+                var guild = string.Empty;
+                for (var i = GuildNames.Length - 1; i > 0; i--)
                 {
-                    guild += GuildNames[2].Value;
-                }
-                if (GuildNames[1].Value.Length > 0)
-                {
-                    if (guild != string.Empty)
-                        guild += "\n";
-                    guild += GuildNames[1].Value;
-                }
-                if (GuildNames[0].Value.Length > 0)
-                {
-                    if (guild != string.Empty)
-                        guild += "\n";
-                    guild += GuildNames[0].Value;
+                    var name = GuildNames[i].Value;
+                    if (!name.IsNullOrEmpty())
+                    {
+                        guild += (guild.IsNullOrEmpty() ? "" : "\n") + GuildNames[i].Value;
+                    }
                 }
                 return guild;
             }
         }
-
-        public static string[] AllProfiles { get; private set; }
-
-        public static string DeathName
-        {
-            get
-            {
-                return DieName.PickRandomString().Replace("$name$", Name.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-            }
-        }
-
-        public static string DeathNameFull
-        {
-            get
-            {
-                return DieName.Value.Replace("$name$", Name.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-            }
-        }
-
-        public static string MasterClientSwitch
-        {
-            get
-            {
-                return MCSwitch.Value.Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$chatName$", ChatName.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-            }
-        }
-
-        public static string MsgRestart
-        {
-            get
-            {
-                if(RestartMessage.Value.Length <= 0)
-                {
-                    return string.Empty;
-                }
-                return RestartMessage.Value.Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$chatName$", ChatName.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-            }
-        }
-
+        
         public static string ProfileName { get; private set; } = string.Empty;
 
-        public static string RaceName
+        public static string DeathName => DieName.PickRandomString()
+            .Replace("$name$", Name.Value)
+            .Replace("$maincolor$", MainColor.Value)
+            .Replace("$subcolor$", SubColor.Value);
+
+        public static string DeathNameFull => DieName.Value.Replace("$name$", Name.Value)
+            .Replace("$maincolor$", MainColor.Value)
+            .Replace("$subcolor$", SubColor.Value);
+
+        public static string MasterClientSwitch => McSwitch.Value.Replace("$name$", Name.Value.ToHTMLFormat())
+            .Replace("$chatName$", ChatName.Value)
+            .Replace("$maincolor$", MainColor.Value)
+            .Replace("$subcolor$", SubColor.Value);
+
+        public static string MsgRestart => RestartMessage.Value.Length <= 0 ? string.Empty : 
+            RestartMessage.Value.Replace("$name$", Name.Value.ToHTMLFormat())
+            .Replace("$chatName$", ChatName.Value)
+            .Replace("$maincolor$", MainColor.Value)
+            .Replace("$subcolor$", SubColor.Value);
+
+        public static string RaceName => RaceFinish.Value.Replace("$name$", Name.Value)
+            .Replace("$maincolor$", MainColor.Value)
+            .Replace("$subcolor$", SubColor.Value);
+
+        public static string Wave(int wave)
         {
-            get
-            {
-                return RaceFinish.Value.Replace("$name$", Name.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-            }
+            return WaveFormat.Value.Replace("$wave$", wave.ToString())
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
         }
 
         public static string Chat(int id, string content)
         {
-            return ChatFormat.Value.Replace("$ID$", id.ToString()).Replace("$content$", content).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
+            return ChatFormat.Value.Replace("$ID$", id.ToString())
+                .Replace("$content$", content)
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
         }
 
-        public static string ChatPM(int id, string content)
+        public static string ChatPm(int id, string content)
         {
-            return ChatPMFormat.Value.Replace("$ID$", id.ToString()).Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$content$", content).Replace("$chatname$", ChatName.Value).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
+            return ChatPmFormat.Value.Replace("$ID$", id.ToString())
+                .Replace("$name$", Name.Value.ToHTMLFormat())
+                .Replace("$content$", content)
+                .Replace("$chatname$", ChatName.Value)
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
         }
 
-        public static string ChatPMSend(int id, string content)
+        public static string ChatPmSend(int id, string content)
         {
-            return ChatPMFormatSend.Value.Replace("$ID$", id.ToString()).Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$chatName$", ChatName.Value).Replace("$content$", content).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-
+            return ChatPmFormatSend.Value.Replace("$ID$", id.ToString())
+                .Replace("$name$", Name.Value.ToHTMLFormat())
+                .Replace("$chatName$", ChatName.Value)
+                .Replace("$content$", content)
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
         }
 
         public static string ChatSend(string content)
         {
-            return ChatFormatSend.Value.Replace("$content$", content).Replace("$chatName$", ChatName.Value).Replace("$name$", Name.Value.ToHTMLFormat()).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
+            return ChatFormatSend.Value.Replace("$content$", content)
+                .Replace("$chatName$", ChatName.Value)
+                .Replace("$name$", Name.Value.ToHTMLFormat())
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
+        }
+        
+        public static string DeathFormat(int id, string killer)
+        {
+            return DieNameFormat.Value.Replace("$ID$", id.ToString())
+                .Replace("$killer$", killer)
+                .Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
+        }
+        
+        public static string FormatColors(string src)
+        {
+            return src.Replace("$maincolor$", MainColor.Value)
+                .Replace("$subcolor$", SubColor.Value);
         }
 
         public static void CopyProfile(string newProfile, string copyFrom)
@@ -142,11 +168,6 @@ namespace Anarchy
             RefreshProfilesList();
         }
 
-        public static string DeathFormat(int id, string killer)
-        {
-            return DieNameFormat.Value.Replace("$ID$", id.ToString()).Replace("$killer$", killer).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-        }
-
         public static void DeleteProfile(string nameToDelete)
         {
             if (AllProfiles.Length == 1)
@@ -154,9 +175,9 @@ namespace Anarchy
                 //Put log
                 return;
             }
-            foreach(string str in AllProfiles)
+            foreach (var str in AllProfiles)
             {
-                if(str != nameToDelete)
+                if (str != nameToDelete)
                 {
                     LoadProfile(str);
                     System.IO.File.Delete(GetPath(nameToDelete));
@@ -166,14 +187,9 @@ namespace Anarchy
             RefreshProfilesList();
         }
 
-        public static string FormatColors(string src)
-        {
-            return src.Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
-        }
-
         private static string GetPath(string name)
         {
-            return Directory + name + Extension;
+            return directory + name + Extension;
         }
 
         public static void Load()
@@ -194,30 +210,24 @@ namespace Anarchy
 
         private static void RefreshProfilesList()
         {
-            string[] temp = System.IO.Directory.GetFiles(Directory);
-            System.Collections.Generic.List<string> tmp = new System.Collections.Generic.List<string>();
-            for(int i = 0; i < temp.Length; i++)
-            {
-                if (temp[i].Contains(Example))
-                    continue;
-                tmp.Add(temp[i].Remove(0, Directory.Length).Replace(Extension, string.Empty));
-            }
+            var temp = System.IO.Directory.GetFiles(directory);
+            var tmp = 
+                (from t in temp 
+                where !t.Contains(Example) 
+                select t.Remove(0, directory.Length)
+                    .Replace(Extension, string.Empty))
+                .ToList();
             AllProfiles = tmp.ToArray();
         }
 
         public static void Save()
         {
             UserSetting.SaveSettings();
-            using (ConfigFile file = new ConfigFile(Application.dataPath + "/Configuration/Settings.ini", ' ', false))
+            using (var file = new ConfigFile(Application.dataPath + "/Configuration/Settings.ini", ' ', false))
             {
                 file.Load();
                 file.SetString("profile", ProfileName);
             }
-        }
-
-        public static string Wave(int wave)
-        {
-            return WaveFormat.Value.Replace("$wave$", wave.ToString()).Replace("$maincolor$", MainColor.Value).Replace("$subcolor$", SubColor.Value);
         }
     }
 }

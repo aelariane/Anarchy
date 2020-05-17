@@ -71,7 +71,7 @@ public class CannonBall : Photon.MonoBehaviour
                             bool flag5 = num == 0 || num != num2;
                             if (flag5)
                             {
-                                gameObject2.GetComponent<HERO>().markDie();
+                                gameObject2.GetComponent<HERO>().MarkDie();
                                 gameObject2.GetComponent<HERO>().BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                                 {
                                     -1,
@@ -82,7 +82,7 @@ public class CannonBall : Photon.MonoBehaviour
                         }
                         else
                         {
-                            gameObject2.GetComponent<HERO>().markDie();
+                            gameObject2.GetComponent<HERO>().MarkDie();
                             gameObject2.GetComponent<HERO>().BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                             {
                                 -1,
@@ -153,7 +153,7 @@ public class CannonBall : Photon.MonoBehaviour
                                     {
                                         this.myHero.BasePV.viewID
                                     });
-                                    component2.dieBlow(base.transform.position, 0.2f);
+                                    component2.DieBlow(base.transform.position, 0.2f);
                                     i = array.Length;
                                 }
                             }
@@ -166,7 +166,7 @@ public class CannonBall : Photon.MonoBehaviour
                                     {
                                         this.myHero.BasePV.viewID
                                     });
-                                    component2.dieHeadBlow(base.transform.position, 0.2f);
+                                    component2.DieHeadBlow(base.transform.position, 0.2f);
                                     i = array.Length;
                                 }
                                 else
@@ -174,11 +174,11 @@ public class CannonBall : Photon.MonoBehaviour
                                     bool flag11 = UnityEngine.Random.Range(0f, 1f) < 0.5f;
                                     if (flag11)
                                     {
-                                        component2.hitL(base.transform.position, 0.05f);
+                                        component2.HitL(base.transform.position, 0.05f);
                                     }
                                     else
                                     {
-                                        component2.hitR(base.transform.position, 0.05f);
+                                        component2.HitR(base.transform.position, 0.05f);
                                     }
                                 }
                             }

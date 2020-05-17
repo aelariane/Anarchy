@@ -16,7 +16,7 @@ namespace Anarchy.Configuration
         private delegate void GameModeSettingDraw(SmartRect rect, Locale locale);
 
         private static readonly Locale english;
-        private static readonly Locale lang;
+        internal static readonly Locale Lang;
 
         private float[] appliedFloats = null;
         private int[] appliedIntegers = null;
@@ -123,7 +123,6 @@ namespace Anarchy.Configuration
             {
                 if (appliedSelection <= 0)
                     return -1;
-                UnityEngine.Debug.Log(appliedSelection);
                 return appliedSelection;
             }
         }
@@ -190,11 +189,10 @@ namespace Anarchy.Configuration
 
         static GameModeSetting()
         {
-
             english = new Locale(Localization.Language.DefaultLanguage, "GameModes", true, ',');
             english.Reload();
-            lang = new Locale("GameModes", true);
-            lang.Reload();
+            Lang = new Locale("GameModes", true);
+            Lang.Reload();
         }
 
         public GameModeSetting AddApplyCallback(ApplyCallback callback)
@@ -576,7 +574,7 @@ namespace Anarchy.Configuration
             List<object> args = new List<object>();
             if (nextSelection >= 0)
             {
-                args.Add(lang.GetArray(key + "Selection")[nextSelection]);
+                args.Add(Lang.GetArray(key + "Selection")[nextSelection]);
             }
             if (nextFloats != null)
             {
@@ -592,7 +590,7 @@ namespace Anarchy.Configuration
                     args.Add(GetInt(i).ToString());
                 }
             }
-            string format = lang.Get(key + "Info" + (state ? "Enabled" : "Disabled")).Replace(@"\n", System.Environment.NewLine);
+            string format = Lang.Get(key + "Info" + (state ? "Enabled" : "Disabled")).Replace(@"\n", System.Environment.NewLine);
             if (state)
             {
                 if (GameModes.EnabledColor.Value.Length != 6)

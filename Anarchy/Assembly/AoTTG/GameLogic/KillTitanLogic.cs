@@ -16,12 +16,16 @@
         {
             if (!Round.IsWinning && !Round.IsLosing)
             {
-                FengGameManagerMKII.FGM.StartCoroutine(Anarchy.GameModes.CheckGameEnd());
+                Anarchy.GameModes.CheckGameEnd();
             }
         }
 
         public override void OnTitanDown(string name, bool isLeaving)
         {
+            if (!Round.IsWinning && !Round.IsLosing)
+            {
+                Anarchy.GameModes.CheckGameEnd();
+            }
             if (CheckIsTitanAllDie())
             {
                 GameWin();
@@ -34,7 +38,7 @@
             base.UpdateLabels();
             if (!Multiplayer)
             {
-                Optimization.Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.SingleKills.ToString(), FengGameManagerMKII.FGM.SingleMax.ToString(), FengGameManagerMKII.FGM.SingleTotal.ToString());
+                Optimization.Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.singleKills.ToString(), FengGameManagerMKII.FGM.singleMax.ToString(), FengGameManagerMKII.FGM.singleTotal.ToString());
             }
         }
     }

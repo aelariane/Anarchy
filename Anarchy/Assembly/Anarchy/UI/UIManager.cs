@@ -29,23 +29,8 @@ namespace Anarchy.UI
             onAwakeRms();
             onAwakeAdds = delegate () { };
             onAwakeRms = delegate () { };
-            CheckIfNeedDisable();
         }
-
-        internal static void CheckIfNeedDisable()
-        {
-            lock (activeGUIs)
-            {
-                if (activeGUIs.Length > 0 || Instance.transform.childCount > 0)
-                {
-                    return;
-                }
-                if (Instance.gameObject.activeInHierarchy)
-                    Instance.gameObject.SetActive(false);
-            }
-        }
-
-        public static bool Disable(GUIBase gui)
+         public static bool Disable(GUIBase gui)
         {
             if (!gui.Active)
             {
@@ -72,13 +57,17 @@ namespace Anarchy.UI
                     }
                     list.Add(activeGUIs[i]);
                 }
+                if (wasRemoved)
+                {
+                    gui.Disable();
+                }
                 if (list.Count == 0)
                 {
                     activeGUIs = new GUIBase[0];
-                    CheckIfNeedDisable();
                     return wasRemoved;
                 }
                 activeGUIs = list.ToArray();
+                UpdateDepths();
                 return wasRemoved;
             }
         }
@@ -101,14 +90,12 @@ namespace Anarchy.UI
             {
                 if (activeGUIs == null || activeGUIs.Length == 0)
                 {
-                    if (!Instance.gameObject.activeInHierarchy)
-                    {
-                        Instance.gameObject.SetActive(true);
-                    }
                     activeGUIs = new GUIBase[] { gui };
+                    gui.Drawer.Enable();
+                    UpdateDepths();
                     return true;
                 }
-                for(int i = 0; i < activeGUIs.Length; i++)
+                for (int i = 0; i < activeGUIs.Length; i++)
                 {
                     if (activeGUIs[i] == gui)
                         return false;
@@ -126,19 +113,24 @@ namespace Anarchy.UI
                     }
                     tmp.Enqueue(copy.Dequeue());
                 }
+                if (added)
+                {
+                    gui.Drawer.Enable();
+                }
                 activeGUIs = tmp.ToArray();
+                UpdateDepths();
+                
                 return added;
             }
         }
 
-        private void OnGUI()
+
+        private static void UpdateDepths()
         {
-            lock (activeGUIs)
+            int depth = activeGUIs.Length - 1;
+            for(int i = 0; i <activeGUIs.Length; i++)
             {
-                for (int i = 0; i < activeGUIs.Length; i++)
-                {
-                    activeGUIs[i].OnGUI();
-                }
+                activeGUIs[i].Drawer.Depth = depth--;
             }
         }
 
@@ -161,17 +153,6 @@ namespace Anarchy.UI
             ui.transform.position = new Vector3(Instance.transform.position.x, Instance.transform.position.y, Instance.transform.position.z);
         }
 
-        private void Update()
-        {
-            lock (activeGUIs)
-            {
-                for (int i = 0; i < activeGUIs.Length; i++)
-                {
-                    activeGUIs[i].Update();
-                }
-            }
-        }
-
         public static void UpdateGUIScaling()
         {
             Style.UpdateScaling();
@@ -179,6 +160,11 @@ namespace Anarchy.UI
             {
                 foreach(GUIBase baseg in GUIBase.AllBases)
                 {
+                    if (baseg.Active)
+                    {
+                        baseg.DisableImmediate();
+                        baseg.EnableImmediate();
+                    }
                     baseg.OnUpdateScaling();
                 }
             }

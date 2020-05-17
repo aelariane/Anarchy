@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Optimization;
+﻿using Optimization;
 
 namespace GameLogic
 {
@@ -17,7 +13,7 @@ namespace GameLogic
         {
             if (!Round.IsWinning && !Round.IsLosing)
             {
-                FengGameManagerMKII.FGM.StartCoroutine(Anarchy.GameModes.CheckGameEnd());
+                Anarchy.GameModes.CheckGameEnd();
             }
         }
 
@@ -33,7 +29,7 @@ namespace GameLogic
             {
                 Labels.Center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
             }
-            Labels.TopCenter = Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.Logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.Logic.ServerTime).ToString("F0")));
+            Labels.TopCenter = Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.logic.ServerTime).ToString("F0")));
             Labels.TopCenter += "\n" + Lang["colossalInfo"];
         }
     }

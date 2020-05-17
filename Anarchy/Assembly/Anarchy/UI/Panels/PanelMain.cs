@@ -11,7 +11,7 @@ namespace Anarchy.UI
         private int enabledPanel = -1;
         private GUIBase[] allUsedPanels;
 
-        public PanelMain() : base(nameof(PanelMain), 1)
+        public PanelMain() : base(nameof(PanelMain), GUILayers.PanelMain)
         {
         }
 

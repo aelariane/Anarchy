@@ -22,6 +22,7 @@ namespace Anarchy.UI
         const int Color = 0;
         const int NameAnimation = 1;
         const int ChatAndConsole = 2;
+        const int Playerlist = 3;
 
         const int Bombs = 0;
 
@@ -43,8 +44,9 @@ namespace Anarchy.UI
         private string[] AbilityLabels;
 
         private float[] localBombStats;
+        private string[] burstTypes;
 
-        public SettingsPanel() : base(nameof(SettingsPanel), 10)
+        public SettingsPanel() : base(nameof(SettingsPanel), GUILayers.SettingsPanel)
         {
             animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
@@ -126,7 +128,7 @@ namespace Anarchy.UI
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
             switch (ModPage)
             {
-                case 0:
+                case Color:
                     LabelCenter(rects[0], locale["windowOffset"], true);
                     ToggleButton(rects[0], UIManager.HUDAutoScaleGUI, locale["guiAutoScale"], true);
                     if (UIManager.HUDAutoScaleGUI.Value)
@@ -185,10 +187,11 @@ namespace Anarchy.UI
                     }
                     break;
 
-                case 1:
+                case NameAnimation:
+                    LabelCenter(rects[0], "<b><color=red>NOT IMPLEMENTED YET</color></b>");
                     break;
 
-                case 2:
+                case ChatAndConsole:
                     LabelCenter(rects[0], locale["chat"], true);
                     ToggleButton(rects[0], Chat.UseBackground, locale["chatBack"], true);
                     if (Chat.UseBackground.Value)
@@ -235,6 +238,15 @@ namespace Anarchy.UI
             LabelCenter(left, locale["effects"], true);
             ToggleButton(left, VideoSettings.WindEffect, locale["windEffect"], true);
             ToggleButton(left, VideoSettings.BladeTrails, locale["bladeTrails"], true);
+            if (VideoSettings.BladeTrails)
+            {
+                Label(left, Style.LabelSpace + locale["trailAppearance"], false);
+                left.MoveOffsetX(Style.LabelOffsetSlider);
+                SelectionGrid(left, VideoSettings.TrailType, locale.GetArray("trailType"), 3, true);
+                left.ResetX();
+                ToggleButton(left, VideoSettings.InfiniteTrail, Style.LabelSpace + locale["infiniteTrails"], true);
+                HorizontalSlider(left, VideoSettings.TrailFPS, Style.LabelSpace + locale.Format("trailFps", VideoSettings.TrailFPS.Value.ToString("F0")), 60f, 240f, Style.LabelOffsetSlider, true);
+            }
             ToggleButton(left, VideoSettings.CameraTilt, locale["tilt"], true);
             ToggleButton(left, VideoSettings.Blur, locale["blur"], true);
         }
@@ -250,7 +262,11 @@ namespace Anarchy.UI
             HorizontalSlider(left, Settings.CameraDistance, locale.Format("distance", Settings.CameraDistance.Value.ToString("F2")), Style.LabelOffsetSlider, true);
 
             ToggleButton(left, Settings.Minimap, locale["minimap"], true);
-            ToggleButton(left, Settings.GameFeed, locale["gameFeed"], true);
+            ToggleButton(left, GameFeed.Enabled, locale["gameFeed"], true);
+            if (GameFeed.Enabled)
+            {
+                ToggleButton(left, GameFeed.ConsoleMode, Style.LabelSpace + locale["feedConsoleMode"], true);
+            }
             left.MoveY();
             LabelCenter(left, locale["audio"], true);
             HorizontalSlider(left, Settings.SoundLevel, locale.Format("overallAudio", (Settings.SoundLevel.Value * 100f).ToString("F0") + "%"), 0f, 1f, Style.LabelOffsetSlider, true);
@@ -294,9 +310,9 @@ namespace Anarchy.UI
             rect.MoveY();
             RebindPage = SelectionGrid(rect, RebindPage, RebindLabels, RebindLabels.Length, true);
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
-            int RebindCannon = (int)InputCodes.DefaultsCount + InputManager.RebindKeyCodes.Length;
-            int CannonTitan = RebindCannon + InputManager.CannonKeyCodes.Length;
-            int TitanHorse = CannonTitan + InputManager.TitanKeyCodes.Length;
+            int RebindCannon = (int) InputCodes.DefaultsCount + InputManager.RebindKeyCodesLength;
+            int CannonTitan = RebindCannon + InputManager.CannonKeyCodesLength;
+            int TitanHorse = CannonTitan + InputManager.TitanKeyCodesLength;
             switch (RebindPage)
             {
                 case RebindsHuman:
@@ -320,6 +336,7 @@ namespace Anarchy.UI
                         RebindButton(rects[1], InputManager.AllKeys[i]);
                     }
                     break;
+
                 case RebindsCannon:
                     rects[0].MoveY();
                     for (int i = RebindCannon; i < CannonTitan; i++)
@@ -327,6 +344,7 @@ namespace Anarchy.UI
                         RebindButton(rects[0], InputManager.AllKeys[i]);
                     }
                     break;
+
                 case RebindsTitan:
                     rects[0].MoveY();
                     for (int i = CannonTitan; i < TitanHorse; i++)
@@ -334,6 +352,7 @@ namespace Anarchy.UI
                         RebindButton(rects[0], InputManager.AllKeys[i]);
                     }
                     break;
+
                 case RebindsHorse:
                     rects[0].MoveY();
                     for (int i = TitanHorse; i < InputManager.AllKeys.Count; i++)

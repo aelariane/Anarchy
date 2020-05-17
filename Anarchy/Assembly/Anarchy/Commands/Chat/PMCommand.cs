@@ -41,7 +41,7 @@ namespace Anarchy.Commands.Chat
                 }
                 string message = string.Join(" ", args, 0, args.Length);
                 chatMessage = string.Format(Lang["pmSent"], new object[] { pmID.ToString(), message });
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonPlayer.Find(pmID), new object[] { User.ChatPMSend(PhotonNetwork.player.ID, message), "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonPlayer.Find(pmID), new object[] { User.ChatPmSend(PhotonNetwork.player.ID, message), "" });
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Anarchy.Commands.Chat
                 }
                 string message = string.Join(" ", args, 1, args.Length - 1);
                 chatMessage = string.Format(Lang["pmSent"], new object[] { ID.ToString(), message });
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonPlayer.Find(ID), new object[] { User.ChatPMSend(PhotonNetwork.player.ID, message), "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonPlayer.Find(ID), new object[] { User.ChatPmSend(PhotonNetwork.player.ID, message), "" });
             }
             return true;
         }

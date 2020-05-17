@@ -20,7 +20,7 @@ namespace Anarchy.Configuration
         public static IntSetting ShadowCascades = new IntSetting("ShadowCascades", 2);
         public static IntSetting ShadowProjection = new IntSetting("ShadowProjection", 0);
         public static IntSetting TextureQuality = new IntSetting("TextureQuality", 1);
-        public static IntSetting TrailFPS = new IntSetting("BladeTrailFPS", 60);
+        public static FloatSetting TrailFPS = new FloatSetting("BladeTrailFPS", 60f);
         public static IntSetting TrailType = new IntSetting("BladeTrailType", 1);
 
         public static FloatSetting LODBias = new FloatSetting("LODBias", 0f);

@@ -16,7 +16,7 @@ namespace Anarchy.UI
         private SmartRect right;
         private string[] modeSelection;
 
-        public GameModesPanel() : base(nameof(GameModesPanel), -1)
+        public GameModesPanel() : base(nameof(GameModesPanel), GUILayers.GameModesPanel)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
@@ -31,8 +31,13 @@ namespace Anarchy.UI
             pageSelection = SelectionGrid(rect, pageSelection, modeSelection, modeSelection.Length);
             rect.ResetX();
             rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            rect.MoveToEndX(BoxPosition, Style.LabelOffset * 2f + Style.HorizontalMargin);
             rect.width = Style.LabelOffset;
+            if(Button(rect, locale["btnReset"], false))
+            {
+                GameModes.DisableAll();
+            }
+            rect.MoveX(Style.HorizontalMargin, true);
             if (Button(rect, locale["btnClose"]))
             {
                 Disable();
@@ -48,7 +53,7 @@ namespace Anarchy.UI
             GameModes.EndlessRespawn.Draw(left, locale);
             left.MoveY();
             LabelCenter(left, locale["motd"], true);
-            TextField(left, GameModes.MOTD, string.Empty, 0f, true);
+            TextField(left, GameModes.Motd, string.Empty, 0f, true);
 
             right.Reset();
             GameModes.KickEren.Draw(right, locale);
@@ -61,7 +66,7 @@ namespace Anarchy.UI
             right.MoveY();
             GameModes.AllowHorses.Draw(right, locale);
             right.MoveY();
-            GameModes.AFKKill.Draw(right, locale);
+            GameModes.AfkKill.Draw(right, locale);
         }
 
         protected override void OnPanelDisable()
@@ -80,6 +85,10 @@ namespace Anarchy.UI
             left = rects[0];
             right = rects[1];
             modeSelection = locale.GetArray("selections");
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            {
+                GameModes.Load();
+            }
         }
 
         [GUIPage(PvPPage)]
@@ -88,7 +97,7 @@ namespace Anarchy.UI
             left.Reset();
             GameModes.BombMode.Draw(left, locale);
             left.MoveY();
-            GameModes.BladePVP.Draw(left, locale);
+            GameModes.BladePvp.Draw(left, locale);
             left.MoveY();
             GameModes.TeamMode.Draw(left, locale);
             left.MoveY();
@@ -99,7 +108,7 @@ namespace Anarchy.UI
             right.Reset();
             GameModes.InfectionMode.Draw(right, locale);
             right.MoveY();
-            GameModes.NoAHSSReload.Draw(right, locale);
+            GameModes.NoAhssReload.Draw(right, locale);
             right.MoveY();
             GameModes.CannonsKillHumans.Draw(right, locale);
         }
@@ -108,7 +117,7 @@ namespace Anarchy.UI
         private void RacingModes()
         {
             left.Reset();
-            GameModes.ASORacing.Draw(left, locale);
+            GameModes.AsoRacing.Draw(left, locale);
             left.MoveY();
             GameModes.RacingRestartTime.Draw(right, locale);
 

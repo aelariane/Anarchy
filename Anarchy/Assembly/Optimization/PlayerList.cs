@@ -17,6 +17,7 @@ namespace Optimization
             bld.Append(player.IsLocal ? "[FFCC00]>>[-] " : "");
             bld.Append("[" + player.ModName + "] ");
             bld.Append(player.RCIgnored ? "[FF0000][IGNORED] [-]" : string.Empty);
+            bld.Append(player.Muted ? "[FFFF00][MUTED] [-]" : string.Empty);
             bld.Append(player.IsMasterClient ? "[MC] " : "");
             bld.Append(player.Dead ? $"[{ColorSet.color_red}]*dead* " : "");
             bld.Append(player.IsTitan ? $"[{ColorSet.color_titan_player}][T] " : (player.Team == 2 ? $"[{ColorSet.color_human_1}][A] " : $"[{ColorSet.color_human}][H] "));
@@ -36,36 +37,63 @@ namespace Optimization
                 var individual = new StringBuilder();
                 var cyan = new StringBuilder();
                 var magenta = new StringBuilder();
+                int[] cyanStats = new int[4];
+                int[] magentaStats = new int[4];
+                //int[] individualStats = new int[4];
                 for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
                 {
                     StringBuilder local = null;
+                    PhotonPlayer player = PhotonNetwork.playerList[i];
+                    int[] teamArray = null;
                     switch (PhotonNetwork.playerList[i].RCteam)
                     {
                         default:
                         case 0:
                             local = individual;
+                            //teamArray = individualStats;
                             break;
 
                         case 1:
                             local = cyan;
+                            teamArray = cyanStats;
                             break;
 
                         case 2:
                             local = magenta;
+                            teamArray = magentaStats;
                             break;
+                    }
+                    if (teamArray != null)
+                    {
+                        teamArray[0] += player.Kills;
+                        teamArray[1] += player.Deaths;
+                        teamArray[2] += player.Max_Dmg;
+                        teamArray[3] += player.Total_Dmg;
                     }
                     local.AppendLine(PlayerToString(PhotonNetwork.playerList[i]));
                 }
-                bld.Append($"Individual\n{individual.ToString()}Team cyan\n{cyan.ToString()}Team magenta\n{magenta.ToString()}");
+                bld.AppendLine($"\n<color=cyan>Team cyan</color> {GetStatString(cyanStats)}\n{cyan.ToString()}");
+                bld.AppendLine($"<color=magenta>Team magenta</color> {GetStatString(magentaStats)}\n{magenta.ToString()}");
+                bld.Append($"<color=lime>Individuals</color>\n{individual.ToString()}");
             }
             else
             {
                 for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
                 {
+                    if(i >= 25)
+                    {
+                        bld.Append("And " + (PhotonNetwork.playerList.Length - 25) + " players...");
+                        break;
+                    }
                     bld.AppendLine(PlayerToString(PhotonNetwork.playerList[i]));
                 }
             }
             Labels.TopLeft = bld.ToString().ToHTMLFormat();
+        }
+
+        private string GetStatString(int[] stats)
+        {
+            return $"{stats[0]}/{stats[1]}/{stats[2]}/{stats[3]}";
         }
 
     }

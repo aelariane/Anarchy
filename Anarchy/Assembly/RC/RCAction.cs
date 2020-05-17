@@ -339,7 +339,7 @@ public class RCAction
                                 if (RCManager.heroHash.ContainsKey(iD))
                                 {
                                     HERO hero = (HERO)RCManager.heroHash[iD];
-                                    hero.markDie();
+                                    hero.MarkDie();
                                     hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[]
                                     {
                         -1,
@@ -521,7 +521,7 @@ public class RCAction
                             TITAN titan4 = this.parameters[0].returnTitan(null);
                             if (titan4.BasePV.IsMine)
                             {
-                                titan4.moveTo(this.parameters[1].returnFloat(null), this.parameters[2].returnFloat(null), this.parameters[3].returnFloat(null));
+                                titan4.MoveTo(this.parameters[1].returnFloat(null), this.parameters[2].returnFloat(null), this.parameters[3].returnFloat(null));
                                 return;
                             }
                             titan4.BasePV.RPC("moveToRPC", titan4.BasePV.owner, new object[]

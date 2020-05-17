@@ -13,7 +13,7 @@ namespace Anarchy.UI
         private SmartRect pauseRect;
         private GUIStyle pauseStyle;
 
-        public PausePanel() : base(nameof(PausePanel), 20)
+        public PausePanel() : base(nameof(PausePanel), GUILayers.PausePanel)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Width, Height), 200f, 400f);
         }
@@ -119,7 +119,7 @@ namespace Anarchy.UI
                     PhotonNetwork.Disconnect();
                 }
                 IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
-                FengGameManagerMKII.FGM.GameStart = false;
+                FengGameManagerMKII.FGM.gameStart = false;
                 Object.Destroy(FengGameManagerMKII.FGM);
                 Application.LoadLevel("menu");
             }

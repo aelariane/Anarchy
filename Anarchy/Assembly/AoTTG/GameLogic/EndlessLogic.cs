@@ -25,7 +25,7 @@ namespace GameLogic
             {
                 HumanScore++;
                 int rate2 = 90;
-                if (FengGameManagerMKII.FGM.Difficulty == 1)
+                if (FengGameManagerMKII.FGM.difficulty == 1)
                 {
                     rate2 = 70;
                 }
@@ -59,7 +59,7 @@ namespace GameLogic
                     Labels.Center = Lang.Format("humanitySingleFail", Anarchy.InputManager.Settings[InputCode.Restart].ToString());
                 }
             }
-            Labels.TopCenter = Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.Logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.Logic.ServerTime).ToString("F0")));
+            Labels.TopCenter = Lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.logic.ServerTime).ToString("F0")));
         }
     }
 }

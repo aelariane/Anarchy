@@ -1,6 +1,5 @@
 ﻿using Anarchy.Configuration;
 using Anarchy.Configuration.Presets;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static Anarchy.UI.GUI;
@@ -32,7 +31,7 @@ namespace Anarchy.UI
         private string[] skinTypeSelection;
 
 
-        public SkinsPanel() : base(nameof(SkinsPanel), -1)
+        public SkinsPanel() : base(nameof(SkinsPanel), GUILayers.SkinsPanel)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }

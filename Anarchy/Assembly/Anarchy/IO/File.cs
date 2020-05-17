@@ -102,7 +102,7 @@ namespace Anarchy.IO
         {
             if (!info.Exists)
                 return string.Empty;
-            if (AlwaysOpen || textReader != null)
+            if (AlwaysOpen)
             {
                 return textReader.ReadLine();
             }
@@ -116,7 +116,7 @@ namespace Anarchy.IO
         {
             if (!info.Exists)
                 return;
-            if(AlwaysOpen || textWriter != null)
+            if(AlwaysOpen)
             {
                 textWriter.WriteLine(line);
                 return;

@@ -15,7 +15,7 @@ namespace Anarchy.Commands.Chat
         {
             if(!GameModes.TeamMode.Enabled || GameModes.TeamMode.Selection > 1)
             {
-                chatMessage = "Teams are locked or disabled";
+                chatMessage = Lang["errTeamsLocked"].HtmlColor("FF0000");
                 return false;
             }
             if(args.Length <= 0)
@@ -40,11 +40,11 @@ namespace Anarchy.Commands.Chat
                     break;
 
                 default:
-                    chatMessage = "Invalid team code or name (0,1,2 accepted)";
+                    chatMessage = Lang["errTeamsInvalid"].HtmlColor("FF0000");
                     return false;
             }
             FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC", PhotonNetwork.player, new object[] { team });
-            chatMessage = "Team changed to " + GetTeamName(team);
+            chatMessage = Lang.Format("teamChanged", GetTeamName(team));
             if(PhotonNetwork.player.GameObject != null && PhotonNetwork.player.GameObject.GetComponent<HERO>() != null)
             {
                 PhotonNetwork.player.GameObject.GetPhotonView().RPC("netDie2", PhotonTargets.All, new object[] { -1, "Team switch" });
@@ -56,17 +56,15 @@ namespace Anarchy.Commands.Chat
         {
             switch (team)
             {
+                default:
                 case 0:
-                    return "individuals";
+                    return "<color=lime>" + Lang["teamIndividuals"] + "</color>";
 
                 case 1:
-                    return "cyan";
+                    return "<color=cyan>" + Lang["teamCyan"] + "</color>";
 
                 case 2:
-                    return "magenta";
-
-                default:
-                    return $"unknown team {team}";
+                    return "<color=magenta>" + Lang["teamMagenta"] + "</color>";
             }
         }
     }

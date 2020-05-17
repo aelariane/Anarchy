@@ -37,9 +37,10 @@ namespace Anarchy.UI
         private GUIStyle LogStyle;
         private OrderedDictionary<string, int> messages;
         private Rect position;
+        private static readonly WaitForEndOfFrame awaiter = new WaitForEndOfFrame();
 
 
-        internal Log() : base("Log", 4)
+        internal Log() : base("Log", GUILayers.Log)
         {
             Instance = this;
             messages = new OrderedDictionary<string, int>();
@@ -52,10 +53,17 @@ namespace Anarchy.UI
             {
                 return;
             }
+
+            FengGameManagerMKII.FGM.StartCoroutine(AddLineI(message));
+        }
+
+        private static System.Collections.IEnumerator AddLineI(string message)
+        {
+            yield return awaiter;
             OrderedDictionary<string, int> messages = Instance.messages;
             if (messages == null)
             {
-                return;
+                yield break;
             }
             lock (Instance.messages)
             {
@@ -116,6 +124,12 @@ namespace Anarchy.UI
             {
                 return;
             }
+            FengGameManagerMKII.FGM.StartCoroutine(ClearI());
+        }
+
+        private static System.Collections.IEnumerator ClearI()
+        {
+            yield return awaiter;
             Instance.messages.Clear();
         }
 
@@ -149,14 +163,14 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            lock (messages)
+            if(messages.Count > 0)
             {
-                List<string> message = messages.Keys.ToList();
-                List<int> count = messages.Values.ToList();
-                GUILayout.BeginArea(position);
-                UnityEngine.GUILayout.FlexibleSpace();
-                try
+                lock (messages)
                 {
+                    List<string> message = messages.Keys.ToList();
+                    List<int> count = messages.Values.ToList();
+                    GUILayout.BeginArea(position);
+                    UnityEngine.GUILayout.FlexibleSpace();
                     for (int i = 0; i < messages.Count; i++)
                     {
                         string currentMessage = message[i];
@@ -166,11 +180,8 @@ namespace Anarchy.UI
                             UnityEngine.GUILayout.Label(currentMessage + (currentCount > 1 ? $" <color=red>[x{currentCount}]</color>" : string.Empty), LogStyle, labelOptions);
                         }
                     }
+                    GUILayout.EndArea();
                 }
-                catch
-                {
-                }
-                GUILayout.EndArea();
             }
         }
 

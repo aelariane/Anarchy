@@ -67,16 +67,16 @@ public class EnemyCheckCollider : Photon.MonoBehaviour
                     {
                         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
                         {
-                            if (!component.transform.root.GetComponent<HERO>().isGrabbed)
+                            if (!component.transform.root.GetComponent<HERO>().IsGrabbed)
                             {
                                 Vector3 vector2 = component.transform.root.transform.position - base.transform.position;
-                                component.transform.root.GetComponent<HERO>().die(vector2.normalized * b * 1000f + Vector3.up * 50f, this.isThisBite);
+                                component.transform.root.GetComponent<HERO>().Die(vector2.normalized * b * 1000f + Vector3.up * 50f, this.isThisBite);
                                 return;
                             }
                         }
-                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().isGrabbed)
+                        else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && !component.transform.root.GetComponent<HERO>().HasDied() && !component.transform.root.GetComponent<HERO>().IsGrabbed)
                         {
-                            component.transform.root.GetComponent<HERO>().markDie();
+                            component.transform.root.GetComponent<HERO>().MarkDie();
                             int myOwnerViewID = -1;
                             string titanName = string.Empty;
                             if (base.transform.root.gameObject.GetComponent<EnemyfxIDcontainer>() != null)

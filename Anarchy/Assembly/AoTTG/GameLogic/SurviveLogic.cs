@@ -22,6 +22,10 @@ namespace GameLogic
 
         public override void OnTitanDown(string name, bool isLeaving)
         {
+            if (!Round.IsWinning && !Round.IsLosing)
+            {
+                GameModes.CheckGameEnd();
+            }
             if (this.CheckIsTitanAllDie())
             {
                 GameModes.AntiReviveClear();
@@ -49,7 +53,7 @@ namespace GameLogic
                 else
                 {
                     int rate = 90;
-                    if (FengGameManagerMKII.FGM.Difficulty == 1)
+                    if (FengGameManagerMKII.FGM.difficulty == 1)
                     {
                         rate = 70;
                     }
@@ -101,7 +105,7 @@ namespace GameLogic
         {
             if (!Round.IsWinning && !Round.IsLosing)
             {
-                FengGameManagerMKII.FGM.StartCoroutine(GameModes.CheckGameEnd());
+                GameModes.CheckGameEnd();
             }
         }
 
@@ -113,7 +117,7 @@ namespace GameLogic
             top += " " +Lang.Format("wave", Round.Wave.ToString());
             if (!Multiplayer)
             {
-                Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.SingleKills.ToString(), FengGameManagerMKII.FGM.SingleMax.ToString(), FengGameManagerMKII.FGM.SingleTotal.ToString());
+                Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.singleKills.ToString(), FengGameManagerMKII.FGM.singleMax.ToString(), FengGameManagerMKII.FGM.singleTotal.ToString());
             }
             if (Round.IsWinning && Round.GameEndCD >= 0f)
             {

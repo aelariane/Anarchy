@@ -1,84 +1,124 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Anarchy.Configuration;
 using Anarchy.UI;
-using ExitGames.Client.Photon;
 using GameLogic;
+using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Anarchy
 {
-    public class GameModes
+    public static class GameModes
     {
         public static StringSetting DisabledColor = new StringSetting(nameof(DisabledColor), "FFAACC");
         public static StringSetting EnabledColor = new StringSetting(nameof(EnabledColor), "CCFFCC");
 
         private static List<GameModeSetting> allGameSettings;
-        public static List<int> AntiReviveList = new List<int>();
+        private static readonly List<int> antiReviveList = new List<int>();
 
         private static Hashtable oldHash = new Hashtable();
         private static Hashtable infection = new Hashtable();
 
-        public static readonly GameModeSetting CustomAmount = new GameModeSetting("titanc", new int[1] { 5 });
-        public static readonly GameModeSetting SpawnRate = new GameModeSetting("spawnMode,nRate,aRate,jRate,cRate,pRate", new float[5] { 20f, 20f, 20f, 20f, 20f }).AddApplyCallback(CheckCustomSpawn);
-        public static readonly GameModeSetting SizeMode = new GameModeSetting("sizeMode,sizeLower,sizeUpper", new float[2] { 0.7f, 3f });
-        public static readonly GameModeSetting HealthMode = new GameModeSetting("healthMode,healthLower,healthUpper", 0, new int[2] { 200, 500 });
-        public static readonly GameModeSetting DamageMode = new GameModeSetting("damage", new int[1] { 500 });
-        public static readonly GameModeSetting ExplodeMode = new GameModeSetting("explode", new int[1] { 30 });
+        public static readonly GameModeSetting CustomAmount = new GameModeSetting("titanc", new[] { 5 });
+
+        public static readonly GameModeSetting SpawnRate =
+            new GameModeSetting("spawnMode,nRate,aRate,jRate,cRate,pRate",
+                new[] { 20f, 20f, 20f, 20f, 20f }).AddApplyCallback(CheckCustomSpawn);
+
+        public static readonly GameModeSetting SizeMode =
+            new GameModeSetting("sizeMode,sizeLower,sizeUpper", new[] { 0.7f, 3f });
+
+        public static readonly GameModeSetting HealthMode =
+            new GameModeSetting("healthMode,healthLower,healthUpper", 0, new[] { 200, 500 });
+
+        public static readonly GameModeSetting DamageMode = new GameModeSetting("damage", new[] { 500 });
+        public static readonly GameModeSetting ExplodeMode = new GameModeSetting("explode", new[] { 30 });
         public static readonly GameModeSetting NoRocks = new GameModeSetting("rock");
-        public static readonly GameModeSetting TitansWaveAmount = new GameModeSetting("waveModeOn,waveModeNum", new int[] { 5 });
 
-        public static readonly GameModeSetting PointMode = new GameModeSetting("point", new int[] { 50 });
+        public static readonly GameModeSetting TitansWaveAmount =
+            new GameModeSetting("waveModeOn,waveModeNum", new[] {5});
+
+        public static readonly GameModeSetting PointMode = new GameModeSetting("point", new[] { 50 });
         public static readonly GameModeSetting BombMode = new GameModeSetting("bomb");
-        public static readonly GameModeSetting TeamMode = new GameModeSetting("team", 0);
-        public static readonly GameModeSetting InfectionMode = new GameModeSetting("infection", new int[] { 1 });
-        public static readonly GameModeSetting FriendlyMode = new GameModeSetting("friendly");
-        public static readonly GameModeSetting BladePVP = new GameModeSetting("pvp", 0);
-        public static readonly GameModeSetting NoAHSSReload = new GameModeSetting("ahssReload");
-        public static readonly GameModeSetting CannonsKillHumans = new GameModeSetting("deadlycannons");
 
-        public static readonly GameModeSetting MaxWave = new GameModeSetting("maxwave", new int[] { 20 });
+        public static readonly GameModeSetting TeamMode = new GameModeSetting("team", 0).AddApplyCallback(
+            (a, b, c, d, e) =>
+            {
+                if (!b)
+                {
+                    FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC",
+                        PhotonTargets.All, 0);
+                    return;
+                }
+
+                SendTeamInfo();
+            });
+
+        public static readonly GameModeSetting InfectionMode = new GameModeSetting("infection", new[] { 1 });
+        public static readonly GameModeSetting FriendlyMode = new GameModeSetting("friendly");
+        public static readonly GameModeSetting BladePvp = new GameModeSetting("pvp", 0);
+        public static readonly GameModeSetting NoAhssReload = new GameModeSetting("ahssReload");
+        public static readonly GameModeSetting CannonsKillHumans = new GameModeSetting("deadlycannons");
+        public static readonly GameModeSetting MaxWave = new GameModeSetting("maxwave", new[] { 20 });
         public static readonly GameModeSetting PunkOverride = new GameModeSetting("punkWaves");
         public static readonly GameModeSetting MinimapDisable = new GameModeSetting("globalDisableMinimap");
-        public static readonly GameModeSetting EndlessRespawn = new GameModeSetting("endless", new int[] { 5 });
+        public static readonly GameModeSetting EndlessRespawn = new GameModeSetting("endless", new[] { 5 });
         public static readonly GameModeSetting KickEren = new GameModeSetting("eren");
         public static readonly GameModeSetting AllowHorses = new GameModeSetting("horse");
-        public static readonly StringSetting MOTD = new StringSetting("motd", string.Empty);
-
-        public static readonly AnarchyGameModeSetting RacingStartTime = (AnarchyGameModeSetting)new AnarchyGameModeSetting("startTime,startTimeValue", new int[] { 20 }).AddChangedCallback(RacingLogic.StartTimeCheck);
-        public static readonly AnarchyGameModeSetting RacingFinishersRestart = new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new int[] { 5 });
-        public static readonly AnarchyGameModeSetting RacingTimeLimit = new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new int[] { 500 });
-        public static readonly AnarchyGameModeSetting RacingRestartTime = (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new int[] { 999 }).RemoveChangedCallback(AnarchyGameModeSetting.AnarchySettingCallback).AddChangedCallback(RacingLogic.RestartTimeCheck);
+        public static readonly StringSetting Motd = new StringSetting("motd", string.Empty);
+        
+        public static readonly AnarchyGameModeSetting RacingStartTime =
+            (AnarchyGameModeSetting) new AnarchyGameModeSetting("startTime,startTimeValue", new[] { 20 })
+                .AddChangedCallback(RacingLogic.StartTimeCheck);
+        public static readonly AnarchyGameModeSetting RacingFinishersRestart =
+            new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new[] { 5 });
+        public static readonly AnarchyGameModeSetting RacingTimeLimit =
+            new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new[] { 500 });
+        public static readonly AnarchyGameModeSetting RacingRestartTime =
+            (AnarchyGameModeSetting) new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new[] { 999 })
+                .RemoveChangedCallback(AnarchyGameModeSetting.AnarchySettingCallback)
+                .AddChangedCallback(RacingLogic.RestartTimeCheck);
         public static readonly AnarchyGameModeSetting NoGuest = new AnarchyGameModeSetting("noGuest");
         public static readonly AnarchyGameModeSetting AntiRevive = new AnarchyGameModeSetting("antiRevive");
-        public static readonly AnarchyGameModeSetting AFKKill = new AnarchyGameModeSetting("afkKill,afkKillTime", new int[] { 20 });
-        public static readonly GameModeSetting ASORacing = new GameModeSetting("asoracing").AddChangedCallback(RacingLogic.ASORacingCheck);
+        public static readonly AnarchyGameModeSetting AfkKill =
+            new AnarchyGameModeSetting("afkKill,afkKillTime", new[] { 20 });
+        public static readonly GameModeSetting AsoRacing =
+            new GameModeSetting("asoracing").AddChangedCallback(RacingLogic.ASORacingCheck);
 
 
-        public static bool AntiReviveAdd(int ID)
+        public static bool AntiReviveAdd(int id)
         {
-            if (AntiReviveEnabled() && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING && FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && FengGameManagerMKII.FGM.Logic.RoundTime > 10f)
+            if (AntiReviveEnabled() && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING &&
+                FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH &&
+                FengGameManagerMKII.FGM.logic.RoundTime > 10f)
             {
-                if (AntiReviveList.Contains(ID))
+                if (antiReviveList.Contains(id))
                 {
                     return false;
                 }
-                AntiReviveList.Add(ID);
+
+                antiReviveList.Add(id);
                 return true;
             }
+
             return false;
         }
 
-        public static bool AntiReviveCheck(int ID, HERO hero)
+        public static bool AntiReviveCheck(int id, HERO hero)
         {
             if (AntiReviveEnabled())
             {
-                if (AntiReviveList.Contains(ID))
+                if (antiReviveList.Contains(id))
                 {
-                    hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, "Anti-Revive " });
+                    hero.BasePV.RPC("netDie2", PhotonTargets.All, -1, "Anti-Revive ");
                     return true;
                 }
+
                 return false;
             }
+
             return false;
         }
 
@@ -86,25 +126,19 @@ namespace Anarchy
         {
             if (AntiReviveEnabled())
             {
-                AntiReviveList.Clear();
+                antiReviveList.Clear();
             }
         }
 
-        public static bool AntiReviveEnabled()
-        {
-            return IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient && AntiRevive.Enabled && !EndlessRespawn.Enabled;
-        }
+        private static bool AntiReviveEnabled() => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && 
+                                                   PhotonNetwork.IsMasterClient && 
+                                                   AntiRevive.Enabled &&
+                                                   !EndlessRespawn.Enabled;
+        
 
-        public static bool AntiReviveRemove(int ID)
-        {
-            if (AntiReviveEnabled())
-            {
-                return AntiReviveList.Remove(ID);
-            }
-            return false;
-        }
+        public static bool AntiReviveRemove(int id) => AntiReviveEnabled() && antiReviveList.Remove(id);
 
-        public static void AddSetting(GameModeSetting set)
+            public static void AddSetting(GameModeSetting set)
         {
             if (allGameSettings == null)
                 allGameSettings = new List<GameModeSetting>();
@@ -112,16 +146,18 @@ namespace Anarchy
                 allGameSettings.Add(set);
         }
 
-        private static void CheckCustomSpawn(GameModeSetting set, bool state, int selection, float[] floats, int[] integers)
+        private static void CheckCustomSpawn(GameModeSetting set, bool state, int selection, float[] floats,
+            int[] integers)
         {
-            if(state)
+            if (state)
             {
                 float summ = 0f;
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     summ += floats[i];
                 }
-                if(summ > 100f)
+
+                if (summ > 100f)
                 {
                     for (int i = 0; i < 5; i++)
                     {
@@ -131,35 +167,39 @@ namespace Anarchy
             }
         }
 
-        private static System.Collections.IEnumerator CheckEndless(int id, float time)
+        private static IEnumerator CheckEndless(int id, float time)
         {
-            yield return new UnityEngine.WaitForSeconds(time);
+            yield return new WaitForSeconds(time);
             PhotonPlayer player = PhotonPlayer.Find(id);
             if (player != null && player.Dead && !player.IsTitan)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", player, new object[0]);
+                FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", player);
             }
-            yield break;
         }
 
-        public static System.Collections.IEnumerator CheckGameEnd()
+        public static void CheckGameEnd()
         {
-            yield return new UnityEngine.WaitForSeconds(0.05f);
-            if (PhotonNetwork.IsMasterClient && CheckPVPWinner())
+            FengGameManagerMKII.FGM.StartCoroutine(CheckGameEndI());
+        }
+
+        private static IEnumerator CheckGameEndI()
+        {
+            yield return new WaitForSeconds(0.05f);
+            if (PhotonNetwork.IsMasterClient && CheckPvpWinner())
             {
                 yield break;
             }
-            if (PhotonNetwork.IsMasterClient && FengGameManagerMKII.FGM.IsPlayerAllDead())
+
+            if (PhotonNetwork.IsMasterClient && FengGameManagerMKII.IsPlayerAllDead())
             {
                 FengGameManagerMKII.FGM.GameLose();
-                yield break;
             }
-            yield break;
         }
 
-        public static bool CheckPVPWinner()
+
+        private static bool CheckPvpWinner()
         {
-            if (!BombMode.Enabled && !BladePVP.Enabled || FengGameManagerMKII.FGM.IsWinning)
+            if ((!BombMode.Enabled && !BladePvp.Enabled && !TeamMode.Enabled && !PointMode.Enabled) || FengGameManagerMKII.FGM.IsWinning)
             {
                 return false;
             }
@@ -167,132 +207,141 @@ namespace Anarchy
             {
                 if (!PointMode.Enabled)
                 {
-                    List<PhotonPlayer> alives = new List<PhotonPlayer>();
-                    string winnerName = "";
-                    foreach (PhotonPlayer player in PhotonNetwork.playerList)
-                    {
-                        if (!player.Dead)
-                        {
-                            alives.Add(player);
-                        }
-                    }
+                    List<PhotonPlayer> alives = PhotonNetwork.playerList.Where(player => !player.Dead).ToList();
                     if (alives.Count > 1)
                     {
                         return false;
                     }
-                    winnerName = (alives.Count > 0) ? alives[0].UIName.ToHTMLFormat() : "Nobody";
                     FengGameManagerMKII.FGM.GameWin();
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
+                    if (alives.Count > 0)
                     {
-                    winnerName + " wins. 5 points added.",
-                    ""
-                    });
+                        Chat.SendLocalizedTextAll("GameModes", "playerWin", new[] { alives[0].UIName.ToHTMLFormat() });
+                    }
+                    else
+                    {
+                        Chat.SendLocalizedTextAll("GameModes", "nobodyWin", new string[0]);
+                    }
                     if (alives.Count > 0)
                         alives[0].Kills += 5;
                 }
                 else
                 {
-                    foreach(PhotonPlayer player in PhotonNetwork.playerList)
+                    if (FengGameManagerMKII.IsPlayerAllDead() && !EndlessRespawn.Enabled)
                     {
-                        if (player.Kills > PointMode.GetInt(0))
+                        FengGameManagerMKII.FGM.GameLose();
+                        return true;
+                    }
+                    foreach (PhotonPlayer player in PhotonNetwork.playerList)
+                    {
+                        if (player.Kills >= PointMode.GetInt(0))
                         {
                             FengGameManagerMKII.FGM.GameWin();
-                            FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
-                            {
-                     player.UIName.ToHTMLFormat() + " wins. 5 points added.",
-                    ""
-                            });
+                            Chat.SendLocalizedTextAll("GameModes", "playerWin", new[] { player.UIName.ToHTMLFormat() });
+                            break;
                         }
                     }
                 }
                 return true;
             }
+            bool teamCyanWin = false;
+            bool teamMagentaWin = false;
+            if (PointMode.Enabled)
+            {
+                int cyanKills = 0;
+                int magentaKills = 0;
+                foreach (PhotonPlayer player in PhotonNetwork.playerList)
+                {
+                    switch (player.RCteam)
+                    {
+                        case 1:
+                            cyanKills += player.Kills;
+                            break;
+                        case 2:
+                            magentaKills += player.Kills;
+                            break;
+                    }
+                }
+                if (cyanKills >= PointMode.GetInt(0))
+                {
+                    teamCyanWin = true;
+                }
+                if(magentaKills >= PointMode.GetInt(0))
+                {
+                    teamMagentaWin = true;
+                }
+                if (FengGameManagerMKII.IsPlayerAllDead() && !EndlessRespawn.Enabled)
+                {
+                    FengGameManagerMKII.FGM.GameLose();
+                    return true;
+                }
+            }
             else
             {
-                bool teamCyanWin = false;
-                bool teamMagentaWin = false;
-                if (PointMode.Enabled)
+                List<PhotonPlayer> cyan = new List<PhotonPlayer>();
+                List<PhotonPlayer> magenta = new List<PhotonPlayer>();
+                foreach (PhotonPlayer player in PhotonNetwork.playerList)
                 {
-                    int cyanKills = 0;
-                    int magentaKills = 0;
-                    foreach (PhotonPlayer player in PhotonNetwork.playerList)
+                    if (player.Dead)
                     {
-                        if (player.RCteam == 1)
-                            cyanKills += player.Kills;
-                        else if (player.RCteam == 2)
-                            magentaKills += player.Kills;
+                        continue;
                     }
-                    if (cyanKills >= PointMode.GetInt(0))
+                    int rcteam = player.RCteam;
+                    switch (rcteam)
+                    {
+                        case 1:
+                            cyan.Add(player);
+                            break;
+                        case 2:
+                            magenta.Add(player);
+                            break;
+                    }
+                }
+                if(BladePvp.Enabled || BombMode.Enabled)
+                {
+                    if (magenta.Count < 1)
                     {
                         teamCyanWin = true;
                     }
-                    else if(magentaKills >= PointMode.GetInt(0))
+                    else if (cyan.Count < 1)
                     {
                         teamMagentaWin = true;
                     }
                 }
-                else
-                {
-                    List<PhotonPlayer> cyan = new List<PhotonPlayer>();
-                    List<PhotonPlayer> magenta = new List<PhotonPlayer>();
-                    foreach (PhotonPlayer player in PhotonNetwork.playerList)
-                    {
-                        if (!player.Dead)
-                        {
-                            int rcteam = player.RCteam;
-                            if (rcteam == 1)
-                            {
-                                cyan.Add(player);
-                            }
-                            else if (rcteam == 2)
-                            {
-                                magenta.Add(player);
-                            }
-                        }
-                    }
-                    if (cyan.Count < 1)
-                    {
-                        teamCyanWin = true;
-                    }
-                    else if (magenta.Count < 1)
-                    {
-                        teamMagentaWin = true;
-                    }
-                }
-                if(teamMagentaWin ^ teamCyanWin)
-                {
-                    FengGameManagerMKII.FGM.GameWin();
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
-                    {
-                        $"Team <color={(teamCyanWin ? "cyan>cyan" : "magenta>magenta")}</color> wins.",
-                        ""
-                    });
-                    return true;
-                }
-                else if(teamMagentaWin && teamCyanWin)
-                {
-                    FengGameManagerMKII.FGM.GameWin();
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[]
-                    {
-                        $"Nobody wins.",
-                        ""
-                    });
-                    return true;
-                }
-                return false;
+            }
+            if (teamMagentaWin ^ teamCyanWin)
+            {
+                FengGameManagerMKII.FGM.GameWin();
+                Chat.SendLocalizedTextAll("GameModes", (teamCyanWin ? "cyan" : "magenta") + "Win", new string[0]);
+                return true;
+            }
+
+            if (teamMagentaWin && teamCyanWin)
+            {
+                FengGameManagerMKII.FGM.GameWin();
+                Chat.SendLocalizedTextAll("GameModes", "nobodyWin", new string[0]);
+                return true;
+            }
+            return false;
+        }
+
+        public static void DisableAll()
+        {
+            foreach (GameModeSetting set in allGameSettings)
+            {
+                set.State = false;
             }
         }
 
-        public static void EndlessMode(int ID)
+        public static void EndlessMode(int id)
         {
             if (!EndlessRespawn.Enabled)
                 return;
-            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(ID, EndlessRespawn.GetInt(0)));
+            FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(id, EndlessRespawn.GetInt(0)));
         }
 
         public static void ForceChange()
         {
-            foreach(GameModeSetting set in allGameSettings)
+            foreach (GameModeSetting set in allGameSettings)
             {
                 set.ForceChange();
             }
@@ -302,32 +351,25 @@ namespace Anarchy
         {
             StringBuilder bld = new StringBuilder();
             int count = 0;
-            foreach (GameModeSetting set in allGameSettings)
+            foreach (var set in allGameSettings.Where(set => set.Enabled))
             {
-                if (set.Enabled)
-                {
-                    bld.Append((count > 0 ? "\n" : string.Empty) + set.ToStringLocal());
-                    count++;
-                }
+                bld.Append((count > 0 ? "\n" : string.Empty) + set.ToStringLocal());
+                count++;
             }
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-            return bld.ToString();
+
+            return count == 0 ? string.Empty : bld.ToString();
         }
 
-        public static void HandleRPC(Hashtable hash)
+        public static void HandleRpc(Hashtable hash)
         {
             if (oldHash.Equals(hash))
                 return;
             int count = 0;
             StringBuilder bld = new StringBuilder();
-            for (int i = 0; i < allGameSettings.Count; i++)
+            foreach (var set in allGameSettings)
             {
-                GameModeSetting set = allGameSettings[i];
                 set.ReadFromHashtable(hash);
-                if(set.HasChangedReceived)
+                if (set.HasChangedReceived)
                 {
                     set.ApplyReceived();
                     if (count > 0)
@@ -336,42 +378,48 @@ namespace Anarchy
                     count++;
                 }
             }
-            if(hash.ContainsKey("motd") && oldHash.ContainsKey("motd") && oldHash["motd"] as string != hash["motd"] as string)
+
+            if (hash.ContainsKey("motd") && oldHash.ContainsKey("motd") &&
+                oldHash["motd"] as string != hash["motd"] as string)
             {
                 if (count > 0)
                     bld.Append("\n");
-                bld.Append("MOTD: " + hash["motd"].ToString());
+                bld.Append("MOTD: " + hash["motd"]);
             }
+
             oldHash = new Hashtable();
-            Dictionary<object, object> clone = (Dictionary<object, object>)hash.Clone();
-            foreach(KeyValuePair<object, object> pair in clone)
+            Dictionary<object, object> clone = (Dictionary<object, object>) hash.Clone();
+            foreach (KeyValuePair<object, object> pair in clone)
             {
                 oldHash.Add(pair.Key, pair.Value);
             }
+
             Chat.Add(bld.ToString());
         }
 
         public static void InfectionOnDeath(PhotonPlayer owner)
         {
-            if ( PhotonNetwork.IsMasterClient && InfectionMode.Enabled && !FengGameManagerMKII.FGM.IsLosing && !FengGameManagerMKII.FGM.IsWinning && FengGameManagerMKII.FGM.Logic.RoundTime > 5f)
+            if (PhotonNetwork.IsMasterClient && InfectionMode.Enabled && !FengGameManagerMKII.FGM.IsLosing &&
+                !FengGameManagerMKII.FGM.IsWinning && FengGameManagerMKII.FGM.logic.RoundTime > 5f)
             {
                 if (!infection.ContainsKey(owner.ID))
                 {
                     infection.Add(owner, owner.ID);
                     owner.IsTitan = true;
-                    FengGameManagerMKII.FGM.BasePV.RPC("spawnTitanRPC", owner, new object[0]);
+                    FengGameManagerMKII.FGM.BasePV.RPC("spawnTitanRPC", owner);
                 }
             }
         }
 
         public static void InfectionOnSpawn(HERO hero)
         {
-            if (InfectionMode.Enabled && PhotonNetwork.IsMasterClient && !FengGameManagerMKII.FGM.IsLosing && !FengGameManagerMKII.FGM.IsWinning && FengGameManagerMKII.FGM.Logic.RoundTime > 5f)
+            if (InfectionMode.Enabled && PhotonNetwork.IsMasterClient && !FengGameManagerMKII.FGM.IsLosing &&
+                !FengGameManagerMKII.FGM.IsWinning && FengGameManagerMKII.FGM.logic.RoundTime > 5f)
             {
                 if (infection.ContainsKey(hero.BasePV.owner.ID))
                 {
-                    hero.markDie();
-                    hero.BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, "noswitchingfgt" });
+                    hero.MarkDie();
+                    hero.BasePV.RPC("netDie2", PhotonTargets.All, -1, "noswitchingfgt");
                 }
             }
         }
@@ -379,20 +427,21 @@ namespace Anarchy
         private static void InfectionUpdate()
         {
             int count = InfectionMode.GetInt(0);
-            if(count < 0 || count > PhotonNetwork.playerList.Length)
+            if (count < 0 || count > PhotonNetwork.playerList.Length)
             {
                 count = 1;
             }
+
             infection.Clear();
             foreach (PhotonPlayer player in PhotonNetwork.playerList)
             {
                 player.IsTitan = false;
             }
+
             int players = PhotonNetwork.playerList.Length;
-            for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
+            foreach (var player in PhotonNetwork.playerList)
             {
-                PhotonPlayer player = PhotonNetwork.playerList[i];
-                if (UnityEngine.Random.Range(0f, 1f) <= (float)count / (float)players)
+                if (Random.Range(0f, 1f) <= count / (float) players)
                 {
                     player.IsTitan = true;
                     infection.Add(player.ID, 2);
@@ -401,6 +450,7 @@ namespace Anarchy
                         break;
                     }
                 }
+
                 players--;
             }
         }
@@ -419,10 +469,11 @@ namespace Anarchy
             {
                 return;
             }
-            else if (TeamMode.Enabled)
-            {
-                SendTeamInfo();
-            }
+
+            //else if (TeamMode.Enabled)
+            //{
+            //    SendTeamInfo();
+            //}
             if (PointMode.Enabled)
             {
                 foreach (PhotonPlayer player in PhotonNetwork.playerList)
@@ -439,12 +490,13 @@ namespace Anarchy
                 set.ForceDisable();
                 set.Apply();
             }
+
             oldHash = new Hashtable();
         }
 
         public static void Save()
         {
-            foreach(GameModeSetting set in allGameSettings)
+            foreach (GameModeSetting set in allGameSettings)
             {
                 set.Save();
             }
@@ -453,36 +505,38 @@ namespace Anarchy
         private static void SendTeamInfo()
         {
             int team = 1;
-            for(int i = 0; i < PhotonNetwork.playerList.Length; i++)
+            foreach (var player in PhotonNetwork.playerList)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC", PhotonNetwork.playerList[i], new object[] { (team++ % 2 == 0 ? 2 : 1) });
+                FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC", player,
+                    (team++ % 2 == 0 ? 2 : 1));
             }
         }
 
-        public static void SendRPC()
+        public static void SendRpc()
         {
             StringBuilder bld = new StringBuilder();
             Hashtable hash = new Hashtable();
             int count = 0;
             int countSend = 0;
-            for(int i = 0; i < allGameSettings.Count; i++)
+            foreach (var set in allGameSettings)
             {
-                GameModeSetting set = allGameSettings[i];
                 if (set.Enabled && !set.HasChanged)
                 {
                     set.WriteToHashtable(hash);
                     count++;
                     continue;
                 }
+
                 if (set.HasChanged)
                 {
                     bool oldstate = set.State;
                     set.Apply();
-                    if(oldstate != set.State && set.State == false)
+                    if (oldstate != set.State && set.State == false)
                     {
                         set.Save();
                         continue;
                     }
+
                     set.WriteToHashtable(hash);
                     if (countSend > 0)
                         bld.Append("\n");
@@ -492,24 +546,26 @@ namespace Anarchy
                     countSend++;
                 }
             }
+
             if (count <= 0)
                 return;
             if (InfectionMode.Enabled)
             {
                 InfectionUpdate();
             }
-            if (TeamMode.Enabled)
-            {
-                SendTeamInfo();
-            }
-            FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", PhotonTargets.Others, new object[] { hash });
+
+            //if (TeamMode.Enabled)
+            //{
+            //    SendTeamInfo();
+            //}
+            FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", PhotonTargets.Others, hash);
             if (bld.ToString() != string.Empty)
             {
                 Chat.Add(bld.ToString());
             }
         }
 
-        public static void SendRPCToPlayer(PhotonPlayer player)
+        public static void SendRpcToPlayer(PhotonPlayer player)
         {
             Hashtable hash = new Hashtable();
             string vanillaString = string.Empty;
@@ -522,12 +578,13 @@ namespace Anarchy
                 {
                     set.WriteToHashtable(hash);
                     count++;
-                    if(!player.AnarchySync && set is AnarchyGameModeSetting setting)
+                    if (!player.AnarchySync && set is AnarchyGameModeSetting setting)
                     {
-                        if(anarchyString.Length > 0)
+                        if (anarchyString.Length > 0)
                         {
                             anarchyString += "\n";
                         }
+
                         anarchyString += setting.ToString();
                     }
                     else if (!player.RCSync)
@@ -536,30 +593,36 @@ namespace Anarchy
                         {
                             vanillaString += "\n";
                         }
+
                         vanillaString += set.ToString();
                     }
                 }
             }
+
             if (count <= 0)
             {
-                if(MOTD.Value.Length > 0)
+                if (Motd.Value.Length > 0)
                 {
-                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });
+                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, "MOTD: " + Motd.Value, string.Empty);
                 }
+
                 return;
             }
-            FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", player, new object[] { hash });
+
+            FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", player, hash);
             if (!player.RCSync & vanillaString.Length > 0)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { vanillaString, string.Empty });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, vanillaString, string.Empty);
             }
+
             if (!player.AnarchySync && anarchyString.Length > 0)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { anarchyString, string.Empty });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, anarchyString, string.Empty);
             }
-            if (MOTD.Value != string.Empty)
+
+            if (Motd.Value != string.Empty)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, new object[] { "MOTD: " + MOTD.Value, string.Empty });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, "MOTD: " + Motd.Value, string.Empty);
             }
         }
     }

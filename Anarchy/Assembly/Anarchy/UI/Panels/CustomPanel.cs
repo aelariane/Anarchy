@@ -27,7 +27,7 @@ namespace Anarchy.UI
         private Rect scrollAreaView;
         private SmartRect scrollRect;
 
-        public CustomPanel() : base(nameof(CustomPanel), -1)
+        public CustomPanel() : base(nameof(CustomPanel), GUILayers.CustomPanel)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
