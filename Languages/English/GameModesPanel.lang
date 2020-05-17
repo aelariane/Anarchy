@@ -93,3 +93,4 @@ racingTimeLimitInt0:Time limit:
 
 racingRestartTimeState:Custom restart time:
 racingRestartTimeInt0:Time to restart:
+btnReset:Reset settings

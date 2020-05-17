@@ -148,3 +148,8 @@ bombColorR:Красный цвет:
 bombColorG:Зелёный цвет:
 bombColorB:Синий цвет:
 bombColorA:Прозрачность:
+feedConsoleMode:Игровая лента в консоли:
+trailAppearance:Trails appearance:
+trailType:Legacy,Liquid,Combined
+trailFps:Frame rate:
+infiniteTrails:Infinite lifetime:

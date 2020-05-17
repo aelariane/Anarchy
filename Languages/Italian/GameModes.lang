@@ -97,3 +97,9 @@ racingTimeLimitInfoDisabled:<color=#$maincolor$>Limite tempo gara <color=#$dColo
 
 racingRestartTimeInfoEnabled:<color=#$maincolor$>Tempo di riavvio gara su<color=#$subcolor$>{0}</color></color> 
 racingRestartTimeInfoDisabled:<color=#$maincolor$>Tempo di riavvio gara <color=#$dColor$>disattivato</color></color> 
+cyanScore:<color=#00FFFF>Cyan: {0}</color>
+magentaScore:<color=#FF00FF>Magenta: {0}</color>
+cyanWin:<color=#$maincolor$>Squadra <color=cyan>cyan</color> vince!</color>
+magentaWin:<color=#$maincolor$>Squadra <color=magenta>magenta</color> vince!</color>
+nobodyWin:<color=#$maincolor$>Nessuno vince.</color>
+playerWin:<color=#$maincolor$>Giocatore <color=#$subcolor$>{0}</color> vince! 5 punti aggiunti.</color>

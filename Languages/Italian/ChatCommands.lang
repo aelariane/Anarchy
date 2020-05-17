@@ -48,3 +48,18 @@ specModeQuit:<color=#$maincolor$>Sei uscito dalla modalità spettatore</color>
 notRacingMode:<color=red>Error: Not racing mode</color>
 asoraceTrue:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>enabled</color> after restart</color>
 asoraceFalse:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>disabled</color> after restart</color>
+errPlayer:<color=red>Errore: Giocatore con ID {0} non esiste</color>
+errExecute:<color=red>Errore inaspettato eseguendo il comando <color=yellow>"{0}"</color></color>
+errTeamsLocked:Squadre sono bloccate o disabilitate
+errTeamsInvalid:Codice squadra invalido (0, 1, 2 sono validi)
+unbanFailed:<color=red>Errore: giocatore non esiste nella lista ban</color>
+unbanSucceed:<color=#$maincolor$>Giocatore successivamente sbannato</color>
+muteSucceed:<color=#$maincolor$>Giocatore [{0}] {1} mutato</color>
+unmuteSucceed:<color=#$maincolor$>Giocatore [{0}] {1} smutato</color>
+muteFailed:<color=red>Non si può mutare [{0}] {1} mutato (Già mutato)</color>
+unmuteFailed:<color=red>Non si può smutare [{0}] {1} mutato (Già smutato)</color>
+activatedGameModes:Modalità di gioco attive:
+teamChanged:<color=#$maincolor$>Ti sei unito al team{0}</color>
+teamIndividuals:individuale
+teamCyan:cyan
+teamMagenta:magenta

@@ -1,0 +1,5 @@
+﻿killed:<color=#$subcolor>{0}</color> muerto <color=#$subcolor$>{1}</color>
+forDamage:<color=#$maincolor$>por <color=#$subcolor$>{0}</color> daño</color>
+gameLoose:Partido <color=#$subcolor$>{0}</color> terminado (juego perdido).
+gameWin:Partido <color=#$subcolor$>{0}</color> terminado (juego ganado).
+roundStart:Partido <color=#$subcolor$>{0}</color> comenzó.

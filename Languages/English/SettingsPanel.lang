@@ -147,3 +147,8 @@ bombColorR:Red color:
 bombColorG:Green color:
 bombColorB:Blue color:
 bombColorA:Transparency:
+feedConsoleMode:Game feed in console:
+trailAppearance:Trails appearance:
+trailType:Legacy,Liquid,Combined
+trailFps:Frame rate:
+infiniteTrails:Infinite lifetime:

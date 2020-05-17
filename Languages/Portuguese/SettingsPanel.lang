@@ -147,3 +147,8 @@ bombColorR:Cor Vermelha:
 bombColorG:Cor Verde:
 bombColorB:Cor Azul:
 bombColorA:Transparência(Alpha):
+feedConsoleMode:Feedback do jogo no console:
+trailAppearance:Aparência dos rastros:
+trailType:Legado,Líquido,Combinado
+trailFps:Frequência de frames:
+infiniteTrails:Tempo de vida infinito:

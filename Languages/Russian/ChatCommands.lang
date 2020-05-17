@@ -29,7 +29,7 @@ pauseFalse:<color=#$maincolor$>Хост снял игру с паузы!</color>
 
 #ResetKD
 resetkdLocal:<color=#$maincolor$>Ваша стататистика сброшена.</color>
-resetkdAll:<color=#$maincolor$>Статистика <color=#$subcolor$>всех</color> игроков очищена.</color>
+resetkdAll:<color=#$maincolor$>Статистика color=#$subcolor$>всех</color> игроков очищена.</color>
 resetkdPlayer:<color=#$maincolor$>Статистика игрока <color=#$subcolor$>[{0}]</color> {1} сброшена.</color>
 
 #Revive
@@ -45,3 +45,18 @@ specModeQuit:<color=#$maincolor$>Вы вышли из режима наблюд�
 notRacingMode:<color=red>Ошибка: Вы не в гоночном режиме</color>
 asoraceTrue:<color=#$maincolor$>Бесконечная гонка будет <color=green>включена</color> после рестарта</color>.
 asoraceFalse:<color=#$maincolor$>Бесконечная гонка будет <color=red>выключена</color> после рестарта</color>.
+errPlayer:<color=red>Error: Player with ID {0} not exists</color>
+errExecute:<color=red>Unexpected error while executing command <color=yellow>"{0}"</color></color>
+errTeamsLocked:Teams are locked or disabled
+errTeamsInvalid:Invalid team code (0, 1, 2 are valid)
+unbanFailed:<color=red>Error: no such player in banlist</color>
+unbanSucceed:<color=#$maincolor$>Player successfully unbanned</color>
+muteSucceed:<color=#$maincolor$>Player [{0}] {1} muted</color>
+unmuteSucceed:<color=#$maincolor$>Player [{0}] {1} unmuted</color>
+muteFailed:<color=red>Cannot mute [{0}] {1} muted (Already muted)</color>
+unmuteFailed:<color=red>Cannot unmute [{0}] {1} muted (Not muted)</color>
+activatedGameModes:Currently activated gamemodes:
+teamChanged:<color=#$maincolor$>You joined team {0}</color>
+teamIndividuals:individuals
+teamCyan:cyan
+teamMagenta:magenta

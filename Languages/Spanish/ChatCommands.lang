@@ -48,3 +48,18 @@ specModeQuit:<color=#$maincolor$>Dejas el modo espectador</color>
 notRacingMode:<color=red>Error: Not racing mode</color>
 asoraceTrue:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>enabled</color> after restart</color>
 asoraceFalse:<color=#$maincolor$>ASO Racing will be <color=#$subcolor$>disabled</color> after restart</color>
+errPlayer:<color=red>Error: Jugador con ID {0} no existe</color>
+errExecute:<color=red>Error inesperado al ejecutar el comando <color=yellow>"{0}"</color></color>
+errTeamsLocked:Los equipos están bloqueados o deshabilitados.
+errTeamsInvalid:Código de equipo no es válido (0, 1, 2 son válidos)
+unbanFailed:<color=red>Error: no hay tal jugador en la lista de prohibición</color>
+unbanSucceed:<color=#$maincolor$>El jugador ha eliminado la prohibición con éxito</color>
+muteSucceed:<color=#$maincolor$>Jugador [{0}] {1} silenciado</color>
+unmuteSucceed:<color=#$maincolor$>Jugador [{0}] {1} no silenciado</color>
+muteFailed:<color=red>Incapaz de silenciar [{0}] {1} silenciado (Ya esta silenciado)</color>
+unmuteFailed:<color=red>No se puede eliminar el silencio [{0}] {1} silenciado (No esta silenciado)</color>
+activatedGameModes:Modos de juego actualmente activos:
+teamChanged:<color=#$maincolor$>Te uniste al equipo {0}</color>
+teamIndividuals:individual
+teamCyan:cyan
+teamMagenta:magenta

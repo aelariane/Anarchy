@@ -1,0 +1,5 @@
+﻿killed:<color=#$subcolor>{0}</color> tué <color=#$subcolor$>{1}</color>
+forDamage:<color=#$maincolor$>for <color=#$subcolor$>{0}</color> damage</color>
+gameLoose:Round <color=#$subcolor$>{0}</color> terminé (game loose).
+gameWin:Round <color=#$subcolor$>{0}</color> terminé (game win).
+roundStart:Round <color=#$subcolor$>{0}</color> débute.

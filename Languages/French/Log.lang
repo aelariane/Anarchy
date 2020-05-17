@@ -45,3 +45,4 @@ missRpcName:<color=#$maincolor$>Nom de RPC manquant</color>
 bothNameKes:<color=#$maincolor$>Les données contiennent les deux noms de clés</color>
 outOfListRPC:<color=#$maincolor$>Clé [<color=#$subcolor>{0}</color>] est en dehors d'RPClist</color>
 nullRpcName:<color=#$maincolor$>Nom du RPC null</color>
+notAnarchyUser:<color=red>Reçu {0} ({1}) par joueur avec ID {2}</color>

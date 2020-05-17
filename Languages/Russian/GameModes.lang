@@ -98,3 +98,9 @@ racingTimeLimitInfoDisabled:<color=#$maincolor$>Перезапуск по лим
 
 racingRestartTimeInfoEnabled:<color=#$maincolor$>Свой таймер [<color=#$subcolor$>{0}</color>] до перезапуска: <color=#$eColor$><b>вкл.</b></color></color>
 racingRestartTimeInfoDisabled:<color=#$maincolor$>Свой таймер до перезапуска: <color=#$dColor$><b>выкл.</b></color></color> 
+cyanScore:<color=#00FFFF>Cyan: {0}</color>
+magentaScore:<color=#FF00FF>Magenta: {0}</color>
+cyanWin:<color=#$maincolor$>Команда <color=cyan>cyan</color> победила!</color>
+magentaWin:<color=#$maincolor$>Команда <color=magenta>magenta</color> победила!</color>
+nobodyWin:<color=#$maincolor$>Команды сыграли в ничью.</color>
+playerWin:<color=#$maincolor$>Игрок <color=#$subcolor$>{0}</color> выиграл! 5 очков добавлено.</color>

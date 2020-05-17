@@ -97,3 +97,9 @@ antiReviveInfoDisabled:<color=#$maincolor$>Anti-Revive <color=#$dColor$>disabled
 
 afkKillInfoEnabled:<color=#$maincolor$>AFK player kill <color=#$eColor$>enabled</color> (<color=#$subcolor$>{0} seconds</color>)</color>
 afkKillInfoDisabled:<color=#$maincolor$>AFK player kill <color=#$dColor$>disabled</color></color>
+cyanScore:<color=#00FFFF>Cyan: {0}</color>
+magentaScore:<color=#FF00FF>Magenta: {0}</color>
+cyanWin:<color=#$maincolor$>Team <color=cyan>cyan</color> wins!</color>
+magentaWin:<color=#$maincolor$>Team <color=magenta>magenta</color> wins!</color>
+nobodyWin:<color=#$maincolor$>Nobody wins.</color>
+playerWin:<color=#$maincolor$>Player <color=#$subcolor$>{0}</color> wins! 5 points added.</color>
