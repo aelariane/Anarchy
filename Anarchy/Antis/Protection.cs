@@ -9,7 +9,7 @@ namespace Antis
     public static class Protection
     {
         public static IProtection<string> HeroAnimationCheck = new HeroAnimationChecker();
-        public static IProtection<string> InstantioationCheck = new EmptyProtection<string>();
+        public static IProtection<string> InstantiationCheck = new EmptyProtection<string>();
         public static IProtection<string> RPCNameCheck = new EmptyProtection<string>();
         public static IProtection<string[]> SkinsCheck = new EmptyProtection<string[]>();
         public static IProtection<string> TitanAnimationCheck = new TitanAnimationChecker();
