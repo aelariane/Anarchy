@@ -2,8 +2,8 @@
 disabled:disabled
 
 #Titans
-titancInfoEnabled:<color=#$maincolor$>Своё число титанов [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-titancInfoDisabled:<color=#$maincolor$>Своё число титанов: <color=#$dColor$><b>выкл.</b></color></color>
+titancInfoEnabled:<color=#$maincolor$>Число титанов [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+titancInfoDisabled:<color=#$maincolor$>Число титанов: <color=#$dColor$><b>выкл.</b></color></color>
 
 punkWavesInfoEnabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$eColor$><b>вкл.</b></color></color>
 punkWavesInfoDisabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$dColor$><b>выкл.</b></color></color>
@@ -11,24 +11,24 @@ punkWavesInfoDisabled:<color=#$maincolor$>Панки каждые 5 волн: <c
 rockInfoEnabled:<color=#$maincolor$>Панки не бросают камни: <color=#$eColor$><b>вкл.</b></color></color>
 rockInfoDisabled:<color=#$maincolor$>Панки не бросают камни: <color=#$dColor$><b>выкл.</b></color></color>
 
-explodeInfoEnabled:<color=#$maincolor$>Взрывающиеся титаны [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-explodeInfoDisabled:<color=#$maincolor$>Взрывающиеся титаны: <color=#$dColor$><b>выкл.</b></color></color>
+explodeInfoEnabled:<color=#$maincolor$>Взрывающиеся Титаны [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+explodeInfoDisabled:<color=#$maincolor$>Взрывающиеся Титаны: <color=#$dColor$><b>выкл.</b></color></color>
 
-healthModeInfoEnabled:<color=#$maincolor$>Здоровье титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> к <color=#$subcolor$>{2}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-healthModeInfoDisabled:<color=#$maincolor$>Здоровье титанов: <color=#$dColor$><b>выкл.</b></color></color>
+healthModeInfoEnabled:<color=#$maincolor$>Здоровье Титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color> к <color=#$subcolor$>{2}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+healthModeInfoDisabled:<color=#$maincolor$>Здоровье Титанов: <color=#$dColor$><b>выкл.</b></color></color>
 healthModeSelection:Фиксированное,Скалируемое
 
 damageInfoEnabled:<color=#$maincolor$>Минимальный урон [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
 damageInfoDisabled:<color=#$maincolor$>Минимальный урон: <color=#$dColor$><b>выкл.</b></color></color>
 
-sizeModeInfoEnabled:<color=#$maincolor$>Своя настройка роста титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-sizeModeInfoDisabled:<color=#$maincolor$>Своя настройка роста титанов: <color=#$dColor$><b>выкл.</b></color></color>
+sizeModeInfoEnabled:<color=#$maincolor$>Рост Титанов [<color=#$subcolor$>{0}</color>, <color=#$subcolor$>{1}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+sizeModeInfoDisabled:<color=#$maincolor$>Рост Титанов: <color=#$dColor$><b>выкл.</b></color></color>
 
-spawnModeInfoEnabled:<color=#$maincolor$>Свой спавн: <color=#$eColor$><b>вкл.</b></color></color>\n[Нормальные: <color=#$subcolor$>{0} </color>%]\n[Аберранты: <color=#$subcolor$>{1} </color>%]\n[Джамперы: <color=#$subcolor$>{2} </color>%]\n[Ползуны: <color=#$subcolor$>{3} </color>%]\n[Панки: <color=#$subcolor$>{4} </color>%]
-spawnModeInfoDisabled:<color=#$maincolor$>Свой спавн: <color=#$dColor$><b>выкл.</b></color></color>
+spawnModeInfoEnabled:<color=#$maincolor$>Рейтинг спавна: <color=#$eColor$><b>вкл.</b></color></color>\n[Нормальные: <color=#$subcolor$>{0} </color>%]\n[Аберранты: <color=#$subcolor$>{1} </color>%]\n[Джамперы: <color=#$subcolor$>{2} </color>%]\n[Кравлеры: <color=#$subcolor$>{3} </color>%]\n[Панки: <color=#$subcolor$>{4} </color>%]
+spawnModeInfoDisabled:<color=#$maincolor$>Рейтинг спавна: <color=#$dColor$><b>выкл.</b></color></color>
 
-waveModeOnInfoEnabled:<color=#$maincolor$>Своё число титанов за волну [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-waveModeOnInfoDisabled:<color=#$maincolor$>Своё число титанов за волну: <color=#$dColor$><b>выкл.</b></color></color>
+waveModeOnInfoEnabled:<color=#$maincolor$>Титанов за волну [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+waveModeOnInfoDisabled:<color=#$maincolor$>Титанов за волну: <color=#$dColor$><b>выкл.</b></color></color>
 
 #PvP
 bombInfoEnabled:<color=#$maincolor$>Режим бомбочек: <color=#$eColor$><b>вкл.</b></color></color>
@@ -39,7 +39,7 @@ ahssReloadInfoDisabled:<color=#$maincolor$>Без перезарядки AHSS в
 
 teamInfoEnabled:<color=#$maincolor$>Командный режим [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
 teamInfoDisabled:<color=#$maincolor$>Командный режим: <color=#$dColor$><b>выкл.</b></color></color>
-teamSelection:Свободно,По размеру,По скиллу
+teamSelection:Свободно,Численность,Умения
 
 infectionInfoEnabled:<color=#$maincolor$>Режим инфекции: <color=#$eColor$><b>вкл.</b></color></color>
 infectionInfoDisabled:<color=#$maincolor$>Режим инфекции: <color=#$dColor$><b>выкл.</b></color></color>
@@ -47,11 +47,11 @@ infectionInfoDisabled:<color=#$maincolor$>Режим инфекции: <color=#$
 pointInfoEnabled:<color=#$maincolor$>Игра на очки [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
 pointInfoDisabled:<color=#$maincolor$>Игра на очки: <color=#$dColor$><b>выкл.</b></color></color>
 
-friendlyInfoEnabled:<color=#$maincolor$>Дружный режим: <color=#$eColor$><b>вкл.</b></color></color>
-friendlyInfoDisabled:<color=#$maincolor$>Дружный режим: <color=#$dColor$><b>выкл.</b></color></color>
+friendlyInfoEnabled:<color=#$maincolor$>Огонь по своим: <color=#$eColor$><b>вкл.</b></color></color>
+friendlyInfoDisabled:<color=#$maincolor$>Огонь по своим: <color=#$dColor$><b>выкл.</b></color></color>
 
-pvpInfoEnabled:<color=#$maincolor$>PvP Мечники/AHSS [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-pvpInfoDisabled:<color=#$maincolor$>PvP Мечники/AHSS: <color=#$dColor$><b>выкл.</b></color></color>
+pvpInfoEnabled:<color=#$maincolor$>PvP (Мечники/AHSS) [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+pvpInfoDisabled:<color=#$maincolor$>PvP (Мечники/AHSS): <color=#$dColor$><b>выкл.</b></color></color>
 pvpSelection:Команды,Сам за себя
 
 #Misc
@@ -67,15 +67,15 @@ globalDisableMinimapInfoDisabled:<color=#$maincolor$>Глобальный зап
 horseInfoEnabled:<color=#$maincolor$>Лошадки: <color=#$eColor$><b>вкл.</b></color></color>
 horseInfoDisabled:<color=#$maincolor$>Лошадки: <color=#$dColor$><b>выкл.</b></color></color>
 
-erenInfoEnabled:<color=#$maincolor$>Выгонять Эрена-титана: <color=#$eColor$><b>вкл.</b></color></color>
-erenInfoDisabled:<color=#$maincolor$>Выгонять Эрена-титана: <color=#$dColor$><b>выкл.</b></color></color>
+erenInfoEnabled:<color=#$maincolor$>Выгонять Титана Эрена: <color=#$eColor$><b>вкл.</b></color></color>
+erenInfoDisabled:<color=#$maincolor$>Выгонять Титана Эрена: <color=#$dColor$><b>выкл.</b></color></color>
 
 deadlycannonsInfoEnabled:<color=#$maincolor$>Пушки убивают людей: <color=#$eColor$><b>вкл.</b></color></color>
 deadlycannonsInfoDisabled:<color=#$maincolor$>Пушки убивают людей: <color=#$dColor$><b>выкл.</b></color></color>
 
 
-noGuestInfoEnabled:<color=#$maincolor$>Выгонять гостей: <color=#$eColor$><b>вкл.</b></color></color>
-noGuestInfoDisabled:<color=#$maincolor$>Выгонять гостей: <color=#$dColor$><b>выкл.</b></color></color>
+noGuestInfoEnabled:<color=#$maincolor$>Выгонять <b>GUEST</b>: <color=#$eColor$><b>вкл.</b></color></color>
+noGuestInfoDisabled:<color=#$maincolor$>Выгонять <b>GUEST</b>: <color=#$dColor$><b>выкл.</b></color></color>
 
 antiReviveInfoEnabled:<color=#$maincolor$>Защита от возрождения: <color=#$eColor$><b>вкл.</b></color></color>
 antiReviveInfoDisabled:<color=#$maincolor$>Защита от возрождения: <color=#$dColor$><b>выкл.</b></color></color>
@@ -87,20 +87,20 @@ asoracingInfoEnabled:<color=#$maincolor$>Бесконечная гонка: <col
 asoracingInfoDisabled:<color=#$maincolor$>Бесконечная гонка: <color=#$dColor$><b>выкл.</b></color></color>
 
 #Racing
-startTimeInfoEnabled:<color=#$maincolor$>Свой таймер [<color=#$subcolor$>{0}</color>] перед гонкой: <color=#$eColor$><b>вкл.</b></color></color>
-startTimeInfoDisabled:<color=#$maincolor$>Свой таймер перед гонки: <color=#$dColor$><b>выкл.</b></color></color> 
+startTimeInfoEnabled:<color=#$maincolor$>Таймер [<color=#$subcolor$>{0}</color>] перед Стартом: <color=#$eColor$><b>вкл.</b></color></color>
+startTimeInfoDisabled:<color=#$maincolor$>Таймер перед Стартом: <color=#$dColor$><b>выкл.</b></color></color> 
 
 restartOnFinishersInfoEnabled:<color=#$maincolor$>Перезапуск после [<color=#$subcolor$>{0}</color>] финишировавших игроков: <color=#$eColor$><b>вкл.</b></color></color>
 restartOnFinishersInfoDisabled:<color=#$maincolor$>Перезапуск после <color=#$subcolor$>N</color> финишировавших игроков: <color=#$dColor$><b>выкл.</b></color></color>
 
-racingTimeLimitInfoEnabled:<color=#$maincolor$>Перезапуск по лимиту времени [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+racingTimeLimitInfoEnabled:<color=#$maincolor$>Перезапуск по лимиту [<color=#$subcolor$>{0}</color>] времени: <color=#$eColor$><b>вкл.</b></color></color>
 racingTimeLimitInfoDisabled:<color=#$maincolor$>Перезапуск по лимиту времени: <color=#$dColor$><b>выкл.</b></color></color>
 
-racingRestartTimeInfoEnabled:<color=#$maincolor$>Свой таймер [<color=#$subcolor$>{0}</color>] до перезапуска: <color=#$eColor$><b>вкл.</b></color></color>
-racingRestartTimeInfoDisabled:<color=#$maincolor$>Свой таймер до перезапуска: <color=#$dColor$><b>выкл.</b></color></color> 
+racingRestartTimeInfoEnabled:<color=#$maincolor$>Таймер [<color=#$subcolor$>{0}</color>] после Финиша: <color=#$eColor$><b>вкл.</b></color></color>
+racingRestartTimeInfoDisabled:<color=#$maincolor$>Таймер после Финиша: <color=#$dColor$><b>выкл.</b></color></color> 
 cyanScore:<color=#00FFFF>Cyan: {0}</color>
 magentaScore:<color=#FF00FF>Magenta: {0}</color>
-cyanWin:<color=#$maincolor$>Команда <color=cyan>cyan</color> победила!</color>
-magentaWin:<color=#$maincolor$>Команда <color=magenta>magenta</color> победила!</color>
+cyanWin:<color=#$maincolor$>Команда <color=cyan>Cyan</color> победила!</color>
+magentaWin:<color=#$maincolor$>Команда <color=magenta>Magenta</color> победила!</color>
 nobodyWin:<color=#$maincolor$>Команды сыграли в ничью.</color>
 playerWin:<color=#$maincolor$>Игрок <color=#$subcolor$>{0}</color> выиграл! 5 очков добавлено.</color>

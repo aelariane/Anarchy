@@ -14,7 +14,7 @@ players:Кол-во игроков:
 ping:Пинг:
 settingsTitle:Настройки сети
 roomCreationTitle:Создание комнаты
-servers:Публичный,RC приват,Свой ключ
+servers:Публичный,Приватный,Свой ключ
 roomSettings:Настройки комнаты
 roomName:Имя комнаты:
 pwd:Пароль:

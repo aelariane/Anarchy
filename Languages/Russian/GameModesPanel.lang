@@ -4,32 +4,32 @@ btnClose:Закрыть
 
 #Titans
 
-titancState:Своё число титанов:
+titancState:Число Титанов:
 titancInt0:Количество:
 
 waveModeOnState:Титанов за волну:
 waveModeOnInt0:Количество:
 
-spawnModeState:Свой спавн:
+spawnModeState:Рейтинг спавна:
 spawnModeFloat0:Нормальные:
 spawnModeFloat1:Аберранты:
 spawnModeFloat2:Джамперы:
-spawnModeFloat3:Ползуны:
+spawnModeFloat3:Кравлеры:
 spawnModeFloat4:Панки:
 
-sizeModeState:Рост титанов:
-sizeModeFloat0:Мининимум:
+sizeModeState:Рост Титанов:
+sizeModeFloat0:Минимум:
 sizeModeFloat1:Максимум:
 
-healthModeState:Здоровье титанов:
+healthModeState:Здоровье Титанов:
 healthModeSelection:Фиксированное,Скалируемое
-healthModeInt0:Мининимум:
+healthModeInt0:Минимум:
 healthModeInt1:Максимум:
 
-damageState:Минимальный урон:
-damageInt0:Урон:
+damageState:Урон для Титана:
+damageInt0:Минимум:
 
-explodeState:Взрывающиеся титаны:
+explodeState:Взрывающиеся Титаны:
 explodeInt0:Радиус взрыва:
 
 rockState:Бросок камня:
@@ -38,15 +38,15 @@ rockState:Бросок камня:
 bombState:Бомбочки:
 
 pointState:Игра на очки:
-pointInt0:Максимум очков:
+pointInt0:Количество:
 
 teamState:Командный режим:
-teamSelection:Свободно,По размеру,По скиллу
+teamSelection:Свободно,Численность,Умения
 
 infectionState:Режим инфекции:
-infectionInt0:Начальное кол-во титанов:
+infectionInt0:Титанов в начале:
 
-friendlyState:Дружный режим:
+friendlyState:Огонь по своим:
 
 pvpState:PvP [Мечники/AHSS]:
 pvpSelection:Команды,Сам за себя
@@ -57,40 +57,40 @@ deadlycannonsState:Пушки убивают людей:
 
 #Misc
 maxwaveState:Максимальная волна:
-maxwaveInt0:Волн:
+maxwaveInt0:Количество:
 
 punkWavesState:Панки каждые 5 волн:
 
 globalDisableMinimapState:Глобальный запрет миникарты:
 
 endlessState:Возрождение:
-endlessInt0:Время до возрождения:
+endlessInt0:Время:
 
-erenState:Выгонять Эрена-титана:
+erenState:Выгонять Титана Эрена:
 
 horseState:Лошадки:
 
-motd:Приветсвенное сообщение:
+motd:Приветственное сообщение:
 
-noGuestState:Выгонять гостей:
+noGuestState:Выгонять <b>GUEST</b>:
 
 antiReviveState:Защита от возрождения:
 
-afkKillState:Убивать AFK игроков:
-afkKillInt0:Секунд в AFK:
+afkKillState:Убивать <b>AFK</b> игроков:
+afkKillInt0:Секунд в <b>AFK</b>:
 
 #Racing
 asoracingState:Бесконечная гонка:
 
-startTimeState:Свой таймер перед гонкой:
+startTimeState:Старт гонки:
 startTimeInt0:Таймер:
 
-restartOnFinishersState:Перезапуск после N финишировавших игроков:
-restartOnFinishersInt0:Значение N:
+restartOnFinishersState:Перезапуск после <b>N</b> игроков:
+restartOnFinishersInt0:Значение <b>N</b>:
 
-racingTimeLimitState:Перезапуск по лимиту времени:
+racingTimeLimitState:Перезапуск по времени:
 racingTimeLimitInt0:Лимит:
 
-racingRestartTimeState:Свой таймер до перезапуска:
+racingRestartTimeState:Перезапуска после Финиша:
 racingRestartTimeInt0:Таймер:
 btnReset:Сбросить

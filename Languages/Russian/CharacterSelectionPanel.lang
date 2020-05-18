@@ -1,14 +1,14 @@
-﻿title:Выбор персонажа
-character:Выбор персонажа
+﻿title:Персонаж
+character:Выбор
 characters:Микаса,Леви,Армин,Марко,Жан,Эрен,Петра,Саша,Сет 1,Сет 2,Сет 3 
 camera:Камера
 stats:Характерестики
-speed:Скорость на земле: <color=yellow>{0}</color>
-acceleration:Ускорение от газа: <color=yellow>{0}</color>
-gas:Запас газа: <color=yellow>{0}</color>
-blade:Прочность клинков: <color=yellow>{0}</color>
+speed: <color=yellow>{0}</color> — Скорость на земле.
+acceleration: <color=yellow>{0}</color> — Ускорение от газа.
+gas: <color=yellow>{0}</color> — Запас газа.
+blade: <color=yellow>{0}</color> — Прочность клинков.
 humanStart:Играть как <b><color=#A9D0F5>Солдат</color></b>
 ahssStart:Играть как <b><color=#82FA58>AHSS</color></b>
 titanStart:Играть как <b><color=#F5DA81>Титан</color></b>
 back:Назад
-avatar:<b>Персонаж</b>
+avatar:<b>Аватарка</b>

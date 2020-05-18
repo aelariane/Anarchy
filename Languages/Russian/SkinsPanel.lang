@@ -14,16 +14,16 @@ skyboxDesc:Включает скины неба в городе/лесу
 sets:Доступные сеты
 
 #Human skins
-disableCustomGas:Выключить текстуры газа:
-humanLabels:Лошадь,Волосы,Глаза,Очки,Лицо,Кожа,Костюм,Накидка,Левый привод,Правый привод,Газ,Толстовка,Следы клинков
+disableCustomGas:Отключить текстуры газа:
+humanLabels:Лошадь:,Волосы:,Глаза:,Очки:,Лицо:,Кожа:,Костюм:,Накидка:,3DMG Левый:,3DMG Правый:,Газ:,Толстовка:,Следы клинков:
 
 #Titan sets
 titanHair:Волосы 
 titanEye:Глаза  
 titanBody:Тело  
-annie:Энни
-eren:Эрен
-colossal:Колосс
+annie:Энни:
+eren:Эрен:
+colossal:Колосс:
 
 #Level sets
 ground:Земля

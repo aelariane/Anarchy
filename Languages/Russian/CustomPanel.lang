@@ -1,6 +1,6 @@
 ﻿title:Пользовательские настройки уровня 
 selection:Карта,Логика
-gameTypes:1 Раунд,Волны,PvP,Гонка,Свой
+gameTypes:Раунды,Волны,PvP,Гонка,Свой
 spawnCap:Количество титанов:
 gameMode:Режим:
 mapScript:Скрипт:

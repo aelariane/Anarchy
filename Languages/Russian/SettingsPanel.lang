@@ -6,15 +6,15 @@ btnBack:Назад
 
 #General page
 game:<b>Игра</b>
-sensivity:Чувств. мыши[{0}]
-distance:Дист. Камеры[{0}]
+sensivity:Точность камеры [{0}]
+distance:Удаление камеры [{0}]
 moreDistance:Доп. Дистанция[{0}]
 snapshots:<b>Снапшоты</b>
 snapshotsEnabled:Использовать снапшоты:
 snapshotsShow:Показывать в игре:
 snapshotsDmg:Минимальный урон:
 gameFeed:Игровые события:
-inverty:Инверт. ось Y:
+inverty:Инвертировать ось Y:
 staticFOV:Статик. поле зрения:
 fovValue:Значение[{0}]
 minimap:Миникарта:
@@ -25,36 +25,36 @@ speedometerTypes:Скорость,Урон
 bodylean:Наклон тела героя:
 
 audio:<b>Звук</b>
-overallAudio:Общ. громкость[{0}]
+overallAudio:Громкость [{0}]
 
 #Video page
 
 graphics:<b>Графика</b>
 vsync:Вертикальная синхронизация:
-mipmap:Мипмаппинг:
+mipmap:Мип-маппинг:
 texturesQuality:Качество текстур
-texturesLevels:Лучш,Средн,Низк,Очень низк
-quality:Общее кач-во[{0}]
+texturesLevels:Лучшее,Среднее,Низкое,Минимум
+quality:Общее Качество [{0}]
 
 advancedVideo:<b>Продвинутые настройки</b>
-drawDistance:Дист. Прорисовки[{0}]
-occlusion:Occlusion culling:
+drawDistance:Прорисовка [{0}]
+occlusion:Удаление скрытых частей:
 aniso:Анизотропная Фильтрация
 anisoLevels:Выкл,Вкл,Принудительно
-antiAliasing:Анти-Алиасинг:
+antiAliasing:Сглаживание:
 antiAliasings:Выкл,2x,4x,8x
 bWeight:Кости моделей:
 blendWeights:1,2,4
-lodBias:LOD Bias[{0}]
-maxLOD:Max LOD[{0}]
+lodBias:УД моделей [{0}]
+maxLOD:УД максимальный [{0}]
 shadows:<b>Тени</b>
 useShadows:Использовать тени:
 shadowCascade:Каскады
 shadowCascades:1,2,4
-shadowDist:Дистанция[{0}]
+shadowDist:Дистанция [{0}]
 shadowProjection:Проекция:
 shadowProjections:Близко,Стабильно
-shadowNote:<color=yellow>Тени работают при кач-ве >= 0.17</color>
+shadowNote:<color=yellow>Тени работают при качестве >= 0.17</color>
 
 #Effects page
 effects:<b>Эффекты</b>
@@ -112,7 +112,7 @@ useVectors:Использовать векторные отступы цвето
 #Anarchy/Chat and Console
 chat:<b>Чат</b>
 chatBack:Фон чата:
-chatBackVal:Прозрачность[{0}]
+chatBackVal:Прозрачность [{0}]
 chatCount:Кол-во сообщений:
 chatSize:Размер шрифта:
 chatWidth:Ширина чата:
@@ -124,7 +124,7 @@ chatSpaceRight:Право:
 
 console:<b>Консоль</b>
 consoleBack:Фон консоли:
-consoleBackVal:Прозрачность[{0}]
+consoleBackVal:Прозрачность [{0}]
 consoleCount:Кол-во сообщений:
 consoleSize:Размер шрифта:
 consoleWidth:Ширина консоли:
@@ -148,8 +148,8 @@ bombColorR:Красный цвет:
 bombColorG:Зелёный цвет:
 bombColorB:Синий цвет:
 bombColorA:Прозрачность:
-feedConsoleMode:Игровая лента в консоли:
-trailAppearance:Trails appearance:
-trailType:Legacy,Liquid,Combined
-trailFps:Frame rate:
-infiniteTrails:Infinite lifetime:
+feedConsoleMode:Показывать в консоли:
+trailAppearance:Тип трейлов:
+trailType:Обычный,Водяной,Плавный
+trailFps:Частота обновления:
+infiniteTrails:Бесконечный след:
