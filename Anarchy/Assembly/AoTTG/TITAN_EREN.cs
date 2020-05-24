@@ -442,13 +442,6 @@ public class TITAN_EREN : Photon.MonoBehaviour
     }
 
     [RPC]
-    private void removeMe()
-    {
-        PhotonNetwork.RemoveRPCs(BasePV);
-        UnityEngine.Object.Destroy(base.gameObject);
-    }
-
-    [RPC]
     private void rockPlayAnimation(string anim)
     {
         if (rock.animation == null)

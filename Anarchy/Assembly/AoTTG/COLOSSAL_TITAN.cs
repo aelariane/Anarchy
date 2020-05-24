@@ -570,12 +570,6 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
     }
 
     [RPC]
-    private void removeMe()
-    {
-        UnityEngine.Object.Destroy(baseG);
-    }
-
-    [RPC]
     public void setSize(float size, PhotonMessageInfo info)
     {
         size = Mathf.Clamp(size, 0.1f, 50f);
