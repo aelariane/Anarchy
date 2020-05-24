@@ -58,6 +58,10 @@
     <Compile Include="Protection.cs" />
     <Compile Include="Protections\EmptyProtection.cs" />
     <Compile Include="Protections\HeroAnimationChecker.cs" />
+    <Compile Include="Protections\InstantiateNameChecker.cs" />
+    <Compile Include="Protections\InstantiateSpamChecker.cs" />
+    <Compile Include="Protections\RPCNameChecker.cs" />
+    <Compile Include="Protections\RPCSpamChecker.cs" />
     <Compile Include="Protections\TitanAnimationChecker.cs" />
     <Compile Include="Protections\URLChecker.cs" />
     <Compile Include="Response.cs" />
