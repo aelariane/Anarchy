@@ -153,3 +153,66 @@ trailAppearance:Тип трейлов:
 trailType:Обычный,Водяной,Плавный
 trailFps:Частота обновления:
 infiniteTrails:Бесконечный след:
+burstType:Тип рывка:
+burstTypes:Ребинд,Оба
+shadowsUI:Эффект тени в UI:
+Forward:Вперёд
+Backward:Назад
+Left:Влево
+Right:Вправо
+Gas:Газ/Прыжок
+Dodge:Уворот
+LeftHook:Левый трос
+RightHook:Правый трос
+BothHooks:Два троса
+Lock:Фокус на Титана
+Attack:Атака
+SpecialAttack:Специальная атака 
+Salute:Отдать честь
+CameraType:Смена камеры
+Reset:Самоубийство
+Pause:Пауза
+HideCursor:Скрыть курсор
+FullScreen:Полный экран:
+Reload:Перезарядка
+FlareGreen:Зеленый сигнал
+FlareRed:Красный сигнал
+FlareBlack:Чёрный сигнал
+ReelIn:Скрутка
+ReelOut:Раскрутка
+GasBurst:Рывок
+Minimap Max:Увеличить миникарту
+Minimap Toggle:Включить миникарту
+Minimap Reset:Обновить миникарту
+Open Chat:Открыть чат
+Live Spectate:Наблюдать
+Cannon Up:Вращать вверх
+Cannon Down:Вращать вниз
+Cannon Left:Вращать влево
+Cannon Right:Вращать вправо
+Cannon Fire:Выстрел пушки
+Cannon Mount:Сесть на пушку
+Cannon Slow:Вращать медленно 
+Titan Forward:Вперёд
+Titan Backward:Назад
+Titan Left:Влево
+Titan Right:Вправо
+Titan Jump:Прыжок
+Titan Kill:Самоубийство титана
+Titan Walk:Ходьба
+Titan Punch:Удар
+Titan Slam:Шлепок
+Titan Grab (front):Захват спереди
+Titan Grab (back):Захват сзади
+Titan Grab (nape):Захват шеи
+Titan Slap:Прихлопнуть
+Titan Bite:Укусить
+Titan Cover nape:Защищать шею
+Titan Sit:Сесть
+Horse Forward:Вперёд
+Horse Backward:Назад
+Horse Left:Влево
+Horse Right:Вправо
+Horse Walk:Шаг
+Horse Jump:Прыжок
+Horse Mount:Сесть

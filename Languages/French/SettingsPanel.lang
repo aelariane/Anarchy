@@ -152,3 +152,65 @@ trailAppearance:Trails appearance:
 trailType:Legacy,Liquid,Combined
 trailFps:Fréquence d'images:
 infiniteTrails:Durée de vie infinie:
+burstType:Burst mode:
+burstTypes:Rebind,Both
+shadowsUI:Shadow effect on UI:
+Forward:Forward
+Backward:Backward
+Left:Left
+Right:Right
+Gas:Jump/Gas
+Dodge:Dodge
+LeftHook:Left hook
+RightHook:Right hook
+BothHooks:Both hooks
+Lock:Lock titan
+Attack:Attack
+SpecialAttack:Special attack/ability
+Salute:Salute
+CameraType:Change camera
+Reset:Restart/Suicide
+Pause:Pause
+HideCursor:Hide cursor
+FullScreen:Fullscreen:
+Reload:Reload
+FlareGreen:Shoot green flare
+FlareRed:Shoot red flare
+FlareBlack:Shoot black flare
+ReelIn:Reel in
+ReelOut:Reel out
+GasBurst:Gas burst
+Minimap Max:Minimap maximize
+Minimap Toggle:Minimap toggle
+Minimap Reset:Minimap reset
+Open Chat:Open chat
+Live Spectate:Live spectate
+Cannon Up:Cannon up
+Cannon Down:Cannon down
+Cannon Right:Cannon right
+Cannon Fire:Cannon fire
+Cannon Mount:Cannon mount
+Cannon Slow:Cannon slow
+Titan Forward:Forward
+Titan Backward:Backward
+Titan Left:Left
+Titan Right:Right
+Titan Jump:Jump
+Titan Kill:Titan suicide
+Titan Walk:Walk
+Titan Punch:Punch
+Titan Slam:Slam
+Titan Grab (front):Front grab
+Titan Grab (back):Back grab
+Titan Grab (nape):Neck grab
+Titan Slap:Slap
+Titan Bite:Bite
+Titan Cover nape:Protect nape
+Titan Sit:Sit
+Horse Forward:Forward
+Horse Backward:Backward
+Horse Left:Left
+Horse Right:Right
+Horse Walk:Walk
+Horse Jump:Jump
+Horse Mount:Mount
