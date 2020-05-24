@@ -3,7 +3,7 @@
 public sealed class UIMainReferences : MonoBehaviour
 {
     private static bool isGAMEFirstLaunch = true;
-    public const string VersionShow = "Anarchy mod(Custom) (Beta 7.8.0)";
+    public const string VersionShow = "Anarchy mod(Custom) (Beta 8.0.0)";
     public static string ConnectField = "01042015";
     public static UIMainReferences Main;
     public GameObject panelCredits;
