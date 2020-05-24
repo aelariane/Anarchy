@@ -13,6 +13,7 @@ namespace Anarchy.Configuration
         public static BoolSetting VSync = new BoolSetting("VSync", false);
         public static BoolSetting UseShadows = new BoolSetting("UseShadows", true);
         public static BoolSetting WindEffect = new BoolSetting("WindEffect", true);
+        public static BoolSetting ShadowsUI = new BoolSetting("ShadowsUI", true);
 
         public static IntSetting AntiAliasing = new IntSetting("AntiAliasing", 0);
         public static IntSetting AnisotropicFiltering = new IntSetting("AnisoLevel", 0);

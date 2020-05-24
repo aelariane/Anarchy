@@ -249,6 +249,7 @@ namespace Anarchy.UI
             }
             ToggleButton(left, VideoSettings.CameraTilt, locale["tilt"], true);
             ToggleButton(left, VideoSettings.Blur, locale["blur"], true);
+            ToggleButton(left, VideoSettings.ShadowsUI, locale["shadowsUI"], true);
         }
 
         [GUIPage(General)]
@@ -327,9 +328,9 @@ namespace Anarchy.UI
                         RebindButton(rects[1], InputManager.AllKeys[i]);
                     }
                     LabelCenter(rects[1], locale["rebinds"], true);
-                    Label(rects[1], "Burst type:", false);
+                    Label(rects[1], locale["burstType"], false);
                     rects[1].MoveOffsetX(Style.LabelOffset);
-                    SelectionGrid(rects[1], InputManager.GasBurstType, new string[] { "Both", "Rebinded only" }, 2, true);
+                    SelectionGrid(rects[1], InputManager.GasBurstType, burstTypes, burstTypes.Length, true);
                     rects[1].ResetX();
                     for (int i = (int)InputCodes.DefaultsCount; i < RebindCannon; i++)
                     {
@@ -447,6 +448,7 @@ namespace Anarchy.UI
             RebindLabels = locale.GetArray("buttonsRebinds");
             ModPage = 0;
             ModLabels = locale.GetArray("modMenu");
+            burstTypes = locale.GetArray("burstTypes");
             AbilityPage = 0;
             AbilityLabels = locale.GetArray("abilityNames");
             if (Application.loadedLevelName == "menu")
@@ -457,7 +459,7 @@ namespace Anarchy.UI
 
         private void RebindButton(SmartRect rect, KeySetting set)
         {
-            Label(rect, set.Key + ":");
+            Label(rect, locale[set.Key] + ":");
             rect.MoveOffsetX(Style.LabelOffset * 2f);
             if (Button(rect, set == waitSetting ? locale["waiting"] : set.ToString()) && !rebindWait)
             {
