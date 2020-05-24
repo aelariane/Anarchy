@@ -38,7 +38,7 @@ namespace Anarchy.Commands.Chat
                             chatMessage = Lang.Format("errRoom", args[0].ToLower());
                             return false;
                         }
-                        if (!int.TryParse(args[1], out time))
+                        if (!int.TryParse(args[2], out time))
                         {
                             chatMessage = Lang.Format("errArg", CommandName + " time");
                             return false;
