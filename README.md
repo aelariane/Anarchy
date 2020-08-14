@@ -1,5 +1,6 @@
 <div>
-<a href="https://discord.gg/7E8euW9"><img alt="Discord" src="https://img.shields.io/discord/643822682617413652?label=Anarchy"></a>
+<a href="https://discord.gg/8wy5Pkm"><img alt="Discord" src="https://img.shields.io/discord/643822682617413652?label=Anarchy"></a>
+<a href ="https://discord.gg/8wy5Pkm">Discord server</a>
 <img src="https://i.imgur.com/KSZH3p9.png" alt="by Ritis" width=256 height=256 align="right">
 </div>
 
@@ -44,7 +45,8 @@ While mod is in early stage we don't have a strict rules.<br/>
 # Special thanks
 Special thanks to following people: <br/>
 * **[Ritis](https://vk.com/dont_touch_plz) - For great art for mod**<br/>
-* **[Syne](https://github.com/DaLNakii) - for testing and advises**
+* **[Syne](https://github.com/DaLNakii) - for testing and advises**<br/>
+* **[Shy](https://vk.com/shylime) - For help with Russian translation
 
 # Contacts
 * Order - Order#1775
