@@ -18,6 +18,7 @@ packages/Newtonsoft.Json.12.0.2/lib/netstandard1.3/
 packages/Newtonsoft.Json.12.0.2/lib/netstandard2.0/
 packages/Newtonsoft.Json.12.0.2/lib/portable-net40+sl5+win8+wp8+wpa81/
 packages/Newtonsoft.Json.12.0.2/lib/portable-net45+win8+wp8+wpa81/
+Anarchy/Assemblies/
 # Visual Studio cache directory
 .vs/
 
