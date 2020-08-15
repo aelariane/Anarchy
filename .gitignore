@@ -1,3 +1,9 @@
+# JetBrains Rider directory
+.idea/
+
+#Visual Studio Code directory
+.vscode/
+
 # Visual Studio cache directory
 .vs/
 
