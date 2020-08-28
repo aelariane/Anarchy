@@ -167,19 +167,23 @@ namespace Anarchy.UI
             {
                 lock (messages)
                 {
-                    List<string> message = messages.Keys.ToList();
-                    List<int> count = messages.Values.ToList();
+                    //List<string> message = messages.Keys.ToList();
+                    //List<int> count = messages.Values.ToList();
                     GUILayout.BeginArea(position);
                     UnityEngine.GUILayout.FlexibleSpace();
-                    for (int i = 0; i < messages.Count; i++)
+                    foreach (var pair in messages)
                     {
-                        string currentMessage = message[i];
-                        int currentCount = count[i];
-                        if (!currentMessage.IsNullOrEmpty())
-                        {
-                            UnityEngine.GUILayout.Label(currentMessage + (currentCount > 1 ? $" <color=red>[x{currentCount}]</color>" : string.Empty), LogStyle, labelOptions);
-                        }
+                        UnityEngine.GUILayout.Label(pair.Key + (pair.Value > 1 ? $" <color=red>[x{pair.Value}]</color>" : string.Empty), LogStyle, labelOptions);
                     }
+                    //for (int i = 0; i < messages.Count; i++)
+                    //{
+                    //    string currentMessage = message[i];
+                    //    int currentCount = count[i];
+                    //    if (!currentMessage.IsNullOrEmpty())
+                    //    {
+                    //        UnityEngine.GUILayout.Label(currentMessage + (currentCount > 1 ? $" <color=red>[x{currentCount}]</color>" : string.Empty), LogStyle, labelOptions);
+                    //    }
+                    //}
                     GUILayout.EndArea();
                 }
             }

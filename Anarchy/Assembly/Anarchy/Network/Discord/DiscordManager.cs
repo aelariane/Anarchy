@@ -13,6 +13,7 @@ namespace Anarchy.Network.Discord
         private static DiscordRPC.RichPresence _presence;
         private static DiscordRPC.EventHandlers _handlers;
         private static float _time;
+        private static bool canUpdate = true;
 
         public void Start()
         {
@@ -33,17 +34,32 @@ namespace Anarchy.Network.Discord
             UpdateStatus();
         }
 
+        private void OnApplicationQuit()
+        {
+            canUpdate = false;
+        }
+
         public void Update()
         {
             _time += Time.deltaTime;
             if (!(_time > 1f)) return;
-            UpdateStatus();
-            DiscordRPC.UpdatePresence(_presence);
+            try
+            {
+                UpdateStatus();
+            }
+            catch
+            {
+
+            }
             _time = 0f;
         }
 
         public static void UpdateStatus()
         {
+            if (!canUpdate)
+            {
+                return;
+            }
             if (!PhotonNetwork.inRoom)
             {
                 if (PhotonNetwork.InsideLobby)

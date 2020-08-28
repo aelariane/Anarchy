@@ -294,7 +294,6 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public void GameWin()
     {
-        Debug.Log("GameWin");
         logic.GameWin();
     }
 
@@ -512,22 +511,8 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
         IN_GAME_MAIN_CAMERA.Look.disable = true;
         IN_GAME_MAIN_CAMERA.MainCamera.gameOver = false;
-        var customProperties = new ExitGames.Client.Photon.Hashtable
-        {
-            {
-                "dead",
-                false
-            }
-        };
-        PhotonNetwork.player.SetCustomProperties(customProperties);
-        customProperties = new ExitGames.Client.Photon.Hashtable
-        {
-            {
-                PhotonPlayerProperty.isTitan,
-                2
-            }
-        };
-        PhotonNetwork.player.SetCustomProperties(customProperties);
+        PhotonNetwork.player.Dead = false;
+        PhotonNetwork.player.IsTitan = true;
         Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
         Screen.showCursor = true;
         ShowHUDInfoCenter(string.Empty);
@@ -853,7 +838,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 else
                 {
                     if (GameModes.TitansWaveAmount.Enabled)
-                        num += logic.Round.Wave * GameModes.TitansWaveAmount.GetInt(0);
+                        num += GameModes.TitansWaveAmount.GetInt(0);
                 }
             }
         }

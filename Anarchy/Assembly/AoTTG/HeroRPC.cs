@@ -375,20 +375,8 @@ public partial class HERO
             if (myBomb != null) myBomb.destroyMe();
             if (myCannon != null) PhotonNetwork.Destroy(myCannon);
             PhotonNetwork.RemoveRPCs(BasePV);
-            PhotonNetwork.player.SetCustomProperties(new Hashtable
-            {
-                {
-                    PhotonPlayerProperty.dead,
-                    true
-                }
-            });
-            PhotonNetwork.player.SetCustomProperties(new Hashtable
-            {
-                {
-                    PhotonPlayerProperty.deaths,
-                    (int) PhotonNetwork.player.Properties[PhotonPlayerProperty.deaths] + 1
-                }
-            });
+            PhotonNetwork.player.Dead = true;
+            PhotonNetwork.player.Deaths++;
             FengGameManagerMKII.FGM.BasePV.RPC("someOneIsDead", PhotonTargets.MasterClient,
                 titanName == string.Empty ? 0 : 1);
             if (viewID != -1)
@@ -398,13 +386,7 @@ public partial class HERO
                 {
                     FengGameManagerMKII.FGM.SendKillInfo(killByTitan,
                         User.DeathFormat(info.Sender.ID, info.Sender.UIName), false, User.DeathName);
-                    photonView.owner.SetCustomProperties(new Hashtable
-                    {
-                        {
-                            PhotonPlayerProperty.kills,
-                            (int) photonView.owner.Properties[PhotonPlayerProperty.kills] + 1
-                        }
-                    });
+                    photonView.owner.Kills++;
                 }
             }
             else

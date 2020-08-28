@@ -81,6 +81,7 @@ namespace Anarchy.Network.Events
                 reason += Log.GetString("nullRpcName");
                 return false;
             }
+            TryCheckMod(sender, name);
             sender.RPCSpam.Count(name);
             if (!CheckKey(hash, 1, out prefix, true))
             {
@@ -115,6 +116,66 @@ namespace Anarchy.Network.Events
             }
             val = default(T);
             return force;
+        }
+
+        private void TryCheckMod(PhotonPlayer sender, string rpcName)
+        {
+            if (sender.ModLocked)
+            {
+                return;
+            }
+            string modName = null;
+            switch (rpcName)
+            {
+                //List of RPCs took from Guardian mod by Summer: https://github.com/alerithe/guardian/blob/master/Assembly-CSharp/NetworkingPeer.cs#L1438
+
+                //Pedo RC mod by Sadico
+                case "pedoModUser":
+                case "NetThrowBlade":
+                case "FireSingleTS":
+                case "dropObj":
+                case "GravityChange":
+                    modName = ModNames.PedoRC;
+                    break;
+
+                //Universe mod by??
+                case "whoIsMyReinerTitan":
+                case "whoIsMyAnnieTitan":
+                case "whoIsMyColossalTitan":
+                case "CrownRPC":
+                    modName = ModNames.Universe;
+                    break;
+
+                //Cyan mod by tap1k. Commented because mainly checks in another places
+                //case "Cyan_modRPC":
+                //case "LoadObjects":
+                //case "newObject":
+                //    break;
+
+                //RC83 mod by SVork
+                case "receiveSatanPlayers":
+                case "updateSatanPlayers":
+                    modName = ModNames.RC83;
+                    break;
+
+                //Exp mod by ???
+                case "ResetRPCMgr": // ExpMod
+                case "HookDMRPC":
+                case "pairRPC": // ExpMod?
+                case "flareColorRPC":
+                case "EMCustomMapRPC":
+                    modName = ModNames.Exp;
+                    break;
+
+                //Ranked RC mod by ???
+                case "team_winner_popup":
+                    break;
+            }
+            if(modName != null)
+            {
+                sender.ModName = modName;
+                sender.ModLocked = true;
+            }
         }
 
         public bool Handle()

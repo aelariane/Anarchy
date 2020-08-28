@@ -48,8 +48,11 @@ namespace Anarchy
             {
                 if (!b)
                 {
-                    FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC",
-                        PhotonTargets.All, 0);
+                    if (PhotonNetwork.inRoom)
+                    {
+                        FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC",
+                            PhotonTargets.All, 0);
+                    }
                     return;
                 }
 

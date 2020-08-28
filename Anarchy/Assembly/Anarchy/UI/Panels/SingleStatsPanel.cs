@@ -24,8 +24,8 @@ namespace Anarchy.UI
             GUI.Label(rect, $"Name: {stats.Name}", true);
             GUI.Label(rect, $"Statistics", true);
             GUI.Label(rect, $"Kills: {stats.Kills}. Time for 1 kill: {stats.KillTimeAverage.ToString("F3")}", true);
-            GUI.Label(rect, $"Total damage: {stats.Total_Dmg}. Average total: {stats.TotalPerKill.ToString("F3")}", true);
-            GUI.Label(rect, $"Max danmage: {stats.Max_Dmg}", true);
+            GUI.Label(rect, $"Total damage: {stats.TotalDamage}. Average total: {stats.TotalPerKill.ToString("F3")}", true);
+            GUI.Label(rect, $"Max danmage: {stats.MaxDamage}", true);
 
             GUI.Label(rect, $"Misc statistics", true);
             GUI.Label(rect, $"Physics update: {UnityEngine.Mathf.RoundToInt(1f / stats.FixedDeltaTime)}/sec. ({stats.FixedDeltaTime.ToString("F4")} ms)", true);

@@ -19,13 +19,13 @@ namespace Anarchy
         public float LastKillTime { get; private set; }
         public float LastRefill { get; private set; }
         public float LastReload { get; private set; }
-        public int Max_Dmg { get; private set; }
+        public int MaxDamage { get; private set; }
         public string Name { get; private set; }
         public int Reloads { get; private set; }
         public HeroStat Stats { get; private set; }
         public float TimeStamp { get; private set; }
-        public int Total_Dmg { get; private set; }
-        public float TotalPerKill => (float)Math.Round((float)Total_Dmg / (float)Kills, 2);
+        public int TotalDamage { get; private set; }
+        public float TotalPerKill => (float)Math.Round((float)TotalDamage / (float)Kills, 2);
         public string Version => AnarchyManager.AnarchyVersion.ToString();
 
         public static void OnKill()
@@ -60,8 +60,8 @@ namespace Anarchy
         {
             SingleRunStats result = new SingleRunStats();
             result.Kills = FengGameManagerMKII.FGM.singleKills;
-            result.Total_Dmg = FengGameManagerMKII.FGM.singleTotal;
-            result.Max_Dmg = FengGameManagerMKII.FGM.singleMax;
+            result.TotalDamage = FengGameManagerMKII.FGM.singleTotal;
+            result.MaxDamage = FengGameManagerMKII.FGM.singleMax;
             result.TimeStamp = (float)Math.Round(FengGameManagerMKII.FGM.logic.RoundTime, 4);
             result.FixedDeltaTime = UnityEngine.Time.fixedDeltaTime;
             result.GasRefillsCount = refills;
@@ -86,8 +86,8 @@ namespace Anarchy
             bld.AppendLine($"Name: {Name}");
             bld.AppendLine($"Statistics");
             bld.AppendLine($"Kills: {Kills}. Average kill time: {KillTimeAverage.ToString("F2")}");
-            bld.AppendLine($"Total damage: {Total_Dmg}. Average total damage: {TotalPerKill.ToString("F2")}");
-            bld.AppendLine($"Max damage: {Max_Dmg}");
+            bld.AppendLine($"Total damage: {TotalDamage}. Average total damage: {TotalPerKill.ToString("F2")}");
+            bld.AppendLine($"Max damage: {MaxDamage}");
 
             bld.AppendLine($"Misc statistics");
             bld.AppendLine($"Physics update: {UnityEngine.Mathf.RoundToInt(1f / FixedDeltaTime)}/sec. ({FixedDeltaTime.ToString("F3")} ms)");

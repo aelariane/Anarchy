@@ -42,7 +42,9 @@ namespace Anarchy.UI
                 file.Load();
                 file.AutoSave = false;
                 string[] res = file.GetString("resolution").Split('x');
-                Screen.SetResolution(Convert.ToInt32(res[0]), Convert.ToInt32(res[1]), file.GetBool("fullscreen"));
+                int width = Convert.ToInt32(res[0]);
+                int height = Convert.ToInt32(res[1]);
+                Screen.SetResolution(width, height, file.GetBool("fullscreen"));
                 profile = file.GetString("profile");
                 int fps = file.GetInt("fps");
                 Application.targetFrameRate = fps >= 30 ? fps : -1;
@@ -76,7 +78,7 @@ namespace Anarchy.UI
             yield return new WaitForSeconds(0.5f);
 
             Info.text = "Enjoy!";
-            Optimization.Labels.VERSION = UIMainReferences.VersionShow;
+            Optimization.Labels.VERSION = string.Format(UIMainReferences.VersionShow, AnarchyManager.AnarchyVersion.ToString());
             textUpdate = false;
             Loading.text = "Loading complete";
             yield return new WaitForSeconds(2f);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 
 namespace Anarchy.Skins
@@ -120,7 +122,43 @@ namespace Anarchy.Skins
                 }
                 else
                 {
+                    if (element.Materials != null)
+                    {
+                        rend.material = element.Materials[0];
+                        return;
+                    }
+                    element.Materials = new List<Material>(1);
                     rend.material.mainTexture = element.Texture;
+                    element.Materials.Add(rend.material);
+                }
+            }
+        }
+
+        protected void TryApplyTextures(SkinElement element, Renderer[] renderers, bool canBeTransparent)
+        {
+            if (element != null && element.IsDone)
+            {
+                if (!canBeTransparent && element.IsTransparent)
+                {
+                    return;
+                }
+                if (element.Materials == null)
+                {
+                    element.Materials = new List<Material>(renderers.Select(x =>
+                    {
+                        x.material.mainTexture = element.Texture;
+                        return x.material;
+                    }));
+                }
+                for(int i = 0; i < renderers.Length; i++)
+                {
+                    var render = renderers[i];
+                    if (canBeTransparent && element.IsTransparent)
+                    {
+                        render.enabled = false;
+                        continue;
+                    }
+                    render.material = element.Materials[i];
                 }
             }
         }

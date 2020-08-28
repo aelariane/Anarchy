@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PhotonPlayer
 {
+    private const float TIMER_DELAY = 0.25f;
     private static List<PhotonPlayer> anarchyUsersList = new List<PhotonPlayer>();
     private static List<PhotonPlayer> rcUsersList = new List<PhotonPlayer>();
     private static List<PhotonPlayer> vanillaUsersList = new List<PhotonPlayer>();
@@ -15,6 +16,8 @@ public class PhotonPlayer
     private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
 
+    private readonly Hashtable _localPropsToUpdate;
+    private float _updateTimer;
     private bool anarchySync = false;
     public ICounter<byte> EventSpam;
     public readonly int ID;
@@ -25,7 +28,9 @@ public class PhotonPlayer
     private readonly RaiseEventOptions option = new RaiseEventOptions();
     private bool rcSync = false;
     public ICounter<string> RPCSpam;
-    private readonly int[] targetArray; 
+    private readonly int[] targetArray;
+
+    public bool ModLocked { get; set; } = false;
 
     public bool Muted { get; set; }
 
@@ -83,7 +88,7 @@ public class PhotonPlayer
         get => modName;
         set
         {
-            if (value == null)
+            if (ModLocked || value == null)
             {
                 return;
             }
@@ -96,7 +101,13 @@ public class PhotonPlayer
     }
 
 
-    public bool RCIgnored { get; set; }
+    private bool rcIgnored = false;
+
+    public bool RCIgnored
+    { 
+        get => rcIgnored;
+        set { if (!IsLocal) rcIgnored = value; }
+    }
 
     public bool RCSync
     {
@@ -139,6 +150,10 @@ public class PhotonPlayer
         Properties = new Hashtable();
         ID = actorID;
         this.IsLocal = isLocal;
+        if (isLocal)
+        {
+            _localPropsToUpdate = new Hashtable();
+        }
         if (!isLocal)
         {
             vanillaUsersList.Add(this);
@@ -385,13 +400,24 @@ public class PhotonPlayer
 
     public void SetCustomProperties(Hashtable propertiesToSet)
     {
-        if (propertiesToSet == null) return;
+        if (propertiesToSet == null)
+        {
+            return;
+        }
         this.Properties.MergeStringKeys(propertiesToSet);
         this.Properties.StripKeysWithNullValues();
         Hashtable actorProperties = propertiesToSet.StripToStringKeys();
         if (ID > 0 && !PhotonNetwork.offlineMode)
         {
-            PhotonNetwork.networkingPeer.OpSetCustomPropertiesOfActor(ID, actorProperties, true, 0);
+            if (IsLocal)
+            {
+                _localPropsToUpdate.MergeStringKeys(propertiesToSet);
+                return;
+            }
+            else
+            {
+                PhotonNetwork.networkingPeer.OpSetCustomPropertiesOfActor(ID, actorProperties, true, 0);
+            }
         }
         NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { this, propertiesToSet });
     }
@@ -414,6 +440,25 @@ public class PhotonPlayer
     public int[] ToTargetArray() 
     {
         return targetArray;
+    }
+
+    public void UpdateLocalProperties()
+    {
+        if (!IsLocal)
+        {
+            return;
+        }
+        _updateTimer -= Time.unscaledDeltaTime;
+        if(_updateTimer < 0f)
+        {
+            if(_localPropsToUpdate.Count > 0 && PhotonNetwork.inRoom)
+            {
+                PhotonNetwork.networkingPeer.OpSetCustomPropertiesOfActor(ID, _localPropsToUpdate, true, 0);
+                NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { this, _localPropsToUpdate});
+                _localPropsToUpdate.Clear();
+            }
+            _updateTimer = TIMER_DELAY;
+        }
     }
 
     public void Unmute()

@@ -74,8 +74,8 @@ rebinds:<b>Дополнительные</b>
 modMenu:Стиль,Аним. Имени,Чат и Консоль
 
 #Anarchy/Style
-hudScale:Размер интерфейса[{0}%]:
-guiAutoScale:Использовать автом. размер:
+hudScale:Размер GUI/HUD [{0}%]
+guiAutoScale:Использовать авторазмер:
 guiScaleWarning:<color=red><b>Изменения этих полей может <i>СЛОМАТЬ</i> интерфейс.</b></color>
 guiScaleWarning1:<color=yellow>Вы предупреждены.</color>
 windowOffset:<b>Окно и Отступы</b>
@@ -98,12 +98,12 @@ styleColors:<b>Конфигурация цветов/стиля</b>
 fontName:Шрифт:
 background:Цвет фона:
 backgroundTransparency:Прозрачность фона:
-normal:Выкл-Норм.
-hover:Выкл-Наведён
-active:Выкл-Нажат
-onNormal:Вкл-Норм.
-onHover:Вкл-Наведён
-onActive:Вкл-Нажат
+normal:Normal
+hover:Hover
+active:Active
+onNormal:OnNormal
+onHover:OnHover
+onActive:OnActive
 vector:Вектор
 color:Фон
 text:Текст
@@ -151,10 +151,10 @@ bombColorA:Прозрачность:
 feedConsoleMode:Показывать в консоли:
 trailAppearance:Тип трейлов:
 trailType:Обычный,Водяной,Плавный
-trailFps:Частота обновления:
+trailFps:Обновление ({0}):
 infiniteTrails:Бесконечный след:
 burstType:Тип рывка:
-burstTypes:Ребинд,Оба
+burstTypes:Два типа,Только кнопка
 shadowsUI:Эффект тени в UI:
 Forward:Вперёд
 Backward:Назад
@@ -167,13 +167,13 @@ RightHook:Правый трос
 BothHooks:Два троса
 Lock:Фокус на Титана
 Attack:Атака
-SpecialAttack:Специальная атака 
+SpecialAttack:Специальная атака
 Salute:Отдать честь
 CameraType:Смена камеры
 Reset:Самоубийство
 Pause:Пауза
 HideCursor:Скрыть курсор
-FullScreen:Полный экран:
+FullScreen:Полный экран
 Reload:Перезарядка
 FlareGreen:Зеленый сигнал
 FlareRed:Красный сигнал
@@ -192,13 +192,13 @@ Cannon Left:Вращать влево
 Cannon Right:Вращать вправо
 Cannon Fire:Выстрел пушки
 Cannon Mount:Сесть на пушку
-Cannon Slow:Вращать медленно 
+Cannon Slow:Вращать медленно
 Titan Forward:Вперёд
 Titan Backward:Назад
 Titan Left:Влево
 Titan Right:Вправо
 Titan Jump:Прыжок
-Titan Kill:Самоубийство титана
+Titan Kill:Самоубийство
 Titan Walk:Ходьба
 Titan Punch:Удар
 Titan Slam:Шлепок

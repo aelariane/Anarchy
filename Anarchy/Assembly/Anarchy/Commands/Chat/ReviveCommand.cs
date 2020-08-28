@@ -6,7 +6,7 @@ namespace Anarchy.Commands.Chat
     {
         private static readonly Hashtable HashRevive = new Hashtable() { [(byte)0] = 2, [(byte)2] = PhotonNetwork.networkingPeer.ServerTimeInMilliSeconds, [(byte)3] = "respawnHeroInNewRound" };
 
-        public ReviveCommand() : base("revive", true, true, true)
+        public ReviveCommand() : base("revive", true, true, false)
         {
         }
 

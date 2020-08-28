@@ -103,8 +103,16 @@ namespace Anarchy.Localization
             {
                 return result;
             }
-            result = localizedText[key].Split(Separator);
-            localizedTextArrayCache.Add(key, result);
+            try
+            {
+                result = localizedText[key].Split(Separator);
+                localizedTextArrayCache.Add(key, result);
+            }
+            catch
+            {
+                UnityEngine.Debug.Log("Invalid key: " + key);
+                throw;
+            }
             return result;
         }
 

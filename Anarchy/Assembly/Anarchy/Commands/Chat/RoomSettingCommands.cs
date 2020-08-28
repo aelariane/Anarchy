@@ -43,9 +43,11 @@ namespace Anarchy.Commands.Chat
                             chatMessage = Lang.Format("errArg", CommandName + " time");
                             return false;
                         }
-                        FengGameManagerMKII.FGM.logic.ServerTime = time;
+                        var diff = time - FengGameManagerMKII.FGM.logic.ServerTime;
+                        FengGameManagerMKII.FGM.logic.ServerTime += diff;
+                        FengGameManagerMKII.FGM.logic.OnRequireStatus();
                         chatMessage = Lang.Format("roomTimeSet", time.ToString());
-                        SendLocalizedText("roomTime", new string[] { time.ToString() });
+                        SendLocalizedText("roomTimeSet", new string[] { time.ToString() });
                         break;
                     }
                     if (!int.TryParse(args[1], out time))
@@ -54,7 +56,7 @@ namespace Anarchy.Commands.Chat
                         return false;
                     }
                     FengGameManagerMKII.FGM.logic.ServerTimeBase += time;
-                    FengGameManagerMKII.FGM.logic.ServerTime += time;
+                    FengGameManagerMKII.FGM.logic.OnRequireStatus();
                     chatMessage = Lang.Format("roomTime", time.ToString());
                     SendLocalizedText("roomTime", new string[] { time.ToString() });
                     break;

@@ -2,8 +2,8 @@
 profile:Профиль:
 profileSel:<b>Выбор профиля</b>
 allProfiles:<b>Все профили</b>
-btnAdd:Создать новый
-btnCopy:Скопировать с текущего
+btnAdd:Создать
+btnCopy:Скопировать
 btnRemove:Удалить
 btnAdvanced:Продвинутые настройки
 btnBack:Назад
@@ -11,37 +11,37 @@ btnPreview:Предпросмотр
 btnToMain:Основные настройки
 mainSettings:<b>Основные настройки</b>
 name:Имя:
-guildName:Гильдия:
+guildName:Гильдия 1:
 guildName2:Гильдия 2:
 guildName3:Гильдия 3:
-chatName:Чат имя:
-mainColor:Основной Цвет:
-subColor:Доп. Цвет:
-titans:<b>Имена титанов</b>
+chatName:Имя в чате:
+mainColor:Первый Цвет:
+subColor:Второй Цвет:
+titans:<b>Имена Титанов</b>
 titan:Титан:
 aberrant:Аберрант:
-jumper:Прыгун:
-crawler:Ползун:
+jumper:Джампер:
+crawler:Кравлер:
 punk:Панк:
 preview:Предпросмотр
-note:<color=yellow>//Прим. Можно иметь до <b>15</b> профилей.</color>
+note:<color=yellow>Можно иметь до <b>15</b> профилей.</color>
 killTriggers:<b>Триггеры убийства</b>
 akinaTrigger:Акина:
 forestTrigger:Лесная лава:
 racingTrigger:Гоночный:
 chatFormat:Формат чата:
-chatFormatSend:Формат отправки чата
-chatPMFormat:Формат ЛС:
-chatPMFormatSend:Формат отправки ЛС
+chatFormatSend:Формат отправки в чат
+chatPMFormat:Формат PM:
+chatPMFormatSend:Формат отправки в PM
 suicide:Суицид:
 diename:Смерть:
 dieStyle:Формат смерти:
 raceFinish:Гоночное имя:
-restart:Сообщение рестарта
+restart:Сообщение после рестарта
 mcswitch:Сообщение смены хоста
 wave:Формат волны:
 advancedHead:<b>Продвинутые настройки</b>
 chatSettings:<b>Настройки чата</b>
 others:<b>Остальные настройки</b>
 previews:Основные,Продвинутые
-previewColors:<b><color=#{0}>Основной</color> и <color=#{1}>Дополнительный</color></b> цвета
+previewColors:<b><color=#{0}>Первый</color> и <color=#{1}>Второй</color></b> цвет

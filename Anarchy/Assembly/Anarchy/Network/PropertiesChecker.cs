@@ -4,6 +4,115 @@ namespace Anarchy.Network
 {
     internal static class PropertiesChecker
     {
+        //Here is placed detection of most public mods 
+        private static bool TryCheckMod(System.Collections.DictionaryEntry entry, out string modName)
+        {
+            modName = string.Empty;
+            if (entry.Key is string keyString)
+            {
+                bool detected = true;
+                switch (keyString)
+                {
+                    //Guardian mod by alerithe (Summer)
+                    case "GuardianMod":
+                        if (entry.Value is int)
+                        {
+                            modName = ModNames.Guardian;
+                        }
+                        break;
+
+                    //Photon mod by Fleur
+                    case "guildName":
+                        if (entry.Value is string gName)
+                        {
+                            if (gName.StartsWith("photonMod"))
+                            {
+                                modName = ModNames.Photon;
+                                break;
+                            }
+                        }
+                        detected = false;
+                        break;
+
+                    //PedoRC mod by Sadico
+                    case "PBModRC":
+                        modName = ModNames.PedoRC;
+                        break;
+
+                    //TLW mod by JustlPain
+                    case "TLW":
+                        modName = ModNames.TLW;
+                        break;
+
+                    //Exp mod by ???
+                    case "ExpMod":
+                    case "EMID":
+                    case "Version":
+                    case "Pref":
+                        modName = ModNames.Exp;
+                        break;
+
+                    //Universe mod by ???
+                    case "UPublica":
+                    case "UPublica2":
+                    case "UGrup":
+                    case "Hats":
+                    case "UYoutube":
+                    case "UVip":
+                    case "SUniverse":
+                    case "UAdmin":
+                    case "coins":
+                        modName = ModNames.Universe;
+                        break;
+
+                    //Additional check for universe
+                    case "":
+                        if (entry.Value is string)
+                        {
+                            modName = ModNames.Universe;
+                        }
+                        break;
+
+                    //Ranked RC mod by ????
+                    case "bronze":
+                    case "silver":
+                    case "gold":
+                    case "platin":
+                    case "diamond":
+                    case "master":
+                    case "grandmaster":
+                    case "top5":
+                        modName = string.Format(ModNames.RRC, keyString);
+                        break;
+
+                    case "RCteam":
+                        if (entry.Value is string teamSting)
+                        {
+                            switch (teamSting)
+                            {
+                                //GucciGang mod by JustlPain
+                                case "GGM83":
+                                case "GucciLab":
+                                    modName = ModNames.GucciGang;
+                                    break;
+
+                                default:
+                                    detected = false;
+                                    break;
+                            }
+                        }
+                        detected = false;
+                        break;
+
+                    default:
+                        detected = false;
+                        break;
+                }
+                return detected;
+            }
+            return false;
+        }
+
         public static void CheckPlayersProperties(Hashtable hash, int targetActorNr, PhotonPlayer sender)
         {
             NetworkingPeer peer = PhotonNetwork.networkingPeer;
@@ -50,6 +159,21 @@ namespace Anarchy.Network
                             target.SetCustomProperties(props);
                         }
                     }
+                    else
+                    {
+                        if (!target.ModLocked)
+                        {
+                            foreach (var entry in props)
+                            {
+                                if (TryCheckMod(entry, out string modName))
+                                {
+                                    target.ModName = modName;
+                                    target.ModLocked = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                     target.InternalCacheProperties(props);
                     NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { target, props });
                 }
@@ -68,6 +192,18 @@ namespace Anarchy.Network
                         peer.AddNewPlayer(number, player);
                     }
                     player.InternalCacheProperties(properties);
+                    if (!player.ModLocked)
+                    {
+                        foreach (var entry in properties)
+                        {
+                            if(TryCheckMod(entry, out string modName))
+                            {
+                                player.ModName = modName;
+                                player.ModLocked = true;
+                                break;
+                            }
+                        }
+                    }
                     NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { player, properties });
                 }
             }

@@ -1,5 +1,7 @@
 ﻿using Anarchy.UI;
+
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -40,6 +42,19 @@ namespace Anarchy.Skins.Humans
                 {
                     continue;
                 }
+                else if(pair.Key == (int)HumanParts.WeaponTrail)
+                {
+                    if(Configuration.VideoSettings.BladeTrails.Value == false || !hero.IsLocal)
+                    {
+                        continue;
+                    }
+                    var element = elements[pair.Key];
+                    hero.leftbladetrail.MyMaterial.mainTexture = element.Texture;
+                    hero.leftbladetrail2.MyMaterial.mainTexture = element.Texture;
+                    hero.rightbladetrail.MyMaterial.mainTexture = element.Texture;
+                    hero.rightbladetrail2.MyMaterial.mainTexture = element.Texture;
+                    continue;
+                }
                 SkinElement skin = elements[pair.Key];
                 if (skin.IsDone && pair.Value != null)
                 {
@@ -59,8 +74,8 @@ namespace Anarchy.Skins.Humans
                             render.material.mainTextureScale *= 8f;
                             render.material.mainTextureOffset = new Vector2(0f, 0f);
                         }
-                        render.material.mainTexture = skin.Texture;
                     }
+                    TryApplyTextures(skin, pair.Value, true);
                 }
             }
         }
@@ -181,6 +196,9 @@ namespace Anarchy.Skins.Humans
                     {
                         tmp.Add(hero.Setup.part_chest_1.renderer);
                     }
+                    break;
+
+                case HumanParts.WeaponTrail:
                     break;
 
                 default:

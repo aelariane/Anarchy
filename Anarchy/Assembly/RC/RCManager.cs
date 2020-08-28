@@ -11,21 +11,20 @@ namespace RC
 {
     internal static class RCManager
     {
-        public static readonly string CachePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/AoTTG/RCAssets.unity3d";
-        public static readonly string DirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/AoTTG/";
-        public const string DownloadPath = "https://www.dropbox.com/s/tvbq6za3r11xtp8/RCAssets.unity3d?dl=1";
+        public static readonly string CachePath = Application.dataPath + "/Resources/RCAssets.unity3d";
+        public const string DownloadPath = "https://www.dropbox.com/s/13kg10qxy8u6sob/rcassets.unity3d?dl=1";
 
         public static Dictionary<int, CannonValues> allowedToCannon;
         public static AssetBundle Asset;
         public static ExitGames.Client.Photon.Hashtable boolVariables = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable floatVariables = new ExitGames.Client.Photon.Hashtable();
+        //This is gametype. Change it in selection grid to switch between racing, killing, etc...
         public static IntSetting GameType = new IntSetting("customGameType", 3);
         public static ExitGames.Client.Photon.Hashtable heroHash = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable intVariables = new ExitGames.Client.Photon.Hashtable();
         public static bool Loaded { get; private set; } = false;
         public static ExitGames.Client.Photon.Hashtable playerVariables = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable stringVariables = new ExitGames.Client.Photon.Hashtable();
-        //This is gametype. Change it in selection grid to switch between racing, killing, etc...
         public static ExitGames.Client.Photon.Hashtable titanVariables = new ExitGames.Client.Photon.Hashtable();
         public static Vector3 racingSpawnPoint = Vectors.zero;
         public static Quaternion racingSpawnPointRotation;
@@ -81,10 +80,6 @@ namespace RC
             if (www.assetBundle != null)
             {
                 Asset = www.assetBundle;
-                if (!Directory.Exists(DirectoryPath))
-                {
-                    Directory.CreateDirectory(DirectoryPath);
-                }
                 File.WriteAllBytes(CachePath, www.bytes);
                 Loaded = true;
             }

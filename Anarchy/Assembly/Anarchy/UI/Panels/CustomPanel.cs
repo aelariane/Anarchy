@@ -96,6 +96,15 @@ namespace Anarchy.UI
             EndScrollView();
         }
 
+        private string GetSendString(bool rnd, string name)
+        {
+            return 
+                User.FormatColors($"<color=#$maincolor$>Next " +
+                $"{(pageSelection == CustomLogicPage ? "logic" : "map")}" +
+                $"{(rnd ? " (Random)" : "")}: " +
+                $"<color=#$subcolor$><b>{name}</b></color></color>");
+        }
+
         private string Load(int id, string path)
         {
             string[] files = System.IO.Directory.GetFiles(path);
@@ -248,7 +257,7 @@ namespace Anarchy.UI
             }
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")}{(rnd ? " (Random)" : "")}: <b>{name}</b>", "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { GetSendString(rnd, name), "" });
             }
         }
 
@@ -272,7 +281,7 @@ namespace Anarchy.UI
             }
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
-                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"Next {(pageSelection == CustomLogicPage ? "logic" : "map")}{(rnd ? " (Random)" : "")}: <b>{name}</b>", "" });
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { GetSendString(rnd, name), "" });
             }
         }
 

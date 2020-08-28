@@ -147,132 +147,82 @@ public class CostumeConeveter
 
     public static void HeroCostumeToPhotonData(HeroCostume costume, PhotonPlayer player)
     {
-        player.SetCustomProperties(new Hashtable
+        Hashtable hash = new Hashtable
         {
             {
                 PhotonPlayerProperty.sex,
                 CostumeConeveter.SexToInt(costume.sex)
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.costumeId,
                 costume.costumeId
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.heroCostumeId,
                 costume.id
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.cape,
                 costume.cape
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.hairInfo,
                 costume.hairInfo.id
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.eye_texture_id,
                 costume.eye_texture_id
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.beard_texture_id,
                 costume.beard_texture_id
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.glass_texture_id,
                 costume.glass_texture_id
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.skin_color,
                 costume.skin_color
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.hair_color1,
                 costume.hair_color.r
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.hair_color2,
                 costume.hair_color.g
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.hair_color3,
                 costume.hair_color.b
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.division,
                 CostumeConeveter.DivisionToInt(costume.division)
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.statSPD,
                 costume.stat.Spd
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.statGAS,
                 costume.stat.Gas
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.statBLA,
                 costume.stat.Bla
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.statACL,
                 costume.stat.Acl
-            }
-        });
-        player.SetCustomProperties(new Hashtable
-        {
+            },
             {
                 PhotonPlayerProperty.statSKILL,
                 costume.stat.skillID
             }
-        });
+        };
+        PhotonNetwork.player.SetCustomProperties(hash);
     }
 
     public static HeroCostume LocalDataToHeroCostume(string slot)

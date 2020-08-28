@@ -314,6 +314,7 @@ namespace Anarchy.UI
             int RebindCannon = (int) InputCodes.DefaultsCount + InputManager.RebindKeyCodesLength;
             int CannonTitan = RebindCannon + InputManager.CannonKeyCodesLength;
             int TitanHorse = CannonTitan + InputManager.TitanKeyCodesLength;
+            int HorseMod = TitanHorse + InputManager.HorseKeyCodesLength;
             switch (RebindPage)
             {
                 case RebindsHuman:
@@ -356,7 +357,7 @@ namespace Anarchy.UI
 
                 case RebindsHorse:
                     rects[0].MoveY();
-                    for (int i = TitanHorse; i < InputManager.AllKeys.Count; i++)
+                    for (int i = TitanHorse; i < HorseMod; i++)
                     {
                         RebindButton(rects[0], InputManager.AllKeys[i]);
                     }
@@ -470,6 +471,13 @@ namespace Anarchy.UI
             if (set != waitSetting || !rebindWait)
                 return;
             var curr = Event.current;
+            if(curr.keyCode == set.Value)
+            {
+                set.SetValue(KeyCode.None);
+                rebindWait = false;
+                waitSetting = null;
+                return;
+            }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
             {
                 set.SetValue(KeyCode.LeftShift);

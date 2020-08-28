@@ -8,10 +8,10 @@ namespace Anarchy
 {
     public static class AnarchyAssets
     {
-        //private static Image backGround;
+        //TODO: Updating assets & downloading them
 
-        public const string AssetVersion = "1";
-        public const string DownloadPath = "https://www.dropbox.com/s/e2ijiwwezbirhfq/anarchyassets.unity3d?dl=1";
+        public const string AssetVersion = "1.0.0.0";
+        public const string DownloadPath = "https://www.dropbox.com/s/t5cbgch4n12p2cy/anarchyassets.unity3d?dl=1";
         public const string UpdatePath = "https://www.dropbox.com/s/fsy5g998t6f0r2p/assetversion.txt?dl=1";
 
         private static readonly Dictionary<string, Object> cache = new Dictionary<string, Object>();

@@ -140,9 +140,9 @@ namespace Anarchy.UI
             Event ev = Event.current;
             if (ev.type == EventType.KeyDown && (ev.keyCode == KeyCode.Tab || ev.character == '\t'))
             {
-                ev.Use();
+                return;
             }
-            if (ev.type == EventType.KeyDown && (ev.keyCode == KeyCode.Return || ev.keyCode == KeyCode.KeypadEnter || (InputManager.RebindKeyCodes[(int)InputRebinds.OpenChat].Value != KeyCode.None && ev.keyCode == InputManager.RebindKeyCodes[(int)InputRebinds.OpenChat].Value)))
+            if (ev.type == EventType.KeyDown && ev.keyCode != KeyCode.None && (ev.keyCode == KeyCode.Return || ev.keyCode == KeyCode.KeypadEnter || (InputManager.OpenChatCode != KeyCode.None && ev.keyCode == InputManager.OpenChatCode)))
             {
                 if (!inputLine.IsNullOrWhiteSpace())
                 {
@@ -188,19 +188,13 @@ namespace Anarchy.UI
             scrollvector.y = float.PositiveInfinity;
             GUILayout.BeginArea(scrollAreaView);
             UnityEngine.GUILayout.FlexibleSpace();
-            try
+            for (int i = 0; i < messages.Count; i++)
             {
-                for (int i = 0; i < messages.Count; i++)
+                string currentMessage = messages[i];
+                if (!currentMessage.IsNullOrEmpty())
                 {
-                    string currentMessage = messages[i];
-                    if (!currentMessage.IsNullOrEmpty())
-                    {
-                        UnityEngine.GUILayout.Label(currentMessage, ChatStyle, labelOptions);
-                    }
+                    UnityEngine.GUILayout.Label(currentMessage, ChatStyle, labelOptions);
                 }
-            }
-            catch
-            {
             }
             GUILayout.EndArea();
             GUI.EndScrollView();

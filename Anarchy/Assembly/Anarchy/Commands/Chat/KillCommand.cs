@@ -7,7 +7,7 @@ namespace Anarchy.Commands.Chat
 {
     internal class KillCommand : ChatCommand
     {
-        public KillCommand() : base("kill", true, true, true)
+        public KillCommand() : base("kill", true, true, false)
         {
         }
 

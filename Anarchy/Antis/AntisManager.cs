@@ -25,7 +25,7 @@ namespace Antis
             }
             remove
             {
-                UnityEngine.Debug.Log("You can only re-set response. Avoid using RespondMethod.remove");
+                UnityEngine.Debug.Log($"You can only re-set response. Avoid using {nameof(ResponseAction)}.remove");
             }
         }
 

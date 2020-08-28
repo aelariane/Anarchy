@@ -14,8 +14,6 @@ namespace Anarchy.UI
         public static float ScreenWidth { get; set; }
         public static float ScreenHeight { get;set; }
 
-
-
         public static FloatSetting BigLabelOffsetSetting = new FloatSetting("GlobalBigLabelOffset", 320f);
         public static IntSetting FontSizeSetting = new IntSetting("GlobalFontSize", 14);
         public static FloatSetting HeightSetting = new FloatSetting("GlobalHeight", 22f);
@@ -164,6 +162,15 @@ namespace Anarchy.UI
                     string[] res = settings.GetString("resolution").Split('x');
                     ScreenWidthDefault = (float)System.Convert.ToInt32(res[0]);
                     ScreenHeightDefault = (float)System.Convert.ToInt32(res[1]);
+                    if (PlayerPrefs.GetInt("AnarchyModLaunched") == 0)
+                    {
+                        PlayerPrefs.SetInt("AnarchyModLaunched", 1);
+                        float xScale = ScreenWidthDefault / 1920f;
+                        float yScale = ScreenHeightDefault / 1080f;
+                        float totalScale = (xScale + yScale) / 2f;
+                        UIManager.HUDScaleGUI.Value = Mathf.Clamp(totalScale, 0.75f, 1.5f);
+                        UIManager.HUDScaleGUI.Save();
+                    }
                     ResetScreenParameters();
                 }
                 config.Load();

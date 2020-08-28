@@ -18,7 +18,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.8.0.0");
+        public static readonly Version AnarchyVersion = new Version("0.8.1.0");
 
         public static readonly string CustomName = string.Empty;
         public static readonly bool FullAnarchySync = true;
@@ -97,11 +97,20 @@ namespace Anarchy
             //    }
             //    Log.AddLine("instantiateSpam", args.SpammedObject.ToString(), args.Sender.ToString(), args.Count.ToString());
             //};
-            Antis.AntisManager.OnResponseCallback += (id, banned, reason) =>
+            Antis.AntisManager.ResponseAction += (id, ban, reason) =>
             {
-                Log.AddLineRaw($"Player [{id}] has been {(banned ? "banned" : "kicked")}. " +
-                                  $"{(reason == "" ? "" : $"reason: {reason}")}");
+                var player = PhotonPlayer.Find(id);
+                if(player == null)
+                {
+                    return;
+                }
+                Network.Antis.Kick(player, ban, reason);
             };
+            //Antis.AntisManager.OnResponseCallback += (id, banned, reason) =>
+            //{
+            //    Log.AddLineRaw($"Player [{id}] has been {(banned ? "banned" : "kicked")}. " +
+            //                      $"{(reason == "" ? "" : $"reason: {reason}")}");
+            //};
             StatsPanel = new SingleStatsPanel();
             Network.BanList.Load();
         }
@@ -222,8 +231,19 @@ namespace Anarchy
             Destroy(back);
         }
 
-        private void Update()
+        private void LateUpdate()
         {
+            if (InputManager.IsInputAnarchy((int)InputPos.InputAnarchy.DebugPanel))
+            {
+                if (DebugPanel.Active)
+                {
+                    DebugPanel.DisableImmediate();
+                }
+                else
+                {
+                    DebugPanel.Enable();
+                }
+            }
         }
     }
 }

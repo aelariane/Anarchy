@@ -31,6 +31,7 @@ namespace Anarchy.Network
                 UI.Chat.Add($"Player {player.ID} autobanned. Reason: {reason}");
             }
             PhotonNetwork.networkingPeer.OpRaiseEvent(203, null, true, player.ToOption());
+            FengGameManagerMKII.FGM.BasePV.RPC("ignorePlayer", PhotonTargets.Others, new object[] { player.ID });
         }
 
         internal static bool IsValidURL(string url, out Uri uri)

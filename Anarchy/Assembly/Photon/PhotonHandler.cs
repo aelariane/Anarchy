@@ -86,6 +86,10 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
 
     protected void Update()
     {
+        if (PhotonNetwork.player != null)
+        {
+            PhotonNetwork.player.UpdateLocalProperties();
+        }
         if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated || PhotonNetwork.connectionStateDetailed == PeerState.Disconnected || PhotonNetwork.offlineMode || !PhotonNetwork.isMessageQueueRunning)
         {
             return;
@@ -93,14 +97,14 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
 
         while (PhotonNetwork.isMessageQueueRunning && PhotonNetwork.networkingPeer.DispatchIncomingCommands()) { }
 
-        int num = (int)(Time.realtimeSinceStartup * 1000f);
+        int num = (int)(Time.time * 1000f);
         if (PhotonNetwork.isMessageQueueRunning && num > this.nextSendTickCountOnSerialize)
         {
             PhotonNetwork.networkingPeer.RunViewUpdate();
             this.nextSendTickCountOnSerialize = num + this.updateIntervalOnSerialize;
             this.nextSendTickCount = 0;
         }
-
+                    
         if (num > this.nextSendTickCount)
         {
             while (PhotonNetwork.isMessageQueueRunning && PhotonNetwork.networkingPeer.SendOutgoingCommands()) { }

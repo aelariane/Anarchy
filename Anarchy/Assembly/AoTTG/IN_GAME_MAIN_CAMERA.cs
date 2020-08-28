@@ -61,6 +61,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 
     public static int invertY = 1;
 
+
     public static bool isCheating;
 
     public static bool isPausing;
@@ -211,7 +212,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         { 
             return; 
         }
-        float magnitude = hero.rigidbody.velocity.magnitude;
+        float magnitude = hero.baseR.velocity.magnitude;
         if (magnitude > 10f)
         {
             BaseCamera.fieldOfView = Mathf.Lerp(BaseCamera.fieldOfView, Mathf.Min(100f, magnitude + 40f), 0.1f);
@@ -226,7 +227,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         {
             BaseT.position += BaseT.Right() * Mathf.Max((0.6f - hero.CameraMultiplier) * 2f, 0.65f);
         }
-        BaseT.rotation = Quaternion.Lerp(BaseT.rotation, hero.GetComponent<SmoothSyncMovement>().CorrectCameraRot, Time.deltaTime * 5f);
+        BaseT.rotation = Quaternion.Lerp(BaseT.rotation, hero.SmoothSync.CorrectCameraRot, Time.deltaTime * 5f);
     }
 
     private void CreateMinimap()
@@ -763,18 +764,19 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         }
         if (InputManager.IsInputDown[InputCode.FullScreen])
         {
-            Screen.fullScreen = !Screen.fullScreen;
-            if (Screen.fullScreen)
+            bool full = Screen.fullScreen;
+            if (full)
             {
                 Screen.SetResolution(960, 600, false);
                 Anarchy.UI.Style.ScreenWidth = 960;
-                Anarchy.UI.Style.ScreenHeight = 960;
+                Anarchy.UI.Style.ScreenHeight = 600;
             }
             else
             {
                 Screen.SetResolution((int)Anarchy.UI.Style.ScreenWidthDefault, (int)Anarchy.UI.Style.ScreenHeightDefault, true);
                 Anarchy.UI.Style.ResetScreenParameters();
             }
+            Screen.fullScreen = !full;
             this.needSetHUD = true;
             Anarchy.UI.UIManager.UpdateGUIScaling();
             Minimap.OnScreenResolutionChanged();
@@ -828,7 +830,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         {
             if (this.gameOver)
             {
-                if (liveSpecMode && MainHERO && MainHERO.GetComponent<SmoothSyncMovement>().enabled && MainHERO.IsPhotonCamera)
+                if (liveSpecMode && MainHERO.GetComponent<SmoothSyncMovement>().enabled && MainHERO.IsPhotonCamera)
                 {
                     CameraMovementLive(MainHERO);
                 }

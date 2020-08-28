@@ -7,8 +7,7 @@ namespace Anarchy
 {
     public class InputManager : MonoBehaviour
     {
-        public static List<KeySetting> AllKeys;
-
+        //Default AoTTG layot
         private static readonly KeyCode[] defaults =
         {
             KeyCode.W,
@@ -34,77 +33,100 @@ namespace Anarchy
             KeyCode.Alpha2,
             KeyCode.Alpha3
         };
-        
-        public static bool[] IsInput = new bool[22];
-        public static bool[] IsInputDown = new bool[22];
-        public static bool MenuOn;
-        private static Action onAwake;
-        public static KeySetting[] Settings;
-        public static IntSetting GasBurstType = new IntSetting(nameof(GasBurstType), 0);
 
-        //TODO: Remove and put property to make field private
-        public static readonly KeySetting[] RebindKeyCodes = 
+        private float restartTimer = 0f;
+        private float pauseTimer = 0f;
+
+        #region Rebinds
+        private static readonly KeySetting[] rebindKeyCodes =
         {
             new KeySetting("ReelIn", KeyCode.Space),
-            new KeySetting("ReelOut", KeyCode.LeftAlt), 
+            new KeySetting("ReelOut", KeyCode.LeftAlt),
             new KeySetting("GasBurst", KeyCode.Z),
             new KeySetting("Minimap Max", KeyCode.Tab),
-            new KeySetting("Minimap Toggle", KeyCode.M), 
+            new KeySetting("Minimap Toggle", KeyCode.M),
             new KeySetting("Minimap Reset", KeyCode.K),
             new KeySetting("Open Chat", KeyCode.None),
             new KeySetting("Live Spectate", KeyCode.Y)
         };
+        #endregion
 
-        private static readonly KeySetting[] cannonKeyCodes = 
+        #region Cannons
+        private static readonly KeySetting[] cannonKeyCodes =
         {
             new KeySetting("Cannon Up", KeyCode.W),
             new KeySetting("Cannon Down", KeyCode.S),
-            new KeySetting("Cannon Left", KeyCode.A), 
+            new KeySetting("Cannon Left", KeyCode.A),
             new KeySetting("Cannon Right", KeyCode.D),
             new KeySetting("Cannon Fire", KeyCode.Q),
             new KeySetting("Cannon Mount", KeyCode.G),
             new KeySetting("Cannon Slow", KeyCode.LeftShift)
         };
+        #endregion
 
-        private static readonly KeySetting[] titanKeyCodes = 
+        #region Titans
+        private static readonly KeySetting[] titanKeyCodes =
         {
             new KeySetting("Titan Forward", KeyCode.W),
-            new KeySetting("Titan Backward", KeyCode.S), 
+            new KeySetting("Titan Backward", KeyCode.S),
             new KeySetting("Titan Left", KeyCode.A),
             new KeySetting("Titan Right", KeyCode.D),
             new KeySetting("Titan Jump", KeyCode.LeftShift),
-            new KeySetting("Titan Kill", KeyCode.T), 
-            new KeySetting("Titan Walk", KeyCode.LeftAlt), 
+            new KeySetting("Titan Kill", KeyCode.T),
+            new KeySetting("Titan Walk", KeyCode.LeftAlt),
             new KeySetting("Titan Punch", KeyCode.Q),
             new KeySetting("Titan Slam", KeyCode.E),
             new KeySetting("Titan Grab (front)", KeyCode.Alpha1),
-            new KeySetting("Titan Grab (back)", KeyCode.Alpha3), 
+            new KeySetting("Titan Grab (back)", KeyCode.Alpha3),
             new KeySetting("Titan Grab (nape)", KeyCode.Mouse1),
             new KeySetting("Titan Slap", KeyCode.Mouse0),
-            new KeySetting("Titan Bite", KeyCode.Alpha2), 
+            new KeySetting("Titan Bite", KeyCode.Alpha2),
             new KeySetting("Titan Cover nape",KeyCode.O),
             new KeySetting("Titan Sit", KeyCode.X)
         };
+        #endregion
 
-        public static int RebindKeyCodesLength => RebindKeyCodes.Length;
-
-        public static int CannonKeyCodesLength => cannonKeyCodes.Length;
-
-        public static int TitanKeyCodesLength => titanKeyCodes.Length;
-
-        private static readonly KeySetting[] horseKeyCodes = 
+        #region Horse
+        private static readonly KeySetting[] horseKeyCodes =
         {
             new KeySetting("Horse Forward", KeyCode.W),
-            new KeySetting("Horse Backward", KeyCode.S), 
+            new KeySetting("Horse Backward", KeyCode.S),
             new KeySetting("Horse Left", KeyCode.A),
             new KeySetting("Horse Right", KeyCode.D),
             new KeySetting("Horse Walk", KeyCode.LeftShift),
             new KeySetting("Horse Jump", KeyCode.Q),
             new KeySetting("Horse Mount", KeyCode.LeftControl)
         };
-        
-        private static InputManager Instance { get; set; }
-        
+        #endregion
+
+        #region Anarchy
+        //Special Anarchy-specified keycodes
+        private static readonly KeySetting[] anarchyKeyCodes =
+        {
+            new KeySetting("RestartHotkey", KeyCode.F1), //Restarts game on press
+            new KeySetting("PauseHotkey", KeyCode.F2), //Pause/Unpause game
+            new KeySetting("DebugPanel", KeyCode.None) //Enables/Disables debug panel
+        };
+        #endregion
+
+        private static InputManager instance;
+        private static Action onAwake;
+
+        public static bool[] IsInput = new bool[22];
+        public static bool[] IsInputDown = new bool[22];
+        public static KeySetting[] Settings;
+        public static IntSetting GasBurstType = new IntSetting(nameof(GasBurstType), 0);
+
+        public static List<KeySetting> AllKeys { get; private set; }
+        public static int AnarchyKeyCodesLength => anarchyKeyCodes.Length;
+        public static int CannonKeyCodesLength => cannonKeyCodes.Length;
+        public static int HorseKeyCodesLength => horseKeyCodes.Length;
+        public static bool MenuOn { get; set; }
+        public static int RebindKeyCodesLength => rebindKeyCodes.Length;
+        public static int TitanKeyCodesLength => titanKeyCodes.Length;
+
+        //Sadly this is needed specifically for this one keybind
+        public static KeyCode OpenChatCode => rebindKeyCodes[(int)InputPos.InputRebinds.OpenChat].Value;
 
         public static void AddToList(KeySetting set)
         {
@@ -127,25 +149,25 @@ namespace Anarchy
         
         private static void OnAdd()
         {
-            
         }
 
         private void Awake()
         {
-            if (Instance != null)
+            if (instance != null)
             {
                 DestroyImmediate(this);
                 Debug.LogError("Attemption to create more then one Anarchy.InputManager, please avoid this");
                 return;
             }
             DontDestroyOnLoad(this);
-            Instance = this;
+            instance = this;
             if (AllKeys == null)
                 InitList();
             onAwake?.Invoke();
             onAwake = null;
         }
 
+        //Initializes basic aottg layout, using defaults first time
         private static void InitList()
         {
             AllKeys = new List<KeySetting>();
@@ -158,14 +180,24 @@ namespace Anarchy
             Settings = AllKeys.ToArray();
         }
 
+        public static bool IsInputAnarchy(int code)
+        {
+            return anarchyKeyCodes[code].IsKeyDown();
+        }
+
+        public static bool IsInputAnarchyHolding(int code)
+        {
+            return anarchyKeyCodes[code].IsKeyHolding();
+        }
+
         public static bool IsInputRebind(int code)
         {
-            return RebindKeyCodes[code].IsKeyDown();
+            return rebindKeyCodes[code].IsKeyDown();
         }
 
         public static bool IsInputRebindHolding(int code)
         {
-            return RebindKeyCodes[code].IsKeyHolding();
+            return rebindKeyCodes[code].IsKeyHolding();
         }
 
         public static bool IsInputCannonHolding(int code)
@@ -206,6 +238,49 @@ namespace Anarchy
                 var set = Settings[i];
                 IsInput[i] = set.IsKeyHolding();
                 IsInputDown[i] = set.IsKeyDown();
+            }
+
+            if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
+            {
+                float delta = Time.deltaTime;
+                if (AnarchyManager.PauseWindow.Active)
+                {
+                    delta *= 100000f;
+                }
+                if (anarchyKeyCodes[(int)InputPos.InputAnarchy.Restart].IsKeyDown())
+                {
+                    if(restartTimer == 0f)
+                    {
+                        FengGameManagerMKII.FGM.RestartGame(false, true);
+                        restartTimer += 0.001f;
+                    }
+                }
+                if (anarchyKeyCodes[(int)InputPos.InputAnarchy.Pause].IsKeyDown())
+                {
+                    if (pauseTimer == 0f)
+                    {
+                        bool val = AnarchyManager.PauseWindow.Active;
+                        Commands.ICommand cmd = new Commands.Chat.PauseCommand(!val);
+                        cmd.Execute(new string[0]);
+                        pauseTimer += 0.001f;
+                    }
+                }
+                if (restartTimer > 0f)
+                {
+                    restartTimer += delta;
+                    if (restartTimer > 2f)
+                    {
+                        restartTimer = 0f;
+                    }
+                }
+                if (pauseTimer > 0f)
+                {
+                    pauseTimer += delta;
+                    if (pauseTimer > 4f)
+                    {
+                        pauseTimer = 0f;
+                    }
+                }
             }
         }
     }

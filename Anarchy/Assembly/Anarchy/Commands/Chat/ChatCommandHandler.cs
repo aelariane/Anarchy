@@ -27,7 +27,8 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("unpause", new PauseCommand(false));
             allCommands.Add("resetkd", new ResetKDCommand());
             allCommands.Add("revive", new ReviveCommand());
-            allCommands.Add("spectate", new SpectateCommand());
+            //Temporarily removed from mod
+            //allCommands.Add("spectate", new SpectateCommand());
             allCommands.Add("leave", new LeaveCommand());
             allCommands.Add("asoracing", new ASORacingCommand());
             allCommands.Add("rules", new RulesCommand());

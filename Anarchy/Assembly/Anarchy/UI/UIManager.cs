@@ -160,10 +160,12 @@ namespace Anarchy.UI
             {
                 foreach(GUIBase baseg in GUIBase.AllBases)
                 {
-                    if (baseg.Active)
+                    if (baseg.Active && baseg.Name != nameof(PauseWindow))
                     {
                         baseg.DisableImmediate();
+                        baseg.OnUpdateScaling();
                         baseg.EnableImmediate();
+                        continue;
                     }
                     baseg.OnUpdateScaling();
                 }

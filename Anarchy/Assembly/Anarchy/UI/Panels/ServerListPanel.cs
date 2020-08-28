@@ -152,7 +152,7 @@ namespace Anarchy.UI
             right = rects[1];
 
             serverName = "Food for titoons";
-            serverTime = "999";
+            serverTime = "83";
             password = string.Empty;
             mapSelection = 0;
             maps = new string[] { "The City", "The Forest", "The Forest II", "The Forest III", "The Forest IV  - LAVA", "Annie", "Annie II", "Colossal Titan", "Colossal Titan II", "Trost", "Trost II", "Racing - Akina", "Outside The Walls", "The City III", "Cave Fight", "House Fight", "Custom", "Custom (No PT)" };
@@ -267,7 +267,15 @@ namespace Anarchy.UI
         private void OnJoinedLobby(AOTEventArgs args)
         {
             connected = true;
-            head = locale["connected"] + " " + regions[region];
+            try
+            {
+                head = locale["connected"] + " " + regions[region];
+            }
+            catch
+            {
+                Debug.Log(locale == null);
+                Debug.Log(regions == null);
+            }
             UpdateRoomList();
             timeToUpdate = UpdateTime;
         }

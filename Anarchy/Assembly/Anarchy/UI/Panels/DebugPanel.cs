@@ -83,9 +83,10 @@ namespace Anarchy.UI
             scrollRect.Reset();
             scrollArea.y = rect.y;
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
+            var options = new GUILayoutOption[0];
             foreach (var msg in messages)
             {
-                GUILayout.Label(msg.ToString(), new GUILayoutOption[0]);
+                GUILayout.Label(msg.ToString(), options);
             }
             EndScrollView();
         }
@@ -122,7 +123,7 @@ namespace Anarchy.UI
                 {
                     val = val.ToHTMLFormat();
                 }
-                GUILayout.Label($"<b><color=#{ColorKey}>{test.Key}</color>: <color=#{ColorValue}>{val}</color></b>", new GUILayoutOption[] {UnityEngine.GUILayout.MaxWidth(right.width) });
+                GUILayout.Label($"<b><color=#{ColorKey}>{test.Key}</color>: <color=#{ColorValue}>{val}</color></b>", new GUILayoutOption[] { UnityEngine.GUILayout.MaxWidth(right.width) });
             }
             EndScrollView();
         }

@@ -16,12 +16,14 @@ namespace Anarchy.Network.Events
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
-            if (!sender.IsMasterClient)
-            {
-                reason += UI.Log.GetString("notMC");
-                return false;
-            }
-            Hashtable hash = data[245] as ExitGames.Client.Photon.Hashtable;
+
+            //Commented due to PedoRC mod triggering this
+            //if (!sender.IsMasterClient)
+            //{
+            //    reason += UI.Log.GetString("notMC");
+            //    return false;
+            //}
+            Hashtable hash = data[245] as Hashtable;
             if(hash == null)
             {
                 reason += UI.Log.GetString("notHashOrNull");

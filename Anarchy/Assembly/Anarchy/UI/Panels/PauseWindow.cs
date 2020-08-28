@@ -9,9 +9,10 @@ namespace Anarchy.UI
         private Rect windowRect;
         public float PauseWaitTime;
 
-        public PauseWindow() : base("PauseWindow", GUILayers.PauseWindow)
+        public PauseWindow() : base(nameof(PauseWindow), GUILayers.PauseWindow)
         {
             windowRect = Helper.GetScreenMiddle(Width, Height);
+            base.animator = new Animation.NoneAnimation(this);
         }
 
         protected internal override void Draw()
@@ -33,7 +34,7 @@ namespace Anarchy.UI
             {
                 if (PauseWaitTime <= 3f)
                 {
-                    PauseWaitTime -= Time.deltaTime * 1000000f;
+                    PauseWaitTime -= Time.deltaTime * 100000f;
                     if (PauseWaitTime <= 0f)
                     {
                         PauseWaitTime = 0f;

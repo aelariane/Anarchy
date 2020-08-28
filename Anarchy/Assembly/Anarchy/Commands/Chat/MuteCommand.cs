@@ -10,7 +10,7 @@ namespace Anarchy.Commands.Chat
         private readonly bool value;
         private readonly string key;
 
-        public MuteCommand(bool val) : base(val ? "mute" : "unmute", false, true, true)
+        public MuteCommand(bool val) : base(val ? "mute" : "unmute", false, true, false)
         {
             value = val;
             key = val ? "mute" : "unmute";

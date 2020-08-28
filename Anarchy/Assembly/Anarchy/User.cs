@@ -50,23 +50,12 @@ namespace Anarchy
         public static readonly UserSetting RestartMessage = new UserSetting("restartMsg");
         
         public static string[] AllProfiles { get; private set; }
-        
-        public static string AllGuildNames
-        {
-            get
-            {
-                var guild = string.Empty;
-                for (var i = GuildNames.Length - 1; i > 0; i--)
-                {
-                    var name = GuildNames[i].Value;
-                    if (!name.IsNullOrEmpty())
-                    {
-                        guild += (guild.IsNullOrEmpty() ? "" : "\n") + GuildNames[i].Value;
-                    }
-                }
-                return guild;
-            }
-        }
+
+        public static string AllGuildNames => 
+            string.Join(
+                "\n",
+                GuildNames.Where(x => x.Value.TrimStart().Length > 0).Select(x => x.Value).Reverse().ToArray()
+            );
         
         public static string ProfileName { get; private set; } = string.Empty;
 

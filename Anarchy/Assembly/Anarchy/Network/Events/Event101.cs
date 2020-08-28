@@ -19,10 +19,12 @@ namespace Anarchy.Network.Events
                 if (parameters[101] is bool)
                 {
                     sender.ModName = ModNames.RedSkies;
+                    sender.ModLocked = true;
                 }
                 else if (parameters[102] is bool)
                 {
                     sender.ModName = string.Format(ModNames.Cyan, parameters[104] as string);
+                    sender.ModLocked = true;
                 }
             }
             reason = "";

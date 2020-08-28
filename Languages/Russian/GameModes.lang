@@ -2,8 +2,8 @@
 disabled:disabled
 
 #Titans
-titancInfoEnabled:<color=#$maincolor$>Число титанов [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
-titancInfoDisabled:<color=#$maincolor$>Число титанов: <color=#$dColor$><b>выкл.</b></color></color>
+titancInfoEnabled:<color=#$maincolor$>Число Титанов [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
+titancInfoDisabled:<color=#$maincolor$>Число Титанов: <color=#$dColor$><b>выкл.</b></color></color>
 
 punkWavesInfoEnabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$eColor$><b>вкл.</b></color></color>
 punkWavesInfoDisabled:<color=#$maincolor$>Панки каждые 5 волн: <color=#$dColor$><b>выкл.</b></color></color>
@@ -61,8 +61,8 @@ endlessInfoDisabled:<color=#$maincolor$>Бесконечное возрожде�
 maxwaveInfoEnabled:<color=#$maincolor$>Максимальная волна [<color=#$subcolor$>{0}</color>]: <color=#$eColor$><b>вкл.</b></color></color>
 maxwaveInfoDisabled:<color=#$maincolor$>Максимальная волна: <color=#$dColor$><b>выкл.</b></color></color>
 
-globalDisableMinimapInfoEnabled:<color=#$maincolor$>Глобальный запрет миникарты: <color=#$eColor$><b>вкл.</b></color></color>
-globalDisableMinimapInfoDisabled:<color=#$maincolor$>Глобальный запрет миникарты: <color=#$dColor$><b>выкл.</b></color></color>
+globalDisableMinimapInfoEnabled:<color=#$maincolor$>Глобальный запрет мини-карты: <color=#$eColor$><b>вкл.</b></color></color>
+globalDisableMinimapInfoDisabled:<color=#$maincolor$>Глобальный запрет мини-карты: <color=#$dColor$><b>выкл.</b></color></color>
 
 horseInfoEnabled:<color=#$maincolor$>Лошадки: <color=#$eColor$><b>вкл.</b></color></color>
 horseInfoDisabled:<color=#$maincolor$>Лошадки: <color=#$dColor$><b>выкл.</b></color></color>

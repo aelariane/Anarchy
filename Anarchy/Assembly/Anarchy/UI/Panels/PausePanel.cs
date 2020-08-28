@@ -102,7 +102,10 @@ namespace Anarchy.UI
             activePanel = null;
             pauseStyle = null;
             pauseRect = null;
-            Time.timeScale = 1f;
+            if (!AnarchyManager.PauseWindow.Active)
+            {
+                Time.timeScale = 1f;
+            }
             Screen.lockCursor = leaving ? false : (IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS);
             Screen.showCursor = leaving;
             IN_GAME_MAIN_CAMERA.isPausing = false;

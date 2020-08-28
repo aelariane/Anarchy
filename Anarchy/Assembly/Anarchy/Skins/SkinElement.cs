@@ -1,4 +1,6 @@
-﻿using Anarchy.Configuration;
+﻿using System.Collections.Generic;
+
+using Anarchy.Configuration;
 using Anarchy.UI;
 using UnityEngine;
 
@@ -7,18 +9,29 @@ namespace Anarchy.Skins
     public class SkinElement
     {
         private const int AllowedSize = 1000000;
+        private bool _needReload;
 
         public bool IsDone { get; private set; } = false;
         public bool IsTransparent => Path.ToLower().Trim().Equals("transparent");
-        public bool NeedReload { get; private set; }
+        public bool NeedReload
+        {
+            get => _needReload;
+            private set { if (value) Materials = null; _needReload = value; }
+        }
+
         public string Path { get; private set; }
         public Texture2D Texture { get; private set; }
+        public List<Material> Materials { get; set;  }
 
         public SkinElement(string path) : this(path, true)
         {
         }
 
-        public SkinElement(string path, bool reload)
+        public SkinElement(string path, bool reload) : this(path, reload, AllowedSize)
+        {
+        }
+
+        public SkinElement(string path, bool reload, int maxSize)
         {
             NeedReload = reload;
             Path = path;

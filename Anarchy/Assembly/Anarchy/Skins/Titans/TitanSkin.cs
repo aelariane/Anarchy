@@ -34,6 +34,7 @@ namespace Anarchy.Skins.Titans
             {
                 rend.material.mainTextureScale = new Vector2(rend.material.mainTextureScale.x * 4f, rend.material.mainTextureScale.y * 8f);
                 rend.material.mainTextureOffset = new Vector2(0f, 0f);
+                TryApplyTexture(elements[1], rend, true);
                 rend.material.mainTexture = elements[1].Texture;
             }
         }

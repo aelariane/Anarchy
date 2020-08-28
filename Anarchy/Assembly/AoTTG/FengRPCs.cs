@@ -284,7 +284,7 @@ internal partial class FengGameManagerMKII
         if (pause)
         {
             AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
-            UnityEngine.Time.timeScale = 1E-06f;
+            UnityEngine.Time.timeScale = 0.00001f;
             if (!AnarchyManager.PauseWindow.Active) AnarchyManager.PauseWindow.EnableImmediate();
         }
         else
@@ -398,6 +398,7 @@ internal partial class FengGameManagerMKII
  version == AnarchyManager.AnarchyVersion.ToString() && (customName != string.Empty && customName == AnarchyManager.CustomName);
 
                 info.Sender.ModName = string.Format(ModNames.AnarchyCustom, customNameShow);
+                info.Sender.ModLocked = true;
                 return;
             }
 
@@ -405,6 +406,7 @@ internal partial class FengGameManagerMKII
 
             info.Sender.AnarchySync = false;
             info.Sender.ModName = string.Format(ModNames.AnarchyCustom, version);
+            info.Sender.ModLocked = true;
         }
     }
 

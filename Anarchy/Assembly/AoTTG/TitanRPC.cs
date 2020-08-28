@@ -153,20 +153,8 @@ public partial class TITAN
             IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(null);
             IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(true);
             IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
-            PhotonNetwork.player.SetCustomProperties(new Hashtable
-            {
-                {
-                    PhotonPlayerProperty.dead,
-                    true
-                }
-            });
-            PhotonNetwork.player.SetCustomProperties(new Hashtable
-            {
-                {
-                    PhotonPlayerProperty.deaths,
-                    (int) PhotonNetwork.player.Properties[PhotonPlayerProperty.deaths] + 1
-                }
-            });
+            PhotonNetwork.player.Dead = true;
+            PhotonNetwork.player.Deaths++;
         }
 
         DieAnimation();

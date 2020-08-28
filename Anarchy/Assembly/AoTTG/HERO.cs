@@ -27,6 +27,7 @@ public partial class HERO : HeroBase
 
     private static List<TITAN> MyTitans = new List<TITAN>();
     private static string mySkinUrl = "";
+    private bool animationStopped = false;
     private bool almostSingleHook;
     private string attackAnimation;
     private int attackLoop;
@@ -178,10 +179,23 @@ public partial class HERO : HeroBase
     private float wallRunTime;
     private TriggerColliderWeapon wLeft;
     private TriggerColliderWeapon wRight;
+    private SmoothSyncMovement smoothSync;
 
     public bool IsDead { get; private set; }
 
     public bool IsGrabbed => State == HeroState.Grab;
+
+    internal SmoothSyncMovement SmoothSync
+    {
+        get
+        {
+            if (smoothSync == null)
+            {
+                smoothSync = GetComponent<SmoothSyncMovement>();
+            }
+            return smoothSync;
+        }
+    }
 
     private HeroState State
     {
@@ -327,10 +341,10 @@ public partial class HERO : HeroBase
             if (!(myBomb == null) && !myBomb.disabled) myBomb.Explode(bombRadius);
             var hash = new Hashtable
             {
-                {"RCBombR", Bomb.MyBombColorR.ToValue()},
-                {"RCBombG", Bomb.MyBombColorG.ToValue()},
-                {"RCBombB", Bomb.MyBombColorB.ToValue()},
-                {"RCBombA", Bomb.MyBombColorA.ToValue()}
+                { "RCBombR", Bomb.MyBombColorR.ToValue() },
+                { "RCBombG", Bomb.MyBombColorG.ToValue() },
+                { "RCBombB", Bomb.MyBombColorB.ToValue() },
+                { "RCBombA", Bomb.MyBombColorA.ToValue() }
             };
             PhotonNetwork.player.SetCustomProperties(hash);
             detonate = false;
@@ -1682,6 +1696,17 @@ public partial class HERO : HeroBase
         if (Setup.part_hair_2 != null) ClothFactory.DisposeObject(Setup.part_hair_2);
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV != null)
             GameModes.InfectionOnDeath(BasePV.owner);
+
+        if (IsLocal)
+        {
+            if (leftbladetrail) leftbladetrail.Deactivate();
+            if (leftbladetrail2) leftbladetrail2.Deactivate();
+            if (rightbladetrail) rightbladetrail.Deactivate();
+            if (rightbladetrail2) rightbladetrail2.Deactivate();
+            
+            if (bulletLeft) Destroy(bulletLeft.gameObject);
+            if (bulletRight) Destroy(bulletRight.gameObject);
+        }
     }
 
     private void PlayAnimationAt(string aniName, float normalizedTime)
@@ -2243,6 +2268,11 @@ public partial class HERO : HeroBase
 
     public void ContinueAnimation()
     {
+        if (!animationStopped)
+        {
+            return;
+        }
+        animationStopped = false;
         foreach (var obj in baseA)
         {
             var animationState = (AnimationState) obj;
@@ -2683,6 +2713,10 @@ public partial class HERO : HeroBase
 
     public void PauseAnimation()
     {
+        if (animationStopped)
+        {
+            return;
+        }
         foreach (var obj in baseA)
         {
             var animationState = (AnimationState) obj;
@@ -2691,6 +2725,7 @@ public partial class HERO : HeroBase
 
         if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
             BasePV.RPC("netPauseAnimation", PhotonTargets.Others);
+        animationStopped = true;
     }
 
     public void PlayAnimation(string aniName)

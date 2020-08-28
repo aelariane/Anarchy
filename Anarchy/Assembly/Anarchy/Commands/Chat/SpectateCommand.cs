@@ -9,6 +9,7 @@ namespace Anarchy.Commands.Chat
     internal class SpectateCommand : ChatCommand
     {
         internal static bool IsInSpecMode = false;
+        private List<GameObject> spectateSprites = new List<GameObject>();
 
         public SpectateCommand() : base("spectate", false, true, false)
         {
@@ -16,30 +17,34 @@ namespace Anarchy.Commands.Chat
 
         public void EnterSpecMode(bool enter)
         {
-            var spectateSprites = new List<GameObject>();
             if (enter)
             {
-                foreach (GameObject gameObject in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
+                spectateSprites = new List<GameObject>();
+                UnityEngine.Object[] array = UnityEngine.Object.FindObjectsOfType(typeof(GameObject));
+                for (int i = 0; i < array.Length; i++)
                 {
-                    if (gameObject.GetComponent<UISprite>() != null && gameObject.activeInHierarchy)
+                    GameObject gameObject = (GameObject)array[i];
+                    if (!(gameObject.GetComponent<UISprite>() != null) || !gameObject.activeInHierarchy)
                     {
-                        string text = gameObject.name;
-                        if (text.Contains("blade") || text.Contains("bullet") || text.Contains("gas") || text.Contains("flare") || text.Contains("skill_cd"))
+                        continue;
+                    }
+                    string text = gameObject.name;
+                    if (text.Contains("blade") || text.Contains("bullet") || text.Contains("gas") || text.Contains("flare") || text.Contains("skill_cd"))
+                    {
+                        if (!spectateSprites.Contains(gameObject))
                         {
-                            if (!spectateSprites.Contains(gameObject))
-                            {
-                                spectateSprites.Add(gameObject);
-                            }
-                            gameObject.SetActive(false);
+                            spectateSprites.Add(gameObject);
                         }
+                        gameObject.SetActive(value: false);
                     }
                 }
-                string[] array2 = new string[]
+                string[] array2 = new string[2]
                 {
-                    "Flare",
-                    "LabelInfoBottomRight"
+                "Flare",
+                "LabelInfoBottomRight"
                 };
-                foreach (string text2 in array2)
+                string[] array3 = array2;
+                foreach (string text2 in array3)
                 {
                     GameObject gameObject2 = GameObject.Find(text2);
                     if (gameObject2 != null)
@@ -48,12 +53,29 @@ namespace Anarchy.Commands.Chat
                         {
                             spectateSprites.Add(gameObject2);
                         }
-                        gameObject2.SetActive(false);
+                        gameObject2.SetActive(value: false);
                     }
                 }
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[1], false);
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[2], false);
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[3], false);
+                foreach (HERO player in FengGameManagerMKII.Heroes)
+                {
+                    if (player.BasePV.IsMine)
+                    {
+                        PhotonNetwork.Destroy(player.BasePV);
+                    }
+                }
+                if (PhotonNetwork.player.IsTitan && !PhotonNetwork.player.Dead)
+                {
+                    foreach (TITAN titan in FengGameManagerMKII.Titans)
+                    {
+                        if (titan.BasePV.IsMine)
+                        {
+                            PhotonNetwork.Destroy(titan.BasePV);
+                        }
+                    }
+                }
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[1], state: false);
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[2], state: false);
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[3], state: false);
                 FengGameManagerMKII.FGM.needChooseSide = false;
                 Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().enabled = true;
                 if (IN_GAME_MAIN_CAMERA.CameraMode == CameraType.ORIGINAL)
@@ -62,18 +84,16 @@ namespace Anarchy.Commands.Chat
                     Screen.showCursor = false;
                 }
                 GameObject gameObject3 = GameObject.FindGameObjectWithTag("Player");
-                bool flag8 = gameObject3 != null && gameObject3.GetComponent<HERO>() != null;
-                if (flag8)
+                if (gameObject3 != null && gameObject3.GetComponent<HERO>() != null)
                 {
-                    Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(gameObject3, true, false);
+                    Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(gameObject3.GetComponent<HERO>());
                 }
                 else
                 {
-                    Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(null, true, false);
+                    Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(null);
                 }
-                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().setSpectorMode(false);
+                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().setSpectorMode(val: false);
                 Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().gameOver = true;
-                //base.StartCoroutine(this.reloadSky());
             }
             else
             {
@@ -83,35 +103,48 @@ namespace Anarchy.Commands.Chat
                 }
                 if (spectateSprites != null)
                 {
-                    foreach (GameObject gameObject4 in spectateSprites)
+                    foreach (GameObject spectateSprite in spectateSprites)
                     {
-                        if (gameObject4 != null)
+                        if (spectateSprite != null)
                         {
-                            gameObject4.SetActive(true);
+                            spectateSprite.SetActive(value: true);
                         }
                     }
                 }
                 spectateSprites = new List<GameObject>();
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[1], false);
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[2], false);
-                NGUITools.SetActive(GameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[3], false);
-                FengGameManagerMKII.FGM.needChooseSide = false;
-                foreach (object obj in FengGameManagerMKII.Heroes)
-                {
-                    HERO hero = (HERO)obj;
-                    if (hero != null && hero.BasePV.IsMine)
-                    {
-                        Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(hero, true, false);
-                    }
-                }
-                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().setSpectorMode(true);
-                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().gameOver = false;
-                //IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition(); //Maybe this will fix camera sensitivity, at least player no longer respawn when using command...
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[1], state: false);
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[2], state: false);
+                NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[3], state: false);
+                FengGameManagerMKII.FGM.needChooseSide = true;
+                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().SetMainObject(null);
+                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().setSpectorMode(val: true);
+                Camera.main.GetComponent<IN_GAME_MAIN_CAMERA>().gameOver = true;
             }
         }
 
         public override bool Execute(string[] args)
         {
+            if(args.Length > 0)
+            {
+                if(int.TryParse(args[0], out int id))
+                {
+                    var player = PhotonPlayer.Find(id);
+                    if(player == null || player.Dead)
+                    {
+                        return false;
+                    }
+                    var hero = player.GameObject?.GetComponent<HERO>();
+                    if(hero == null)
+                    {
+                        return false;
+                    }
+
+                    IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(hero, true, false);
+                    IN_GAME_MAIN_CAMERA.MainCamera.setSpectorMode(false);
+                    return true;
+                }
+                return false;
+            }
             IsInSpecMode = !IsInSpecMode;
             EnterSpecMode(IsInSpecMode);
             chatMessage = Lang["specMode" + (IsInSpecMode ? "Enter" : "Quit")];

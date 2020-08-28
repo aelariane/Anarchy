@@ -12,7 +12,7 @@ namespace Anarchy.Skins.Maps
 
         public override void Apply()
         {
-            Material mat = Camera.main.GetComponent<Skybox>().material;
+            var mat = Camera.main.GetComponent<Skybox>().renderer.material;
             for(int i = 0; i < DataLength - 1; i++)
             {
                 SkinElement skin = elements[i];
@@ -51,7 +51,7 @@ namespace Anarchy.Skins.Maps
                         render.enabled = false;
                         continue;
                     }
-                    render.material.mainTexture = groundSkin.Texture;
+                    TryApplyTexture(groundSkin, render, false);
                 }
             }
 

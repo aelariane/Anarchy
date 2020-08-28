@@ -122,14 +122,7 @@ namespace Anarchy.UI
             }
             IN_GAME_MAIN_CAMERA.usingTitan = false;
             IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
-            Hashtable customProperties = new Hashtable
-                {
-                    {
-                        PhotonPlayerProperty.character,
-                        character
-                    }
-                };
-            PhotonNetwork.player.SetCustomProperties(customProperties);
+            PhotonNetwork.player.Character = character;
         }
 
         private void SpawnHero()
@@ -170,14 +163,7 @@ namespace Anarchy.UI
             }
             IN_GAME_MAIN_CAMERA.usingTitan = false;
             IN_GAME_MAIN_CAMERA.MainCamera.setHUDposition();
-            Hashtable customProperties = new Hashtable
-            {
-                {
-                    PhotonPlayerProperty.character,
-                    character
-                }
-            };
-            PhotonNetwork.player.SetCustomProperties(customProperties);
+            PhotonNetwork.player.Character = character;
         }
 
         private void SpawnTitan()

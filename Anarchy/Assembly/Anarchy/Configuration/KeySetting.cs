@@ -26,6 +26,10 @@ namespace Anarchy.Configuration
 
         public bool IsKeyHolding()
         {
+            if (Value == KeyCode.None)
+            {
+                return false;
+            }
             if (isAxis)
             {
                 return CheckAxis();
@@ -35,6 +39,10 @@ namespace Anarchy.Configuration
 
         public bool IsKeyDown()
         {
+            if (Value == KeyCode.None)
+            {
+                return false;
+            }
             if (isAxis)
             {
                 return CheckAxis();
@@ -44,6 +52,10 @@ namespace Anarchy.Configuration
 
         public bool IsKeyUp()
         {
+            if (Value == KeyCode.None)
+            {
+                return false;
+            }
             if (isAxis)
             {
                 return CheckAxis();
