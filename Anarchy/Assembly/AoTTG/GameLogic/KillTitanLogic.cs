@@ -4,7 +4,6 @@
     {
         public KillTitanLogic() : base()
         {
-
         }
 
         public KillTitanLogic(GameLogic logic) : this()

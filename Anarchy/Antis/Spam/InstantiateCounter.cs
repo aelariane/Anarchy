@@ -11,6 +11,7 @@ namespace Antis.Spam
         private SyncDictionary<string, int> instantiatesList = new SyncDictionary<string, int>();
 
         private static int checkCount = 40;
+
         /// <summary>
         /// Amount of object spammed to define it as spam
         /// </summary>
@@ -24,7 +25,7 @@ namespace Antis.Spam
         public static event SpamDetected<string> OnInstantiateSpamDetected = (sender, data) => { };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ID">Owner ID</param>
         public InstantiateCounter(int ID)

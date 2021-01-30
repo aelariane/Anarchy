@@ -33,7 +33,7 @@ namespace Anarchy.UI
             rect.MoveToEndY(BoxPosition, Style.Height);
             rect.MoveToEndX(BoxPosition, Style.LabelOffset * 2f + Style.HorizontalMargin);
             rect.width = Style.LabelOffset;
-            if(Button(rect, locale["btnReset"], false))
+            if (Button(rect, locale["btnReset"], false))
             {
                 GameModes.DisableAll();
             }
@@ -67,6 +67,8 @@ namespace Anarchy.UI
             GameModes.AllowHorses.Draw(right, locale);
             right.MoveY();
             GameModes.AfkKill.Draw(right, locale);
+            right.MoveY();
+            GameModes.InfiniteGasPvp.Draw(right, locale);
         }
 
         protected override void OnPanelDisable()
@@ -85,7 +87,7 @@ namespace Anarchy.UI
             left = rects[0];
             right = rects[1];
             modeSelection = locale.GetArray("selections");
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
                 GameModes.Load();
             }
@@ -119,14 +121,23 @@ namespace Anarchy.UI
             left.Reset();
             GameModes.AsoRacing.Draw(left, locale);
             left.MoveY();
-            GameModes.RacingRestartTime.Draw(right, locale);
+            GameModes.RacingRestartTime.Draw(left, locale);
+            left.MoveY();
+            GameModes.AutoPickNextMap.Draw(left, locale);
+            TextField(left, GameModes.AutoPickNextMapFilter, Style.LabelSpace + locale["autoPickMapFilter"], Style.LabelOffset, true);
+            ToggleButton(left, GameModes.AnnounceMapSwitch, Style.LabelSpace + locale["autoPickMapAnnounce"], false);
+
 
             right.Reset();
             GameModes.RacingStartTime.Draw(right, locale);
             right.MoveY();
             GameModes.RacingFinishersRestart.Draw(right, locale);
             right.MoveY();
-            GameModes.RacingTimeLimit.Draw(left, locale);
+            GameModes.RacingTimeLimit.Draw(right, locale);
+            right.MoveY();
+            GameModes.MaximumSpeedLimit.Draw(right, locale);
+            right.MoveY();
+            GameModes.NonStopRacing.Draw(right, locale);
         }
 
         [GUIPage(TitansPage)]

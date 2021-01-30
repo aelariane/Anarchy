@@ -1,5 +1,5 @@
-﻿using System;
-using ExitGames.Client.Photon;
+﻿using ExitGames.Client.Photon;
+using System;
 
 namespace Anarchy.Network.Events
 {
@@ -14,7 +14,7 @@ namespace Anarchy.Network.Events
 
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
-            if(sender != null)
+            if (sender != null)
             {
                 reason = UI.Log.GetString("senderMustBeNull");
                 return false;

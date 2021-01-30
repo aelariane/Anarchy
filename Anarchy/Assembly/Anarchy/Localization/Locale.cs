@@ -21,7 +21,6 @@ namespace Anarchy.Localization
         public bool IsOpen { get; private set; }
         public string Path { get; private set; }
 
-
         public Locale(string element) : this(element, false)
         {
         }
@@ -84,7 +83,7 @@ namespace Anarchy.Localization
                 return;
             }
             var temp = new Dictionary<string, string>();
-            foreach(KeyValuePair<string, string> pair in localizedText)
+            foreach (KeyValuePair<string, string> pair in localizedText)
             {
                 temp.Add(pair.Key, User.FormatColors(pair.Value));
             }
@@ -190,8 +189,11 @@ namespace Anarchy.Localization
         {
             get
             {
-                if(localizedText.ContainsKey(key))
+                if (localizedText.ContainsKey(key))
+                {
                     return localizedText[key];
+                }
+
                 return $"?{key}?";
             }
         }

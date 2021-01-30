@@ -17,12 +17,12 @@ namespace Anarchy.Network.Events
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
-            if(sender == null)
+            if (sender == null)
             {
                 return false;
             }
             Hashtable hash = data[245] as Hashtable;
-            if(hash == null)
+            if (hash == null)
             {
                 reason = UI.Log.GetString("notHashOrNull");
                 return false;
@@ -32,7 +32,7 @@ namespace Anarchy.Network.Events
                 reason = UI.Log.GetString("missingKey", "0");
                 return false;
             }
-            if(hash[(byte)0] is int mkey)
+            if (hash[(byte)0] is int mkey)
             {
                 key = mkey;
                 return true;

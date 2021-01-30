@@ -2,7 +2,7 @@
 
 namespace Anarchy.UI
 {
-    [AttributeUsage(AttributeTargets.Method)]   
+    [AttributeUsage(AttributeTargets.Method)]
     public class GUIPageAttribute : Attribute
     {
         public readonly int Page;

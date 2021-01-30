@@ -1,0 +1,20 @@
+﻿public enum TitanState : int
+{
+    Idle,
+    Attack,
+    Turn,
+    Chase,
+    Laugh,
+    Hit,
+    Wander,
+    Grad,
+    Eat,
+    Hit_Eye,
+    To_CheckPoint,
+    To_PVP_PT,
+    Random_Run,
+    Down,
+    Sit,
+    Recover,
+    Count
+}

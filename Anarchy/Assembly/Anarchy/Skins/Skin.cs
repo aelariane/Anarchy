@@ -17,12 +17,12 @@ namespace Anarchy.Skins
         public Skin(GameObject owner, string[] data)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            if(data.Length != DataLength)
+            if (data.Length != DataLength)
             {
                 throw new ArgumentException($"Invalid length of received data. Type {GetType().Name}, expected value: {DataLength}", nameof(data) + ".Length");
             }
             elements = new Dictionary<int, SkinElement>();
-            for(int i = 0; i < DataLength; i++)
+            for (int i = 0; i < DataLength; i++)
             {
                 elements.Add(i, new SkinElement(data[i], true));
             }
@@ -32,12 +32,12 @@ namespace Anarchy.Skins
 
         public virtual void CheckReload(string[] data)
         {
-            if(data.Length != DataLength)
+            if (data.Length != DataLength)
             {
                 return;
             }
             int i = 0;
-            foreach(KeyValuePair<int, SkinElement> el in elements)
+            foreach (KeyValuePair<int, SkinElement> el in elements)
             {
                 if (el.Value != null)
                 {
@@ -112,7 +112,7 @@ namespace Anarchy.Skins
         {
             if (element != null && element.IsDone)
             {
-                if(!canBeTransparent && element.IsTransparent)
+                if (!canBeTransparent && element.IsTransparent)
                 {
                     return;
                 }
@@ -150,7 +150,7 @@ namespace Anarchy.Skins
                         return x.material;
                     }));
                 }
-                for(int i = 0; i < renderers.Length; i++)
+                for (int i = 0; i < renderers.Length; i++)
                 {
                     var render = renderers[i];
                     if (canBeTransparent && element.IsTransparent)

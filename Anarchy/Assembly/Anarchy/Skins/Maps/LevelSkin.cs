@@ -1,5 +1,5 @@
-﻿using System;
-using Anarchy.Configuration;
+﻿using Anarchy.Configuration;
+using System;
 using UnityEngine;
 
 namespace Anarchy.Skins.Maps
@@ -24,13 +24,13 @@ namespace Anarchy.Skins.Maps
 
         protected void ApplySkybox()
         {
-            if(!SkinSettings.SkyboxSkinsEnabled.Value)
+            if (!SkinSettings.SkyboxSkinsEnabled.Value)
             {
                 return;
             }
             Material mat = Camera.main.GetComponent<Skybox>().material;
             int j = 0;
-            for (int i = DataLength - 6; i < DataLength ; i++, j++)
+            for (int i = DataLength - 6; i < DataLength; i++, j++)
             {
                 SkinElement skin = elements[i];
                 if (skin != null && skin.IsDone)

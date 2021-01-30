@@ -12,12 +12,15 @@ namespace Anarchy.Network.Events
             Code = 254;
             NetworkManager.RegisterEvent(this);
         }
-        
+
         public bool CheckData(ExitGames.Client.Photon.EventData data, PhotonPlayer sender, out string reason)
         {
             reason = string.Empty;
-            if(sender == null)
+            if (sender == null)
+            {
                 return false;
+            }
+
             key = sender.ID;
             return true;
         }
@@ -33,6 +36,8 @@ namespace Anarchy.Network.Events
             return true;
         }
 
-        public void OnFailedHandle() { }
+        public void OnFailedHandle()
+        {
+        }
     }
 }

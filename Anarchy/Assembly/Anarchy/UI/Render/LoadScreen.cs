@@ -33,7 +33,7 @@ namespace Anarchy.UI
             LogoFadeAnimation();
         }
 
-        private  IEnumerator Load()
+        private IEnumerator Load()
         {
             string profile = "";
             Info.text = "Loading configuration...";
@@ -89,14 +89,14 @@ namespace Anarchy.UI
 
         private void LogoFadeAnimation()
         {
-            float delta = colorInc ? Fade : -Fade; 
+            float delta = colorInc ? Fade : -Fade;
             fadeColor.a += delta;
             Logo.color = fadeColor;
             if (fadeColor.a <= MinAlpha)
             {
                 colorInc = true;
             }
-            else if(fadeColor.a >= MaxAlpha)
+            else if (fadeColor.a >= MaxAlpha)
             {
                 colorInc = false;
             }

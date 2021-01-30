@@ -64,18 +64,18 @@ public class KillInfoComponent : MonoBehaviour
 
     private void OnEnable()
     {
-    //    alpha = 1f;
-    //    lifeTime = 8f;
-    //    maxScale = 1.5f;
-    //    offset = 24;
-    //    timeElapsed = 0f;
-    //    col = 0;
-    //    this.start = true;
-    //    this.baseT.localScale = new Vector3(0.85f, 0.85f, 0.85f);
-    //    this.baseT.localPosition = new Vector3(0f, -100f + (float)Screen.height * 0.5f, 0f);
-    //    groupBig.SetActive(true);
-    //    groupSmall.SetActive(true);
-    //    setAlpha(alpha);
+        //    alpha = 1f;
+        //    lifeTime = 8f;
+        //    maxScale = 1.5f;
+        //    offset = 24;
+        //    timeElapsed = 0f;
+        //    col = 0;
+        //    this.start = true;
+        //    this.baseT.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+        //    this.baseT.localPosition = new Vector3(0f, -100f + (float)Screen.height * 0.5f, 0f);
+        //    groupBig.SetActive(true);
+        //    groupSmall.SetActive(true);
+        //    setAlpha(alpha);
     }
 
     private void setAlpha(float alpha)
@@ -154,8 +154,15 @@ public class KillInfoComponent : MonoBehaviour
         {
             this.timeElapsed = this.lifeTime;
         }
-        if (groupBig != null) this.groupBig.SetActive(false);
-        if (groupSmall != null) this.groupSmall.SetActive(true);
+        if (groupBig != null)
+        {
+            this.groupBig.SetActive(false);
+        }
+
+        if (groupSmall != null)
+        {
+            this.groupSmall.SetActive(true);
+        }
     }
 
     protected internal void Show(bool isTitan1, string name1, bool isTitan2, string name2, int dmg = 0)

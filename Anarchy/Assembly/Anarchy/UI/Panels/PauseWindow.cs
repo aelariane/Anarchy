@@ -4,8 +4,8 @@ namespace Anarchy.UI
 {
     internal class PauseWindow : GUIBase
     {
-        const int Height = 90;
-        const int Width= 200;
+        private const int Height = 90;
+        private const int Width = 200;
         private Rect windowRect;
         public float PauseWaitTime;
 

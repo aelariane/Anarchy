@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class ChangeTeamCommand : ChatCommand
     {
@@ -13,12 +8,12 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(!GameModes.TeamMode.Enabled || GameModes.TeamMode.Selection > 1)
+            if (!GameModes.TeamMode.Enabled || GameModes.TeamMode.Selection > 1)
             {
                 chatMessage = Lang["errTeamsLocked"].HtmlColor("FF0000");
                 return false;
             }
-            if(args.Length <= 0)
+            if (args.Length <= 0)
             {
                 return false;
             }
@@ -45,7 +40,7 @@ namespace Anarchy.Commands.Chat
             }
             FengGameManagerMKII.FGM.BasePV.RPC("setTeamRPC", PhotonNetwork.player, new object[] { team });
             chatMessage = Lang.Format("teamChanged", GetTeamName(team));
-            if(PhotonNetwork.player.GameObject != null && PhotonNetwork.player.GameObject.GetComponent<HERO>() != null)
+            if (PhotonNetwork.player.GameObject != null && PhotonNetwork.player.GameObject.GetComponent<HERO>() != null)
             {
                 PhotonNetwork.player.GameObject.GetPhotonView().RPC("netDie2", PhotonTargets.All, new object[] { -1, "Team switch" });
             }

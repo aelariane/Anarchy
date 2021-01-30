@@ -19,21 +19,24 @@ namespace Anarchy.Localization
             {
                 DirectoryInfo[] langs = new DirectoryInfo(Path).GetDirectories();
                 string[] res = new string[langs.Length];
-                for(int i = 0; i < langs.Length; i++)
+                for (int i = 0; i < langs.Length; i++)
                 {
                     res[i] = langs[i].Name;
                 }
                 return res;
-
             }
         }
+
         public static string Directory { get; private set; } = "None";
         public static string SelectedLanguage { get; private set; } = DefaultLanguage;
 
         public static void AddLocale(Locale loc)
         {
             if (allLocales == null)
+            {
                 allLocales = new List<Locale>();
+            }
+
             lock (allLocales)
             {
                 if (!allLocales.Contains(loc))
@@ -47,9 +50,9 @@ namespace Anarchy.Localization
         {
             lock (allLocales)
             {
-                foreach(Locale loc in allLocales)
+                foreach (Locale loc in allLocales)
                 {
-                    if(loc.Element == name && loc.MyLanguage == SelectedLanguage)
+                    if (loc.Element == name && loc.MyLanguage == SelectedLanguage)
                     {
                         return loc;
                     }
@@ -61,10 +64,13 @@ namespace Anarchy.Localization
         public static void Reload()
         {
             if (allLocales == null)
+            {
                 return;
+            }
+
             lock (allLocales)
             {
-                foreach(Locale loc in allLocales)
+                foreach (Locale loc in allLocales)
                 {
                     loc.Reload();
                 }
@@ -73,9 +79,11 @@ namespace Anarchy.Localization
 
         public static void RemoveLocale(Locale loc)
         {
-
             if (allLocales == null)
+            {
                 return;
+            }
+
             lock (allLocales)
             {
                 if (allLocales.Contains(loc))
@@ -101,7 +109,10 @@ namespace Anarchy.Localization
         public static void UpdateFormats()
         {
             if (allLocales == null)
+            {
                 return;
+            }
+
             lock (allLocales)
             {
                 foreach (Locale loc in allLocales)

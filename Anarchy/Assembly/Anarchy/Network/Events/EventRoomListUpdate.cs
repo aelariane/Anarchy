@@ -1,26 +1,25 @@
-﻿using System;
+﻿using ExitGames.Client.Photon;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Anarchy.Network.Events
 {
-    public class EventRoomListUpdate :INetworkEvent
+    public class EventRoomListUpdate : INetworkEvent
     {
         private Hashtable roomList;
         public byte Code => 229;
 
-        public EventRoomListUpdate() 
+        public EventRoomListUpdate()
         {
             NetworkManager.RegisterEvent(this);
         }
 
-
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
-            if(sender != null)
+            if (sender != null)
             {
                 reason = UI.Log.GetString("senderMustBeNull");
                 return false;
@@ -31,7 +30,6 @@ namespace Anarchy.Network.Events
 
         public bool Handle()
         {
-            
             IEnumerator<DictionaryEntry> enumerator2 = roomList.GetEnumerator();
             try
             {
@@ -47,7 +45,6 @@ namespace Anarchy.Network.Events
                     else
                     {
                         NetworkingPeer.mGameList[roomName] = info;
-
                     }
                 }
             }

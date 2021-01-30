@@ -7,7 +7,7 @@ namespace Antis.Protections
         bool IProtection.Check(object data)
         {
             string value = data as string;
-            if(value != null)
+            if (value != null)
             {
                 return Check(value);
             }

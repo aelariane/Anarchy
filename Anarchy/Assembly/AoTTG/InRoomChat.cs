@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Anarchy;
-using Anarchy.Configuration;
-using Optimization;
-using UnityEngine;
-
-public class InRoomChat : Photon.MonoBehaviour
+﻿public class InRoomChat : Photon.MonoBehaviour
 {
     //public const string ChatRPC = "Chat";
     //public const string ChatPMRPC = "ChatPM";
@@ -44,7 +37,6 @@ public class InRoomChat : Photon.MonoBehaviour
 
     //public void AddLine(string newLine)
     //{
-        
     //    messages.Add(newLine);
     //    if (messages.Count > MessageCount.Value) minIndex++;
     //    chatString = "";

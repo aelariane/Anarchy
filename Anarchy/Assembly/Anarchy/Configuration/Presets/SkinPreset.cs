@@ -42,7 +42,9 @@ namespace Anarchy.Configuration.Presets
         }
 
         public abstract void Draw(UI.SmartRect rect, Localization.Locale locale);
+
         public abstract void Load();
+
         public abstract void Save();
 
         public abstract string[] ToSkinData();

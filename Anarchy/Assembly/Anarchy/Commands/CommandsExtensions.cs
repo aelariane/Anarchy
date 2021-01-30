@@ -13,7 +13,7 @@ namespace Anarchy.Commands
                 bool found = false;
                 List<string> tmp = new List<string>();
                 tmp.Add(src[index++].Substring(1));
-                while(index < src.Length)
+                while (index < src.Length)
                 {
                     if (src[index].EndsWith(sym))
                     {
@@ -36,7 +36,7 @@ namespace Anarchy.Commands
         {
             string[] arr = src.Split(' ');
             var tmp = new List<string>();
-            for(int i = startIndex; i < arr.Length; i++)
+            for (int i = startIndex; i < arr.Length; i++)
             {
                 tmp.Add(ParseStringWithSpaces(arr, ref i));
             }

@@ -6,7 +6,6 @@ namespace GameLogic
     {
         public EndlessLogic() : base()
         {
-
         }
 
         public EndlessLogic(GameLogic logic) : this()

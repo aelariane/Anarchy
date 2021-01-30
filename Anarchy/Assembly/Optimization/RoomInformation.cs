@@ -13,13 +13,13 @@ namespace Optimization
         public RoomInformation()
         {
             lang = new Anarchy.Localization.Locale(nameof(RoomInformation), true, ',');
-            lang.Load();    
+            lang.Load();
         }
 
         public void Update()
         {
             updateTimer -= UnityEngine.Time.unscaledDeltaTime;
-            if(updateTimer <= 0f)
+            if (updateTimer <= 0f)
             {
                 UpdateLabels();
                 updateTimer = UpdateInterval;
@@ -47,6 +47,14 @@ namespace Optimization
                 bld.AppendLine(lang.Format("slots", PhotonNetwork.room.PlayerCount.ToString(), PhotonNetwork.room.MaxPlayers.ToString().ToString()));
             }
             bld.Append(lang.Format("fps", FengGameManagerMKII.FPS.FPS.ToString()));
+            if (PhotonNetwork.player.Properties.ContainsKey(PhotonPlayerProperty.anarchyFlags))
+            {
+                int anarchyInt = (int)PhotonNetwork.player.Properties[PhotonPlayerProperty.anarchyFlags];
+                if (anarchyInt > 0)
+                {
+                    bld.Append($"\nAnarchy functions were used: {anarchyInt}");
+                }
+            }
             Labels.TopRight = "<color=#" + User.MainColor.Value + ">" + bld.ToString() + "</color>";
         }
     }

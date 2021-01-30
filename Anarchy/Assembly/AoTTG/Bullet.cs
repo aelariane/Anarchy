@@ -7,7 +7,6 @@ public class Bullet : Photon.MonoBehaviour
     private GameObject baseG;
     private Transform baseGT;
     internal Transform baseT;
-    private static float FixedDelta;
     private Vector3 heightOffSet = Vectors.up * 0.48f;
     private bool isdestroying;
     private float killTime;
@@ -34,7 +33,6 @@ public class Bullet : Photon.MonoBehaviour
         baseG = gameObject;
         baseGT = baseG.transform;
         baseT = transform;
-        FixedDelta = Time.fixedDeltaTime;
     }
 
     private void CheckTitan()
@@ -88,7 +86,7 @@ public class Bullet : Photon.MonoBehaviour
                 return;
             }
             CheckTitan();
-            baseGT.position += (this.velocity * 50f + this.velocity2) * FixedDelta;
+            baseGT.position += (this.velocity * 50f + this.velocity2) * Time.fixedDeltaTime;
             bool flag = false;
             if (Physics.Linecast(nodes.Count > 1 ? nodes[this.nodes.Count - 2] : nodes[this.nodes.Count - 1], baseGT.position, out RaycastHit raycastHit, Layers.EnemyGroundNetwork.value))
             {
@@ -110,7 +108,11 @@ public class Bullet : Photon.MonoBehaviour
                         break;
 
                     case Layers.NetworkObjectN:
-                        if (!tf.gameObject.CompareTag("Player") || leviMode) break;
+                        if (!tf.gameObject.CompareTag("Player") || leviMode)
+                        {
+                            break;
+                        }
+
                         if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                         {
                             BasePV.RPC("tieMeToOBJ", PhotonTargets.Others, new object[] { tf.root.gameObject.GetPhotonView().viewID });
@@ -126,7 +128,10 @@ public class Bullet : Photon.MonoBehaviour
                 }
                 if (flag3)
                 {
-                    master.Launch(raycastHit.point, this.left, this.leviMode);
+                    if (master.State != HeroState.Grab)
+                    {
+                        master.Launch(raycastHit.point, this.left, this.leviMode);
+                    }
                     baseT.position = raycastHit.point;
                     if (this.phase != 2)
                     {
@@ -145,8 +150,12 @@ public class Bullet : Photon.MonoBehaviour
                 }
             }
             this.nodes.Add(new Vector3(baseGT.position.x, baseGT.position.y, baseGT.position.z));
-            if (flag) return;
-            this.killTime2 += FixedDelta;
+            if (flag)
+            {
+                return;
+            }
+
+            this.killTime2 += Time.fixedDeltaTime;
             if (this.killTime2 > 0.8f)
             {
                 this.phase = 4;
@@ -160,7 +169,7 @@ public class Bullet : Photon.MonoBehaviour
         }
         if (this.phase == 0)
         {
-            baseGT.position += (this.velocity * 50f + this.velocity2) * FixedDelta;
+            baseGT.position += (this.velocity * 50f + this.velocity2) * Time.fixedDeltaTime;
             nodes.Add(new Vector3(baseGT.position.x, baseGT.position.y, baseGT.position.z));
         }
     }
@@ -351,7 +360,7 @@ public class Bullet : Photon.MonoBehaviour
     private void tieMeToOBJ(int id)
     {
         PhotonView view = PhotonView.Find(id);
-        if(view != null && view.gameObject != null && view.gameObject.transform != null)
+        if (view != null && view.gameObject != null && view.gameObject.transform != null)
         {
             baseT.parent = PhotonView.Find(id).gameObject.transform;
         }
@@ -515,7 +524,7 @@ public class Bullet : Photon.MonoBehaviour
                 this.lineRenderer.SetVertexCount(2);
                 this.lineRenderer.SetPosition(0, baseT.position);
                 this.lineRenderer.SetPosition(1, myRefT.position);
-                this.killTime += Time.deltaTime * (FixedDelta * 10f);
+                this.killTime += Time.deltaTime * (Time.fixedDeltaTime * 10f);
                 this.lineRenderer.SetWidth(0.1f - this.killTime, 0.1f - this.killTime);
                 if (this.killTime > 0.1f)
                 {
@@ -537,7 +546,7 @@ public class Bullet : Photon.MonoBehaviour
             this.killTime2 += Time.deltaTime;
             if (this.killTime2 > 0.8f)
             {
-                this.killTime += Time.deltaTime * (FixedDelta * 10f);
+                this.killTime += Time.deltaTime * (Time.fixedDeltaTime * 10f);
                 this.lineRenderer.SetWidth(0.1f - this.killTime, 0.1f - this.killTime);
                 if (this.killTime > 0.1f)
                 {

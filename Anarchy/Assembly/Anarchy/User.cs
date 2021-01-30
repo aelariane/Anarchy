@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Anarchy.Configuration;
+﻿using Anarchy.Configuration;
 using Anarchy.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace Anarchy
@@ -9,54 +9,55 @@ namespace Anarchy
     {
         private const string Example = "DefaultExample";
         private const string Extension = ".profile";
-        
+
         private static readonly string directory = Application.dataPath + "/Profiles/";
 
         public static readonly UserSetting Name = new UserSetting("name");
+
         public static readonly UserSetting[] GuildNames =
-        { 
+        {
             new UserSetting("guildName"),
-            new UserSetting("guildName2"), 
-            new UserSetting("guildName3") 
+            new UserSetting("guildName2"),
+            new UserSetting("guildName3")
         };
-        
+
         public static readonly UserSetting ChatName = new UserSetting("chatName");
         public static readonly UserSetting MainColor = new UserSetting("mainColor");
         public static readonly UserSetting SubColor = new UserSetting("subColor");
-        
+
         public static readonly UserSetting Suicide = new UserSetting("suicide");
         public static readonly UserSetting AkinaKillTrigger = new UserSetting("akinaKillTrigger");
         public static readonly UserSetting ForestLavaKillTrigger = new UserSetting("forestKillTrigger");
         public static readonly UserSetting RacingKillTrigger = new UserSetting("racingKillTrigger");
 
-        public static readonly UserSetting[] TitanNames = 
-        { 
+        public static readonly UserSetting[] TitanNames =
+        {
             new UserSetting("titan"),
             new UserSetting("aberrant"), new UserSetting("jumper"),
-            new UserSetting("crawler"), new UserSetting("punk") 
+            new UserSetting("crawler"), new UserSetting("punk")
         };
-        
+
         public static readonly UserSetting DieName = new UserSetting("diename");
         public static readonly UserSetting RaceFinish = new UserSetting("raceFinish");
         public static readonly UserSetting DieNameFormat = new UserSetting("dieStyle");
         public static readonly UserSetting WaveFormat = new UserSetting("wave");
-        
+
         public static readonly UserSetting ChatFormat = new UserSetting("chatFormat");
         public static readonly UserSetting ChatFormatSend = new UserSetting("chatFormatSend");
         public static readonly UserSetting ChatPmFormat = new UserSetting("chatPMFormat");
         public static readonly UserSetting ChatPmFormatSend = new UserSetting("chatPMFormatSend");
-        
+
         public static readonly UserSetting McSwitch = new UserSetting("mcSwitch");
         public static readonly UserSetting RestartMessage = new UserSetting("restartMsg");
-        
+
         public static string[] AllProfiles { get; private set; }
 
-        public static string AllGuildNames => 
+        public static string AllGuildNames =>
             string.Join(
                 "\n",
                 GuildNames.Where(x => x.Value.TrimStart().Length > 0).Select(x => x.Value).Reverse().ToArray()
             );
-        
+
         public static string ProfileName { get; private set; } = string.Empty;
 
         public static string DeathName => DieName.PickRandomString()
@@ -73,7 +74,7 @@ namespace Anarchy
             .Replace("$maincolor$", MainColor.Value)
             .Replace("$subcolor$", SubColor.Value);
 
-        public static string MsgRestart => RestartMessage.Value.Length <= 0 ? string.Empty : 
+        public static string MsgRestart => RestartMessage.Value.Length <= 0 ? string.Empty :
             RestartMessage.Value.Replace("$name$", Name.Value.ToHTMLFormat())
             .Replace("$chatName$", ChatName.Value)
             .Replace("$maincolor$", MainColor.Value)
@@ -126,7 +127,7 @@ namespace Anarchy
                 .Replace("$maincolor$", MainColor.Value)
                 .Replace("$subcolor$", SubColor.Value);
         }
-        
+
         public static string DeathFormat(int id, string killer)
         {
             return DieNameFormat.Value.Replace("$ID$", id.ToString())
@@ -134,7 +135,7 @@ namespace Anarchy
                 .Replace("$maincolor$", MainColor.Value)
                 .Replace("$subcolor$", SubColor.Value);
         }
-        
+
         public static string FormatColors(string src)
         {
             return src.Replace("$maincolor$", MainColor.Value)
@@ -200,11 +201,11 @@ namespace Anarchy
         private static void RefreshProfilesList()
         {
             var temp = System.IO.Directory.GetFiles(directory);
-            var tmp = 
-                (from t in temp 
-                where !t.Contains(Example) 
-                select t.Remove(0, directory.Length)
-                    .Replace(Extension, string.Empty))
+            var tmp =
+                (from t in temp
+                 where !t.Contains(Example)
+                 select t.Remove(0, directory.Length)
+                     .Replace(Extension, string.Empty))
                 .ToList();
             AllProfiles = tmp.ToArray();
         }

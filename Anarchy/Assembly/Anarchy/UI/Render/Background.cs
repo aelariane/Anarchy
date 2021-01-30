@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Anarchy.UI
 {
@@ -15,7 +13,7 @@ namespace Anarchy.UI
         {
         }
 
-        protected  override void OnDisable()
+        protected override void OnDisable()
         {
             texture = null;
             movie = null;
@@ -52,7 +50,6 @@ namespace Anarchy.UI
             style.richText = true;
             style.font = AnarchyAssets.Load<Font>(Style.FontName);
             AnarchyManager.MainMenu.Enable();
-
         }
 
         protected internal override void Draw()

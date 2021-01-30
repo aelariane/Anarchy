@@ -1,9 +1,8 @@
-﻿using Anarchy.IO;
+﻿using Anarchy.Configuration;
+using Anarchy.IO;
 using System.Collections.Generic;
 using UnityEngine;
-using ElementType = Anarchy.UI.ElementType;
 using static Optimization.Caching.Colors;
-using Anarchy.Configuration;
 
 namespace Anarchy.UI
 {
@@ -12,7 +11,7 @@ namespace Anarchy.UI
         public static float ScreenWidthDefault { get; private set; }
         public static float ScreenHeightDefault { get; private set; }
         public static float ScreenWidth { get; set; }
-        public static float ScreenHeight { get;set; }
+        public static float ScreenHeight { get; set; }
 
         public static FloatSetting BigLabelOffsetSetting = new FloatSetting("GlobalBigLabelOffset", 320f);
         public static IntSetting FontSizeSetting = new IntSetting("GlobalFontSize", 14);
@@ -27,6 +26,8 @@ namespace Anarchy.UI
         public static FloatSetting LabelOffsetSetting = new FloatSetting("GlobalLabelOffset", 140f);
         public static FloatSetting LabelOffsetSliderSetting = new FloatSetting("LabelOffsetSlider", 180f);
         public static IntSetting LabelSpaceSetting = new IntSetting("GlobalLabelSpaceCount", 3);
+        public static IntSetting FontSetting = new IntSetting("GlobalFontName", 3);
+        public static FloatSetting BackgroundTransparencySetting = new FloatSetting("GlobalBackgroundTransparency", 250f);
         public static string[] PublicSettings;
 
         private static List<GUIStyle> allStyles;
@@ -47,8 +48,6 @@ namespace Anarchy.UI
         public static readonly GUIStyle Toggle = new GUIStyle();
         private static bool wasLoaded = false;
 
-
-
         public static Color BackgroundColor => BackgroundHex.HexToColor((byte)BackgroundTransparency);
         public static string BackgroundHex { get; set; }
         public static int BackgroundTransparency { get; set; } = 250;
@@ -68,10 +67,9 @@ namespace Anarchy.UI
         public static float LabelOffsetSlider { get; private set; }
         public static string LabelSpace { get; private set; }
 
-
         public static void Initialize()
         {
-            if(allStyles == null)
+            if (allStyles == null)
             {
                 allStyles = new List<GUIStyle>();
             }
@@ -128,7 +126,7 @@ namespace Anarchy.UI
             SliderBody.onHover.background = Textures.TextureCache[ElementType.SliderBody][4];
             SliderBody.onActive.background = Textures.TextureCache[ElementType.SliderBody][5];
             SliderBody.fixedWidth = Height;
-            SliderBody.fixedHeight= Height;
+            SliderBody.fixedHeight = Height;
             //TextField
             TextField.ApplyStyle(TextAnchor.MiddleLeft, FontStyle.Normal, FontSize, false, textColorsArray);
             TextField.richText = false;
@@ -202,12 +200,12 @@ namespace Anarchy.UI
                     UseVectors = config.GetBool("useVectors");
                 }
                 TextureColors = new Color[6];
-                if (!config.AllValues.ContainsKey("colorNormal") || !config.AllValues.ContainsKey("colorHover") || !config.AllValues.ContainsKey("colorActive") || 
+                if (!config.AllValues.ContainsKey("colorNormal") || !config.AllValues.ContainsKey("colorHover") || !config.AllValues.ContainsKey("colorActive") ||
                     !config.AllValues.ContainsKey("colorOnNormal") || !config.AllValues.ContainsKey("colorOnHover") || !config.AllValues.ContainsKey("colorOnActive"))
                 {
                     UseVectors = true;
                     Color[] colors = Helper.TextureColors(BackgroundColor, 6);
-                    for(int i = 0; i < 6; i++)
+                    for (int i = 0; i < 6; i++)
                     {
                         TextureColors[i] = colors[i];
                     }
@@ -297,17 +295,18 @@ namespace Anarchy.UI
                 config.SetString("colorOnNormal", TextureColors[3].ColorToString());
                 config.SetString("colorOnHover", TextureColors[4].ColorToString());
                 config.SetString("colorOnActive", TextureColors[5].ColorToString());
-
             }
         }
-
 
         public static void SetFont(Font font)
         {
             if (font == null)
+            {
                 return;
+            }
+
             Font = font;
-            for(int i = 0; i < allStyles.Count; i++)
+            for (int i = 0; i < allStyles.Count; i++)
             {
                 allStyles[i].font = font;
             }
@@ -338,9 +337,9 @@ namespace Anarchy.UI
             BackgroundTransparency = System.Convert.ToInt32(PublicSettings[2]);
             UseVectors = System.Convert.ToBoolean(PublicSettings[9]);
             int j = 0;
-            for(int i = 3; i < 9; i++)
+            for (int i = 3; i < 9; i++)
             {
-                TextColors[j++] = PublicSettings[i]; 
+                TextColors[j++] = PublicSettings[i];
             }
             j = 0;
             for (int i = 10; i < 16; i++)
@@ -369,7 +368,7 @@ namespace Anarchy.UI
             LabelOffset = SetScaling(LabelOffsetSetting);
             LabelOffsetSlider = SetScaling(LabelOffsetSliderSetting);
             LabelSpace = "";
-            for(int i = 0; i < LabelSpaceSetting.Value; i++)
+            for (int i = 0; i < LabelSpaceSetting.Value; i++)
             {
                 LabelSpace += " ";
             }

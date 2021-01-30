@@ -7,7 +7,7 @@ namespace Anarchy.NameAnimation
     public class Fade : Animation
     {
         private float duration;
-        
+
         public Fade(string name) : base(name)
         {
         }
@@ -15,7 +15,7 @@ namespace Anarchy.NameAnimation
         public override float Time { get; set; }
         protected override int Index { get; set; }
         public override List<Color> Colors { get; set; }
-        
+
         public override IEnumerator Animate()
         {
             duration = Time / Colors.Count;
@@ -33,7 +33,7 @@ namespace Anarchy.NameAnimation
                         t += UnityEngine.Time.deltaTime / duration;
                         yield return null;
                     }
-                    
+
                     sampleColor = Color.Lerp(Colors[i], Colors[i + 1], 1.0f);
                 }
                 yield return new WaitForFixedUpdate();

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 
 namespace Anarchy.UI
 {
@@ -13,9 +9,8 @@ namespace Anarchy.UI
         private const int Textures = 2;
         private const int Colors = 3;
 
-        public CustomizationPanel(): base(nameof(CustomizationPanel), GUILayers.Customization)
+        public CustomizationPanel() : base(nameof(CustomizationPanel), GUILayers.Customization)
         {
-
         }
 
         protected override void DrawMainPart()

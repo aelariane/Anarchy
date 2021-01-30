@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Anarchy.NameAnimation
@@ -8,7 +7,7 @@ namespace Anarchy.NameAnimation
     public class Lerp : Animation
     {
         private float duration;
-        
+
         public Lerp(string name) : base(name)
         {
         }
@@ -36,7 +35,7 @@ namespace Anarchy.NameAnimation
                         PhotonNetwork.player.UIName = Name;
                         yield return null;
                     }
-                    
+
                     sampleColor = Color.Lerp(Colors[i], Colors[i + 1], 1.0f);
                     Name = "[" + ToRgbHex(sampleColor) + "]" + Name.RemoveHex();
                     PhotonNetwork.player.UIName = Name;

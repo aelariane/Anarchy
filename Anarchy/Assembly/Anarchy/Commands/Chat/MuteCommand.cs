@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class MuteCommand : ChatCommand
     {
@@ -18,17 +13,17 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 chatMessage = Lang["errArg"];
                 return false;
             }
-            for(int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Length; i++)
             {
-                if(int.TryParse(args[i], out int ID))
+                if (int.TryParse(args[i], out int ID))
                 {
                     PhotonPlayer target = PhotonPlayer.Find(ID);
-                    if(target == null)
+                    if (target == null)
                     {
                         chatMessage = chatMessage.AppendLine(Lang.Format("errPlayer", ID.ToString()));
                         continue;

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.Commands.Chat;
 using Anarchy.Configuration;
 using Anarchy.Configuration.Presets;
@@ -15,6 +11,10 @@ using GameLogic;
 using Optimization;
 using Optimization.Caching;
 using RC;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using UnityEngine;
 using MonoBehaviour = Photon.MonoBehaviour;
 
@@ -73,7 +73,10 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     private bool CheckIsTitanAllDie()
     {
-        if (titans.Any(tit => !tit.hasDie)) return false;
+        if (titans.Any(tit => !tit.hasDie))
+        {
+            return false;
+        }
 
         return annie == null;
     }
@@ -85,17 +88,38 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         var checkData = new string[1 + 8 + checkStr.Length + 6];
         checkData[0] = n;
         var i = 1;
-        for (var j = 0; i < 1 + 8; i++, j++) checkData[i] = checkUrls[j];
-        for (var j = 0; i < 1 + 8 + checkStr.Length; i++, j++) checkData[i] = checkStr[j];
-        for (var j = 0; i < checkData.Length; i++, j++) checkData[i] = skybox[j];
+        for (var j = 0; i < 1 + 8; i++, j++)
+        {
+            checkData[i] = checkUrls[j];
+        }
+
+        for (var j = 0; i < 1 + 8 + checkStr.Length; i++, j++)
+        {
+            checkData[i] = checkStr[j];
+        }
+
+        for (var j = 0; i < checkData.Length; i++, j++)
+        {
+            checkData[i] = skybox[j];
+        }
+
         if (levelSkin == null)
         {
             if (Level.Name.Contains("City"))
+            {
                 levelSkin = new CitySkin(checkData);
-            else if (Level.Name.Contains("Forest")) levelSkin = new ForestSkin(checkData);
+            }
+            else if (Level.Name.Contains("Forest"))
+            {
+                levelSkin = new ForestSkin(checkData);
+            }
         }
 
-        if (levelSkin == null) return;
+        if (levelSkin == null)
+        {
+            return;
+        }
+
         Skin.Check(levelSkin, checkData);
     }
 
@@ -104,6 +128,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         if (Level.Name.Contains("City"))
         {
             if (SkinSettings.SkinsCheck(SkinSettings.CitySkins))
+            {
                 if (SkinSettings.CitySet.Value != StringSetting.NotDefine)
                 {
                     var set = new CityPreset(SkinSettings.CitySet);
@@ -128,12 +153,16 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     LoadMapSkin(n, urls, urls2, box);
                     if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
                         SkinSettings.CitySkins.Value != 2)
+                    {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, n, urls, urls2, box);
+                    }
                 }
+            }
         }
         else if (Level.MapName.Contains("Forest"))
         {
             if (SkinSettings.SkinsCheck(SkinSettings.ForestSkins))
+            {
                 if (SkinSettings.ForestSet.Value != StringSetting.NotDefine)
                 {
                     var set = new ForestPreset(SkinSettings.ForestSet);
@@ -144,9 +173,13 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                         var val = Random.Range(0, 8);
                         n += val.ToString();
                         if (set.RandomizePairs)
+                        {
                             n += Random.Range(0, 8).ToString();
+                        }
                         else
+                        {
                             n += val.ToString();
+                        }
                     }
 
                     var urls = string.Join(",", set.Trees) + ",";
@@ -163,8 +196,11 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     LoadMapSkin(n, urls, urls2, box);
                     if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
                         SkinSettings.ForestSkins.Value != 2)
+                    {
                         BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, n, urls, urls2, box);
+                    }
                 }
+            }
         }
     }
 
@@ -174,14 +210,14 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         IComparer comparer = new IComparerRacingResult();
         racingResult.Sort(comparer);
         var num = racingResult.Count;
-        num = Mathf.Min(num, RacingLogic.MaxFinishers);
+        //num = Mathf.Min(num, RacingLogic.MaxFinishers);
         for (var i = 0; i < num; i++)
         {
             var text = localRacingResult;
             localRacingResult = string.Concat(text, "Rank ", i + 1, " : ");
             localRacingResult += (racingResult[i] as RacingResult)?.Name;
             localRacingResult = localRacingResult + "   " +
-                                (int) (((RacingResult) racingResult[i]).Time * 100f) * 0.01f + "s";
+                                (int)(((RacingResult)racingResult[i]).Time * 100f) * 0.01f + "s";
             localRacingResult += "\n";
         }
 
@@ -210,15 +246,19 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 var cyans = 0;
                 var magentas = 0;
                 foreach (var player in PhotonNetwork.playerList)
+                {
                     switch (player.RCteam)
                     {
                         case 1:
                             cyans++;
                             break;
+
                         case 2:
                             magentas++;
                             break;
                     }
+                }
+
                 SetTeam(cyans > magentas ? 1 : 2);
                 return;
         }
@@ -226,15 +266,22 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         PhotonNetwork.player.UIName = nameColor != string.Empty ? $"[{nameColor}]{PhotonNetwork.player.UIName.RemoveHex()}" : User.Name.Value;
         PhotonNetwork.player.RCteam = team;
         if (team >= 0 && team < 3)
+        {
             foreach (var hero in heroes.Where(hero => hero.IsLocal))
+            {
                 BasePV.RPC("labelRPC", PhotonTargets.All, hero.BasePV.viewID);
+            }
+        }
     }
 
     private static TITAN SpawnTitanRaw(Vector3 position, Quaternion rotation)
     {
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
-            return ((GameObject) Instantiate(CacheResources.Load("TITAN_VER3.1"), position, rotation))
+        {
+            return ((GameObject)Instantiate(CacheResources.Load("TITAN_VER3.1"), position, rotation))
                 .GetComponent<TITAN>();
+        }
+
         return Pool.NetworkEnable("TITAN_VER3.1", position, rotation).GetComponent<TITAN>();
     }
 
@@ -275,7 +322,10 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public void CheckPVPpts()
     {
-        if (logic is PVPCaptureLogic cap) cap.CheckPVPpts();
+        if (logic is PVPCaptureLogic cap)
+        {
+            cap.CheckPVPpts();
+        }
     }
 
     public void DestroyAllExistingCloths()
@@ -283,8 +333,12 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         var array = FindObjectsOfType<Cloth>();
         var flag = array.Length != 0;
         if (flag)
+        {
             for (var i = 0; i < array.Length; i++)
+            {
                 ClothFactory.DisposeObject(array[i].gameObject);
+            }
+        }
     }
 
     public void GameLose()
@@ -310,16 +364,23 @@ internal partial class FengGameManagerMKII : MonoBehaviour
     public void KillInfoUpdate()
     {
         if (killInfoList.Count > 0 && killInfoList.Peek() == null)
+        {
             killInfoList.Dequeue();
+        }
     }
 
     public void MultiplayerRacingFinish()
     {
-        var num = logic.RoundTime - ((RacingLogic) logic).StartTime;
+        var num = logic.RoundTime - ((RacingLogic)logic).StartTime;
         if (PhotonNetwork.IsMasterClient)
+        {
             getRacingResult(User.RaceName, num);
+        }
         else
+        {
             BasePV.RPC("getRacingResult", PhotonTargets.MasterClient, User.RaceName, num);
+        }
+
         GameWin();
     }
 
@@ -355,12 +416,23 @@ internal partial class FengGameManagerMKII : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (AnarchyManager.PauseWindow.Active) BasePV.RPC("pauseRPC", player, true);
-            if (Level.Name.StartsWith("Custom")) StartCoroutine(CustomLevel.SendRPCToPlayer(player));
+            if (AnarchyManager.PauseWindow.Active)
+            {
+                BasePV.RPC("pauseRPC", player, true);
+            }
+
+            if (Level.Name.StartsWith("Custom"))
+            {
+                StartCoroutine(CustomLevel.SendRPCToPlayer(player));
+            }
         }
 
         yield return new WaitForSeconds(1f);
-        if (player.Properties[PhotonPlayerProperty.name] == null) yield return new WaitForSeconds(0.15f);
+        if (player.Properties[PhotonPlayerProperty.name] == null)
+        {
+            yield return new WaitForSeconds(0.15f);
+        }
+
         Log.AddLine("playerConnected", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
         PlayerList?.Update();
         if (PhotonNetwork.IsMasterClient)
@@ -368,8 +440,13 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             GameModes.SendRpcToPlayer(player);
             if (GameModes.NoGuest.Enabled && player.UIName.RemoveHex().ToUpper().StartsWith("GUEST"))
+            {
                 AntisManager.Response(player.ID, false, "Anti-Guest");
-            else if (BanList.Banned(player.UIName.RemoveHex())) AntisManager.Response(player.ID, false, "Banned");
+            }
+            else if (BanList.Banned(player.UIName.RemoveHex()))
+            {
+                AntisManager.Response(player.ID, false, "Banned");
+            }
         }
     }
 
@@ -379,7 +456,10 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         singleMax = Mathf.Max(dmg, singleMax);
         singleTotal += dmg;
 
-        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single) SingleRunStats.OnKill();
+        if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+        {
+            SingleRunStats.OnKill();
+        }
     }
 
     public void PlayerKillInfoUpdate(PhotonPlayer player, int dmg)
@@ -396,12 +476,24 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public void RandomSpawnTitans(string place, int rate, int num, bool punk = false)
     {
-        if (num == -1) num = 1;
+        if (num == -1)
+        {
+            num = 1;
+        }
+
         var list = new List<Vector3>(RespawnPositions.TitanPositions);
-        if (list.Count <= 0) return;
+        if (list.Count <= 0)
+        {
+            return;
+        }
+
         for (var i = 0; i < num; i++)
         {
-            if (list.Count <= 0) return;
+            if (list.Count <= 0)
+            {
+                return;
+            }
+
             var pos = Random.Range(0, list.Count);
             SpawnTitan(rate, list[pos], Quaternion.identity, punk);
             list.RemoveAt(pos);
@@ -440,13 +532,21 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public void RestartGame(bool masterclientSwitched, bool restartManually)
     {
-        if (gameTimesUp || logic.Restarting) return;
+        if (gameTimesUp || logic.Restarting)
+        {
+            return;
+        }
+
         GameModes.OnRestart();
         checkpoint = null;
         logic.Restarting = true;
         logic.RoundTime = 0f;
         logic.MyRespawnTime = 0f;
-        foreach (var info in killInfoList) info.destroy();
+        foreach (var info in killInfoList)
+        {
+            info.destroy();
+        }
+
         killInfoList.Clear();
         racingResult = new ArrayList();
         RCManager.ClearVariables();
@@ -461,7 +561,10 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         }
         else
         {
-            if (!restartManually && User.MsgRestart.Length > 0) SendChatContentInfo(User.MsgRestart);
+            if (!restartManually && User.MsgRestart.Length > 0)
+            {
+                SendChatContentInfo(User.MsgRestart);
+            }
         }
     }
 
@@ -495,18 +598,26 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         myLastHero = id.ToUpper();
         GameObject gameObject2;
         if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+        {
             gameObject2 = Pool.NetworkEnable("TITAN_VER3.1",
                 checkpoint.transform.position + new Vector3(Random.Range(-20, 20), 2f, Random.Range(-20, 20)),
                 checkpoint.transform.rotation);
+        }
         else
+        {
             gameObject2 = Pool.NetworkEnable("TITAN_VER3.1", go.transform.position,
                 go.transform.rotation);
+        }
+
         IN_GAME_MAIN_CAMERA.MainCamera.SetMainObject(gameObject2.GetComponent<TITAN>());
         gameObject2.GetComponent<TITAN>().nonAI = true;
         gameObject2.GetComponent<TITAN>().speed = 30f;
         gameObject2.GetComponent<TITAN_CONTROLLER>().enabled = true;
         if (id == "RANDOM" && Random.Range(0, 100) < 7)
+        {
             gameObject2.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Crawler, true);
+        }
+
         IN_GAME_MAIN_CAMERA.MainCamera.enabled = true;
         IN_GAME_MAIN_CAMERA.SpecMov.disable = true;
         IN_GAME_MAIN_CAMERA.Look.disable = true;
@@ -538,9 +649,13 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         {
             var positions = GameObject.FindGameObjectsWithTag(find);
             if (positions.Length > 0)
+            {
                 pos = positions[Random.Range(0, positions.Length)].transform.position;
+            }
             else
+            {
                 pos = RespawnPositions.RandomHeroPos;
+            }
         }
         else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
         {
@@ -560,10 +675,14 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     for (var i = 0; i < 2; i++)
                     {
                         var type = i == 0 ? "C" : "M";
-                        foreach (var vec in CustomLevel.spawnPositions["Player" + type]) list.Add(vec);
+                        foreach (var vec in CustomLevel.spawnPositions["Player" + type])
+                        {
+                            list.Add(vec);
+                        }
                     }
 
                     break;
+
                 case 1:
                     using (var enumerator = CustomLevel.spawnPositions["PlayerC"].GetEnumerator())
                     {
@@ -575,6 +694,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     }
 
                     break;
+
                 case 2:
                     using (var enumerator = CustomLevel.spawnPositions["PlayerM"].GetEnumerator())
                     {
@@ -586,15 +706,24 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     }
 
                     break;
+
                 default:
-                    foreach (var vec3 in CustomLevel.spawnPositions["PlayerM"]) list.Add(vec3);
+                    foreach (var vec3 in CustomLevel.spawnPositions["PlayerM"])
+                    {
+                        list.Add(vec3);
+                    }
+
                     break;
             }
 
             if (list.Count > 0)
+            {
                 pos = list[Random.Range(0, list.Count)];
+            }
             else
+            {
                 pos = RespawnPositions.RandomHeroPos;
+            }
         }
         else
         {
@@ -608,12 +737,12 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             if (IN_GAME_MAIN_CAMERA.singleCharacter == "TITAN_EREN")
             {
                 component.SetMainObject(
-                    ((GameObject) Instantiate(CacheResources.Load("TITAN_EREN"), pos, Quaternion.identity))
+                    ((GameObject)Instantiate(CacheResources.Load("TITAN_EREN"), pos, Quaternion.identity))
                     .GetComponent<TITAN_EREN>());
             }
             else
             {
-                component.SetMainObject(((GameObject) Instantiate(CacheResources.Load("AOTTG_HERO 1"), pos, rot))
+                component.SetMainObject(((GameObject)Instantiate(CacheResources.Load("AOTTG_HERO 1"), pos, rot))
                     .GetComponent<HERO>());
                 if (IN_GAME_MAIN_CAMERA.singleCharacter == "SET 1" || IN_GAME_MAIN_CAMERA.singleCharacter == "SET 2" ||
                     IN_GAME_MAIN_CAMERA.singleCharacter == "SET 3")
@@ -622,7 +751,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                     heroCostume.Checkstat();
                     CostumeConeveter.HeroCostumeToLocalData(heroCostume, IN_GAME_MAIN_CAMERA.singleCharacter);
                     IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                    
+
                     IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume;
                     IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume.stat;
 
@@ -633,11 +762,15 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 else
                 {
                     for (var i = 0; i < HeroCostume.costume.Length; i++)
+                    {
                         if (HeroCostume.costume[i].name.ToUpper() == IN_GAME_MAIN_CAMERA.singleCharacter.ToUpper())
                         {
                             var num = HeroCostume.costume[i].id + CheckBoxCostume.costumeSet - 1;
                             if (HeroCostume.costume[num].name != HeroCostume.costume[i].name)
+                            {
                                 num = HeroCostume.costume[i].id + 1;
+                            }
+
                             IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
                             IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num];
                             IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat =
@@ -647,6 +780,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                             IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
                             break;
                         }
+                    }
                 }
             }
         }
@@ -661,7 +795,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 heroCostume2.Checkstat();
                 CostumeConeveter.HeroCostumeToLocalData(heroCostume2, id);
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                
+
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume2.stat;
 
@@ -672,12 +806,20 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             else
             {
                 for (var j = 0; j < HeroCostume.costume.Length; j++)
+                {
                     if (HeroCostume.costume[j].name.ToUpper() == id.ToUpper())
                     {
                         var num2 = HeroCostume.costume[j].id;
-                        if (id.ToUpper() != "AHSS") num2 += CheckBoxCostume.costumeSet - 1;
+                        if (id.ToUpper() != "AHSS")
+                        {
+                            num2 += CheckBoxCostume.costumeSet - 1;
+                        }
+
                         if (HeroCostume.costume[num2].name != HeroCostume.costume[j].name)
+                        {
                             num2 = HeroCostume.costume[j].id + 1;
+                        }
+
                         IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
                         IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num2];
                         IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat =
@@ -687,12 +829,16 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                         IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
                         break;
                     }
+                }
             }
 
             CostumeConeveter.HeroCostumeToPhotonData(IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume,
                 PhotonNetwork.player);
             if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+            {
                 IN_GAME_MAIN_CAMERA.MainT.position += new Vector3(Random.Range(-20, 20), 2f, Random.Range(-20, 20));
+            }
+
             PhotonNetwork.player.Dead = false;
             PhotonNetwork.player.IsTitan = false;
         }
@@ -720,24 +866,36 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
             {
                 if (Random.Range(0f, 1f) < 0.7f || Level.NoCrawler)
+                {
                     tit.SetAbnormalType(AbnormalType.Jumper);
+                }
                 else
+                {
                     tit.SetAbnormalType(AbnormalType.Crawler);
+                }
             }
         }
         else if (IN_GAME_MAIN_CAMERA.Difficulty == 2)
         {
             if (Random.Range(0f, 1f) < 0.7f || Level.NoCrawler)
+            {
                 tit.SetAbnormalType(AbnormalType.Jumper);
+            }
             else
+            {
                 tit.SetAbnormalType(AbnormalType.Crawler);
+            }
         }
         else if (Random.Range(0, 100) < rate)
         {
             if (Random.Range(0f, 1f) < 0.8f || Level.NoCrawler)
+            {
                 tit.SetAbnormalType(AbnormalType.Aberrant);
+            }
             else
+            {
                 tit.SetAbnormalType(AbnormalType.Crawler);
+            }
         }
         else if (Random.Range(0f, 1f) < 0.8f || Level.NoCrawler)
         {
@@ -750,12 +908,17 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
         GameObject gameObject2;
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+        {
             gameObject2 =
                 Pool.Enable("FX/FXtitanSpawn", tit.transform.position,
                     Quaternion.Euler(-90f, 0f,
                         0f)); //(GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("FX/FXtitanSpawn"), tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
         else
+        {
             gameObject2 = Pool.NetworkEnable("FX/FXtitanSpawn", tit.transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
+
         gameObject2.transform.localScale = tit.transform.localScale;
         return tit;
     }
@@ -792,8 +955,12 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             var titan = SpawnTitanRaw(position, rotation);
             titan.hasSetLevel = true;
             titan.ResetLevel(size);
-            if (health > 0f) titan.armor = health;
-            titan.SetAbnormalType((AbnormalType) type);
+            if (health > 0f)
+            {
+                titan.armor = health;
+            }
+
+            titan.SetAbnormalType((AbnormalType)type);
         }
     }
 
@@ -806,8 +973,12 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             var obj2 = SpawnTitanRaw(position, rotation);
             obj2.ResetLevel(size);
             obj2.hasSetLevel = true;
-            if (health > 0f) obj2.armor = health;
-            obj2.SetAbnormalType((AbnormalType) type);
+            if (health > 0f)
+            {
+                obj2.armor = health;
+            }
+
+            obj2.SetAbnormalType((AbnormalType)type);
         }
     }
 
@@ -818,12 +989,16 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         {
             num = 5;
             if (RCManager.GameType.Value == 1)
+            {
                 num = 3;
-            else if (RCManager.GameType.Value == 2 || RCManager.GameType.Value == 3) num = 0;
+            }
+            else if (RCManager.GameType.Value == 2 || RCManager.GameType.Value == 3)
+            {
+                num = 0;
+            }
         }
         if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
         {
-            
             if (count == 3 && !punk && GameModes.CustomAmount.Enabled)
             {
                 num = GameModes.CustomAmount.GetInt(0);
@@ -838,7 +1013,9 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 else
                 {
                     if (GameModes.TitansWaveAmount.Enabled)
+                    {
                         num += GameModes.TitansWaveAmount.GetInt(0);
+                    }
                 }
             }
         }
@@ -851,8 +1028,16 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         if (GameModes.SpawnRate.Enabled)
         {
             var rates = new float[5];
-            for (var i = 0; i < rates.Length; i++) rates[i] = GameModes.SpawnRate.GetFloat(i);
-            if (punk && GameModes.PunkOverride.Enabled) rates = new[] {0f, 0f, 0f, 0f, 100f};
+            for (var i = 0; i < rates.Length; i++)
+            {
+                rates[i] = GameModes.SpawnRate.GetFloat(i);
+            }
+
+            if (punk && GameModes.PunkOverride.Enabled)
+            {
+                rates = new[] { 0f, 0f, 0f, 0f, 100f };
+            }
+
             List<Vector3> positions;
             if (Level.Name.StartsWith("Custom") && CustomLevel.spawnPositions["Titan"].Count > 0)
             {
@@ -861,7 +1046,9 @@ internal partial class FengGameManagerMKII : MonoBehaviour
             else
             {
                 if (RespawnPositions.TitanPositions.Length > 0)
+                {
                     positions = new List<Vector3>(RespawnPositions.TitanPositions);
+                }
                 else
                 {
                     positions = new List<Vector3>(new Vector3[num].Select(x => new Vector3(Random.Range(-100f, 100f), 0f, Random.Range(-100f, 100f))).ToArray());
@@ -901,7 +1088,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                         startRate += rates[j];
                     }
 
-                    SpawnTitanRaw(position, Quaternion.identity).SetAbnormalType((AbnormalType) type);
+                    SpawnTitanRaw(position, Quaternion.identity).SetAbnormalType((AbnormalType)type);
                 }
                 else
                 {
@@ -921,10 +1108,14 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 else
                 {
                     if (RespawnPositions.TitanPositions.Length > 0)
+                    {
                         positions = new List<Vector3>(RespawnPositions.TitanPositions);
+                    }
                     else
+                    {
                         positions = new List<Vector3>(new Vector3[num].Select(x =>
                             new Vector3(Random.Range(-400f, 400f), 0f, Random.Range(-400f, 400f))).ToArray());
+                    }
                 }
 
                 for (var i = 0; i < num; i++)
@@ -1007,5 +1198,5 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         Labels.TopRight += content.ToHTMLFormat();
     }
 
-    #endregion
+    #endregion Show UILabels
 }

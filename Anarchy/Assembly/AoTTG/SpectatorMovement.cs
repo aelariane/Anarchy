@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpectatorMovement : MonoBehaviour
 {
-
     private Transform baseT;
     private float speed = 100f;
     public bool disable;

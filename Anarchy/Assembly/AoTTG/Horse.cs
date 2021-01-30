@@ -119,7 +119,6 @@
 //                return;
 //            }
 
-
 //            base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, this.controller.targetDirection, 0f), 100f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
 //            if (this.controller.isWALKDown)
 //            {

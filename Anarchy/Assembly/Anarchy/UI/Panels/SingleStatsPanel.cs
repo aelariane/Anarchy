@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.UI
+﻿namespace Anarchy.UI
 {
     internal class SingleStatsPanel : GUIPanel
     {
         private SmartRect rect;
         private SingleRunStats stats;
-        string statString;
+        private string statString;
 
-        
         //MADE JUST FOR TESTING IDEA. NOT IMPLEMENTED YET
         public SingleStatsPanel() : base(nameof(SingleStatsPanel), GUILayers.SingleStatsPanel)
         {

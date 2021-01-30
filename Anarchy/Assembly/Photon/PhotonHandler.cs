@@ -104,7 +104,7 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
             this.nextSendTickCountOnSerialize = num + this.updateIntervalOnSerialize;
             this.nextSendTickCount = 0;
         }
-                    
+
         if (num > this.nextSendTickCount)
         {
             while (PhotonNetwork.isMessageQueueRunning && PhotonNetwork.networkingPeer.SendOutgoingCommands()) { }

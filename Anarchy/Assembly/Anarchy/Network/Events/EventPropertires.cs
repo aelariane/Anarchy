@@ -1,5 +1,4 @@
-﻿using System;
-using ExitGames.Client.Photon;
+﻿using ExitGames.Client.Photon;
 
 namespace Anarchy.Network.Events
 {
@@ -8,7 +7,6 @@ namespace Anarchy.Network.Events
         private Hashtable hash;
         private int key;
         private PhotonPlayer sender;
-
 
         public EventPropertires()
         {
@@ -23,7 +21,7 @@ namespace Anarchy.Network.Events
             this.sender = sender;
             key = (int)data[ParameterCode.TargetActorNr];
             hash = data[ParameterCode.Properties] as Hashtable;
-            if(hash == null)
+            if (hash == null)
             {
                 reason += UI.Log.GetString("notHashOrNull");
                 return false;
@@ -44,6 +42,8 @@ namespace Anarchy.Network.Events
             return true;
         }
 
-        public void OnFailedHandle() { }
+        public void OnFailedHandle()
+        {
+        }
     }
 }

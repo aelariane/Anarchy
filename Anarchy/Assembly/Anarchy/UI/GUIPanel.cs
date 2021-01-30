@@ -11,7 +11,7 @@ namespace Anarchy.UI
         private Dictionary<int, MethodInfo> allDisableMethods = new Dictionary<int, MethodInfo>();
         private Dictionary<int, MethodInfo> allEnableMethods = new Dictionary<int, MethodInfo>();
         private Dictionary<int, MethodInfo> allPages = new Dictionary<int, MethodInfo>();
-        private MethodInfo currentPage ;
+        private MethodInfo currentPage;
         protected string head = string.Empty;
         private int oldPageSelection = -1;
         protected int pageSelection = 0;
@@ -30,13 +30,16 @@ namespace Anarchy.UI
             {
                 object[] attributes = method.GetCustomAttributes(false);
                 if (attributes.Length == 0)
+                {
                     continue;
-                foreach(object obj in attributes)
+                }
+
+                foreach (object obj in attributes)
                 {
                     if (obj is GUIPageAttribute page)
                     {
                         Dictionary<int, MethodInfo> dict = null;
-                        if(page.MethodType == GUIPageType.DrawMethod)
+                        if (page.MethodType == GUIPageType.DrawMethod)
                         {
                             dict = allPages;
                         }
@@ -65,18 +68,27 @@ namespace Anarchy.UI
             {
                 currentPage = typeof(GUIPanel).GetMethod(nameof(EmptyPage), BindingFlags.NonPublic | BindingFlags.Instance);
                 if (allDisableMethods.ContainsKey(oldPageSelection))
+                {
                     allDisableMethods[oldPageSelection].Invoke(this, parameters);
+                }
+
                 oldPageSelection = pageSelection;
                 return;
             }
 
             OnBeforePageChanged();
             if (allDisableMethods.ContainsKey(oldPageSelection))
+            {
                 allDisableMethods[oldPageSelection].Invoke(this, parameters);
+            }
+
             OnAnyPageDisabled();
 
             if (allEnableMethods.ContainsKey(pageSelection))
+            {
                 allEnableMethods[pageSelection].Invoke(this, parameters);
+            }
+
             OnAnyPageEnabled();
 
             currentPage = allPages[pageSelection];
@@ -96,13 +108,21 @@ namespace Anarchy.UI
 
         protected abstract void DrawMainPart();
 
-        private void EmptyPage() { }
+        private void EmptyPage()
+        {
+        }
 
-        protected virtual void OnAnyPageDisabled() { }
+        protected virtual void OnAnyPageDisabled()
+        {
+        }
 
-        protected virtual void OnAnyPageEnabled() { }
+        protected virtual void OnAnyPageEnabled()
+        {
+        }
 
-        protected virtual void OnBeforePageChanged() { }
+        protected virtual void OnBeforePageChanged()
+        {
+        }
 
         protected override void OnDisable()
         {
@@ -110,7 +130,7 @@ namespace Anarchy.UI
             head = null;
             OnBeforePageChanged();
 
-            foreach(MethodInfo info in allDisableMethods.Values)
+            foreach (MethodInfo info in allDisableMethods.Values)
             {
                 info.Invoke(this, parameters);
             }
@@ -127,10 +147,8 @@ namespace Anarchy.UI
             CheckPageChange();
         }
 
-
         protected abstract void OnPanelDisable();
 
         protected abstract void OnPanelEnable();
-
     }
 }

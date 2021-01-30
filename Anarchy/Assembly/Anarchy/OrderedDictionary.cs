@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Anarchy
 {
     public class OrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>
     {
-
         private Dictionary<TKey, LinkedListNode<KeyValuePair<TKey, TValue>>> mDictionary;
         private LinkedList<KeyValuePair<TKey, TValue>> mLinkedList;
 
@@ -14,6 +13,7 @@ namespace Anarchy
         private KeyCollection keyCollection;
 
         #region Constructors
+
         public OrderedDictionary()
         {
             mDictionary = new Dictionary<TKey, LinkedListNode<KeyValuePair<TKey, TValue>>>();
@@ -37,6 +37,7 @@ namespace Anarchy
             valueCollection = new ValueCollection(this);
             keyCollection = new KeyCollection(this);
         }
+
         #endregion Constructors
 
         public void Add(TKey key, TValue value)
@@ -47,6 +48,7 @@ namespace Anarchy
         }
 
         #region IDictionary Generic
+
         public bool ContainsKey(TKey key)
         {
             return mDictionary.ContainsKey(key);
@@ -132,9 +134,11 @@ namespace Anarchy
         {
             return GetEnumerator();
         }
+
         #endregion IDictionary Generic
 
         #region Explicit ICollection Generic
+
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             LinkedListNode<KeyValuePair<TKey, TValue>> lln = new LinkedListNode<KeyValuePair<TKey, TValue>>(item);
@@ -161,18 +165,21 @@ namespace Anarchy
         {
             return Remove(item.Key);
         }
+
         #endregion Explicit ICollection Generic
 
         #region Explicit IEnumerable Generic
+
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
             return GetEnumerator();
         }
+
         #endregion Explicit IEnumerable Generic
 
         public sealed class KeyCollection : ICollection<TKey>, IEnumerable<TKey>
         {
-            OrderedDictionary<TKey, TValue> parent;
+            private OrderedDictionary<TKey, TValue> parent;
 
             internal KeyCollection(OrderedDictionary<TKey, TValue> parent)
             {
@@ -205,6 +212,7 @@ namespace Anarchy
             }
 
             #region Explicit ICollection Generic
+
             void ICollection<TKey>.Add(TKey item)
             {
                 throw new NotSupportedException();
@@ -242,6 +250,7 @@ namespace Anarchy
             {
                 return new Enumerator(this);
             }
+
             #endregion Explicit ICollection Generic
 
             public struct Enumerator : IEnumerator<TKey>, IDisposable
@@ -306,13 +315,14 @@ namespace Anarchy
                 {
                     current = null;
                 }
+
                 #endregion Explicit IEnumerator generic
             }
         }
 
         public sealed class ValueCollection : ICollection<TValue>, IEnumerable<TValue>
         {
-            OrderedDictionary<TKey, TValue> parent;
+            private OrderedDictionary<TKey, TValue> parent;
 
             internal ValueCollection(OrderedDictionary<TKey, TValue> parent)
             {
@@ -345,6 +355,7 @@ namespace Anarchy
             }
 
             #region Explicit ICollection Generic
+
             void ICollection<TValue>.Add(TValue item)
             {
                 throw new NotSupportedException();
@@ -382,6 +393,7 @@ namespace Anarchy
             {
                 return new Enumerator(this);
             }
+
             #endregion Explicit ICollection Generic
 
             public struct Enumerator : IEnumerator<TValue>, IDisposable
@@ -446,6 +458,7 @@ namespace Anarchy
                 {
                     current = null;
                 }
+
                 #endregion Explicit IEnumerator generic
             }
         }

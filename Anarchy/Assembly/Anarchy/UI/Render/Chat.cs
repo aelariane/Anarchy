@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Anarchy.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using Anarchy;
-using Anarchy.Configuration;
-using Anarchy.InputPos;
-using Optimization;
 using UnityEngine;
 
 namespace Anarchy.UI
@@ -50,6 +46,18 @@ namespace Anarchy.UI
             messages = new List<string>();
         }
 
+        public static string GetLastMessages()
+        {
+            int i = Instance.messages.Count - 11;
+            int end = Instance.messages.Count - 1;
+            var bld = new System.Text.StringBuilder();
+            for (; i < end; i++)
+            {
+                bld.AppendLine(Instance.messages[i].RemoveHTML());
+            }
+            return bld.ToString();
+        }
+
         internal static void Add(string message)
         {
             if (Instance == null)
@@ -72,6 +80,7 @@ namespace Anarchy.UI
                 messages.Remove(messages.First());
             }
             messages.Add(message);
+            AnarchyManager.ChatHistory.AddMessage(message);
         }
 
         public static void Clear()
@@ -81,7 +90,7 @@ namespace Anarchy.UI
 
         private static System.Collections.IEnumerator ClearI()
         {
-            yield return new WaitForEndOfFrame(); 
+            yield return new WaitForEndOfFrame();
             if (Instance != null && Instance.messages != null)
             {
                 Instance.messages.Clear();
@@ -132,7 +141,6 @@ namespace Anarchy.UI
             scrollView = new Rect(0f, 0f, position.width, position.height);
             scrollAreaView = new Rect(0f, 0f, position.width, 2000f);
             scrollvector = Optimization.Caching.Vectors.v2zero;
-
         }
 
         protected internal override void Draw()
@@ -181,6 +189,7 @@ namespace Anarchy.UI
                     inputLine = "\t";
                     UnityEngine.GUI.FocusControl("ChatInput");
                 }
+                return;
             }
             UnityEngine.GUI.SetNextControlName(string.Empty);
             GUILayout.BeginArea(position);

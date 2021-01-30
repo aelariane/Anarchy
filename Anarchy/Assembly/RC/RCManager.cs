@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Anarchy.Configuration;
+using Optimization.Caching;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Anarchy.Configuration;
-using Optimization;
-using Optimization.Caching;
 using UnityEngine;
 
 namespace RC
@@ -18,8 +16,10 @@ namespace RC
         public static AssetBundle Asset;
         public static ExitGames.Client.Photon.Hashtable boolVariables = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable floatVariables = new ExitGames.Client.Photon.Hashtable();
+
         //This is gametype. Change it in selection grid to switch between racing, killing, etc...
         public static IntSetting GameType = new IntSetting("customGameType", 3);
+
         public static ExitGames.Client.Photon.Hashtable heroHash = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable intVariables = new ExitGames.Client.Photon.Hashtable();
         public static bool Loaded { get; private set; } = false;
@@ -33,9 +33,9 @@ namespace RC
         public static ExitGames.Client.Photon.Hashtable RCRegions = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable RCRegionTriggers = new ExitGames.Client.Photon.Hashtable();
         public static ExitGames.Client.Photon.Hashtable RCVariableNames = new ExitGames.Client.Photon.Hashtable();
+
         //Also changable variable. Use it to change titans amount on a custom map
         public static Anarchy.Configuration.IntSetting SpawnCapCustom = new Anarchy.Configuration.IntSetting("titanSpawnCap", 1);
-
 
         public static void ClearAll()
         {

@@ -22,9 +22,9 @@ public class supplyCheck : MonoBehaviour
         if (this.elapsedTime > this.stepTime)
         {
             this.elapsedTime -= this.stepTime;
-            foreach(HERO hero in FengGameManagerMKII.Heroes)
+            foreach (HERO hero in FengGameManagerMKII.Heroes)
             {
-                if(hero != null && hero.IsLocal && Vector3.Distance(hero.baseT.position, baseT.position) < 1.5f)
+                if (hero != null && hero.IsLocal && Vector3.Distance(hero.baseT.position, baseT.position) < 1.5f)
                 {
                     hero.GetSupply();
                 }

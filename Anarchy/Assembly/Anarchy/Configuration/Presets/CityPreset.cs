@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Linq;
-using Anarchy.Configuration.Storage;
+﻿using Anarchy.Configuration.Storage;
 using Anarchy.Localization;
 using Anarchy.UI;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -25,7 +25,7 @@ namespace Anarchy.Configuration.Presets
             get
             {
                 string[] result = new string[data.Length - 3];
-                for(int i = 3; i < data.Length; i++)
+                for (int i = 3; i < data.Length; i++)
                 {
                     result[i - 3] = data[i];
                 }
@@ -54,17 +54,21 @@ namespace Anarchy.Configuration.Presets
             data[index] = TextField(rect, data[index++], string.Empty, 0f, true);
             rect.MoveY();
             LabelCenter(rect, locale["houses"], true);
-            for(int i = index; i < data.Length; i++)
+            for (int i = index; i < data.Length; i++)
             {
                 data[i] = TextField(rect, data[i], string.Empty, 0f, true);
             }
         }
+
         public static SkinPreset[] GetAllPresets()
         {
             DirectoryInfo info = new DirectoryInfo(CityPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
@@ -83,7 +87,7 @@ namespace Anarchy.Configuration.Presets
                 data[0] = file.GetString("ground", string.Empty);
                 data[1] = file.GetString("wall", string.Empty);
                 data[2] = file.GetString("gate", string.Empty);
-                for(int i = 3; i < Length; i++)
+                for (int i = 3; i < Length; i++)
                 {
                     data[i] = file.GetString("house" + (i - 3).ToString(), string.Empty);
                 }
@@ -117,7 +121,7 @@ namespace Anarchy.Configuration.Presets
         public override string[] ToSkinData()
         {
             string[] result = new string[data.Length];
-            for(int i = 0; i < data.Length; i++)
+            for (int i = 0; i < data.Length; i++)
             {
                 result[i] = data[i];
             }

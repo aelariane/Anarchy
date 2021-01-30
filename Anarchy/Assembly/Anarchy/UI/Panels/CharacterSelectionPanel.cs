@@ -1,6 +1,5 @@
 ﻿using Anarchy.Configuration;
 using Anarchy.UI.Animation;
-using ExitGames.Client.Photon;
 using Optimization.Caching;
 using UnityEngine;
 using static Anarchy.UI.GUI;

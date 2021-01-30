@@ -7,6 +7,7 @@ namespace Anarchy.UI
     internal static class Helper
     {
         #region Useless stuff
+
         //public static void AntiAliasing(Texture2D tex, int anisolevel)
         //{
         //    byte[,] matrixR = new byte[tex.height, tex.width];
@@ -81,7 +82,6 @@ namespace Anarchy.UI
         //    }
         //    else
         //    {
-
         //        clr2 = tex.GetPixel(x, y - 1);
         //    }
         //    if (clr == clr2)
@@ -121,7 +121,7 @@ namespace Anarchy.UI
         //        }
         //    }
         //    return result;
-        //} 
+        //}
 
         //private static bool FillCheckEnd(Texture2D tex, int x, int y, int end)
         //{
@@ -251,12 +251,16 @@ namespace Anarchy.UI
         //        return Mathf.RoundToInt(k * x + b);
         //    };
         //}
-        #endregion
+
+        #endregion Useless stuff
 
         public static void ApplyStyle(this GUIStyle style, TextAnchor anchor, FontStyle fontStyle, int fontSize, bool wordWrap)
         {
             if (style == null)
+            {
                 return;
+            }
+
             style.alignment = anchor;
             style.fontStyle = fontStyle;
             style.fontSize = fontSize;
@@ -266,18 +270,23 @@ namespace Anarchy.UI
             style.border = new RectOffset(2, 2, 2, 2);
         }
 
-
         public static void ApplyStyle(this GUIStyle style, TextAnchor anchor, FontStyle fstyle, int fontSize, bool wordWrap, Color color)
         {
             if (style == null)
+            {
                 return;
+            }
+
             style.ApplyStyle(anchor, fstyle, fontSize, wordWrap, new Color[6].Select(x => color).ToArray());
         }
 
         public static void ApplyStyle(this GUIStyle res, TextAnchor anchor, FontStyle style, int fontSize, bool wordWrap, Color[] colors)
         {
             if (res == null)
+            {
                 return;
+            }
+
             res.ApplyStyle(anchor, style, fontSize, wordWrap);
             res.normal.textColor = colors[0];
             res.hover.textColor = colors[1];
@@ -286,7 +295,6 @@ namespace Anarchy.UI
             res.onHover.textColor = colors[4];
             res.onActive.textColor = colors[5];
         }
-
 
         public static Texture2D BorderedTexture(int width, int height, int borderWidthX, int borderWidthY, Color border, Color center)
         {
@@ -368,7 +376,7 @@ namespace Anarchy.UI
             float allWidth = baseWindow.width - Style.WindowSideOffset * 2;
             float width = (allWidth - (Style.WindowSideOffset * (count - 1))) / count;
             float y = baseWindow.y + Style.WindowTopOffset;
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 result[i] = new SmartRect(x, y, width, Style.Height, Style.HorizontalMargin, Style.VerticalMargin);
                 x += width + Style.WindowSideOffset;

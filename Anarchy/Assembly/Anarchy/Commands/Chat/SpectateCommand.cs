@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Anarchy.Commands.Chat
@@ -124,17 +121,17 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(args.Length > 0)
+            if (args.Length > 0)
             {
-                if(int.TryParse(args[0], out int id))
+                if (int.TryParse(args[0], out int id))
                 {
                     var player = PhotonPlayer.Find(id);
-                    if(player == null || player.Dead)
+                    if (player == null || player.Dead)
                     {
                         return false;
                     }
                     var hero = player.GameObject?.GetComponent<HERO>();
-                    if(hero == null)
+                    if (hero == null)
                     {
                         return false;
                     }

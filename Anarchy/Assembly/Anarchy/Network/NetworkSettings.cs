@@ -1,6 +1,5 @@
 ﻿using Anarchy.Configuration;
 using ExitGames.Client.Photon;
-using UnityEngine;
 
 namespace Anarchy.Network
 {
@@ -19,7 +18,10 @@ namespace Anarchy.Network
             {
                 int protocol = ConnectionProtocol.Value;
                 if (protocol >= 2)
+                {
                     protocol += 2;
+                }
+
                 return (ConnectionProtocol)protocol;
             }
         }

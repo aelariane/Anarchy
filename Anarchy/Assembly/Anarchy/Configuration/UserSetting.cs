@@ -5,7 +5,7 @@ namespace Anarchy.Configuration
 {
     public class UserSetting : Setting<string>
     {
-        const char separator = ',';
+        private const char separator = ',';
 
         public static AnarchyStorage Storage => storage;
 
@@ -13,12 +13,17 @@ namespace Anarchy.Configuration
         private static AnarchyStorage storage;
         private static List<UserSetting> settings;
 
-        public UserSetting(string key) : this(key, string.Empty) { }
+        public UserSetting(string key) : this(key, string.Empty)
+        {
+        }
 
         public UserSetting(string key, string defaultValue) : base(key, defaultValue, false)
         {
             if (settings == null)
+            {
                 settings = new List<UserSetting>();
+            }
+
             lock (locker)
             {
                 settings.Add(this);
@@ -30,7 +35,9 @@ namespace Anarchy.Configuration
             lock (locker)
             {
                 if (settings.Contains(this))
+                {
                     settings.Remove(this);
+                }
             }
         }
 
@@ -48,14 +55,20 @@ namespace Anarchy.Configuration
         public string[] GetArray()
         {
             if (Value == null)
+            {
                 return new string[0];
+            }
+
             return Value.Split(separator);
         }
 
         public override void Load()
         {
             if (storage == null)
+            {
                 return;
+            }
+
             Value = storage.GetString(Key, DefaultValue);
         }
 
@@ -75,7 +88,7 @@ namespace Anarchy.Configuration
         public string PickRandomString()
         {
             string[] res = GetArray();
-            if(res.Length > 0)
+            if (res.Length > 0)
             {
                 return res[UnityEngine.Random.Range(0, res.Length)];
             }
@@ -85,7 +98,10 @@ namespace Anarchy.Configuration
         public override void Save()
         {
             if (storage == null)
+            {
                 return;
+            }
+
             storage.SetString(Key, Value);
         }
 
@@ -93,7 +109,7 @@ namespace Anarchy.Configuration
         {
             lock (locker)
             {
-                for(int i = 0; i < settings.Count; i++)
+                for (int i = 0; i < settings.Count; i++)
                 {
                     settings[i].Save();
                 }

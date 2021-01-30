@@ -33,6 +33,7 @@ public class RCEvent
                     this.trueActions[num2].doAction();
                 }
                 return;
+
             case 1:
                 if (this.condition.checkCondition())
                 {
@@ -48,6 +49,7 @@ public class RCEvent
                     return;
                 }
                 return;
+
             case 2:
                 {
                     int i = this.eventType;
@@ -101,6 +103,7 @@ public class RCEvent
                     }
                 }
                 return;
+
             default:
                 return;
         }

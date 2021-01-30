@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace Anarchy.IO
@@ -20,11 +19,13 @@ namespace Anarchy.IO
         {
             get
             {
-               return allValues;
+                return allValues;
             }
         }
 
-        public ConfigFile(string path, char separator = '`') : this(path, separator, true) { }
+        public ConfigFile(string path, char separator = '`') : this(path, separator, true)
+        {
+        }
 
         public ConfigFile(string path, char separator, bool autocreate) : base(path, false, autocreate)
         {
@@ -33,12 +34,16 @@ namespace Anarchy.IO
 
         public override void Dispose()
         {
-            if(AutoSave)
+            if (AutoSave)
+            {
                 Save();
+            }
+
             base.Dispose();
         }
 
         #region Get variables
+
         public bool GetBool(string key)
         {
             bool result;
@@ -47,9 +52,9 @@ namespace Anarchy.IO
                 return result;
             }
             string val;
-            if(allValues.TryGetValue(key, out val))
+            if (allValues.TryGetValue(key, out val))
             {
-                if(bool.TryParse(val, out result))
+                if (bool.TryParse(val, out result))
                 {
                     booleans.Add(key, result);
                 }
@@ -110,7 +115,8 @@ namespace Anarchy.IO
             }
             return result;
         }
-        #endregion
+
+        #endregion Get variables
 
         public void Load()
         {
@@ -126,14 +132,14 @@ namespace Anarchy.IO
             integers.Clear();
             strings.Clear();
             string[] allStrings = System.IO.File.ReadAllLines(Path);
-            foreach(string str in allStrings)
+            foreach (string str in allStrings)
             {
                 if (str.StartsWith("#") || str.Equals(string.Empty))
                 {
                     continue;
                 }
                 string[] add = ParseString(str);
-                if(add == null)
+                if (add == null)
                 {
                     continue;
                 }
@@ -144,12 +150,12 @@ namespace Anarchy.IO
         private string[] ParseString(string val)
         {
             string[] parse = val.Split(Separator);
-            if(parse.Length < 2)
+            if (parse.Length < 2)
             {
                 Debug.LogError("Config line without separator found. " + val + ". Path: " + Path);
                 return null;
             }
-            if(parse.Length == 2)
+            if (parse.Length == 2)
             {
                 return parse;
             }
@@ -174,7 +180,7 @@ namespace Anarchy.IO
             StoreValues();
             using (textWriter = info.CreateText())
             {
-                foreach(var pair in allValues)
+                foreach (var pair in allValues)
                 {
                     textWriter.Write(pair.Key);
                     textWriter.Write(Separator);
@@ -185,6 +191,7 @@ namespace Anarchy.IO
         }
 
         #region Set variables
+
         public void SetBool(string key, bool val)
         {
             if (booleans.ContainsKey(key))
@@ -194,6 +201,7 @@ namespace Anarchy.IO
             }
             booleans.Add(key, val);
         }
+
         public void SetFloat(string key, float val)
         {
             if (floats.ContainsKey(key))
@@ -203,6 +211,7 @@ namespace Anarchy.IO
             }
             floats.Add(key, val);
         }
+
         public void SetInt(string key, int val)
         {
             if (integers.ContainsKey(key))
@@ -212,6 +221,7 @@ namespace Anarchy.IO
             }
             integers.Add(key, val);
         }
+
         public void SetString(string key, string val)
         {
             if (strings.ContainsKey(key))
@@ -224,7 +234,7 @@ namespace Anarchy.IO
 
         public void StoreValues()
         {
-            foreach(var pair in booleans)
+            foreach (var pair in booleans)
             {
                 RefreshValue(pair.Key, pair.Value.ToString());
             }
@@ -241,7 +251,8 @@ namespace Anarchy.IO
                 RefreshValue(pair.Key, pair.Value.ToString());
             }
         }
-        #endregion
+
+        #endregion Set variables
 
         public void Unload()
         {

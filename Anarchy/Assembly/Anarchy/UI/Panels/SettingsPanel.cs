@@ -1,5 +1,7 @@
 ﻿using Anarchy.Configuration;
 using Anarchy.UI.Animation;
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -7,24 +9,27 @@ namespace Anarchy.UI
 {
     public class SettingsPanel : GUIPanel
     {
-        const int General = 0;
-        const int Video = 1;
-        const int Effects = 2;
-        const int Rebinds = 3;
-        const int Anarchy = 4;
-        const int Abilities = 5;
+        private const int General = 0;
+        private const int Video = 1;
+        private const int Effects = 2;
+        private const int Rebinds = 3;
+        private const int Anarchy = 4;
+        private const int Abilities = 5;
 
-        const int RebindsHuman = 0;
-        const int RebindsTitan = 1;
-        const int RebindsHorse = 2;
-        const int RebindsCannon = 3;
+        private const int RebindsHuman = 0;
+        private const int RebindsTitan = 1;
+        private const int RebindsHorse = 2;
+        private const int RebindsCannon = 3;
+        private const int RebindsAnarchy = 4;
 
-        const int Color = 0;
-        const int NameAnimation = 1;
-        const int ChatAndConsole = 2;
-        const int Playerlist = 3;
+        private const int AnarchyMain = 0;
+        private const int AnarchyStyle = 1;
+        private const int AnarchyNameAnimation = 2;
+        private const int AnarchyChatAndConsole = 3;
 
-        const int Bombs = 0;
+        private const int Bombs = 0;
+
+        private bool wasClosedByUpdate = false;
 
         private SmartRect left;
         private Rect pagePosition;
@@ -49,6 +54,20 @@ namespace Anarchy.UI
         public SettingsPanel() : base(nameof(SettingsPanel), GUILayers.SettingsPanel)
         {
             animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+        }
+
+        [GUIPage(Anarchy, GUIPageType.EnableMethod)]
+        private void AnarchyPageEnabled()
+        {
+            int i = 0;
+            for(i = 0; i < AnarchyAssets.FontNames.Length; i++)
+            {
+                if(Style.PublicSettings[0] == AnarchyAssets.FontNames[i])
+                {
+                    break;
+                }
+            }
+            Style.FontSetting.Value = i;
         }
 
         [GUIPage(Anarchy, GUIPageType.DisableMethod)]
@@ -98,7 +117,7 @@ namespace Anarchy.UI
                 Bomb.MyBombRange.Value = Mathf.RoundToInt(localBombStats[1]);
                 Bomb.MyBombSpeed.Value = Mathf.RoundToInt(localBombStats[2]);
                 Bomb.MyBombCD.Value = Mathf.RoundToInt(localBombStats[3]);
-                if (Bomb.MyBombRad.Value + Bomb.MyBombRange.Value + Bomb.MyBombSpeed.Value + Bomb.MyBombCD.Value > 25)
+                if (Bomb.MyBombRad.Value + Bomb.MyBombRange.Value + Bomb.MyBombSpeed.Value + Bomb.MyBombCD.Value > 20)
                 {
                     Bomb.MyBombRad.Value = 5;
                     Bomb.MyBombCD.Value = 5;
@@ -128,7 +147,23 @@ namespace Anarchy.UI
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
             switch (ModPage)
             {
-                case Color:
+                case AnarchyMain:
+                    {
+                        //Left column
+                        LabelCenter(rects[0], locale["anarchyMainDesc"], true);
+                        ToggleButton(rects[0], Settings.HideName, locale["hideOwnName"], true);
+                        ToggleButton(rects[0], Settings.RemoveColors, locale["noColorNames"], true);
+                        ToggleButton(rects[0], Settings.DisableHookArrrows, locale["hideCrosshairArrows"], true);
+
+                        //Right column
+                        LabelCenter(rects[1], locale["lblAbuse"], true);
+                        ToggleButton(rects[1], Settings.BodyLeanEnabled, locale["bodylean"], true);
+                        ToggleButton(rects[1], Settings.InfiniteGasPvp, locale["infGasPvp"], true);
+                    }
+                    break;
+
+                case AnarchyStyle:
+                    //TODO: Create separated Style panel
                     LabelCenter(rects[0], locale["windowOffset"], true);
                     ToggleButton(rects[0], UIManager.HUDAutoScaleGUI, locale["guiAutoScale"], true);
                     if (UIManager.HUDAutoScaleGUI.Value)
@@ -155,18 +190,24 @@ namespace Anarchy.UI
                         TextField(rects[0], Style.LabelSpaceSetting, locale["labelSpace"], Style.BigLabelOffset, true);
                     }
                     LabelCenter(rects[1], locale["styleColors"], true);
-                    Style.PublicSettings[0] = TextField(rects[1], Style.PublicSettings[0], locale["fontName"], Style.LabelOffset, true);
+
+                    DropdownMenuScrollable(rects[1], Style.FontSetting, AnarchyAssets.FontNames, locale["fontName"], Style.LabelOffset, 6, true);
+
                     Style.PublicSettings[1] = TextField(rects[1], Style.PublicSettings[1], locale["background"], Style.LabelOffset, true);
-                    Style.PublicSettings[2] = TextField(rects[1], Style.PublicSettings[2], locale["backgroundTransparency"], Style.BigLabelOffset, true);
-                    Label(rects[1], "", true);
+                    HorizontalSlider(rects[1], Style.BackgroundTransparencySetting, locale.Format("backgroundTransparency", Style.BackgroundTransparencySetting.Value.ToString("F0")), 32f, 255f, Style.LabelOffsetSlider, true);
+                    Style.BackgroundTransparency = System.Convert.ToInt32(Style.BackgroundTransparencySetting.Value);
+                    Style.PublicSettings[2] = Style.BackgroundTransparency.ToString();
+                    rects[1].MoveY();
                     Style.PublicSettings[3] = TextField(rects[1], Style.PublicSettings[3], locale["text"] + " " + locale["normal"], Style.LabelOffset, true);
                     Style.PublicSettings[4] = TextField(rects[1], Style.PublicSettings[4], locale["text"] + " " + locale["hover"], Style.LabelOffset, true);
                     Style.PublicSettings[5] = TextField(rects[1], Style.PublicSettings[5], locale["text"] + " " + locale["active"], Style.LabelOffset, true);
                     Style.PublicSettings[6] = TextField(rects[1], Style.PublicSettings[6], locale["text"] + " " + locale["onNormal"], Style.LabelOffset, true);
                     Style.PublicSettings[7] = TextField(rects[1], Style.PublicSettings[7], locale["text"] + " " + locale["onHover"], Style.LabelOffset, true);
                     Style.PublicSettings[8] = TextField(rects[1], Style.PublicSettings[8], locale["text"] + " " + locale["onActive"], Style.LabelOffset, true);
-                    Label(rects[1], "", true);
+                    rects[1].MoveY();
+                    //Label(rects[1], "", true);
                     Style.UseVectors = ToggleButton(rects[1], Style.UseVectors, locale["useVectors"], true);
+                    Style.PublicSettings[9] = Style.UseVectors.ToString();
                     if (Style.UseVectors)
                     {
                         Style.PublicSettings[10] = TextField(rects[1], Style.PublicSettings[10], locale["vector"] + " " + locale["normal"], Style.LabelOffset, true);
@@ -185,13 +226,25 @@ namespace Anarchy.UI
                         Style.PublicSettings[20] = TextField(rects[1], Style.PublicSettings[20], locale["color"] + " " + locale["onHover"], Style.LabelOffset, true);
                         Style.PublicSettings[21] = TextField(rects[1], Style.PublicSettings[21], locale["color"] + " " + locale["onActive"], Style.LabelOffset, true);
                     }
+                    var left = rects[0];
+                    left.MoveToEndY(BoxPosition, Style.Height);
+                    left.width = Style.LabelOffsetSlider;
+                    if (Button(left, "Apply changes"))
+                    {
+                        Style.PublicSettings[0] = AnarchyAssets.FontNames[Style.FontSetting.Value];
+                        Style.Save();
+                        Style.Load();
+                        Style.Initialize();
+                        UIManager.UpdateGUIScaling();
+                        wasClosedByUpdate = true;
+                    }
                     break;
 
-                case NameAnimation:
+                case AnarchyNameAnimation:
                     LabelCenter(rects[0], "<b><color=red>NOT IMPLEMENTED YET</color></b>");
                     break;
 
-                case ChatAndConsole:
+                case AnarchyChatAndConsole:
                     LabelCenter(rects[0], locale["chat"], true);
                     ToggleButton(rects[0], Chat.UseBackground, locale["chatBack"], true);
                     if (Chat.UseBackground.Value)
@@ -289,6 +342,7 @@ namespace Anarchy.UI
                 SelectionGrid(right, Settings.SpeedometerType, locale.GetArray("speedometerTypes"), 2, true);
             }
 
+            right.MoveY();
         }
 
         private void DrawLowerButtons()
@@ -311,12 +365,21 @@ namespace Anarchy.UI
             rect.MoveY();
             RebindPage = SelectionGrid(rect, RebindPage, RebindLabels, RebindLabels.Length, true);
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
-            int RebindCannon = (int) InputCodes.DefaultsCount + InputManager.RebindKeyCodesLength;
+            int RebindCannon = (int)InputCodes.DefaultsCount + InputManager.RebindKeyCodesLength;
             int CannonTitan = RebindCannon + InputManager.CannonKeyCodesLength;
             int TitanHorse = CannonTitan + InputManager.TitanKeyCodesLength;
             int HorseMod = TitanHorse + InputManager.HorseKeyCodesLength;
+            int AnarchyR = HorseMod + InputManager.AnarchyKeyCodesLength;
             switch (RebindPage)
             {
+                case RebindsAnarchy:
+                    rects[0].MoveY();
+                    for (int i = HorseMod; i < AnarchyR; i++)
+                    {
+                        RebindButton(rects[0], InputManager.AllKeys[i]);
+                    }
+                    break;
+
                 case RebindsHuman:
                     LabelCenter(rects[0], locale["mainRebinds"], true);
                     for (int i = 0; i < 17; i++)
@@ -333,6 +396,8 @@ namespace Anarchy.UI
                     rects[1].MoveOffsetX(Style.LabelOffset);
                     SelectionGrid(rects[1], InputManager.GasBurstType, burstTypes, burstTypes.Length, true);
                     rects[1].ResetX();
+                    ToggleButton(rects[1], InputManager.LegacyGasRebind, locale["legacyBurstRebind"], true);
+                    ToggleButton(rects[1], InputManager.DisableMouseReeling, locale["disableMouseReel"], true);
                     for (int i = (int)InputCodes.DefaultsCount; i < RebindCannon; i++)
                     {
                         RebindButton(rects[1], InputManager.AllKeys[i]);
@@ -362,6 +427,7 @@ namespace Anarchy.UI
                         RebindButton(rects[0], InputManager.AllKeys[i]);
                     }
                     break;
+
                 default:
                     break;
             }
@@ -382,26 +448,35 @@ namespace Anarchy.UI
             HorizontalSlider(left, VideoSettings.DrawDistance, locale.Format("drawDistance", VideoSettings.DrawDistance.Value.ToString("F0")), 1000f, 10000f, Style.LabelOffsetSlider, true);
             ToggleButton(left, VideoSettings.Mipmap, locale["mipmap"], true);
             ToggleButton(left, VideoSettings.VSync, locale["vsync"], true);
-            LabelCenter(left, locale["texturesQuality"], true);
-            SelectionGrid(left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), 4, true);
+
+            DropdownMenu(left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), locale["texturesQuality"], left.width - Style.LabelOffset, true);
+
+            //LabelCenter(left, locale["texturesQuality"], true);
+            //SelectionGrid(left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), 4, true);
+
             LabelCenter(left, locale.Format("quality", VideoSettings.Quality.Value.ToString("F2")), true);
             HorizontalSlider(left, VideoSettings.Quality, string.Empty, 0f, 1f, 0f, true);
             left.MoveY();
             LabelCenter(left, locale["advancedVideo"], true);
             ToggleButton(left, VideoSettings.OcclusionCulling, locale["occlusion"], true);
-            LabelCenter(left, locale["aniso"], true);
-            SelectionGrid(left, VideoSettings.AnisotropicFiltering, locale.GetArray("anisoLevels"), 3, true);
-            Label(left, locale["antiAliasing"], false);
-            left.MoveOffsetX(Style.LabelOffset);
-            SelectionGrid(left, VideoSettings.AntiAliasing, locale.GetArray("antiAliasings"), 4, true);
-            left.ResetX();
-            Label(left, locale["bWeight"], false);
-            left.MoveOffsetX(Style.LabelOffset);
-            SelectionGrid(left, VideoSettings.BlendWeight, locale.GetArray("blendWeights"), 3, true);
-            left.ResetX();
+
+
+            DropdownMenu(this, left, VideoSettings.AnisotropicFiltering, locale.GetArray("anisoLevels"), locale["aniso"], left.width - Style.LabelOffset, true);
+            DropdownMenu(this, left, VideoSettings.AntiAliasing, locale.GetArray("antiAliasings"), locale["antiAliasing"], left.width - Style.LabelOffset, true);
+            DropdownMenu(this, left, VideoSettings.BlendWeight, locale.GetArray("blendWeights"), locale["bWeight"], left.width - Style.LabelOffset, true);
+
+            //LabelCenter(left, locale["aniso"], true);
+            //SelectionGrid(left, VideoSettings.AnisotropicFiltering, locale.GetArray("anisoLevels"), 3, true);
+            //Label(left, locale["antiAliasing"], false);
+            //left.MoveOffsetX(Style.LabelOffset);
+            //SelectionGrid(left, VideoSettings.AntiAliasing, locale.GetArray("antiAliasings"), 4, true);
+            //left.ResetX();
+            //Label(left, locale["bWeight"], false);
+            //left.MoveOffsetX(Style.LabelOffset);
+            //SelectionGrid(left, VideoSettings.BlendWeight, locale.GetArray("blendWeights"), 3, true);
+            //left.ResetX();
             HorizontalSlider(left, VideoSettings.LODBias, locale.Format("lodBias", VideoSettings.LODBias.Value.ToString("F2")), 0f, 2f, Style.LabelOffsetSlider, true);
             HorizontalSlider(left, VideoSettings.MaxLODLevel, locale.Format("maxLOD", VideoSettings.MaxLODLevel.Value.ToString("F0")), 0f, 7f, Style.LabelOffsetSlider, true);
-
 
             //right
             right.Reset();
@@ -409,14 +484,18 @@ namespace Anarchy.UI
             Label(right, locale["shadowNote"], true);
             ToggleButton(right, VideoSettings.UseShadows, locale["useShadows"], true);
             HorizontalSlider(right, VideoSettings.ShadowDistance, locale.Format("shadowDist", VideoSettings.ShadowDistance.Value.ToString("F0")), 0f, 1000f, Style.LabelOffsetSlider, true);
-            Label(right, locale["shadowCascade"], false);
-            right.MoveOffsetX(Style.LabelOffset);
-            SelectionGrid(right, VideoSettings.ShadowCascades, locale.GetArray("shadowCascades"), 3, true);
-            right.ResetX();
-            Label(right, locale["shadowProjection"], false);
-            right.MoveOffsetX(Style.LabelOffset);
-            SelectionGrid(right, VideoSettings.ShadowProjection, locale.GetArray("shadowProjections"), 2, true);
-            right.ResetX();
+
+            DropdownMenu(this, right, VideoSettings.ShadowCascades, locale.GetArray("shadowCascades"), locale["shadowCascade"], right.width - Style.LabelOffset, true);
+            DropdownMenu(this, right, VideoSettings.ShadowProjection, locale.GetArray("shadowProjections"), locale["shadowProjection"], right.width - Style.LabelOffset, true);
+            //Label(right, locale["shadowCascade"], false);
+            //right.MoveOffsetX(Style.LabelOffset);
+            //SelectionGrid(right, VideoSettings.ShadowCascades, locale.GetArray("shadowCascades"), 3, true);
+            //right.ResetX();
+
+            //Label(right, locale["shadowProjection"], false);
+            //right.MoveOffsetX(Style.LabelOffset);
+            //SelectionGrid(right, VideoSettings.ShadowProjection, locale.GetArray("shadowProjections"), 2, true);
+            //right.ResetX();
         }
 
         protected override void OnPanelDisable()
@@ -434,6 +513,7 @@ namespace Anarchy.UI
             {
                 AnarchyManager.MainMenu.EnableImmediate();
             }
+            PhotonNetwork.SetModProperties();
         }
 
         protected override void OnPanelEnable()
@@ -456,6 +536,12 @@ namespace Anarchy.UI
             {
                 AnarchyManager.MainMenu.DisableImmediate();
             }
+            if (wasClosedByUpdate)
+            {
+                pageSelection = Anarchy;
+                ModPage = AnarchyStyle;
+                wasClosedByUpdate = false;
+            }
         }
 
         private void RebindButton(SmartRect rect, KeySetting set)
@@ -469,9 +555,12 @@ namespace Anarchy.UI
             }
             rect.ResetX();
             if (set != waitSetting || !rebindWait)
+            {
                 return;
+            }
+
             var curr = Event.current;
-            if(curr.keyCode == set.Value)
+            if (curr.keyCode == set.Value && curr.keyCode != KeyCode.None)
             {
                 set.SetValue(KeyCode.None);
                 rebindWait = false;
@@ -492,7 +581,7 @@ namespace Anarchy.UI
                 waitSetting = null;
                 return;
             }
-            if(Input.GetAxis("Mouse ScrollWheel") != 0f)
+            if (Input.GetAxis("Mouse ScrollWheel") != 0f)
             {
                 set.SetAsAxis(Input.GetAxis("Mouse ScrollWheel") > 0f);
                 rebindWait = false;

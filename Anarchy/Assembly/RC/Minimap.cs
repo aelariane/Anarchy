@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.Configuration;
 using Anarchy.InputPos;
 using Optimization.Caching;
 using RC;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -708,7 +708,7 @@ public class Minimap : MonoBehaviour
 
     public static void TrackGameObjectOnMinimap(GameObject objToTrack, Color iconColor, bool trackOrientation, bool depthAboveAll = false, IconStyle iconStyle = IconStyle.Circle)
     {
-        if(instance != null)
+        if (instance != null)
         {
             instance.TrackGameObject(objToTrack, iconColor, trackOrientation, depthAboveAll, iconStyle);
         }
@@ -759,7 +759,6 @@ public class Minimap : MonoBehaviour
     {
         Minimap.instance.StartCoroutine(Minimap.instance.TryRecaptureInstanceE(time));
     }
-
 
     public enum IconStyle
     {

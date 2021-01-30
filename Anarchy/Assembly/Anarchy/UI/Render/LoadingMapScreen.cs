@@ -7,13 +7,12 @@ namespace Anarchy.UI
     {
         private static LoadingMapScreen instance;
 
-
         private Rect screenRect = new Rect(0f, 0f, Style.ScreenWidth, Style.ScreenHeight);
         private SmartRect rect;
 
         public LoadingMapScreen() : base(nameof(LoadingMapScreen), GUILayers.LoadingMapScreen)
         {
-            if(instance != null)
+            if (instance != null)
             {
                 instance.DisableImmediate();
             }
@@ -33,7 +32,7 @@ namespace Anarchy.UI
             rect.Reset();
             LabelCenter(rect, locale["loadingLbl"], true);
             LabelCenter(rect, locale.Format("loadingProgress", PhotonNetwork.player.CurrentLevel.Length.ToString(), PhotonNetwork.masterClient.CurrentLevel.Length.ToString()), true);
-            if(Button(rect, locale["disconnect"], false))
+            if (Button(rect, locale["disconnect"], false))
             {
                 if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
@@ -45,7 +44,7 @@ namespace Anarchy.UI
                 Application.LoadLevel("menu");
                 DisableImmediate();
             }
-            if(PhotonNetwork.player.CurrentLevel.Length >= PhotonNetwork.masterClient.CurrentLevel.Length)
+            if (PhotonNetwork.player.CurrentLevel.Length >= PhotonNetwork.masterClient.CurrentLevel.Length)
             {
                 DisableImmediate();
                 RC.CustomLevel.customLevelLoaded = true;

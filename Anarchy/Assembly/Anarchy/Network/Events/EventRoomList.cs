@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ExitGames.Client.Photon;
+using System;
 using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Anarchy.Network.Events
@@ -16,11 +16,10 @@ namespace Anarchy.Network.Events
             NetworkManager.RegisterEvent(this);
         }
 
-
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
-            if(sender != null)
+            if (sender != null)
             {
                 reason = UI.Log.GetString("senderMustBeNull");
                 return false;
@@ -32,14 +31,14 @@ namespace Anarchy.Network.Events
         public bool Handle()
         {
             NetworkingPeer.mGameList = new Dictionary<string, RoomInfo>();
-            foreach(var pair in roomList)
+            foreach (var pair in roomList)
             {
                 string key = (string)pair.Key;
                 NetworkingPeer.mGameList[key] = new RoomInfo(key, (Hashtable)pair.Value);
             }
             PhotonNetwork.networkingPeer.mGameListCopy = new RoomInfo[NetworkingPeer.mGameList.Count];
-            int i = 0; 
-            foreach(RoomInfo info in NetworkingPeer.mGameList.Values)
+            int i = 0;
+            foreach (RoomInfo info in NetworkingPeer.mGameList.Values)
             {
                 PhotonNetwork.networkingPeer.mGameListCopy[i++] = info;
             }

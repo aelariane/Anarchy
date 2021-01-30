@@ -35,7 +35,7 @@ namespace Anarchy.Configuration.Presets
         public override void Draw(SmartRect rect, Locale locale)
         {
             string[] labels = locale.GetArray("humanLabels");
-            for(int i = 0; i < labels.Length; i++)
+            for (int i = 0; i < labels.Length; i++)
             {
                 SkinData[i] = UI.GUI.TextField(rect, SkinData[i], labels[i], Style.LabelOffset, true);
             }
@@ -46,7 +46,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(HumansPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
@@ -83,7 +86,7 @@ namespace Anarchy.Configuration.Presets
         public override string[] ToSkinData()
         {
             string[] result = new string[SkinData.Length];
-            for(int i = 0; i < SkinData.Length; i++)
+            for (int i = 0; i < SkinData.Length; i++)
             {
                 result[i] = SkinData[i];
             }

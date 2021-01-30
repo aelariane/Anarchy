@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Anarchy.Configuration;
+﻿using Anarchy.Configuration;
 using Anarchy.Configuration.Presets;
 using Anarchy.UI;
 using Optimization.Caching;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RC
 {
-    static class CustomLevel
+    internal static class CustomLevel
     {
         public static string currentLevel = "";
         private static Anarchy.Skins.Maps.CustomMapSkin customMapSkin;
@@ -23,6 +23,7 @@ namespace RC
         public static List<GameObject> groundList = new List<GameObject>();
         public static Stack<RacingCheckpointTrigger> RacingCP = new Stack<RacingCheckpointTrigger>();
         public static List<GameObject> racingDoors = new List<GameObject>();
+
         public static Dictionary<string, List<Vector3>> spawnPositions = new Dictionary<string, List<Vector3>>
         {
             {
@@ -38,6 +39,7 @@ namespace RC
                 new List<Vector3>()
             }
         };
+
         private static float updateTime = 1f;
 
         public static List<TitanSpawner> titanSpawners = new List<TitanSpawner>();
@@ -79,6 +81,7 @@ namespace RC
                                 case '(':
                                     num4++;
                                     break;
+
                                 case ')':
                                     num5++;
                                     break;
@@ -714,7 +717,7 @@ namespace RC
                 {
                     FengGameManagerMKII.FGM.BasePV.RPC("customlevelRPC", cached.ToArray(), new object[] { new string[] { "loadcached" } });
                 }
-                if(send.Count > 0)
+                if (send.Count > 0)
                 {
                     for (int i = 0; i < levelCache.Count; i++)
                     {
@@ -748,8 +751,10 @@ namespace RC
             if (RCManager.RCEvents.ContainsKey("OnUpdate"))
             {
                 updateTime -= GameLogic.GameLogic.UpdateInterval;
-                if (updateTime > 0f) return;
-                ((RCEvent)RCManager.RCEvents["OnUpdate"]).checkEvent();
+                if (updateTime > 0f)
+                {
+                    return;
+                } ((RCEvent)RCManager.RCEvents["OnUpdate"]).checkEvent();
                 updateTime = 1f;
             }
         }
@@ -784,6 +789,7 @@ namespace RC
                         }
                     }
                     return 0;
+
                 case 1:
                 case 4:
                 case 5:
@@ -796,6 +802,7 @@ namespace RC
                         return 5;
                     }
                     return 0;
+
                 case 2:
                     if (str.StartsWith("Equals"))
                     {
@@ -830,6 +837,7 @@ namespace RC
                         return 7;
                     }
                     return 0;
+
                 default:
                     return 0;
             }
@@ -896,7 +904,7 @@ namespace RC
                 RCManager.allowedToCannon = new Dictionary<int, CannonValues>();
                 if (!PhotonNetwork.IsMasterClient)
                 {
-                    if(SkinSettings.CustomSkins.Value == 2)
+                    if (SkinSettings.CustomSkins.Value == 2)
                     {
                         if (SkinSettings.CustomMapSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
                         {
@@ -908,7 +916,6 @@ namespace RC
                 }
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    
                     RCManager.SpawnCapCustom.Value = Math.Min(50, RCManager.SpawnCapCustom.Value);
                     string[] customSkin = new string[7] { "", "", "", "", "", "", "" };
                     if (SkinSettings.CustomMapSet.Value != Anarchy.Configuration.StringSetting.NotDefine)
@@ -1106,7 +1113,7 @@ namespace RC
             {
                 return;
             }
-            if(customMapSkin == null)
+            if (customMapSkin == null)
             {
                 customMapSkin = new Anarchy.Skins.Maps.CustomMapSkin(data);
             }
@@ -2281,6 +2288,7 @@ namespace RC
                                     sentType = 3;
                                 }
                                 break;
+
                             case 5:
                                 if (str2.StartsWith("GetType()"))
                                 {
@@ -2319,6 +2327,7 @@ namespace RC
                                     sentType = 3;
                                 }
                                 break;
+
                             default:
                                 if (str2.StartsWith("ConvertToInt()"))
                                 {

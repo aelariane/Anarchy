@@ -1,5 +1,4 @@
-﻿
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.Configuration;
 using Optimization.Caching;
 using UnityEngine;
@@ -25,6 +24,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     private GameObject lockTarget;
     private bool needSetHUD;
     private float R;
+    private float rotationY = 0f;
     private Texture2D snapshot1;
     private Texture2D snapshot2;
     private Texture2D snapshot3;
@@ -60,7 +60,6 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
     public static GameType GameType = GameType.Stop;
 
     public static int invertY = 1;
-
 
     public static bool isCheating;
 
@@ -197,20 +196,40 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
                     }
                     break;
 
+                case CameraType.NewTPS:
+                    Quaternion quaternion = Quaternion.Euler(0f, BaseT.eulerAngles.y, 0f);
+                    BaseT.position = (Head ?? MainT).position + Vectors.up * 3f;
+                    rotationY += ((Input.GetAxis("Mouse Y") * 2.5f) * (sensitivityMulti * 2f)) * invertY;
+                    rotationY = Mathf.Clamp(rotationY, -60f, 60f);
+                    rotationY = Mathf.Max(rotationY, -999f + (this.heightMulti * 2f));
+                    rotationY = Mathf.Min(rotationY, 999f);
+                    BaseT.localEulerAngles = new Vector3(-rotationY, BaseT.localEulerAngles.y + ((Input.GetAxis("Mouse X") * 2.5f) * (sensitivityMulti * 2f)), BaseT.eulerAngles.z);
+                    quaternion = Quaternion.Euler(0f, BaseT.eulerAngles.y, 0f);
+                    BaseT.position -= quaternion * Vectors.forward * 10f * distanceMulti * distanceOffsetMulti;
+                    BaseT.position += -Vectors.up * rotationY * 0.1f * (float)System.Math.Pow((double)heightMulti, 1.1) * distanceOffsetMulti;
+                    if (cameraDistance >= 0.65f)
+                    {
+                        return;
+                    }
 
+                    BaseT.position += (BaseT.Right() * Mathf.Max(((0.6f - cameraDistance) * 2f), 0.65f));
+                    return;
             }
         }
         BaseT.position -= (((BaseT.Forward() * this.distance) * this.distanceMulti) * this.distanceOffsetMulti);
-        if (cameraDistance >= 0.65f) 
+        if (cameraDistance >= 0.65f)
+        {
             return;
+        }
+
         BaseT.position += (BaseT.Right() * Mathf.Max(((0.6f - cameraDistance) * 2f), 0.65f));
     }
 
     public void CameraMovementLive(HERO hero)
     {
         if (hero == null)
-        { 
-            return; 
+        {
+            return;
         }
         float magnitude = hero.baseR.velocity.magnitude;
         if (magnitude > 10f)
@@ -244,7 +263,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
                 Minimap.instance.myCam.enabled = false;
             }
             minimap.CreateMinimap(Minimap.instance.myCam, 512, 0.3f, info.minimapPreset);
-            if(!Settings.Minimap.Value || GameModes.MinimapDisable.Enabled)
+            if (!Settings.Minimap.Value || GameModes.MinimapDisable.Enabled)
             {
                 minimap.SetEnabled(false);
             }
@@ -335,7 +354,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         this.setDayLight(DayLight);
         this.locker = CacheGameObject.Find("locker");
         this.createSnapShotRT();
-        if(AnarchyManager.Background != null)
+        if (AnarchyManager.Background != null)
         {
             VideoSettings.Apply();
         }
@@ -400,7 +419,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         {
             obj2.transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f);
         }
-        Optimization.Labels.BottomRight = "Pause : " + InputManager.Settings[InputCode.Pause] + " ";
+        Optimization.Labels.BottomRight = (GameType == GameType.Single ? $"Anarchy version: {AnarchyManager.AnarchyVersion}\n" : "") + "Pause : " + InputManager.Settings[InputCode.Pause] + " ";
         GameObject.Find("LabelInfoTopCenter").transform.localPosition = new Vector3(0f, (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelInfoTopRight").transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelNetworkStatus").transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
@@ -411,7 +430,6 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             CacheGameObject.Find("GasUI").transform.localPosition = CacheGameObject.Find("skill_cd_bottom").transform.localPosition;
             CacheGameObject.Find("stamina_titan").transform.localPosition = new Vector3(0f, 9999f, 0f);
             CacheGameObject.Find("stamina_titan_bottom").transform.localPosition = new Vector3(0f, 9999f, 0f);
-
         }
         else
         {
@@ -724,7 +742,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             if (InputManager.IsInputRebind((int)Anarchy.InputPos.InputRebinds.LiveSpectate))
             {
                 if (mainObject != null)
+                {
                     liveSpecMode = !liveSpecMode;
+                }
             }
             if (this.spectatorMode)
             {
@@ -803,11 +823,17 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             }
             else if (CameraMode == CameraType.TPS)
             {
-                CameraMode = CameraType.ORIGINAL;
+                CameraMode = CameraType.NewTPS;
 
                 Screen.lockCursor = CameraMode >= CameraType.TPS;
             }
-            Anarchy.Configuration.Settings.CameraMode.Value = (int)CameraMode;
+            else if (CameraMode == CameraType.NewTPS)
+            {
+                CameraMode = CameraType.ORIGINAL;
+                Screen.lockCursor = false;
+            }
+            Settings.CameraMode.Value = (int)CameraMode;
+            PhotonNetwork.SetModProperties();
         }
         if (InputManager.IsInputDown[InputCode.HideCursor])
         {
@@ -846,7 +872,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             }
             else
             {
-                 this.CameraMovement();
+                this.CameraMovement();
             }
             if (triggerAutoLock && this.lockTarget != null)
             {

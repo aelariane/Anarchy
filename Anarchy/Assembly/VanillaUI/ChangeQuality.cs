@@ -1,5 +1,4 @@
-﻿using Optimization.Caching;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChangeQuality : MonoBehaviour
 {
@@ -57,7 +56,7 @@ public class ChangeQuality : MonoBehaviour
 
     public static void setCurrentQuality()
     {
-        if(Anarchy.Configuration.VideoSettings.Quality != null)
+        if (Anarchy.Configuration.VideoSettings.Quality != null)
         {
             setQuality(Anarchy.Configuration.VideoSettings.Quality.Value);
         }

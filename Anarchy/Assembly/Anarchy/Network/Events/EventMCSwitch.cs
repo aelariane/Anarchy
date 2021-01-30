@@ -12,7 +12,6 @@ namespace Anarchy.Network.Events
             NetworkManager.RegisterEvent(this);
         }
 
-
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
@@ -22,17 +21,17 @@ namespace Anarchy.Network.Events
                 return false;
             }
             Hashtable hash = data[245] as Hashtable;
-            if(hash == null)
+            if (hash == null)
             {
                 reason += UI.Log.GetString("notHashOrNull");
                 return false;
             }
-            if(hash.Count != 1)
+            if (hash.Count != 1)
             {
                 reason += UI.Log.GetString("invalidParamsCount", hash.Count.ToString());
                 return false;
             }
-            if(!hash.ContainsKey((byte)1) || !(hash[(byte)1] is int idk))
+            if (!hash.ContainsKey((byte)1) || !(hash[(byte)1] is int idk))
             {
                 reason += UI.Log.GetString("missOrInvalidKey", "1");
                 return false;
@@ -47,6 +46,8 @@ namespace Anarchy.Network.Events
             return true;
         }
 
-        public void OnFailedHandle() { }
+        public void OnFailedHandle()
+        {
+        }
     }
 }

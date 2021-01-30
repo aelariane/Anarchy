@@ -17,5 +17,4 @@ public class RCRegionLabel : MonoBehaviour
             this.myLabel.transform.LookAt(2f * this.myLabel.transform.position - IN_GAME_MAIN_CAMERA.MainT.position);
         }
     }
-
 }

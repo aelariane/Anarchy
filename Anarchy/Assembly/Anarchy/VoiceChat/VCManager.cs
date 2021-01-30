@@ -1,8 +1,4 @@
 ﻿using Anarchy.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Anarchy.VoiceChat
 {
@@ -16,18 +12,17 @@ namespace Anarchy.VoiceChat
 
         internal static void SendHasVoice(int ID)
         {
-            PhotonNetwork.networkingPeer.OpRaiseEvent(173, new byte[0], true, new RaiseEventOptions { TargetActors = new int[] { ID  } });
+            PhotonNetwork.networkingPeer.OpRaiseEvent(173, new byte[0], true, new RaiseEventOptions { TargetActors = new int[] { ID } });
         }
 
         internal static void SendMute(int ID)
         {
             PhotonNetwork.networkingPeer.OpRaiseEvent(173, new byte[] { Mute }, true, new RaiseEventOptions { TargetActors = new int[] { ID } });
         }
+
         internal static void SendUnmute(int ID)
         {
             PhotonNetwork.networkingPeer.OpRaiseEvent(173, new byte[] { Unmute }, true, new RaiseEventOptions { TargetActors = new int[] { ID } });
         }
-
-
     }
 }

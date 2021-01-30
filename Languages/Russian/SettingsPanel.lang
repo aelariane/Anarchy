@@ -64,18 +64,18 @@ blur:Размытие:
 tilt:Покачивание камеры:
 
 #Rebinds page
-buttonsRebinds:Человек,Титан,Лошадь,Пушка
+buttonsRebinds:Человек,Титан,Лошадь,Пушка,Мод
 waiting:Ожидание...
 mainRebinds:<b>Основные</b>
 rebinds:<b>Дополнительные</b>
 
 
 #Anarchy page
-modMenu:Стиль,Аним. Имени,Чат и Консоль
+modMenu:Главная,Стиль,Имя и Анимация,Чат и Консоль
 
 #Anarchy/Style
-hudScale:Размер GUI/HUD [{0}%]
-guiAutoScale:Использовать авторазмер:
+hudScale:Размер интерфейса[{0}%]:
+guiAutoScale:Использовать автом. размер:
 guiScaleWarning:<color=red><b>Изменения этих полей может <i>СЛОМАТЬ</i> интерфейс.</b></color>
 guiScaleWarning1:<color=yellow>Вы предупреждены.</color>
 windowOffset:<b>Окно и Отступы</b>
@@ -98,12 +98,12 @@ styleColors:<b>Конфигурация цветов/стиля</b>
 fontName:Шрифт:
 background:Цвет фона:
 backgroundTransparency:Прозрачность фона:
-normal:Normal
-hover:Hover
-active:Active
-onNormal:OnNormal
-onHover:OnHover
-onActive:OnActive
+normal:Выкл-Норм.
+hover:Выкл-Наведён
+active:Выкл-Нажат
+onNormal:Вкл-Норм.
+onHover:Вкл-Наведён
+onActive:Вкл-Нажат
 vector:Вектор
 color:Фон
 text:Текст
@@ -151,10 +151,10 @@ bombColorA:Прозрачность:
 feedConsoleMode:Показывать в консоли:
 trailAppearance:Тип трейлов:
 trailType:Обычный,Водяной,Плавный
-trailFps:Обновление ({0}):
+trailFps:Частота обновления:
 infiniteTrails:Бесконечный след:
 burstType:Тип рывка:
-burstTypes:Два типа,Только кнопка
+burstTypes:Оба,Ребинд
 shadowsUI:Эффект тени в UI:
 Forward:Вперёд
 Backward:Назад
@@ -167,13 +167,13 @@ RightHook:Правый трос
 BothHooks:Два троса
 Lock:Фокус на Титана
 Attack:Атака
-SpecialAttack:Специальная атака
+SpecialAttack:Специальная атака 
 Salute:Отдать честь
 CameraType:Смена камеры
 Reset:Самоубийство
 Pause:Пауза
 HideCursor:Скрыть курсор
-FullScreen:Полный экран
+FullScreen:Полный экран:
 Reload:Перезарядка
 FlareGreen:Зеленый сигнал
 FlareRed:Красный сигнал
@@ -192,13 +192,13 @@ Cannon Left:Вращать влево
 Cannon Right:Вращать вправо
 Cannon Fire:Выстрел пушки
 Cannon Mount:Сесть на пушку
-Cannon Slow:Вращать медленно
+Cannon Slow:Вращать медленно 
 Titan Forward:Вперёд
 Titan Backward:Назад
 Titan Left:Влево
 Titan Right:Вправо
 Titan Jump:Прыжок
-Titan Kill:Самоубийство
+Titan Kill:Самоубийство титана
 Titan Walk:Ходьба
 Titan Punch:Удар
 Titan Slam:Шлепок
@@ -216,3 +216,21 @@ Horse Right:Вправо
 Horse Walk:Шаг
 Horse Jump:Прыжок
 Horse Mount:Сесть
+
+
+RestartHotkey:Рестарта:
+PauseHotkey:Пауза:
+DebugPanel:Дебаг-Панель:
+ChatHistory:История чата:
+legacyBurstRebind:Багованный газ-ребинд
+lblAbuse:Нелегальные фишки
+bodyLean:Наклон героя:
+infiniteGas:Бесконечный газ:
+infiniteBullets:Бесконечные пули:
+infiniteBlades:Бесконечные клинки:
+disableMouseReel:Выключить скрутку на колесо:
+anarchyMainDesc:Фишки мода
+hideOwnName:Скрывать свои имя/гильдию:
+noColorNames:Выключить раскраску имён:
+hideCrosshairArrows:Скрыть стрелки на прицеле:
+infGasPvp:Бесконечный газ в ПВП:

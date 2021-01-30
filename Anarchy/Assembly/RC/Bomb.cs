@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using ExitGames.Client.Photon;
-using Optimization;
-using Photon;
-using UnityEngine;
-using Optimization.Caching;
+﻿using Anarchy;
 using Anarchy.Configuration;
-using Anarchy;
+using Optimization.Caching;
+using System.Collections;
+using UnityEngine;
 
 public class Bomb : Photon.MonoBehaviour
 {
@@ -51,6 +47,7 @@ public class Bomb : Photon.MonoBehaviour
             PhotonNetwork.Destroy(base.gameObject);
         }
     }
+
     public void Explode(float radius)
     {
         this.disabled = true;
@@ -93,7 +90,7 @@ public class Bomb : Photon.MonoBehaviour
 
     private void OnDisable()
     {
-        if(owner != null)
+        if (owner != null)
         {
             owner.myBomb = null;
             owner = null;

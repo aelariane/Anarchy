@@ -64,13 +64,13 @@ blur:Blur:
 tilt:Inclinazione camera:
 
 #Rebinds page
-buttonsRebinds:Umano,Titano,Cavallo,Cannone
+buttonsRebinds:Umano,Titano,Cavallo,Cannone,Mod
 waiting:Aspettando...
 mainRebinds:<b>Inputs principali</b>
 rebinds:<b>Comandi</b>
 
 #Anarchy page
-modMenu:Stile,Animazione nome,Chat e Console
+modMenu:Main,Style,Name and Animation,Chat and Console
 
 #Anarchy/Style
 hudScale:Ridimensiona HUD[{0}]:
@@ -153,7 +153,7 @@ trailType:Legacy,Liquid,Combined
 trailFps:Frame rate:
 infiniteTrails:Vita illimitata:
 burstType:Burst mode:
-burstTypes:Rebind,Both
+burstTypes:Both,Rebind
 shadowsUI:Shadow effect on UI:
 Forward:Forward
 Backward:Backward
@@ -188,7 +188,6 @@ Live Spectate:Live spectate
 Cannon Up:Cannon up
 Cannon Down:Cannon down
 Cannon Right:Cannon right
-Cannon Left:Cannon left
 Cannon Fire:Cannon fire
 Cannon Mount:Cannon mount
 Cannon Slow:Cannon slow
@@ -215,3 +214,20 @@ Horse Right:Right
 Horse Walk:Walk
 Horse Jump:Jump
 Horse Mount:Mount
+
+RestartHotkey:Restart key
+PauseHotkey:Pause key
+DebugPanel:Debug panel
+ChatHistory:Chat history
+legacyBurstRebind:Legacy Gas Rebind
+lblAbuse:Abusive features
+bodyLean:Hero body leaning
+infiniteGas:Infinite gas
+infiniteBullets:Infinite bullets
+infiniteBlades:Infinite blades
+disableMouseReel:Disable mouse wheel reel-in
+anarchyMainDesc:Anarchy-Specific features.
+hideOwnName:Hide your hero name/guild:
+noColorNames:Disable colored names:
+hideCrosshairArrows:Hide crosshair arrows:
+infGasPvp:Infinite gas in PvP:

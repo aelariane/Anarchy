@@ -2,7 +2,7 @@
 
 namespace Anarchy.UI
 {
-    public class UIBase : MonoBehaviour 
+    public class UIBase : MonoBehaviour
     {
         private void Awake()
         {

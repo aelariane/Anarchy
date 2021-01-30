@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using Anarchy;
 using Anarchy.UI;
 using Optimization;
 using Optimization.Caching;
 using RC;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // ReSharper disable once InconsistentNaming
@@ -31,8 +31,16 @@ internal partial class FengGameManagerMKII
     {
         if (gameStart)
         {
-            foreach (var h in heroes) h.lateUpdate();
-            foreach (var t in titans) t.lateUpdate();
+            foreach (var h in heroes)
+            {
+                h.lateUpdate();
+            }
+
+            foreach (var t in titans)
+            {
+                t.lateUpdate();
+            }
+
             logic.OnLateUpdate();
             roomInformation.Update();
         }
@@ -54,31 +62,46 @@ internal partial class FengGameManagerMKII
                 Screen.showCursor = false;
                 Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
                 if (GameObject.Find("cross1"))
+                {
                     GameObject.Find("cross1").GetComponent<Transform>().position = Input.mousePosition;
+                }
             }
         }
     }
 
     private void OnLevelWasLoaded(int level)
     {
-        if (level == 0) return;
-        if (Application.loadedLevelName == "characterCreation" || Application.loadedLevelName == "SnapShot") return;
+        if (level == 0)
+        {
+            return;
+        }
+
+        if (Application.loadedLevelName == "characterCreation" || Application.loadedLevelName == "SnapShot")
+        {
+            return;
+        }
+
         var array = GameObject.FindGameObjectsWithTag("titan");
         foreach (var go in array)
+        {
             if (go.GetPhotonView() == null || !go.GetPhotonView().owner.IsMasterClient)
+            {
                 Destroy(go);
+            }
+        }
+
         gameStart = true;
         Pool.Clear();
         RespawnPositions.Dispose();
         ShowHUDInfoCenter(string.Empty);
-        var gameObject2 = (GameObject) Instantiate(CacheResources.Load("MainCamera_mono"),
+        var gameObject2 = (GameObject)Instantiate(CacheResources.Load("MainCamera_mono"),
             CacheGameObject.Find("cameraDefaultPosition").transform.position,
             CacheGameObject.Find("cameraDefaultPosition").transform.rotation);
         Destroy(CacheGameObject.Find("cameraDefaultPosition"));
         gameObject2.name = "MainCamera";
         Screen.lockCursor = true;
         Screen.showCursor = true;
-        var ui = (GameObject) Instantiate(CacheResources.Load("UI_IN_GAME"));
+        var ui = (GameObject)Instantiate(CacheResources.Load("UI_IN_GAME"));
         ui.name = "UI_IN_GAME";
         ui.SetActive(true);
         UIRefer = ui.GetComponent<UIReferArray>();
@@ -107,7 +130,11 @@ internal partial class FengGameManagerMKII
             Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
             Screen.showCursor = false;
             var rate = 90;
-            if (difficulty == 1) rate = 70;
+            if (difficulty == 1)
+            {
+                rate = 70;
+            }
+
             SpawnTitansCustom(rate, info.EnemyNumber);
             return;
         }
@@ -121,16 +148,16 @@ internal partial class FengGameManagerMKII
         switch (info.Mode)
         {
             case GameMode.TROST:
-            {
-                CacheGameObject.Find("playerRespawn").SetActive(false);
-                Destroy(CacheGameObject.Find("playerRespawn"));
-                var gameObject3 = CacheGameObject.Find("rock");
-                gameObject3.animation["lift"].speed = 0f;
-                CacheGameObject.Find("door_fine").SetActive(false);
-                CacheGameObject.Find("door_broke").SetActive(true);
-                Destroy(CacheGameObject.Find("ppl"));
-                break;
-            }
+                {
+                    CacheGameObject.Find("playerRespawn").SetActive(false);
+                    Destroy(CacheGameObject.Find("playerRespawn"));
+                    var gameObject3 = CacheGameObject.Find("rock");
+                    gameObject3.animation["lift"].speed = 0f;
+                    CacheGameObject.Find("door_fine").SetActive(false);
+                    CacheGameObject.Find("door_broke").SetActive(true);
+                    Destroy(CacheGameObject.Find("ppl"));
+                    break;
+                }
             case GameMode.BOSS_FIGHT_CT:
                 CacheGameObject.Find("playerRespawnTrost").SetActive(false);
                 Destroy(CacheGameObject.Find("playerRespawnTrost"));
@@ -146,88 +173,135 @@ internal partial class FengGameManagerMKII
             Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
             if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
             {
-                if ((int) PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
+                if ((int)PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
+                {
                     checkpoint = CacheGameObject.Find("PVPchkPtT");
+                }
                 else
+                {
                     checkpoint = CacheGameObject.Find("PVPchkPtH");
+                }
             }
 
-            if ((int) PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
+            if ((int)PhotonNetwork.player.Properties[PhotonPlayerProperty.isTitan] == 2)
+            {
                 SpawnNonAiTitan(myLastHero);
+            }
             else
+            {
                 SpawnPlayer(myLastHero);
+            }
         }
 
-        if (info.Mode == GameMode.BOSS_FIGHT_CT) Destroy(CacheGameObject.Find("rock"));
+        if (info.Mode == GameMode.BOSS_FIGHT_CT)
+        {
+            Destroy(CacheGameObject.Find("rock"));
+        }
+
         if (PhotonNetwork.IsMasterClient)
         {
             switch (info.Mode)
             {
                 case GameMode.TROST:
-                {
-                    if (!IsPlayerAllDead())
                     {
-                        var gameObject4 = Pool.NetworkEnable("TITAN_EREN_trost", new Vector3(-200f, 0f, -194f),
-                            Quaternion.Euler(0f, 180f, 0f));
-                        gameObject4.GetComponent<TITAN_EREN>().rockLift = true;
-                        var rate2 = 90;
-                        if (difficulty == 1) rate2 = 70;
-                        var array3 = GameObject.FindGameObjectsWithTag("titanRespawn");
-                        var gameObject5 = CacheGameObject.Find("titanRespawnTrost");
-                        if (gameObject5 != null)
-                            foreach (var gameObject6 in array3)
-                                if (gameObject6.transform.parent.gameObject == gameObject5)
-                                    SpawnTitan(rate2, gameObject6.transform.position, gameObject6.transform.rotation);
-                    }
+                        if (!IsPlayerAllDead())
+                        {
+                            var gameObject4 = Pool.NetworkEnable("TITAN_EREN_trost", new Vector3(-200f, 0f, -194f),
+                                Quaternion.Euler(0f, 180f, 0f));
+                            gameObject4.GetComponent<TITAN_EREN>().rockLift = true;
+                            var rate2 = 90;
+                            if (difficulty == 1)
+                            {
+                                rate2 = 70;
+                            }
 
-                    break;
-                }
+                            var array3 = GameObject.FindGameObjectsWithTag("titanRespawn");
+                            var gameObject5 = CacheGameObject.Find("titanRespawnTrost");
+                            if (gameObject5 != null)
+                            {
+                                foreach (var gameObject6 in array3)
+                                {
+                                    if (gameObject6.transform.parent.gameObject == gameObject5)
+                                    {
+                                        SpawnTitan(rate2, gameObject6.transform.position, gameObject6.transform.rotation);
+                                    }
+                                }
+                            }
+                        }
+
+                        break;
+                    }
                 case GameMode.BOSS_FIGHT_CT:
-                {
-                    if (!IsPlayerAllDead())
-                        Pool.NetworkEnable("COLOSSAL_TITAN", -Vectors.up * 10000f, Quaternion.Euler(0f, 180f, 0f));
-                    break;
-                }
+                    {
+                        if (!IsPlayerAllDead())
+                        {
+                            Pool.NetworkEnable("COLOSSAL_TITAN", -Vectors.up * 10000f, Quaternion.Euler(0f, 180f, 0f));
+                        }
+
+                        break;
+                    }
                 case GameMode.KILL_TITAN:
                 case GameMode.ENDLESS_TITAN:
                 case GameMode.SURVIVE_MODE:
-                {
-                    if (info.Name == "Annie" || info.Name == "Annie II")
                     {
-                        Pool.NetworkEnable("FEMALE_TITAN", CacheGameObject.Find("titanRespawn").transform.position,
-                            CacheGameObject.Find("titanRespawn").transform.rotation);
-                    }
-                    else
-                    {
-                        var rate3 = 90;
-                        if (difficulty == 1) rate3 = 70;
-                        SpawnTitansCustom(rate3, info.EnemyNumber);
-                    }
-
-                    break;
-                }
-                default:
-                {
-                    if (info.Mode != GameMode.TROST)
-                    {
-                        if (info.Mode == GameMode.PVP_CAPTURE && Level.MapName == "OutSide")
+                        if (info.Name == "Annie" || info.Name == "Annie II")
                         {
-                            var array5 = GameObject.FindGameObjectsWithTag("titanRespawn");
-                            if (array5.Length <= 0) return;
-                            for (var k = 0; k < array5.Length; k++)
-                                SpawnTitanRaw(array5[k].transform.position, array5[k].transform.rotation)
-                                    .SetAbnormalType(AbnormalType.Crawler, true);
+                            Pool.NetworkEnable("FEMALE_TITAN", CacheGameObject.Find("titanRespawn").transform.position,
+                                CacheGameObject.Find("titanRespawn").transform.rotation);
                         }
-                    }
+                        else
+                        {
+                            var rate3 = 90;
+                            if (difficulty == 1)
+                            {
+                                rate3 = 70;
+                            }
 
-                    break;
-                }
+                            SpawnTitansCustom(rate3, info.EnemyNumber);
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        if (info.Mode != GameMode.TROST)
+                        {
+                            if (info.Mode == GameMode.PVP_CAPTURE && Level.MapName == "OutSide")
+                            {
+                                var array5 = GameObject.FindGameObjectsWithTag("titanRespawn");
+                                if (array5.Length <= 0)
+                                {
+                                    return;
+                                }
+
+                                for (var k = 0; k < array5.Length; k++)
+                                {
+                                    SpawnTitanRaw(array5[k].transform.position, array5[k].transform.rotation)
+                                        .SetAbnormalType(AbnormalType.Crawler, true);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
             }
         }
 
-        if (!info.Supply) Destroy(CacheGameObject.Find("aot_supply"));
-        if (!PhotonNetwork.IsMasterClient) BasePV.RPC("RequireStatus", PhotonTargets.MasterClient);
-        if (Stylish != null) Stylish.enabled = true;
+        if (!info.Supply)
+        {
+            Destroy(CacheGameObject.Find("aot_supply"));
+        }
+
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            BasePV.RPC("RequireStatus", PhotonTargets.MasterClient);
+        }
+
+        if (Stylish != null)
+        {
+            Stylish.enabled = true;
+        }
+
         if (Level.LavaMode)
         {
             Instantiate(CacheResources.Load("levelBottom"), new Vector3(0f, -29.5f, 0f), Quaternion.Euler(0f, 0f, 0f));
@@ -259,24 +333,57 @@ internal partial class FengGameManagerMKII
     {
         FPS.FPSUpdate();
         if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
+        {
             Labels.NetworkStatus = PhotonNetwork.connectionStateDetailed +
                                    (PhotonNetwork.connected ? " ping: " + PhotonNetwork.GetPing() : "");
-        if (!gameStart)
-            return;
+        }
 
+        if (!gameStart)
+        {
+            return;
+        }
+
+        bool cameraUpdate = false;
         int i;
-        for (i = 0; i < hooks.Count; i++) hooks[i].update();
-        for (i = 0; i < heroes.Count; i++) heroes[i].update();
+        for (i = 0; i < hooks.Count; i++)
+        {
+            hooks[i].update();
+        }
+        for (i = 0; i < heroes.Count; i++)
+        {
+            HERO hero = heroes[i];
+            hero.update();
+            if (hero.IsLocal)
+            {
+                mainCamera?.update();
+                cameraUpdate = true;
+            }
+        }
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single || PhotonNetwork.IsMasterClient)
+        {
             for (i = 0; i < titans.Count; i++)
+            {
                 titans[i].update();
+            }
+        }
         else if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.player.IsTitan)
+        {
             for (i = 0; i < titans.Count; i++)
+            {
                 if (titans[i].IsLocal)
+                {
                     titans[i].update();
+                    mainCamera?.update();
+                    cameraUpdate = true;
+                }
+            }
+        }
         if (mainCamera != null)
         {
-            mainCamera.update();
+            if (!cameraUpdate)
+            {
+                mainCamera.update();
+            }
             mainCamera.snapShotUpdate();
         }
 
@@ -363,12 +470,15 @@ internal partial class FengGameManagerMKII
             case "normal":
                 difficulty = 0;
                 break;
+
             case "hard":
                 difficulty = 1;
                 break;
+
             case "abnormal":
                 difficulty = 2;
                 break;
+
             default:
                 difficulty = 1;
                 break;
@@ -384,14 +494,17 @@ internal partial class FengGameManagerMKII
             case "день":
                 IN_GAME_MAIN_CAMERA.DayLight = DayLight.Day;
                 break;
+
             case "dawn":
             case "вечер":
                 IN_GAME_MAIN_CAMERA.DayLight = DayLight.Dawn;
                 break;
+
             case "night":
             case "ночь":
                 IN_GAME_MAIN_CAMERA.DayLight = DayLight.Night;
                 break;
+
             default:
                 IN_GAME_MAIN_CAMERA.DayLight = DayLight.Dawn;
                 break;
@@ -416,13 +529,27 @@ internal partial class FengGameManagerMKII
         player.IsTitan = false;
         localRacingResult = string.Empty;
         needChooseSide = true;
-        foreach (var info in killInfoList) info.destroy();
+        foreach (var info in killInfoList)
+        {
+            info.destroy();
+        }
+
         killInfoList.Clear();
         RCManager.racingSpawnPointSet = false;
-        if (!PhotonNetwork.IsMasterClient) BasePV.RPC("RequireStatus", PhotonTargets.MasterClient);
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            BasePV.RPC("RequireStatus", PhotonTargets.MasterClient);
+        }
+
         foreach (var her in heroes)
+        {
             if (her.BasePV != null && her.BasePV.owner.GameObject == null)
+            {
                 her.BasePV.owner.GameObject = her.baseG;
+            }
+        }
+
+        PhotonNetwork.SetModProperties();
     }
 
     public void OnLeftLobby(AOTEventArgs args)
@@ -436,7 +563,11 @@ internal partial class FengGameManagerMKII
         if (Application.loadedLevel != 0)
         {
             Time.timeScale = 1f;
-            if (PhotonNetwork.connected) PhotonNetwork.Disconnect();
+            if (PhotonNetwork.connected)
+            {
+                PhotonNetwork.Disconnect();
+            }
+
             IN_GAME_MAIN_CAMERA.GameType = GameType.Stop;
             gameStart = false;
             Screen.lockCursor = false;
@@ -455,7 +586,11 @@ internal partial class FengGameManagerMKII
     public void OnMasterClientSwitched(AOTEventArgs args)
     {
         print("OnMasterClientSwitched");
-        if (gameTimesUp) return;
+        if (gameTimesUp)
+        {
+            return;
+        }
+
         if (PhotonNetwork.IsMasterClient)
         {
             GameModes.Load();
@@ -491,23 +626,62 @@ internal partial class FengGameManagerMKII
         if (player != null)
         {
             if (player.RCIgnored)
+            {
                 Log.AddLine("playerKicked", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
+            }
             else
+            {
                 Log.AddLine("playerLeft", MsgType.Info, player.ID.ToString(), player.UIName.ToHTMLFormat());
+            }
         }
 
         PlayerList?.Update();
         if (!gameTimesUp)
+        {
             if (PhotonNetwork.IsMasterClient)
             {
                 oneTitanDown(string.Empty, true);
                 someOneIsDead(0);
             }
+        }
     }
 
     public void OnPhotonPlayerPropertiesChanged(AOTEventArgs args)
     {
         PlayerList?.Update();
+        if (args.Player.IsLocal)
+        {
+            return;
+        }
+        var hash = args.Hashtable;
+
+        int? bla = hash[PhotonPlayerProperty.statBLA] as int?;
+        int? spd = hash[PhotonPlayerProperty.statSPD] as int?;
+        int? acl = hash[PhotonPlayerProperty.statACL] as int?;
+        int? gas = hash[PhotonPlayerProperty.statGAS] as int?;
+        if (hash[PhotonPlayerProperty.character] != null)
+        {
+            if (hash[PhotonPlayerProperty.character] is string set)
+            {
+                if (set.ToUpper().Contains("SET"))
+                {
+                    if ((bla.HasValue && (bla.Value > 125 || bla.Value < 75))
+                        || (spd.HasValue && (spd.Value > 125 || spd.Value < 75))
+                        || (acl.HasValue && (acl.Value > 125 || acl.Value < 75))
+                        || (gas.HasValue && (gas.Value > 125 || gas.Value < 75)))
+                    {
+                        if (!args.Player.AbuseInformation.CharacterUnusualStats)
+                        {
+                            args.Player.AbuseInformation.CharacterUnusualStats = true;
+                        }
+                    }
+                }
+            }
+        }
+        if (bla + spd + acl + gas > 455)
+        {
+            Anarchy.Network.Antis.Kick(args.Player, true, "Excessive stats");
+        }
     }
 
     public void OnPhotonRandomJoinFailed(AOTEventArgs args)

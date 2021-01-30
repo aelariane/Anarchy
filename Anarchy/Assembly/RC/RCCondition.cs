@@ -1,6 +1,4 @@
-﻿using System;
-
-public class RCCondition
+﻿public class RCCondition
 {
     private int operand;
 
@@ -34,16 +32,22 @@ public class RCCondition
         {
             case 0:
                 return this.intCompare(this.parameter1.returnInt(null), this.parameter2.returnInt(null));
+
             case 1:
                 return this.boolCompare(this.parameter1.returnBool(null), this.parameter2.returnBool(null));
+
             case 2:
                 return this.stringCompare(this.parameter1.returnString(null), this.parameter2.returnString(null));
+
             case 3:
                 return this.floatCompare(this.parameter1.returnFloat(null), this.parameter2.returnFloat(null));
+
             case 4:
                 return this.playerCompare(this.parameter1.returnPlayer(null), this.parameter2.returnPlayer(null));
+
             case 5:
                 return this.titanCompare(this.parameter1.returnTitan(null), this.parameter2.returnTitan(null));
+
             default:
                 return false;
         }
@@ -55,16 +59,22 @@ public class RCCondition
         {
             case 0:
                 return baseFloat < compareFloat;
+
             case 1:
                 return baseFloat <= compareFloat;
+
             case 2:
                 return baseFloat == compareFloat;
+
             case 3:
                 return baseFloat >= compareFloat;
+
             case 4:
                 return baseFloat > compareFloat;
+
             case 5:
                 return baseFloat != compareFloat;
+
             default:
                 return false;
         }
@@ -76,16 +86,22 @@ public class RCCondition
         {
             case 0:
                 return baseInt < compareInt;
+
             case 1:
                 return baseInt <= compareInt;
+
             case 2:
                 return baseInt == compareInt;
+
             case 3:
                 return baseInt >= compareInt;
+
             case 4:
                 return baseInt > compareInt;
+
             case 5:
                 return baseInt != compareInt;
+
             default:
                 return false;
         }
@@ -107,20 +123,28 @@ public class RCCondition
         {
             case 0:
                 return baseString == compareString;
+
             case 1:
                 return baseString != compareString;
+
             case 2:
                 return baseString.Contains(compareString);
+
             case 3:
                 return !baseString.Contains(compareString);
+
             case 4:
                 return baseString.StartsWith(compareString);
+
             case 5:
                 return !baseString.StartsWith(compareString);
+
             case 6:
                 return baseString.EndsWith(compareString);
+
             case 7:
                 return !baseString.EndsWith(compareString);
+
             default:
                 return false;
         }

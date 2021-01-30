@@ -5,6 +5,7 @@ namespace Antis
     public static class AntisManager
     {
         private static Response response = (ID, ban, reason) => { };
+
         /// <summary>
         /// Callback that calls in <see cref="Response(int, string)"/> and <see cref="Response(int, bool, string)"/>
         /// </summary>
@@ -17,7 +18,7 @@ namespace Antis
         {
             add
             {
-                if(value == null)
+                if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
@@ -41,7 +42,7 @@ namespace Antis
         public static void Response(int ID, bool banned, string reason)
         {
             response(ID, banned, reason);
-            if(OnResponseCallback != null)
+            if (OnResponseCallback != null)
             {
                 OnResponseCallback(ID, banned, reason);
             }

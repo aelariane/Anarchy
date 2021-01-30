@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using Anarchy.Network;
+﻿using Anarchy.Network;
 using Anarchy.Network.Events;
 using Anarchy.UI;
 using ExitGames.Client.Photon;
 using Optimization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
@@ -46,6 +46,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
     public PhotonPlayer[] mPlayerListCopy;
     public string NameServerAddress;
     public bool requestSecurity;
+
     static NetworkingPeer()
     {
         Dictionary<ConnectionProtocol, int> dictionary = new Dictionary<ConnectionProtocol, int>();
@@ -389,7 +390,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             {
                 this.SendPlayerName();
             }
-            if(operationResponse.OperationCode == OperationCode.CreateGame)
+            if (operationResponse.OperationCode == OperationCode.CreateGame)
             {
                 SendMonoMessage(PhotonNetworkingMessage.OnCreatedRoom, new object[0]);
             }
@@ -1013,7 +1014,9 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             return null;
         }
         return Optimization.Caching.Pool.NetworkInstantiate(name, position, identity, instantiationId, viewIDs, prefix, group, data);
+
         #region Vanilla version
+
         //if (resourceGameObject == null)
         //{
         //    resourceGameObject = key.StartsWith("RCAsset/") ? Optimization.Caching.CacheResources.RCLoad(key) : (GameObject)Optimization.Caching.CacheResources.Load(key);
@@ -1065,7 +1068,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         //this.instantiatedObjects.Add(instantiationId, obj2);
         ////obj2.SendMessage(PhotonNetworkingMessage.OnPhotonInstantiate.ToString(), new PhotonMessageInfo(photonPlayer, timestamp, null), SendMessageOptions.DontRequireReceiver);
         //return obj2;
-        #endregion
+
+        #endregion Vanilla version
     }
 
     public static void RegisterEvent(PhotonNetworkingMessage msg, AOTEvent ev)
@@ -1163,7 +1167,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             }
             bool needLocal = false;
             List<int> IDs = new List<int>();
-            foreach(PhotonPlayer player in players)
+            foreach (PhotonPlayer player in players)
             {
                 if (player.IsLocal)
                 {
@@ -1176,7 +1180,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             {
                 ExecuteRPC(rpcData, PhotonNetwork.player);
             }
-            if(IDs.Count <= 0)
+            if (IDs.Count <= 0)
             {
                 return;
             }
@@ -1287,7 +1291,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             case PhotonTargets.NotAnarchy:
                 {
                     int[] ids = PhotonPlayer.GetNotAnarchyUsersID();
-                    if(ids.Length <= 0)
+                    if (ids.Length <= 0)
                     {
                         return;
                     }
@@ -1374,7 +1378,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
     public static void SendMonoMessage(PhotonNetworkingMessage methodString, object[] parameters)
     {
-        if (!OnNetworkMessage.ContainsKey(methodString)) return;
+        if (!OnNetworkMessage.ContainsKey(methodString))
+        {
+            return;
+        }
+
         AOTEvent eventMessage = OnNetworkMessage[methodString];
         eventMessage(parameters.Length == 0 ? AOTEventArgs.Empty : new AOTEventArgs(parameters));
     }
@@ -1886,7 +1894,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             if (sender != null)
             {
-                Log.AddLineRaw($"Unknown event  {photonEvent.Code} by ID {key}");
+                Antis.AntisManager.Response(sender.ID, true, $"Unknown event {photonEvent.Code}");
             }
             return;
         }
@@ -2182,14 +2190,14 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                                 if (pActorProperties != null)
                                 {
                                     var str = new System.Text.StringBuilder();
-                                    foreach(var idk in pActorProperties)
+                                    foreach (var idk in pActorProperties)
                                     {
-                                        if(idk.Value is ExitGames.Client.Photon.Hashtable hash)
+                                        if (idk.Value is ExitGames.Client.Photon.Hashtable hash)
                                         {
                                             str.Append("ID: " + idk.Key + "\n");
-                                            foreach(var k in hash)
+                                            foreach (var k in hash)
                                             {
-                                                str.Append(k.Key + ": " + (k.Value == null ? "null" : k.ToString()) + "\n");
+                                                str.Append(k.Key + ": " + (k.Value == null ? "null" : k.Value.ToString()) + "\n");
                                             }
                                             str.AppendLine();
                                         }
@@ -2245,7 +2253,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             object[] objArray7 = new object[] { DisconnectCause.AuthenticationTicketExpired };
             SendMonoMessage(PhotonNetworkingMessage.OnConnectionFail, objArray7);
         }
-    Label_0949:
+        Label_0949:
         this.externalListener.OnOperationResponse(operationResponse);
     }
 
@@ -2438,7 +2446,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 goto Label_055E;
         }
         this.Disconnect();
-    Label_055E:
+        Label_055E:
         this.externalListener.OnStatusChanged(statusCode);
     }
 

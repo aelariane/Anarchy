@@ -8,6 +8,13 @@
 
         public override bool Execute(string[] args)
         {
+            if (args.Length > 0 && args[0] == "-r")
+            {
+                foreach (PhotonPlayer player in PhotonNetwork.playerList)
+                {
+                    player.SetCustomProperties(ResetKDCommand.ResetHash);
+                }
+            }
             FengGameManagerMKII.FGM.RestartGame(false, true);
             chatMessage = Lang["restartMessage"];
             SendLocalizedText("restartMessage", null);

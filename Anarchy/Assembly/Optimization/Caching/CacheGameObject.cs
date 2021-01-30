@@ -12,13 +12,24 @@ namespace Optimization.Caching
         internal static T Find<T>(string name) where T : Component
         {
             typeCache.TryGetValue(name, out Component obj);
-            if (obj != null) return obj as T;
+            if (obj != null)
+            {
+                return obj as T;
+            }
+
             var go = Find(name);
             T value = go == null ? default(T) : go.GetComponent<T>();
             if (value != null)
             {
-                if (typeCache.ContainsKey(name)) typeCache[name] = value;
-                else typeCache.Add(name, value);
+                if (typeCache.ContainsKey(name))
+                {
+                    typeCache[name] = value;
+                }
+                else
+                {
+                    typeCache.Add(name, value);
+                }
+
                 return value;
             }
             return value;
@@ -45,9 +56,17 @@ namespace Optimization.Caching
 
                 default:
                     goCache.TryGetValue(name, out GameObject obj);
-                    if (obj != null && obj.activeInHierarchy) return obj;
+                    if (obj != null && obj.activeInHierarchy)
+                    {
+                        return obj;
+                    }
+
                     var go = GameObject.Find(name);
-                    if (go == null) return null;
+                    if (go == null)
+                    {
+                        return null;
+                    }
+
                     if (!goCache.ContainsKey(name))
                     {
                         goCache.Add(name, go);

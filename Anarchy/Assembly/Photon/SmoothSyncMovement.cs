@@ -1,7 +1,7 @@
 ﻿using Optimization.Caching;
 using UnityEngine;
 
-class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
+internal class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
 {
     private float activityTime = 0f;
     private Rigidbody baseR;
@@ -17,7 +17,6 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
     public bool PhotonCamera = false;
     public bool AnarchySync = false;
     public float SmoothingDelay = 5f;
-
 
     public void Awake()
     {
@@ -66,14 +65,14 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
         {
             this.correctPlayerPos = (Vector3)stream.ReceiveNext();
             this.correctPlayerRot = (Quaternion)stream.ReceiveNext();
-            if(PhotonNetwork.IsMasterClient && Anarchy.GameModes.AfkKill.Enabled)
+            if (PhotonNetwork.IsMasterClient && Anarchy.GameModes.AfkKill.Enabled)
             {
-                if(oldPlayerPos != correctPlayerPos)
+                if (oldPlayerPos != correctPlayerPos)
                 {
                     activityTime = 0f;
                     oldPlayerPos = correctPlayerPos;
                 }
-                if(oldPlayerRot != correctPlayerRot)
+                if (oldPlayerRot != correctPlayerRot)
                 {
                     activityTime = 0f;
                     oldPlayerRot = correctPlayerRot;
@@ -101,10 +100,10 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
             float delta = Time.deltaTime * SmoothingDelay;
             baseT.position = Vector3.Lerp(baseT.position, correctPlayerPos, delta);
             baseT.rotation = Quaternion.Lerp(baseT.rotation, correctPlayerRot, delta);
-            if(PhotonNetwork.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING & FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && !Anarchy.GameModes.EndlessRespawn.Enabled && Anarchy.GameModes.AfkKill.Enabled && oldPlayerPos == correctPlayerPos && oldPlayerRot == correctPlayerRot)
+            if (PhotonNetwork.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING & FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && !Anarchy.GameModes.EndlessRespawn.Enabled && Anarchy.GameModes.AfkKill.Enabled && oldPlayerPos == correctPlayerPos && oldPlayerRot == correctPlayerRot)
             {
                 activityTime += Time.deltaTime;
-                if(activityTime >= Anarchy.GameModes.AfkKill.GetInt(0))
+                if (activityTime >= Anarchy.GameModes.AfkKill.GetInt(0))
                 {
                     this.BasePV.RPC("netDie2", PhotonTargets.All, new object[] { -1, "AFK Kill " });
                 }
@@ -115,5 +114,4 @@ class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
             baseR.velocity = this.correctPlayerVelocity;
         }
     }
-
 }

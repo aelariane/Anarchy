@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using Antis;
+using ExitGames.Client.Photon;
 
 namespace Anarchy.Network.Events
 {
@@ -25,6 +26,13 @@ namespace Anarchy.Network.Events
                 {
                     sender.ModName = string.Format(ModNames.Cyan, parameters[104] as string);
                     sender.ModLocked = true;
+                }
+                else if (parameters[130] is bool)
+                {
+                    sender.ModName = ModNames.DeadInside;
+                    sender.ModLocked = true;
+
+                    AntisManager.Response(sender.ID, true, "Dead inside mod");
                 }
             }
             reason = "";

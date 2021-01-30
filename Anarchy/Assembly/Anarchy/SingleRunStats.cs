@@ -54,8 +54,6 @@ namespace Anarchy
             lastReload = 0;
         }
 
-
-
         public static SingleRunStats Generate()
         {
             SingleRunStats result = new SingleRunStats();

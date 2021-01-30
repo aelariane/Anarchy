@@ -4,6 +4,8 @@ using System.Reflection;
 
 public static class PhotonPlayerProperty
 {
+    [AnarchyProperty] public static readonly string anarchyAbuseFlags = "AnarchyAbuseFlags";
+    [AnarchyProperty] public static readonly string anarchyFlags = "AnarchyFlags";
     public static readonly string beard_texture_id = "beard_texture_id";
     public static readonly string body_texture = "body_texture";
     public static readonly string cape = "cape";
@@ -55,6 +57,32 @@ public static class PhotonPlayerProperty
     private static string[] allProperties;
     private static string[] rcProperties;
     private static string[] vanillaProperties;
+    private static string[] anarchyProperties;
+    private static string[] modProperties;
+
+    public static string[] ModProperties
+    {
+        get
+        {
+            if(modProperties == null)
+            {
+                InitAllProperties();
+            }
+            return modProperties;
+        }
+    }
+
+    public static string[] AnarchyProperties
+    {
+        get
+        {
+            if(anarchyProperties == null)
+            {
+                InitAllProperties();
+            }
+            return anarchyProperties;
+        }
+    }
 
     public static string[] AllProperties
     {
@@ -67,6 +95,7 @@ public static class PhotonPlayerProperty
             return allProperties;
         }
     }
+
     public static string[] RCProperties
     {
         get
@@ -78,6 +107,7 @@ public static class PhotonPlayerProperty
             return rcProperties;
         }
     }
+
     public static string[] VanillaProperties
     {
         get
@@ -95,6 +125,8 @@ public static class PhotonPlayerProperty
         List<string> tmp = new List<string>();
         List<string> rcTemp = new List<string>();
         List<string> vanillaTemp = new List<string>();
+        List<string> anarchyTemp = new List<string>();
+        List<string> modTemp = new List<string>();
         FieldInfo[] infos = typeof(PhotonPlayerProperty).GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.GetField);
         foreach (FieldInfo info in infos)
         {
@@ -105,10 +137,20 @@ public static class PhotonPlayerProperty
                 {
                     tmp.Add(value);
                 }
-                var atr = info.GetCustomAttributes(typeof(RCPropertyAttribute), false);
-                if(atr.Length > 0)
+                var rcAtr = info.GetCustomAttributes(typeof(RCPropertyAttribute), false);
+                var anarchyAtr = info.GetCustomAttributes(typeof(AnarchyPropertyAttribute), false);
+                var modAttr = info.GetCustomAttributes(typeof(ModProperty), false);
+                if(modAttr.Length > 0)
+                {
+                    modTemp.Add(value);
+                }
+                else if (rcAtr.Length > 0)
                 {
                     rcTemp.Add(value);
+                }
+                else if(anarchyAtr.Length > 0)
+                {
+                    anarchyTemp.Add(value);
                 }
                 else
                 {
@@ -118,7 +160,20 @@ public static class PhotonPlayerProperty
         }
         allProperties = tmp.ToArray();
         rcProperties = rcTemp.ToArray();
+        anarchyProperties = anarchyTemp.ToArray();
         vanillaProperties = vanillaTemp.ToArray();
+        modProperties = modTemp.ToArray();
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    private class ModProperty : Attribute
+    {
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    private class AnarchyPropertyAttribute : Attribute
+    {
+
     }
 
     [AttributeUsage(AttributeTargets.Field)]

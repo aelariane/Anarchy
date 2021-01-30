@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Linq;
-using Anarchy.Configuration.Storage;
+﻿using Anarchy.Configuration.Storage;
 using Anarchy.Localization;
 using Anarchy.UI;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -25,7 +25,7 @@ namespace Anarchy.Configuration.Presets
             {
                 string[] result = new string[8];
                 int i = 0;
-                for(int j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                 {
                     result[j] = data[i++];
                 }
@@ -70,7 +70,7 @@ namespace Anarchy.Configuration.Presets
             count = 1;
             for (int i = index; i < data.Length; i++)
             {
-                data[i] = TextField(rect, data[i], locale["leave"] + " #" +  (count++).ToString(), Style.LabelOffset, true);
+                data[i] = TextField(rect, data[i], locale["leave"] + " #" + (count++).ToString(), Style.LabelOffset, true);
                 index++;
             }
         }
@@ -80,7 +80,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(ForestPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
@@ -106,7 +109,7 @@ namespace Anarchy.Configuration.Presets
                     data[i] = file.GetString("leaves" + (i - 1).ToString(), string.Empty);
                 }
                 LinkedSkybox = file.GetString("skybox", Anarchy.Configuration.StringSetting.NotDefine);
-                if(LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
+                if (LinkedSkybox != Anarchy.Configuration.StringSetting.NotDefine)
                 {
                     SkyboxPreset set = new SkyboxPreset(LinkedSkybox);
                     if (!set.Exists())

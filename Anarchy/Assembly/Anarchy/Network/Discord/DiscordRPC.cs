@@ -6,34 +6,39 @@ using System.Text;
 
 namespace Anarchy.Network.Discord
 {
-    class DiscordRPC
+    internal class DiscordRPC
     {
-
         [MonoPInvokeCallback(typeof(OnReadyInfo))]
         public static void ReadyCallback(ref DiscordUser connectedUser) { Callbacks.readyCallback(ref connectedUser); }
+
         public delegate void OnReadyInfo(ref DiscordUser connectedUser);
 
         [MonoPInvokeCallback(typeof(OnDisconnectedInfo))]
         public static void DisconnectedCallback(int errorCode, string message) { Callbacks.disconnectedCallback(errorCode, message); }
+
         public delegate void OnDisconnectedInfo(int errorCode, string message);
 
         [MonoPInvokeCallback(typeof(OnErrorInfo))]
         public static void ErrorCallback(int errorCode, string message) { Callbacks.errorCallback(errorCode, message); }
+
         public delegate void OnErrorInfo(int errorCode, string message);
 
         [MonoPInvokeCallback(typeof(OnJoinInfo))]
         public static void JoinCallback(string secret) { Callbacks.joinCallback(secret); }
+
         public delegate void OnJoinInfo(string secret);
 
         [MonoPInvokeCallback(typeof(OnSpectateInfo))]
         public static void SpectateCallback(string secret) { Callbacks.spectateCallback(secret); }
+
         public delegate void OnSpectateInfo(string secret);
 
         [MonoPInvokeCallback(typeof(OnRequestInfo))]
         public static void RequestCallback(ref DiscordUser request) { Callbacks.requestCallback(ref request); }
+
         public delegate void OnRequestInfo(ref DiscordUser request);
 
-        static EventHandlers Callbacks { get; set; }
+        private static EventHandlers Callbacks { get; set; }
 
         public struct EventHandlers
         {
@@ -97,7 +102,7 @@ namespace Anarchy.Network.Discord
         }
 
         [DllImport("discord-rpc", EntryPoint = "Discord_Initialize", CallingConvention = CallingConvention.Cdecl)]
-        static extern void InitializeInternal(string applicationId, ref EventHandlers handlers, bool autoRegister, string optionalSteamId);
+        private static extern void InitializeInternal(string applicationId, ref EventHandlers handlers, bool autoRegister, string optionalSteamId);
 
         [DllImport("discord-rpc", EntryPoint = "Discord_Shutdown", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Shutdown();
@@ -182,7 +187,11 @@ namespace Anarchy.Network.Discord
             /// <returns>Pointer to the UTF-8 representation of <see cref="input"/></returns>
             private IntPtr StrToPtr(string input)
             {
-                if (string.IsNullOrEmpty(input)) return IntPtr.Zero;
+                if (string.IsNullOrEmpty(input))
+                {
+                    return IntPtr.Zero;
+                }
+
                 var convbytecnt = Encoding.UTF8.GetByteCount(input);
                 var buffer = Marshal.AllocHGlobal(convbytecnt + 1);
                 for (int i = 0; i < convbytecnt + 1; i++)

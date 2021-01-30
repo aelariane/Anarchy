@@ -1,7 +1,4 @@
-﻿using Anarchy.UI;
-
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -18,7 +15,7 @@ namespace Anarchy.Skins.Humans
         public HumanSkin(HERO owner, string[] data) : base(owner.gameObject, data)
         {
             renderers = new Dictionary<int, Renderer[]>();
-            for(int i = 0; i < DataLength; i++)
+            for (int i = 0; i < DataLength; i++)
             {
                 renderers.Add(i, GetRenderers(i));
             }
@@ -42,9 +39,9 @@ namespace Anarchy.Skins.Humans
                 {
                     continue;
                 }
-                else if(pair.Key == (int)HumanParts.WeaponTrail)
+                else if (pair.Key == (int)HumanParts.WeaponTrail)
                 {
-                    if(Configuration.VideoSettings.BladeTrails.Value == false || !hero.IsLocal)
+                    if (Configuration.VideoSettings.BladeTrails.Value == false || !hero.IsLocal)
                     {
                         continue;
                     }
@@ -122,7 +119,7 @@ namespace Anarchy.Skins.Humans
                     break;
 
                 case HumanParts.Costume:
-                    if (hero.Setup.part_chest_3 = null)
+                    if (hero.Setup.part_chest_3 != null)
                     {
                         tmp.Add(hero.Setup.part_chest_3.renderer);
                     }

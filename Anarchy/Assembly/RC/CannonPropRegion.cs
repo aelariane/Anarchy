@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RC;
+using System;
 using System.Collections;
-using RC;
 using UnityEngine;
 
 public class CannonPropRegion : Photon.MonoBehaviour
@@ -12,7 +12,7 @@ public class CannonPropRegion : Photon.MonoBehaviour
 
     public void OnDestroy()
     {
-        if(storedHero == null)
+        if (storedHero == null)
         {
             return;
         }
@@ -23,9 +23,9 @@ public class CannonPropRegion : Photon.MonoBehaviour
     public void OnTriggerEnter(Collider collider)
     {
         HERO hero = collider.transform.root.gameObject.GetComponent<HERO>();
-        if(hero != null && hero.baseG.layer == 8 && hero.IsLocal && !hero.isCannon)
+        if (hero != null && hero.baseG.layer == 8 && hero.IsLocal && !hero.isCannon)
         {
-            if(hero.myCannonRegion != null)
+            if (hero.myCannonRegion != null)
             {
                 hero.myCannonRegion.storedHero = null;
             }

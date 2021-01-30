@@ -1,5 +1,5 @@
-﻿using System;
-using RC;
+﻿using RC;
+using System;
 
 public class RCActionHelper
 {
@@ -34,6 +34,7 @@ public class RCActionHelper
         {
             case 0:
                 return (bool)parameters;
+
             case 1:
                 {
                     RCActionHelper helper = (RCActionHelper)parameters;
@@ -41,16 +42,22 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnBool(RCManager.intVariables[helper.returnString(null)]);
+
                         case 1:
                             return (bool)RCManager.boolVariables[helper.returnString(null)];
+
                         case 2:
                             return this.nextHelper.returnBool(RCManager.stringVariables[helper.returnString(null)]);
+
                         case 3:
                             return this.nextHelper.returnBool(RCManager.floatVariables[helper.returnString(null)]);
+
                         case 4:
                             return this.nextHelper.returnBool(RCManager.playerVariables[helper.returnString(null)]);
+
                         case 5:
                             return this.nextHelper.returnBool(RCManager.titanVariables[helper.returnString(null)]);
+
                         default:
                             return false;
                     }
@@ -64,32 +71,46 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnBool(player.Properties["team"]);
+
                             case 1:
                                 return this.nextHelper.returnBool(player.Properties["RCteam"]);
+
                             case 2:
                                 return !(bool)player.Properties["dead"];
+
                             case 3:
                                 return this.nextHelper.returnBool(player.Properties["isTitan"]);
+
                             case 4:
                                 return this.nextHelper.returnBool(player.Properties["kills"]);
+
                             case 5:
                                 return this.nextHelper.returnBool(player.Properties["deaths"]);
+
                             case 6:
                                 return this.nextHelper.returnBool(player.Properties["max_dmg"]);
+
                             case 7:
                                 return this.nextHelper.returnBool(player.Properties["total_dmg"]);
+
                             case 8:
                                 return this.nextHelper.returnBool(player.Properties["customInt"]);
+
                             case 9:
                                 return (bool)player.Properties["customBool"];
+
                             case 10:
                                 return this.nextHelper.returnBool(player.Properties["customString"]);
+
                             case 11:
                                 return this.nextHelper.returnBool(player.Properties["customFloat"]);
+
                             case 12:
                                 return this.nextHelper.returnBool(player.Properties["name"]);
+
                             case 13:
                                 return this.nextHelper.returnBool(player.Properties["guildName"]);
+
                             case 14:
                                 {
                                     int iD = player.ID;
@@ -143,14 +164,19 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnBool(titan.abnormalType);
+
                             case 1:
                                 return this.nextHelper.returnBool(titan.myLevel);
+
                             case 2:
                                 return this.nextHelper.returnBool(titan.currentHealth);
+
                             case 3:
                                 return this.nextHelper.returnBool(titan.transform.position.x);
+
                             case 4:
                                 return this.nextHelper.returnBool(titan.transform.position.y);
+
                             case 5:
                                 return this.nextHelper.returnBool(titan.transform.position.z);
                         }
@@ -165,10 +191,13 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnBool(region.GetRandomX());
+
                         case 1:
                             return this.nextHelper.returnBool(region.GetRandomY());
+
                         case 2:
                             return this.nextHelper.returnBool(region.GetRandomZ());
+
                         default:
                             return false;
                     }
@@ -178,12 +207,16 @@ public class RCActionHelper
                 {
                     case 0:
                         return Convert.ToBoolean((int)parameters);
+
                     case 1:
                         return (bool)parameters;
+
                     case 2:
                         return Convert.ToBoolean((string)parameters);
+
                     case 3:
                         return Convert.ToBoolean((float)parameters);
+
                     default:
                         return false;
                 }
@@ -203,6 +236,7 @@ public class RCActionHelper
         {
             case 0:
                 return (float)parameters;
+
             case 1:
                 {
                     RCActionHelper helper = (RCActionHelper)parameters;
@@ -210,16 +244,22 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnFloat(RCManager.intVariables[helper.returnString(null)]);
+
                         case 1:
                             return this.nextHelper.returnFloat(RCManager.boolVariables[helper.returnString(null)]);
+
                         case 2:
                             return this.nextHelper.returnFloat(RCManager.stringVariables[helper.returnString(null)]);
+
                         case 3:
                             return (float)RCManager.floatVariables[helper.returnString(null)];
+
                         case 4:
                             return this.nextHelper.returnFloat(RCManager.playerVariables[helper.returnString(null)]);
+
                         case 5:
                             return this.nextHelper.returnFloat(RCManager.titanVariables[helper.returnString(null)]);
+
                         default:
                             return 0f;
                     }
@@ -233,32 +273,46 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnFloat(player.Properties["team"]);
+
                             case 1:
                                 return this.nextHelper.returnFloat(player.Properties["RCteam"]);
+
                             case 2:
                                 return this.nextHelper.returnFloat(player.Properties["dead"]);
+
                             case 3:
                                 return this.nextHelper.returnFloat(player.Properties["isTitan"]);
+
                             case 4:
                                 return this.nextHelper.returnFloat(player.Properties["kills"]);
+
                             case 5:
                                 return this.nextHelper.returnFloat(player.Properties["deaths"]);
+
                             case 6:
                                 return this.nextHelper.returnFloat(player.Properties["max_dmg"]);
+
                             case 7:
                                 return this.nextHelper.returnFloat(player.Properties["total_dmg"]);
+
                             case 8:
                                 return this.nextHelper.returnFloat(player.Properties["customInt"]);
+
                             case 9:
                                 return this.nextHelper.returnFloat(player.Properties["customBool"]);
+
                             case 10:
                                 return this.nextHelper.returnFloat(player.Properties["customString"]);
+
                             case 11:
                                 return (float)player.Properties["customFloat"];
+
                             case 12:
                                 return this.nextHelper.returnFloat(player.Properties["name"]);
+
                             case 13:
                                 return this.nextHelper.returnFloat(player.Properties["guildName"]);
+
                             case 14:
                                 {
                                     int iD = player.ID;
@@ -308,14 +362,19 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnFloat(titan.abnormalType);
+
                             case 1:
                                 return titan.myLevel;
+
                             case 2:
                                 return this.nextHelper.returnFloat(titan.currentHealth);
+
                             case 3:
                                 return titan.transform.position.x;
+
                             case 4:
                                 return titan.transform.position.y;
+
                             case 5:
                                 return titan.transform.position.z;
                         }
@@ -330,10 +389,13 @@ public class RCActionHelper
                     {
                         case 0:
                             return region.GetRandomX();
+
                         case 1:
                             return region.GetRandomY();
+
                         case 2:
                             return region.GetRandomZ();
+
                         default:
                             return 0f;
                     };
@@ -343,8 +405,10 @@ public class RCActionHelper
                 {
                     case 0:
                         return Convert.ToSingle((int)parameters);
+
                     case 1:
                         return Convert.ToSingle((bool)parameters);
+
                     case 2:
                         {
                             string text = (string)parameters;
@@ -357,6 +421,7 @@ public class RCActionHelper
                         }
                     case 3:
                         return (float)parameters;
+
                     default:
                         return (float)parameters;
                 }
@@ -376,6 +441,7 @@ public class RCActionHelper
         {
             case 0:
                 return (int)parameters;
+
             case 1:
                 {
                     RCActionHelper helper = (RCActionHelper)parameters;
@@ -383,16 +449,22 @@ public class RCActionHelper
                     {
                         case 0:
                             return (int)RCManager.intVariables[helper.returnString(null)];
+
                         case 1:
                             return this.nextHelper.returnInt(RCManager.boolVariables[helper.returnString(null)]);
+
                         case 2:
                             return this.nextHelper.returnInt(RCManager.stringVariables[helper.returnString(null)]);
+
                         case 3:
                             return this.nextHelper.returnInt(RCManager.floatVariables[helper.returnString(null)]);
+
                         case 4:
                             return this.nextHelper.returnInt(RCManager.playerVariables[helper.returnString(null)]);
+
                         case 5:
                             return this.nextHelper.returnInt(RCManager.titanVariables[helper.returnString(null)]);
+
                         default:
                             return 0;
                     }
@@ -406,32 +478,46 @@ public class RCActionHelper
                         {
                             case 0:
                                 return (int)player.Properties["team"];
+
                             case 1:
                                 return (int)player.Properties["RCteam"];
+
                             case 2:
                                 return this.nextHelper.returnInt(player.Properties["dead"]);
+
                             case 3:
                                 return (int)player.Properties["isTitan"];
+
                             case 4:
                                 return (int)player.Properties["kills"];
+
                             case 5:
                                 return (int)player.Properties["deaths"];
+
                             case 6:
                                 return (int)player.Properties["max_dmg"];
+
                             case 7:
                                 return (int)player.Properties["total_dmg"];
+
                             case 8:
                                 return (int)player.Properties["customInt"];
+
                             case 9:
                                 return this.nextHelper.returnInt(player.Properties["customBool"]);
+
                             case 10:
                                 return this.nextHelper.returnInt(player.Properties["customString"]);
+
                             case 11:
                                 return this.nextHelper.returnInt(player.Properties["customFloat"]);
+
                             case 12:
                                 return this.nextHelper.returnInt(player.Properties["name"]);
+
                             case 13:
                                 return this.nextHelper.returnInt(player.Properties["guildName"]);
+
                             case 14:
                                 {
                                     int iD = player.ID;
@@ -485,14 +571,19 @@ public class RCActionHelper
                         {
                             case 0:
                                 return (int)titan.abnormalType;
+
                             case 1:
                                 return this.nextHelper.returnInt(titan.myLevel);
+
                             case 2:
                                 return titan.currentHealth;
+
                             case 3:
                                 return this.nextHelper.returnInt(titan.transform.position.x);
+
                             case 4:
                                 return this.nextHelper.returnInt(titan.transform.position.y);
+
                             case 5:
                                 return this.nextHelper.returnInt(titan.transform.position.z);
                         }
@@ -507,10 +598,13 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnInt(region.GetRandomX());
+
                         case 1:
                             return this.nextHelper.returnInt(region.GetRandomY());
+
                         case 2:
                             return this.nextHelper.returnInt(region.GetRandomZ());
+
                         default:
                             return 0;
                     }
@@ -520,8 +614,10 @@ public class RCActionHelper
                 {
                     case 0:
                         return (int)parameters;
+
                     case 1:
                         return Convert.ToInt32((bool)parameters);
+
                     case 2:
                         {
                             string text = (string)parameters;
@@ -534,6 +630,7 @@ public class RCActionHelper
                         }
                     case 3:
                         return Convert.ToInt32((float)parameters);
+
                     default:
                         return (int)parameters;
                 }
@@ -569,6 +666,7 @@ public class RCActionHelper
         {
             case 0:
                 return (string)parameters;
+
             case 1:
                 {
                     RCActionHelper helper = (RCActionHelper)parameters;
@@ -576,16 +674,22 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnString(RCManager.intVariables[helper.returnString(null)]);
+
                         case 1:
                             return this.nextHelper.returnString(RCManager.boolVariables[helper.returnString(null)]);
+
                         case 2:
                             return (string)RCManager.stringVariables[helper.returnString(null)];
+
                         case 3:
                             return this.nextHelper.returnString(RCManager.floatVariables[helper.returnString(null)]);
+
                         case 4:
                             return this.nextHelper.returnString(RCManager.playerVariables[helper.returnString(null)]);
+
                         case 5:
                             return this.nextHelper.returnString(RCManager.titanVariables[helper.returnString(null)]);
+
                         default:
                             return string.Empty;
                     }
@@ -599,32 +703,46 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnString(player.Properties["team"]);
+
                             case 1:
                                 return this.nextHelper.returnString(player.Properties["RCteam"]);
+
                             case 2:
                                 return this.nextHelper.returnString(player.Properties["dead"]);
+
                             case 3:
                                 return this.nextHelper.returnString(player.Properties["isTitan"]);
+
                             case 4:
                                 return this.nextHelper.returnString(player.Properties["kills"]);
+
                             case 5:
                                 return this.nextHelper.returnString(player.Properties["deaths"]);
+
                             case 6:
                                 return this.nextHelper.returnString(player.Properties["max_dmg"]);
+
                             case 7:
                                 return this.nextHelper.returnString(player.Properties["total_dmg"]);
+
                             case 8:
                                 return this.nextHelper.returnString(player.Properties["customInt"]);
+
                             case 9:
                                 return this.nextHelper.returnString(player.Properties["customBool"]);
+
                             case 10:
                                 return (string)player.Properties["customString"];
+
                             case 11:
                                 return this.nextHelper.returnString(player.Properties["customFloat"]);
+
                             case 12:
                                 return (string)player.Properties["name"];
+
                             case 13:
                                 return (string)player.Properties["guildName"];
+
                             case 14:
                                 {
                                     int iD = player.ID;
@@ -678,14 +796,19 @@ public class RCActionHelper
                         {
                             case 0:
                                 return this.nextHelper.returnString(titan.abnormalType);
+
                             case 1:
                                 return this.nextHelper.returnString(titan.myLevel);
+
                             case 2:
                                 return this.nextHelper.returnString(titan.currentHealth);
+
                             case 3:
                                 return this.nextHelper.returnString(titan.transform.position.x);
+
                             case 4:
                                 return this.nextHelper.returnString(titan.transform.position.y);
+
                             case 5:
                                 return this.nextHelper.returnString(titan.transform.position.z);
                         }
@@ -700,10 +823,13 @@ public class RCActionHelper
                     {
                         case 0:
                             return this.nextHelper.returnString(region.GetRandomX());
+
                         case 1:
                             return this.nextHelper.returnString(region.GetRandomY());
+
                         case 2:
                             return this.nextHelper.returnString(region.GetRandomZ());
+
                         default:
                             return string.Empty;
                     }
@@ -713,12 +839,16 @@ public class RCActionHelper
                 {
                     case 0:
                         return ((int)parameters).ToString();
+
                     case 1:
                         return ((bool)parameters).ToString();
+
                     case 2:
                         return (string)parameters;
+
                     case 3:
                         return ((float)parameters).ToString();
+
                     default:
                         return string.Empty;
                 }

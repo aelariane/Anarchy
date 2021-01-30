@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Anarchy.NameAnimation;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Anarchy.Commands.Chat
@@ -8,7 +8,6 @@ namespace Anarchy.Commands.Chat
     {
         public AnimateNameCommand() : base("animate", false, false, true)
         {
-
         }
 
         public override bool Execute(string[] args)

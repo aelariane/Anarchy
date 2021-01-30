@@ -1,13 +1,12 @@
-﻿using System;
-using System.Linq;
-using Anarchy.UI;
+﻿using Anarchy.UI;
 using ExitGames.Client.Photon;
+using System;
+using System.Linq;
 
 namespace Anarchy.Network
 {
     internal static class Antis
     {
-
         private static string[] ValidLinks = new string[]
         {
             "i.imgur.com", "imgur.com", "discordapp.com", "discordapp.net", "postimg", "aotcorehome.files", "deviantart", "wmpics.pics", "puu.sh", "pp.userapi.com",
@@ -21,7 +20,7 @@ namespace Anarchy.Network
                 return;
             }
             player.RCIgnored = true;
-            if(ban)
+            if (ban)
             {
                 BanList.Ban(player, reason);
             }
@@ -41,14 +40,14 @@ namespace Anarchy.Network
 
         internal static bool IsValidSkinURL(ref string all_parts, int length, int ID)
         {
-            if(all_parts == null)
+            if (all_parts == null)
             {
                 return false;
             }
             var urls = all_parts.Split(',');
             if (urls.Length != length)
             {
-                return false;   
+                return false;
             }
             Uri uri = null;
             for (int i = 0; i < urls.Length; i++)
@@ -59,7 +58,7 @@ namespace Anarchy.Network
                     continue;
                 }
                 url = url.TrimStart();
-                if(!url.StartsWith("https://") && !url.StartsWith("http://"))
+                if (!url.StartsWith("https://") && !url.StartsWith("http://"))
                 {
                     url = "http://" + url;
                 }
@@ -82,8 +81,8 @@ namespace Anarchy.Network
             {
                 return;
             }
-            player.RCIgnored = true;   
-            if(ban)
+            player.RCIgnored = true;
+            if (ban)
             {
                 BanList.Ban(player, reason);
             }
@@ -101,4 +100,3 @@ namespace Anarchy.Network
         }
     }
 }
-

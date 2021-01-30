@@ -63,3 +63,15 @@ teamChanged:<color=#$maincolor$>Você entrou na equipe {0}</color>
 teamIndividuals:individuais
 teamCyan:cyan
 teamMagenta:magenta
+noAbuseFound:The player is not using any abusive feature.
+infGasAbuse:Infinite gas
+infBladesAbuse:Infinite blades
+infBulletsAbuse:Infinite bullets
+bodyLeanAbuse:Disabled body lean
+newTpsAbuse:NewTPS Camera
+legacyBurstAbuse:Legacy gas burst
+abuseFeatures:Player uses next features:
+noAnarchyFeaturesFound:The player is not using any abusive feature.
+infGasInPvp:Infinite gas in PvP
+anarchyFeatures:Player uses next features:
+anarchyAbusiveFeatures:Player uses next abusive features:

@@ -2,5 +2,6 @@
 {
     ORIGINAL,
     WOW,
-    TPS
+    TPS,
+    NewTPS
 }

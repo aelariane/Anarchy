@@ -1,5 +1,6 @@
 ﻿using Anarchy.UI.Animation;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Anarchy.UI
         private static int maxLayer = 0;
         private static readonly List<int> usedLayers = new List<int>();
 
-        protected Animation.Animation animator;
+        protected Animation.GUIAnimation animator;
         public readonly string Directory;
         public readonly GUIDrawer Drawer;
         public readonly int Layer;
@@ -23,6 +24,7 @@ namespace Anarchy.UI
         private static Texture2D cachedEmptyTexture;
 
         internal static List<GUIBase> AllBases { get; private set; }
+
         internal static Texture2D EmptyTexture
         {
             get
@@ -39,7 +41,9 @@ namespace Anarchy.UI
 
         public bool Active { get; private set; } = false;
 
-        public GUIBase(string name) : this(name, -1) { }
+        public GUIBase(string name) : this(name, -1)
+        {
+        }
 
         public GUIBase(string name, int layer)
         {
@@ -53,7 +57,7 @@ namespace Anarchy.UI
             textureCache = new Dictionary<string, Texture2D>();
             locale = new Localization.Locale(name);
             animator = new NoneAnimation(this);
-            if(AllBases == null)
+            if (AllBases == null)
             {
                 AllBases = new List<GUIBase>();
             }
@@ -66,16 +70,19 @@ namespace Anarchy.UI
             lock (usedLayers)
             {
                 int indexToRemove = -1;
-                for(int i = 0; i < usedLayers.Count; i++)
+                for (int i = 0; i < usedLayers.Count; i++)
                 {
-                    if(usedLayers[i] == Layer)
+                    if (usedLayers[i] == Layer)
                     {
                         indexToRemove = i;
                         break;
                     }
                 }
-                if(indexToRemove >= 0)
+                if (indexToRemove >= 0)
+                {
                     usedLayers.RemoveAt(indexToRemove);
+                }
+
                 UpdateMaxLayer();
             }
             if (AllBases.Contains(this))
@@ -92,7 +99,10 @@ namespace Anarchy.UI
         public void Disable()
         {
             if (!Active)
+            {
                 return;
+            }
+
             OnGUI = animator.StartClose(() =>
             {
                 DisableImmediate();
@@ -103,6 +113,7 @@ namespace Anarchy.UI
         {
             if (UIManager.Disable(this))
             {
+                Drawer.Disable();
                 OnDisable();
                 locale.Unload();
                 Active = false;
@@ -115,7 +126,10 @@ namespace Anarchy.UI
         public void Enable()
         {
             if (Active)
+            {
                 return;
+            }
+
             if (UIManager.Enable(this))
             {
                 locale.Load();
@@ -139,7 +153,10 @@ namespace Anarchy.UI
         public void EnableNext(GUIBase next)
         {
             if (!Active)
+            {
                 return;
+            }
+
             OnGUI = animator.StartClose(() =>
             {
                 if (UIManager.Disable(this))
@@ -167,6 +184,7 @@ namespace Anarchy.UI
                     UpdateMaxLayer();
                     return layerToSet;
                 }
+               maxLayer = usedLayers.Max();
                 usedLayers.Add(++maxLayer);
                 return maxLayer;
             }
@@ -185,12 +203,17 @@ namespace Anarchy.UI
             if (ext == string.Empty)
             {
                 if (!name.EndsWith(".ogv"))
+                {
                     error = true;
+                }
             }
             else
             {
                 if (!ext.Equals("ogv"))
+                {
                     error = true;
+                }
+
                 name += "." + ext;
             }
             if (error)
@@ -229,13 +252,18 @@ namespace Anarchy.UI
             bool error = false;
             if (ext == string.Empty)
             {
-                if(!name.EndsWith(".png") && !name.EndsWith(".jpg") && !name.EndsWith(".jpeg"))
+                if (!name.EndsWith(".png") && !name.EndsWith(".jpg") && !name.EndsWith(".jpeg"))
+                {
                     error = true;
+                }
             }
             else
             {
                 if (!ext.Equals("png") && !ext.Equals("jpg") && !ext.Equals("jpeg"))
+                {
                     error = true;
+                }
+
                 name += "." + ext;
             }
             if (error)
@@ -256,13 +284,21 @@ namespace Anarchy.UI
             return res;
         }
 
-        protected virtual void OnDisable() { }
+        protected virtual void OnDisable()
+        {
+        }
 
-        protected virtual void OnEnable() { }
+        protected virtual void OnEnable()
+        {
+        }
 
-        public virtual void OnUpdateScaling() { }
+        public virtual void OnUpdateScaling()
+        {
+        }
 
-        public virtual void Update() { }
+        public virtual void Update()
+        {
+        }
 
         private static void UpdateMaxLayer()
         {

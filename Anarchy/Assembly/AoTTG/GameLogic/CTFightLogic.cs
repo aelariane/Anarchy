@@ -6,7 +6,6 @@ namespace GameLogic
     {
         public CTFightLogic() : base()
         {
-
         }
 
         public override void OnSomeOneIsDead(int id)

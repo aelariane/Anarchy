@@ -8,14 +8,17 @@ namespace Antis.Spam
         /// Delay between checks in checking Thread
         /// </summary>
         public int CheckDelay => Internal.AntisThread.SleepTime;
+
         /// <summary>
         /// Amount of how much times <seealso cref="SpammedObject"/> was counted
         /// </summary>
         public int Count { get; }
+
         /// <summary>
         /// Sender ID
         /// </summary>
         public int Sender { get; }
+
         /// <summary>
         /// Spammed object
         /// </summary>
@@ -40,14 +43,17 @@ namespace Antis.Spam
         /// Delay between checks in checking Thread
         /// </summary>
         public int CheckDelay => Internal.AntisThread.SleepTime;
+
         /// <summary>
         /// Amount of how much times <seealso cref="SpammedObject"/> was counted
         /// </summary>
         public int Count { get; }
+
         /// <summary>
         /// Sender ID
         /// </summary>
         public int Sender { get; }
+
         /// <summary>
         /// Spammed object
         /// </summary>

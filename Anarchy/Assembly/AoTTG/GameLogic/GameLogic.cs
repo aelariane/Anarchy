@@ -1,18 +1,18 @@
-﻿using System;
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.Commands.Chat;
 using Optimization;
 using RC;
+using System;
 using UnityEngine;
 
 namespace GameLogic
 {
     internal class GameLogic
     {
-        public const float UpdateInterval = 0.1f;
+        public const float UpdateInterval = 0.05f;
 
         public readonly Anarchy.Localization.Locale Lang;
-        internal protected float MyRespawnTime;
+        protected internal float MyRespawnTime;
         public readonly Round Round;
         private float timeToUpdate;
 
@@ -55,7 +55,7 @@ namespace GameLogic
 
         public virtual void CopyFrom(GameLogic other)
         {
-            if(other == null)
+            if (other == null)
             {
                 return;
             }
@@ -115,7 +115,11 @@ namespace GameLogic
         {
             foreach (PhotonPlayer player in PhotonNetwork.playerList)
             {
-                if (player.IsTitan || player.Dead) continue;
+                if (player.IsTitan || player.Dead)
+                {
+                    continue;
+                }
+
                 return false;
             }
             return true;
@@ -125,9 +129,15 @@ namespace GameLogic
         {
             foreach (PhotonPlayer player in PhotonNetwork.playerList)
             {
-                if (player.IsTitan) continue;
-                if (player.Team == team && !player.Dead) return false;
+                if (player.IsTitan)
+                {
+                    continue;
+                }
 
+                if (player.Team == team && !player.Dead)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -150,7 +160,9 @@ namespace GameLogic
             AnarchyManager.Feed.RoundWin();
         }
 
-        protected virtual void OnGameLoose() { }
+        protected virtual void OnGameLoose()
+        {
+        }
 
         public void OnGameRestart()
         {
@@ -174,7 +186,9 @@ namespace GameLogic
             }
         }
 
-        protected virtual void OnGameWin() { }
+        protected virtual void OnGameWin()
+        {
+        }
 
         public void OnLateUpdate()
         {
@@ -220,9 +234,13 @@ namespace GameLogic
             }
         }
 
-        protected virtual void OnNetGameLose(int score) { }
+        protected virtual void OnNetGameLose(int score)
+        {
+        }
 
-        protected virtual void OnNetGameWin(int score) { }
+        protected virtual void OnNetGameWin(int score)
+        {
+        }
 
         public virtual void OnRefreshStatus(int score1, int score2, int wav, int highestWav, float time1, float time2, bool startRacin, bool endRacin)
         {
@@ -232,7 +250,9 @@ namespace GameLogic
             ServerTime = ServerTimeBase - time2;
         }
 
-        protected virtual void OnRestart() { }
+        protected virtual void OnRestart()
+        {
+        }
 
         public virtual void OnRequireStatus()
         {
@@ -249,11 +269,17 @@ namespace GameLogic
             });
         }
 
-        public virtual void OnSomeOneIsDead(int id) { }
+        public virtual void OnSomeOneIsDead(int id)
+        {
+        }
 
-        public virtual void OnTitanDown(string name, bool isLeaving) { }
+        public virtual void OnTitanDown(string name, bool isLeaving)
+        {
+        }
 
-        protected internal virtual void OnUpdate() { }
+        protected internal virtual void OnUpdate()
+        {
+        }
 
         private void ShowResult()
         {
@@ -358,7 +384,6 @@ namespace GameLogic
                         IN_GAME_MAIN_CAMERA.Look.disable = true;
                         AnarchyManager.CharacterSelectionPanel.Enable();
                     }
-
                 }
                 if (InputManager.IsInputDown[InputCode.Pause] && !AnarchyManager.CharacterSelectionPanel.Active)
                 {
@@ -414,7 +439,9 @@ namespace GameLogic
             Labels.TopCenter = top;
         }
 
-        protected virtual void UpdateLogic() { }
+        protected virtual void UpdateLogic()
+        {
+        }
 
         protected virtual void UpdateRespawnTime()
         {
@@ -430,7 +457,7 @@ namespace GameLogic
                 {
                     num = GameModes.EndlessRespawn.GetInt(0);
                 }
-                Labels.Center += "\n" +Lang.Format("respawnTime", (num - MyRespawnTime).ToString("F0")) + "\n\n";
+                Labels.Center += "\n" + Lang.Format("respawnTime", (num - MyRespawnTime).ToString("F0")) + "\n\n";
                 if (this.MyRespawnTime > (float)num)
                 {
                     this.MyRespawnTime = 0f;

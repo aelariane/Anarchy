@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Antis.Internal;
+﻿using Antis.Internal;
+using System.Collections.Generic;
 
 namespace Antis.Spam
 {
@@ -25,7 +25,7 @@ namespace Antis.Spam
         public static event SpamDetected<byte> OnEventsSpamDetected = (sender, data) => { };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ID">Owner ID</param>
         public EventsCounter(int ID)
@@ -41,7 +41,7 @@ namespace Antis.Spam
 
         void ICounter.Count(object obj)
         {
-            if(obj is byte value)
+            if (obj is byte value)
             {
                 Count(value);
             }
@@ -63,10 +63,10 @@ namespace Antis.Spam
         {
             lock (events)
             {
-                for(int i = 0; i < receivedEvents.Count; i++)
+                for (int i = 0; i < receivedEvents.Count; i++)
                 {
                     int eventCode = receivedEvents[i];
-                    if(events[eventCode] > checkCount)
+                    if (events[eventCode] > checkCount)
                     {
                         OnEventsSpamDetected(this, new SpamDetectedArgs<byte>((byte)eventCode, events[eventCode], Owner));
                     }

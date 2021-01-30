@@ -12,7 +12,7 @@ namespace Antis.Collections.Generic
 
         private List<T> items;
 
-        public T this[int index] 
+        public T this[int index]
         {
             get
             {

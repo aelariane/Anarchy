@@ -37,7 +37,10 @@ namespace Anarchy.Network
         internal static void RegisterEvent(INetworkEvent ev)
         {
             if (events == null)
+            {
                 events = new Dictionary<byte, INetworkEvent>();
+            }
+
             events.Add(ev.Code, ev);
         }
 
@@ -66,6 +69,7 @@ namespace Anarchy.Network
             }
         }
 
+
         private static void OnJoinedLobby(Optimization.AOTEventArgs args)
         {
             if (NeedRejoin)
@@ -84,7 +88,10 @@ namespace Anarchy.Network
         public static bool TryRejoin()
         {
             if (!NeedRejoin || NetworkSettings.Rejoin == 0 || RejoinRoom == null)
+            {
                 return false;
+            }
+
             bool result = PhotonNetwork.ConnectToMaster(RejoinRegion, NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.TransportProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
             return result;
         }

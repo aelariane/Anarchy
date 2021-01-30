@@ -9,7 +9,9 @@ public class BombExplode : Photon.MonoBehaviour
     private void Awake()
     {
         if (myParticle == null)
+        {
             myParticle = GetComponent<ParticleSystem>();
+        }
     }
 
     public void OnEnable()
@@ -22,7 +24,7 @@ public class BombExplode : Photon.MonoBehaviour
                 Color startColor = new Color(owner.RCBombR, owner.RCBombG, owner.RCBombB, Mathf.Max(0.5f, owner.RCBombA));
                 if (GameModes.TeamMode.Enabled)
                 {
-                    switch(owner.RCteam)
+                    switch (owner.RCteam)
                     {
                         case 1:
                             startColor = Colors.cyan;

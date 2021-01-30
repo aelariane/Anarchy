@@ -1,5 +1,4 @@
-﻿
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class PMCommand : ChatCommand
     {
@@ -11,14 +10,14 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(args.Length <= 0)
+            if (args.Length <= 0)
             {
                 chatMessage = Lang.Format("errArg", CommandName);
                 return false;
             }
-            if(args[0].ToLower() == "setid")
+            if (args[0].ToLower() == "setid")
             {
-                if(!int.TryParse(args[1], out int id))
+                if (!int.TryParse(args[1], out int id))
                 {
                     chatMessage = Lang.Format("errArg", CommandName);
                     return false;
@@ -27,14 +26,14 @@ namespace Anarchy.Commands.Chat
                 chatMessage = Lang.Format("pmSetID", pmID.ToString());
                 return true;
             }
-            else if(!int.TryParse(args[0], out int ID))
+            else if (!int.TryParse(args[0], out int ID))
             {
-                if(pmID <= 0)
+                if (pmID <= 0)
                 {
                     chatMessage = Lang.Format("errArg", CommandName);
                     return false;
                 }
-                else if(PhotonPlayer.Find(pmID) == null)
+                else if (PhotonPlayer.Find(pmID) == null)
                 {
                     chatMessage = Lang.Format("errPM", pmID.ToString());
                     return false;

@@ -49,6 +49,5 @@ namespace Anarchy.Commands.Chat
             }
             return true;
         }
-
     }
 }

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Anarchy.UI;
+using ExitGames.Client.Photon;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Antis.Spam;
-using Anarchy.UI;
-using ExitGames.Client.Photon;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -12,7 +10,6 @@ namespace Anarchy.Network.Events
 {
     public class EventRPC : INetworkEvent
     {
-
         private string name = null;
         private object[] parameters;
         private short prefix;
@@ -28,7 +25,6 @@ namespace Anarchy.Network.Events
             NetworkManager.RegisterEvent(this);
         }
 
-
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
@@ -39,29 +35,29 @@ namespace Anarchy.Network.Events
                 reason += Log.GetString("notHashOrNull");
                 return false;
             }
-            if(hash.Count < 3 || hash.Count > 5)
+            if (hash.Count < 3 || hash.Count > 5)
             {
                 reason += Log.GetString("invalidParamsCount", hash.Count.ToString());
                 return false;
             }
-            if(!CheckKey(hash, 0, out viewID))
+            if (!CheckKey(hash, 0, out viewID))
             {
                 reason += Log.GetString("missOrInvalidKey", "0");
                 return false;
             }
-            if(!CheckKey(hash, 2, out sTime))
+            if (!CheckKey(hash, 2, out sTime))
             {
                 reason += Log.GetString("missOrInvalidKey", "2");
                 return false;
             }
-            if(hash.ContainsKey((byte)3) && hash.ContainsKey((byte)5))
+            if (hash.ContainsKey((byte)3) && hash.ContainsKey((byte)5))
             {
                 reason += Log.GetString("bothNameKeys");
                 return false;
             }
-            if(!CheckKey(hash, 3, out name))
+            if (!CheckKey(hash, 3, out name))
             {
-                if(CheckKey(hash, 5, out byte byteVal))
+                if (CheckKey(hash, 5, out byte byteVal))
                 {
                     if (PhotonNetwork.PhotonServerSettings.RpcList.Count <= byteVal)
                     {
@@ -76,7 +72,7 @@ namespace Anarchy.Network.Events
                     return false;
                 }
             }
-            if(name == null)
+            if (name == null)
             {
                 reason += Log.GetString("nullRpcName");
                 return false;
@@ -92,13 +88,16 @@ namespace Anarchy.Network.Events
             {
                 if (!(hash[(byte)4] is object[]))
                 {
-
                     reason += Log.GetString("invalidKey", "4");
                     return false;
                 }
                 parameters = (object[])hash[(byte)4];
             }
-            else parameters = new object[0];
+            else
+            {
+                parameters = new object[0];
+            }
+
             return true;
         }
 
@@ -171,7 +170,7 @@ namespace Anarchy.Network.Events
                 case "team_winner_popup":
                     break;
             }
-            if(modName != null)
+            if (modName != null)
             {
                 sender.ModName = modName;
                 sender.ModLocked = true;
@@ -181,7 +180,7 @@ namespace Anarchy.Network.Events
         public bool Handle()
         {
             PhotonView photonView = PhotonView.Find(viewID);
-            if(photonView == null)
+            if (photonView == null)
             {
                 return true;
             }

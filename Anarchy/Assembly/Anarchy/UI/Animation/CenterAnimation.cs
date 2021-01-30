@@ -2,7 +2,7 @@
 
 namespace Anarchy.UI.Animation
 {
-    public class CenterAnimation : Animation
+    public class CenterAnimation : GUIAnimation
     {
         private readonly Rect defaultRect;
         private Rect endPosition;

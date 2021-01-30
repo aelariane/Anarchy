@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class KickCommand : ChatCommand
     {
@@ -20,18 +13,18 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(args.Length <= 0)
+            if (args.Length <= 0)
             {
                 chatMessage = Lang.Format("errArg", CommandName);
                 return false;
             }
             int[] IDs = new int[args.Length];
             bool permaBan = false;
-            for(int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Length; i++)
             {
-                if(!int.TryParse(args[i], out IDs[i]))
+                if (!int.TryParse(args[i], out IDs[i]))
                 {
-                    if(args[i] == "perma" || args[i] == "--perma" || args[i] == "-p")
+                    if (args[i] == "perma" || args[i] == "--perma" || args[i] == "-p")
                     {
                         permaBan = true;
                         IDs[i] = -128;
@@ -39,23 +32,32 @@ namespace Anarchy.Commands.Chat
                 }
             }
             string send = "";
-            for(int i = 0; i < IDs.Length; i++)
+            for (int i = 0; i < IDs.Length; i++)
             {
                 PhotonPlayer target = PhotonPlayer.Find(IDs[i]);
-                if(target == null)
+                if (target == null)
                 {
                     if (IDs[i] != -128)
                     {
                         if (chatMessage.Length > 0)
+                        {
                             chatMessage += "\n";
+                        }
+
                         chatMessage += Lang.Format("kickIgnore", IDs[i].ToString());
                     }
                     continue;
                 }
                 if (chatMessage.Length > 0)
+                {
                     chatMessage += "\n";
+                }
+
                 if (send.Length > 0)
+                {
                     send += "\n";
+                }
+
                 chatMessage += string.Format(Lang["kickSuccess"], new object[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
                 SendLocalizedText("kickSuccess", new string[] { target.ID.ToString(), target.UIName.ToHTMLFormat() });
                 if (ban)

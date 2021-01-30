@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using Anarchy.Configuration;
+﻿using Anarchy.Configuration;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Xft
 {
-
     public class XWeaponTrail : MonoBehaviour
     {
         private static float fps;

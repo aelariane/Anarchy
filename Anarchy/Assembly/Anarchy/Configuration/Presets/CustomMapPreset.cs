@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Linq;
-using Anarchy.Configuration.Storage;
+﻿using Anarchy.Configuration.Storage;
 using Anarchy.Localization;
 using Anarchy.UI;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -11,10 +11,11 @@ namespace Anarchy.Configuration.Presets
     public class CustomMapPreset : SkinPreset
     {
         public static readonly string CustomPath = Application.dataPath + "/Configuration/CustomMapSkins/";
-        private static readonly string[] labels = new string[6] {  "Front", "Back", "Left", "Right", "Up", "Down" };
+        private static readonly string[] labels = new string[6] { "Front", "Back", "Left", "Right", "Up", "Down" };
         private const int Length = 7;
 
         private string[] data;
+
         public string Ground
         {
             get
@@ -51,7 +52,7 @@ namespace Anarchy.Configuration.Presets
             rect.MoveY();
             for (int i = 1; i < Length; i++)
             {
-                LabelCenter(rect, locale["skybox" + labels[i-1]], true);
+                LabelCenter(rect, locale["skybox" + labels[i - 1]], true);
                 data[i] = TextField(rect, data[i], string.Empty, 0f, true);
             }
         }
@@ -91,7 +92,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(CustomPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {

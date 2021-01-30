@@ -7,10 +7,15 @@ namespace Antis
         /// <summary>
         /// Delay between checks in checking Thread in ms
         /// </summary>
-        public static int ThreadSleepTime 
+        public static int ThreadSleepTime
         {
             get => AntisThread.SleepTime;
             set => AntisThread.SleepTime = value;
+        }
+
+        public static void OnApplicationQuit()
+        {
+            AntisThread.ThreadInstance.Abort();
         }
 
         public static void RegisterExecutable(AntisThreadExecutable exec)

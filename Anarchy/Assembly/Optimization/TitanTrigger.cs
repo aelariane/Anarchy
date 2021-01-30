@@ -8,7 +8,11 @@ namespace Optimization
 
         private void OnTriggerEnter(Collider other)
         {
-            if (IsCollide) return;
+            if (IsCollide)
+            {
+                return;
+            }
+
             GameObject obj = other.transform.root.gameObject;
             if (obj.layer == 8)
             {
@@ -22,7 +26,11 @@ namespace Optimization
 
         private void OnTriggerExit(Collider other)
         {
-            if (!IsCollide) return;
+            if (!IsCollide)
+            {
+                return;
+            }
+
             GameObject obj = other.transform.root.gameObject;
             if (obj.layer == 8)
             {

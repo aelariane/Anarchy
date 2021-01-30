@@ -5,6 +5,7 @@ namespace Anarchy.Commands.Chat
     internal class ResetKDCommand : ChatCommand
     {
         internal static readonly Hashtable ResetHash = new Hashtable() { { PhotonPlayerProperty.kills, 0 }, { PhotonPlayerProperty.max_dmg, 0 }, { PhotonPlayerProperty.total_dmg, 0 }, { PhotonPlayerProperty.deaths, 0 } };
+
         public ResetKDCommand() : base("resetkd", false, true, false)
         {
         }
@@ -16,6 +17,11 @@ namespace Anarchy.Commands.Chat
                 ResetProps(PhotonNetwork.player);
                 chatMessage = Lang["resetkdLocal"];
                 return true;
+            }
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                chatMessage = Lang["errMC"];
+                return false;
             }
             if (args[0] == "all")
             {

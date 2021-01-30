@@ -66,10 +66,10 @@ namespace Anarchy.Configuration
         public override void Load()
         {
             Value = (KeyCode)Settings.Storage.GetInt("KeyCode/" + Key, (int)DefaultValue);
-            if(Value == AxisUp || Value == AxisDown)
+            if (Value == AxisUp || Value == AxisDown)
             {
                 isAxis = true;
-                if(Value == AxisUp)
+                if (Value == AxisUp)
                 {
                     modifier = 1f;
                 }
@@ -111,7 +111,7 @@ namespace Anarchy.Configuration
         {
             if (isAxis)
             {
-                if(modifier > 0f)
+                if (modifier > 0f)
                 {
                     return "Scroll Up";
                 }

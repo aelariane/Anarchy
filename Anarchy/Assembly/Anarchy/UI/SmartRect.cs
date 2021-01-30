@@ -68,7 +68,9 @@ namespace Anarchy.UI
             }
         }
 
-        public SmartRect(Rect src) : this(src, DefaultOffsetX, DefaultOffsetY) { }
+        public SmartRect(Rect src) : this(src, DefaultOffsetX, DefaultOffsetY)
+        {
+        }
 
         public SmartRect(Rect src, float offX, float offY)
         {
@@ -83,9 +85,13 @@ namespace Anarchy.UI
             DefaultY = src.y;
         }
 
-        public SmartRect(float x, float y, float width, float height) : this(new Rect(x, y, width, height)) { }
+        public SmartRect(float x, float y, float width, float height) : this(new Rect(x, y, width, height))
+        {
+        }
 
-        public SmartRect(float x, float y, float width, float height, float offX, float offY) : this(new Rect(x, y, width, height), offX, offY) { }
+        public SmartRect(float x, float y, float width, float height, float offX, float offY) : this(new Rect(x, y, width, height), offX, offY)
+        {
+        }
 
         public void BeginHorizontal(int elementCount)
         {
@@ -129,7 +135,9 @@ namespace Anarchy.UI
         {
             source.x += off;
             if (wid)
+            {
                 source.x += source.width;
+            }
         }
 
         public void MoveY()
@@ -141,7 +149,9 @@ namespace Anarchy.UI
         {
             source.y += off;
             if (hei)
+            {
                 source.y += source.height;
+            }
         }
 
         public void Reset()
@@ -156,14 +166,18 @@ namespace Anarchy.UI
         {
             source.x = DefaultX;
             if (includeWidth)
+            {
                 source.width = DefaultWidth;
+            }
         }
 
         public void ResetY(bool includeHeight = false)
         {
             source.y = DefaultY;
             if (includeHeight)
+            {
                 source.height = DefaultHeight;
+            }
         }
 
         public Rect ToRect()

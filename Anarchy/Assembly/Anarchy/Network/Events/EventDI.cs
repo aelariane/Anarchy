@@ -88,7 +88,9 @@ namespace Anarchy.Network.Events
             if (hash.ContainsKey((byte)4))
             {
                 if ((hash[(byte)4] is int[] numArr))
+                {
                     instIDs = numArr;
+                }
                 else
                 {
                     reason = Log.GetString("invalidKey", "4");
@@ -96,7 +98,10 @@ namespace Anarchy.Network.Events
                 }
             }
             else
+            {
                 instIDs = new int[] { instID };
+            }
+
             return true;
         }
 
@@ -104,7 +109,7 @@ namespace Anarchy.Network.Events
         {
             if (src.ContainsKey(kkey))
             {
-                if(src[kkey] is T idk)
+                if (src[kkey] is T idk)
                 {
                     val = idk;
                     return val != null;
@@ -120,7 +125,10 @@ namespace Anarchy.Network.Events
         {
             GameObject res = key.StartsWith("RCAsset/") ? CacheResources.RCLoad(key) : (GameObject)CacheResources.Load(key);
             if (res == null)
+            {
                 return false;
+            }
+
             PhotonView[] photonViewsInChildren = res.GetPhotonViewsInChildren();
             if (photonViewsInChildren.Length != instIDs.Length)
             {
@@ -169,6 +177,5 @@ namespace Anarchy.Network.Events
         {
             Log.AddLine("failedInstantiate", MsgType.Error, key);
         }
-
     }
 }

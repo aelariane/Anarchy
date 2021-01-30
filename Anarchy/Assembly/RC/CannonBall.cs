@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Anarchy;
+﻿using Anarchy;
 using Optimization;
 using Optimization.Caching;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CannonBall : Photon.MonoBehaviour
 {
-
     private Vector3 correctPos;
 
     private Vector3 correctVelocity;
@@ -111,7 +110,7 @@ public class CannonBall : Photon.MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (BasePV.IsMine && ! disabled)
+        if (BasePV.IsMine && !disabled)
         {
             LayerMask mask = Layers.PlayerAttackBox | Layers.EnemyBox;
             if (!isCollider)

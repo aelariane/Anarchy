@@ -7,7 +7,6 @@ public class SelfDestroy : Photon.MonoBehaviour
 
     private void OnDisable()
     {
-
     }
 
     private void OnEnable()

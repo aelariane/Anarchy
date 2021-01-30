@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using Anarchy.Configuration;
+using Anarchy.UI;
+using GameLogic;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Anarchy.Configuration;
-using Anarchy.UI;
-using GameLogic;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -38,7 +38,7 @@ namespace Anarchy
         public static readonly GameModeSetting NoRocks = new GameModeSetting("rock");
 
         public static readonly GameModeSetting TitansWaveAmount =
-            new GameModeSetting("waveModeOn,waveModeNum", new[] {5});
+            new GameModeSetting("waveModeOn,waveModeNum", new[] { 5 });
 
         public static readonly GameModeSetting PointMode = new GameModeSetting("point", new[] { 50 });
         public static readonly GameModeSetting BombMode = new GameModeSetting("bomb");
@@ -71,25 +71,37 @@ namespace Anarchy
         public static readonly GameModeSetting KickEren = new GameModeSetting("eren");
         public static readonly GameModeSetting AllowHorses = new GameModeSetting("horse");
         public static readonly StringSetting Motd = new StringSetting("motd", string.Empty);
-        
+
         public static readonly AnarchyGameModeSetting RacingStartTime =
-            (AnarchyGameModeSetting) new AnarchyGameModeSetting("startTime,startTimeValue", new[] { 20 })
+            (AnarchyGameModeSetting)new AnarchyGameModeSetting("startTime,startTimeValue", new[] { 20 })
                 .AddChangedCallback(RacingLogic.StartTimeCheck);
+
         public static readonly AnarchyGameModeSetting RacingFinishersRestart =
             new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new[] { 5 });
+
         public static readonly AnarchyGameModeSetting RacingTimeLimit =
             new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new[] { 500 });
+
         public static readonly AnarchyGameModeSetting RacingRestartTime =
-            (AnarchyGameModeSetting) new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new[] { 999 })
+            (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new[] { 999 })
                 .RemoveChangedCallback(AnarchyGameModeSetting.AnarchySettingCallback)
                 .AddChangedCallback(RacingLogic.RestartTimeCheck);
+
         public static readonly AnarchyGameModeSetting NoGuest = new AnarchyGameModeSetting("noGuest");
         public static readonly AnarchyGameModeSetting AntiRevive = new AnarchyGameModeSetting("antiRevive");
+
         public static readonly AnarchyGameModeSetting AfkKill =
             new AnarchyGameModeSetting("afkKill,afkKillTime", new[] { 20 });
+
         public static readonly GameModeSetting AsoRacing =
             new GameModeSetting("asoracing").AddChangedCallback(RacingLogic.ASORacingCheck);
 
+        public static readonly AnarchyGameModeSetting AutoPickNextMap = new AnarchyGameModeSetting("autoPickMap,autoPickMapRounds", new int[] { 5 });
+        public static readonly StringSetting AutoPickNextMapFilter = new StringSetting("autoPickMapFilter", string.Empty);
+        public static readonly AnarchyGameModeSetting InfiniteGasPvp = new AnarchyGameModeSetting("infiniteGasPvp");
+        public static readonly BoolSetting AnnounceMapSwitch = new BoolSetting(nameof(AnnounceMapSwitch), false);
+        public static readonly AnarchyGameModeSetting MaximumSpeedLimit = new AnarchyGameModeSetting("maximumSpeedLimit,maximumAllowedSpeed", new int[] { 250 });
+        public static readonly AnarchyGameModeSetting NonStopRacing = new AnarchyGameModeSetting("nonStopRacing,nonStopMinimumSpeed,nonStopGainTimer", new int[] { 100, 10 });
 
         public static bool AntiReviveAdd(int id)
         {
@@ -133,20 +145,24 @@ namespace Anarchy
             }
         }
 
-        private static bool AntiReviveEnabled() => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && 
-                                                   PhotonNetwork.IsMasterClient && 
+        private static bool AntiReviveEnabled() => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer &&
+                                                   PhotonNetwork.IsMasterClient &&
                                                    AntiRevive.Enabled &&
                                                    !EndlessRespawn.Enabled;
-        
 
         public static bool AntiReviveRemove(int id) => AntiReviveEnabled() && antiReviveList.Remove(id);
 
-            public static void AddSetting(GameModeSetting set)
+        public static void AddSetting(GameModeSetting set)
         {
             if (allGameSettings == null)
+            {
                 allGameSettings = new List<GameModeSetting>();
+            }
+
             if (!allGameSettings.Contains(set))
+            {
                 allGameSettings.Add(set);
+            }
         }
 
         private static void CheckCustomSpawn(GameModeSetting set, bool state, int selection, float[] floats,
@@ -199,7 +215,6 @@ namespace Anarchy
             }
         }
 
-
         private static bool CheckPvpWinner()
         {
             if ((!BombMode.Enabled && !BladePvp.Enabled && !TeamMode.Enabled && !PointMode.Enabled) || FengGameManagerMKII.FGM.IsWinning)
@@ -225,7 +240,9 @@ namespace Anarchy
                         Chat.SendLocalizedTextAll("GameModes", "nobodyWin", new string[0]);
                     }
                     if (alives.Count > 0)
+                    {
                         alives[0].Kills += 5;
+                    }
                 }
                 else
                 {
@@ -259,6 +276,7 @@ namespace Anarchy
                         case 1:
                             cyanKills += player.Kills;
                             break;
+
                         case 2:
                             magentaKills += player.Kills;
                             break;
@@ -268,7 +286,7 @@ namespace Anarchy
                 {
                     teamCyanWin = true;
                 }
-                if(magentaKills >= PointMode.GetInt(0))
+                if (magentaKills >= PointMode.GetInt(0))
                 {
                     teamMagentaWin = true;
                 }
@@ -294,12 +312,13 @@ namespace Anarchy
                         case 1:
                             cyan.Add(player);
                             break;
+
                         case 2:
                             magenta.Add(player);
                             break;
                     }
                 }
-                if(BladePvp.Enabled || BombMode.Enabled)
+                if (BladePvp.Enabled || BombMode.Enabled)
                 {
                     if (magenta.Count < 1)
                     {
@@ -338,7 +357,10 @@ namespace Anarchy
         public static void EndlessMode(int id)
         {
             if (!EndlessRespawn.Enabled)
+            {
                 return;
+            }
+
             FengGameManagerMKII.FGM.StartCoroutine(CheckEndless(id, EndlessRespawn.GetInt(0)));
         }
 
@@ -366,7 +388,10 @@ namespace Anarchy
         public static void HandleRpc(Hashtable hash)
         {
             if (oldHash.Equals(hash))
+            {
                 return;
+            }
+
             int count = 0;
             StringBuilder bld = new StringBuilder();
             foreach (var set in allGameSettings)
@@ -376,7 +401,10 @@ namespace Anarchy
                 {
                     set.ApplyReceived();
                     if (count > 0)
+                    {
                         bld.Append("\n");
+                    }
+
                     bld.Append(set.ToStringLocal());
                     count++;
                 }
@@ -386,18 +414,22 @@ namespace Anarchy
                 oldHash["motd"] as string != hash["motd"] as string)
             {
                 if (count > 0)
+                {
                     bld.Append("\n");
+                }
+
                 bld.Append("MOTD: " + hash["motd"]);
             }
 
             oldHash = new Hashtable();
-            Dictionary<object, object> clone = (Dictionary<object, object>) hash.Clone();
+            Dictionary<object, object> clone = (Dictionary<object, object>)hash.Clone();
             foreach (KeyValuePair<object, object> pair in clone)
             {
                 oldHash.Add(pair.Key, pair.Value);
             }
 
             Chat.Add(bld.ToString());
+            PhotonNetwork.SetModProperties();
         }
 
         public static void InfectionOnDeath(PhotonPlayer owner)
@@ -444,7 +476,7 @@ namespace Anarchy
             int players = PhotonNetwork.playerList.Length;
             foreach (var player in PhotonNetwork.playerList)
             {
-                if (Random.Range(0f, 1f) <= count / (float) players)
+                if (Random.Range(0f, 1f) <= count / (float)players)
                 {
                     player.IsTitan = true;
                     infection.Add(player.ID, 2);
@@ -542,7 +574,10 @@ namespace Anarchy
 
                     set.WriteToHashtable(hash);
                     if (countSend > 0)
+                    {
                         bld.Append("\n");
+                    }
+
                     bld.Append(set.ToStringLocal());
                     set.Save();
                     count++;
@@ -551,7 +586,10 @@ namespace Anarchy
             }
 
             if (count <= 0)
+            {
                 return;
+            }
+
             if (InfectionMode.Enabled)
             {
                 InfectionUpdate();

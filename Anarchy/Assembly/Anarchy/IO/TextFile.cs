@@ -19,7 +19,7 @@ namespace Anarchy.IO
 
         public void Clear()
         {
-            using(var writer = new System.IO.StreamWriter(info.FullName, false))
+            using (var writer = new System.IO.StreamWriter(info.FullName, false))
             {
                 writer.Write(string.Empty);
             }

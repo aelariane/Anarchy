@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Optimization.Caching;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using Optimization.Caching;
 using UnityEngine;
 
 namespace Anarchy
@@ -19,7 +19,6 @@ namespace Anarchy
 
         public static int GetMagentaPoints() =>
             PhotonNetwork.playerList.Where(player => player.RCteam == 2).Sum(player => player.Kills);
-
 
         public static string HtmlColor(this string src, string color)
         {
@@ -77,7 +76,11 @@ namespace Anarchy
 
         public static T Find<T>(this IEnumerable<T> ienum, Func<T, bool> func)
         {
-            if (ienum == null) return default;
+            if (ienum == null)
+            {
+                return default;
+            }
+
             foreach (var idk in ienum)
             {
                 if (func(idk))
@@ -101,7 +104,11 @@ namespace Anarchy
 
         public static Color HexToColor(this string hex, byte a = 255)
         {
-            if (hex.Length != 6) return Colors.white;
+            if (hex.Length != 6)
+            {
+                return Colors.white;
+            }
+
             byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
             byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
             byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
@@ -176,47 +183,47 @@ namespace Anarchy
         }
 
         /// <summary>
-        /// Limit a string to a specified length. 
+        /// Limit a string to a specified length.
         /// </summary>
         public static string LimitToLength(this string value, int length) =>
             value.Length <= length ? value : value.Substring(0, length) + "...";
 
         /// <summary>
-        /// Limit a string a specified length (it doesn't count length of HTML and hex colors in the string). 
+        /// Limit a string a specified length (it doesn't count length of HTML and hex colors in the string).
         /// </summary>
         public static string LimitToLengthStripped(this string value, int length) =>
             value.RemoveHex().RemoveHTML().Length <= length ? value : (value.Substring(0, length) + "...");
 
         /// <summary>
-        /// Remove hex colors from a string. 
+        /// Remove hex colors from a string.
         /// Example: [000000] would be removed
         /// </summary>
         public static string RemoveHex(this string str) =>
             hexCode.Replace(str, string.Empty).Replace("[-]", string.Empty);
 
         /// <summary>
-        /// Remove HTML tags like bold, italic, size and color from a string. 
+        /// Remove HTML tags like bold, italic, size and color from a string.
         /// Example: <color=#000000></color> would be removed
         /// </summary>
         public static string RemoveHTML(this string str) => Regex.Replace(str,
             @"((<(\/|)(color(?(?=\=).*?)>|b>|size.*?>|i>)))", "", RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Remove hex colors and HTML tags like bold, italic, size and color from a string. 
+        /// Remove hex colors and HTML tags like bold, italic, size and color from a string.
         /// Example: [000000] would be removed
         /// </summary>
         public static string RemoveAll(this string x) => Regex.Replace(x,
-            @"((\[([0-9a-f]{6})\])|(<(\/|)(color(?(?=\=).*?)>))|(<size=(\\w*)?>?|<\/size>?)|(<\/?[bi]>))", "");
+            @"((\[([0-9a-f]{6})\])|(<(\/|)(color(?(?=\=).*?)>))|(<size=(\\w*)?>?|<\/size>?)|(<\/?[bi]>))", string.Empty, RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Remove size tags from a string. 
+        /// Remove size tags from a string.
         /// Example: <color=#000000></color> would be removed
         /// </summary>
         internal static string RemoveSize(this string str) => Regex.Replace(str, "<size=(\\w*)?>?|<\\/size>?",
             string.Empty, RegexOptions.IgnoreCase);
 
         /// <summary>
-        /// Convert hex color to an HTML code. 
+        /// Convert hex color to an HTML code.
         /// Example: [000000] would be changed to <color=#000000></color>
         /// </summary>
         public static string ToHTMLFormat(this string str)
@@ -226,7 +233,7 @@ namespace Anarchy
                 str = str.Contains("[-]")
                     ? hexCode.Replace(str, "<color=#$1>").Replace("[-]", "</color>")
                     : hexCode.Replace(str, "<color=#$1>");
-                var c = (short) (str.CountWords("<color=") - str.CountWords("</color>"));
+                var c = (short)(str.CountWords("<color=") - str.CountWords("</color>"));
                 for (short i = 0; i < c; i++)
                 {
                     str += "</color>";
@@ -256,13 +263,19 @@ namespace Anarchy
                 else
                 {
                     if (tags.Count > 0 && tags.Peek().TagName == tag.TagName)
+                    {
                         tags.Pop();
+                    }
                     else
+                    {
                         builder.Remove(match.Index, match.Length);
+                    }
                 }
             }
             while (tags.Count > 0)
+            {
                 builder.Append(tags.Pop().ClosingTag);
+            }
 
             return builder.ToString();
         }
@@ -277,7 +290,6 @@ namespace Anarchy
             bld.Append(")");
             return bld.ToString();
         }
-
 
         private struct Tag
         {

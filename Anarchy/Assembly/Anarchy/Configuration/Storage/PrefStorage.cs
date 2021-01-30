@@ -9,7 +9,9 @@ namespace Anarchy.Configuration.Storage
             PlayerPrefs.DeleteAll();
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         public bool GetBool(string key, bool def)
         {
@@ -31,7 +33,9 @@ namespace Anarchy.Configuration.Storage
             return PlayerPrefs.GetString(key, def);
         }
 
-        public void Save() { }
+        public void Save()
+        {
+        }
 
         public void SetBool(string key, bool value)
         {

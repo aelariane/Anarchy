@@ -52,7 +52,6 @@ namespace Optimization.Caching
                     titanpos = new Vector3[gos.Length];
                     for (int i = 0; i < gos.Length; i++)
                     {
-
                         titanpos[i] = gos[i].transform.position;
                     }
                 }

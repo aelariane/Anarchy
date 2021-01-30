@@ -1,5 +1,4 @@
-﻿
-namespace Anarchy.Configuration
+﻿namespace Anarchy.Configuration
 {
     public abstract class Setting<T> : ISetting
     {
@@ -7,7 +6,9 @@ namespace Anarchy.Configuration
         public readonly string Key;
         public T Value;
 
-        public Setting(string key) : this(key, default) {  }
+        public Setting(string key) : this(key, default)
+        {
+        }
 
         public Setting(string key, T defaultValue) : this(key, defaultValue, true)
         {
@@ -18,7 +19,10 @@ namespace Anarchy.Configuration
             if (addToPool)
             {
                 if (Settings.Storage == null)
+                {
                     Settings.CreateStorage();
+                }
+
                 Settings.AddSetting(this);
             }
             Key = key;

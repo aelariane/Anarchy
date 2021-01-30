@@ -104,3 +104,11 @@ cyanWin:<color=#$maincolor$>Equipe <color=cyan>cyan</color> ganhou!</color>
 magentaWin:<color=#$maincolor$>Equipe <color=magenta>magenta</color> ganhou!</color>
 nobodyWin:<color=#$maincolor$>Ninguém ganhou.</color>
 playerWin:<color=#$maincolor$>Jogador <color=#$subcolor$>{0}</color> ganhou! 5 pontos adicionados.</color>
+autoPickMapInfoEnabled:<color=#$maincolor$>Map autoswitch <color=#$eColor$>enabled</color> ({0} rounds before switch)</color>
+autoPickMapInfoDisabled:<color=#$maincolor$>Map autoswitch <color=#$dColor$>disabled</color></color>
+infiniteGasPvpInfoEnabled:<color=#$maincolor$>Using infinite gas in pvp <color=#$dColor$>allowed</color></color>
+infiniteGasPvpInfoDisabled:<color=#$maincolor$>Using infinite gas in pvp <color=#$dColor$>disallowed</color></color>
+maximumSpeedLimitInfoEnabled:<color=#$maincolor$>Maximum speed limit ({0}) <color=#$eColor$>enabled</color></color>
+maximumSpeedLimitInfoDisabled:<color=#$maincolor$>Maximum speed limit <color=#$dColor$>disabled</color></color>
+nonStopRacingInfoEnabled:<color=#$maincolor$>Non-Stop Racing <color=#$eColor$>enabled</color> (Speed: {0}, Timer: {1})</color>
+nonStopRacingInfoDisabled:<color=#$maincolor$>Non-Stop Racing <color=#$dColor$>disabled</color></color>

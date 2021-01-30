@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class RulesCommand : ChatCommand
     {
         public RulesCommand() : base("rules", false, true, false)
         {
-
         }
 
         public override bool Execute(string[] args)

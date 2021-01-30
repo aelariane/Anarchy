@@ -11,6 +11,7 @@ namespace Antis.Spam
         private SyncDictionary<string, int> rpcList = new SyncDictionary<string, int>();
 
         private static int checkCount = 30;
+
         /// <summary>
         /// Amount of object spammed to define it as spam
         /// </summary>
@@ -24,7 +25,7 @@ namespace Antis.Spam
         public static event SpamDetected<string> OnRPCSpamDetected = (sender, data) => { };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ID">Owner ID</param>
         public RPCCounter(int ID)

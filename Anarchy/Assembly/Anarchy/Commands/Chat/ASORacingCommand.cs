@@ -1,15 +1,14 @@
 ﻿namespace Anarchy.Commands.Chat
 {
-    internal class ASORacingCommand : ChatCommand
+    public class ASORacingCommand : ChatCommand
     {
         public ASORacingCommand() : base("asoracing", true, true, false)
         {
-
         }
 
         public override bool Execute(string[] args)
         {
-            if(FengGameManagerMKII.FGM.logic.Mode != GameMode.RACING)
+            if (FengGameManagerMKII.FGM.logic.Mode != GameMode.RACING)
             {
                 chatMessage = Lang["notRacingMode"];
                 return false;

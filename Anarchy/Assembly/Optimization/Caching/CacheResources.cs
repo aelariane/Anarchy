@@ -20,21 +20,43 @@ namespace Optimization.Caching
         internal static Object Load(string path)
         {
             cache.TryGetValue(path, out Object obj);
-            if (obj != null) return obj;
-            if (cache.ContainsKey(path)) cache[path] = Resources.Load(path);
-            else cache.Add(path, Resources.Load(path));
+            if (obj != null)
+            {
+                return obj;
+            }
+
+            if (cache.ContainsKey(path))
+            {
+                cache[path] = Resources.Load(path);
+            }
+            else
+            {
+                cache.Add(path, Resources.Load(path));
+            }
+
             return cache[path];
         }
 
         internal static T Load<T>(string path) where T : Component
         {
             cacheType.TryGetValue(path, out Component obj);
-            if (obj != null) return obj as T;
+            if (obj != null)
+            {
+                return obj as T;
+            }
+
             var go = (GameObject)Load(path);
             if (go.GetComponent<T>() != null)
             {
-                if (cacheType.ContainsKey(path)) cacheType[path] = go.GetComponent<T>();
-                else cacheType.Add(path, go.GetComponent<T>());
+                if (cacheType.ContainsKey(path))
+                {
+                    cacheType[path] = go.GetComponent<T>();
+                }
+                else
+                {
+                    cacheType.Add(path, go.GetComponent<T>());
+                }
+
                 return go.GetComponent<T>();
             }
             return default(T);

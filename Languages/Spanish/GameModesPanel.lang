@@ -95,3 +95,13 @@ racingTimeLimitInt0:Tiempo limite:
 racingRestartTimeState:Tiempo de reinicio personalizado:
 racingRestartTimeInt0:Tiempo de reiniciar:
 btnReset:Restablecer configuración
+autoPickMapState:Pick random map on restart
+autoPickMapFilter:Filter
+infiniteGasPvpState:Allow infinite gas in PvP:
+autoPickMapInt0:Rounds before switch:
+autoPickMapAnnounce:Announce map switch:
+maximumSpeedLimitState:Maximum speed limit:
+maximumSpeedLimitInt0:Maximum speed:
+nonStopRacingState:Non-Stop racing:
+nonStopRacingInt0:Minimum speed:
+nonStopRacingInt1:Speed re-gain timer:

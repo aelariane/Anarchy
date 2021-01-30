@@ -1,5 +1,5 @@
-﻿using Antis.Internal;
-using Antis.Collections.Generic;
+﻿using Antis.Collections.Generic;
+using Antis.Internal;
 
 namespace Antis.Spam
 {
@@ -45,7 +45,7 @@ namespace Antis.Spam
         internal void CountInternal(string val, int sender)
         {
             string key = val + sender.ToString();
-            if(data.TryGetValue(key, out SpamCounterData dat))
+            if (data.TryGetValue(key, out SpamCounterData dat))
             {
                 dat.Count++;
                 return;
@@ -63,7 +63,7 @@ namespace Antis.Spam
             data.Clear();
             foreach (var pair in data)
             {
-                if(pair.Value.Count > CheckCount)
+                if (pair.Value.Count > CheckCount)
                 {
                     OnSpamDetected(this, new SpamDetectedArgs(pair.Value.ResourceName, pair.Value.Count, pair.Value.Sender));
                 }

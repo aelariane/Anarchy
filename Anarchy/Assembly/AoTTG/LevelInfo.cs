@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class LevelInfo
 {
@@ -382,7 +380,6 @@ public class LevelInfo
             Levels[26].PunksEnabled = true;
             Levels[26].DiscordName = "custom";
             Levels[16].LogicType = typeof(GameLogic.KillTitanLogic);
-
 
             Levels[0].minimapPreset = new Minimap.Preset(new Vector3(22.6f, 0f, 13f), 731.9738f);
             Levels[8].minimapPreset = new Minimap.Preset(new Vector3(8.8f, 0f, 65f), 765.5751f);

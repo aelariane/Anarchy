@@ -4,8 +4,8 @@ namespace Anarchy.UI
 {
     public class PausePanel : GUIBase
     {
-        const float Height = 385;
-        const float Width = 300;
+        private const float Height = 385;
+        private const float Width = 300;
 
         private GUIBase activePanel;
         private Rect boxPosition;
@@ -22,14 +22,20 @@ namespace Anarchy.UI
         {
             leaving = false;
             if (activePanel != null)
+            {
                 activePanel.DisableImmediate();
+            }
+
             Disable();
         }
 
         protected internal override void Draw()
         {
             if (activePanel != null && activePanel.Active)
+            {
                 return;
+            }
+
             GUI.Box(boxPosition, locale["title"]);
             pauseRect.Reset();
             if (PauseButton(pauseRect, "btnContinue"))
@@ -98,7 +104,10 @@ namespace Anarchy.UI
         protected override void OnDisable()
         {
             if (activePanel != null)
+            {
                 activePanel.DisableImmediate();
+            }
+
             activePanel = null;
             pauseStyle = null;
             pauseRect = null;
@@ -117,7 +126,7 @@ namespace Anarchy.UI
             }
             if (leaving)
             {
-                if(IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
+                if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                 {
                     PhotonNetwork.Disconnect();
                 }
@@ -127,7 +136,9 @@ namespace Anarchy.UI
                 Application.LoadLevel("menu");
             }
             if (!leaving)
+            {
                 Configuration.Settings.Apply();
+            }
         }
 
         protected override void OnEnable()
@@ -144,7 +155,7 @@ namespace Anarchy.UI
         private bool PauseButton(SmartRect rect, string key)
         {
             bool res = UnityEngine.GUI.Button(rect.ToRect(), locale[key], pauseStyle);
-            rect.MoveY(); 
+            rect.MoveY();
             return res;
         }
 

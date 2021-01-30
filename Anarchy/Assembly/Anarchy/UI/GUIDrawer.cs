@@ -11,7 +11,7 @@ namespace Anarchy.UI
         {
             set
             {
-                if(drawer == null)
+                if (drawer == null)
                 {
                     return;
                 }
@@ -23,7 +23,7 @@ namespace Anarchy.UI
             }
             get
             {
-                if(drawer == null)
+                if (drawer == null)
                 {
                     return -1;
                 }
@@ -38,7 +38,7 @@ namespace Anarchy.UI
 
         public void Enable()
         {
-            if(drawer != null)
+            if (drawer != null)
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace Anarchy.UI
 
         public void Enable(int currentDepth)
         {
-            if(drawer != null)
+            if (drawer != null)
             {
                 return;
             }
@@ -64,7 +64,7 @@ namespace Anarchy.UI
 
         public void Disable()
         {
-            if(drawer == null)
+            if (drawer == null)
             {
                 return;
             }
@@ -72,8 +72,8 @@ namespace Anarchy.UI
             drawer = null;
         }
 
-       private class GUIDrawerObject : MonoBehaviour
-       {
+        private class GUIDrawerObject : MonoBehaviour
+        {
             internal GUIDrawer owner;
             internal int layer;
             private bool needCancel = true;
@@ -101,6 +101,6 @@ namespace Anarchy.UI
             {
                 owner.owner.Update();
             }
-       }
+        }
     }
 }

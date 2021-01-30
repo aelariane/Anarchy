@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-using Anarchy.Configuration;
+﻿using Anarchy.Configuration;
 using Anarchy.UI;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Anarchy.Skins
@@ -13,15 +12,16 @@ namespace Anarchy.Skins
 
         public bool IsDone { get; private set; } = false;
         public bool IsTransparent => Path.ToLower().Trim().Equals("transparent");
+
         public bool NeedReload
         {
             get => _needReload;
-            private set { if (value) Materials = null; _needReload = value; }
+            private set { if (value) { Materials = null; } _needReload = value; }
         }
 
         public string Path { get; private set; }
         public Texture2D Texture { get; private set; }
-        public List<Material> Materials { get; set;  }
+        public List<Material> Materials { get; set; }
 
         public SkinElement(string path) : this(path, true)
         {
@@ -66,12 +66,12 @@ namespace Anarchy.Skins
             }
             WWW www = new WWW(Path);
             yield return www;
-            if(www.texture == null || www.size > AllowedSize)
+            if (www.texture == null || www.size > AllowedSize)
             {
                 Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
                 yield break;
             }
-            Texture = new Texture2D(4, 4, TextureFormat.DXT1, VideoSettings.Mipmap.Value);
+            Texture = new Texture2D(4, 4, TextureFormat.ARGB32, VideoSettings.Mipmap.Value);
             www.LoadImageIntoTexture(Texture);
             www.Dispose();
             Texture.Apply();

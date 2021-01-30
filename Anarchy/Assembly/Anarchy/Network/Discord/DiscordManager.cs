@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Anarchy.Network.Discord
 {
+    //TODO: Delete?
     internal class DiscordManager : MonoBehaviour
     {
         public static string DiscordClientID = "571227991145971732";
@@ -17,7 +18,11 @@ namespace Anarchy.Network.Discord
 
         public void Start()
         {
-            if (_ignoreStart) return;
+            if (_ignoreStart)
+            {
+                return;
+            }
+
             _ignoreStart = true;
             _presence = new DiscordRPC.RichPresence
             {
@@ -42,14 +47,17 @@ namespace Anarchy.Network.Discord
         public void Update()
         {
             _time += Time.deltaTime;
-            if (!(_time > 1f)) return;
+            if (!(_time > 1f))
+            {
+                return;
+            }
+
             try
             {
                 UpdateStatus();
             }
             catch
             {
-
             }
             _time = 0f;
         }

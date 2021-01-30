@@ -6,6 +6,10 @@ using UGUI = UnityEngine.GUILayout;
 
 namespace Anarchy.UI
 {
+    /// <summary>
+    /// Styled wrapper class for <see cref="UnityEngine.GUILayout"/>
+    /// </summary>
+    /// <remarks>Use this class to draw Anarchy-styled unified GUI</remarks>
     public static class GUILayout
     {
         private static Dictionary<Setting<float>, string> setFloats = new Dictionary<Setting<float>, string>();
@@ -14,6 +18,7 @@ namespace Anarchy.UI
         private static readonly GUILayoutOption[] DefaultOption = new GUILayoutOption[1] { UGUI.Height(15f) };
 
         #region Areas
+
         public static void BeginArea(Rect rect)
         {
             UGUI.BeginArea(rect);
@@ -23,6 +28,7 @@ namespace Anarchy.UI
         {
             UGUI.BeginArea(rect, text);
         }
+
         public static void BeginArea(SmartRect rect)
         {
             UGUI.BeginArea(rect.ToRect());
@@ -47,6 +53,7 @@ namespace Anarchy.UI
         {
             return UGUI.BeginScrollView(curr, Style.ScrollView, Style.ScrollView);
         }
+
         public static void BeginVertical()
         {
             UGUI.BeginHorizontal();
@@ -56,9 +63,11 @@ namespace Anarchy.UI
         {
             UGUI.BeginHorizontal(opts);
         }
-        #endregion
+
+        #endregion Areas
 
         #region Box
+
         public static void Box(string text)
         {
             UGUI.Box(text, Style.Box);
@@ -78,9 +87,11 @@ namespace Anarchy.UI
         {
             UGUI.Box(img, opts);
         }
-        #endregion
+
+        #endregion Box
 
         #region Button
+
         public static bool Button(string text)
         {
             return UGUI.Button(text, Style.Button, DefaultOption);
@@ -90,9 +101,11 @@ namespace Anarchy.UI
         {
             return UGUI.Button(text, Style.Button, opts);
         }
-        #endregion
+
+        #endregion Button
 
         #region EndAreas
+
         public static void EndArea()
         {
             UGUI.EndArea();
@@ -112,13 +125,16 @@ namespace Anarchy.UI
         {
             UGUI.EndVertical();
         }
-        #endregion
+
+        #endregion EndAreas
 
         #region HorizontalSlider
+
         public static float HorizontalSlider(float val)
         {
             return UGUI.HorizontalSlider(val, 0f, 1f, Style.Slider, Style.SliderBody, DefaultOption);
         }
+
         public static float HorizontalSlider(float val, GUILayoutOption[] opts)
         {
             return UGUI.HorizontalSlider(val, 0f, 1f, Style.Slider, Style.SliderBody, opts);
@@ -148,6 +164,7 @@ namespace Anarchy.UI
             UGUI.EndHorizontal();
             return val;
         }
+
         public static float HorizontalSlider(float val, string label, GUILayoutOption[] lblOpts, GUILayoutOption[] sliderOpts)
         {
             UGUI.BeginHorizontal();
@@ -182,6 +199,7 @@ namespace Anarchy.UI
         {
             val.Value = UGUI.HorizontalSlider(val.Value, 0f, 1f, Style.Slider, Style.SliderBody, DefaultOption);
         }
+
         public static void HorizontalSlider(Setting<float> val, GUILayoutOption[] opts)
         {
             val.Value = UGUI.HorizontalSlider(val.Value, 0f, 1f, Style.Slider, Style.SliderBody, opts);
@@ -232,9 +250,11 @@ namespace Anarchy.UI
             val.Value = UGUI.HorizontalSlider(val.Value, min, max, Style.Slider, Style.SliderBody, sliderOpts);
             UGUI.EndHorizontal();
         }
-        #endregion
+
+        #endregion HorizontalSlider
 
         #region Label
+
         public static void Label(string content)
         {
             UGUI.Label(content, Style.Label, DefaultOption);
@@ -249,17 +269,21 @@ namespace Anarchy.UI
         {
             UGUI.Label(content, Style.LabelCenter, DefaultOption);
         }
+
         public static void LabelCenter(string content, GUILayoutOption[] opts)
         {
             UGUI.Label(content, Style.LabelCenter, opts);
         }
-        #endregion
+
+        #endregion Label
 
         #region SelectionGrid
+
         public static int SelectionGrid(int value, string[] labels, int xCount)
         {
             return UGUI.SelectionGrid(value, labels, xCount, Style.SelectionGrid, DefaultOption);
         }
+
         public static int SelectionGrid(int value, string[] labels, int xCount, GUILayoutOption[] opts)
         {
             return UGUI.SelectionGrid(value, labels, xCount, Style.SelectionGrid, opts);
@@ -274,9 +298,11 @@ namespace Anarchy.UI
         {
             set.Value = UGUI.SelectionGrid(set.Value, labels, xCount, Style.SelectionGrid, opts);
         }
-        #endregion
+
+        #endregion SelectionGrid
 
         #region Space
+
         public static void Space()
         {
             UGUI.Space(5f);
@@ -286,9 +312,11 @@ namespace Anarchy.UI
         {
             UGUI.Space(offset);
         }
-        #endregion
+
+        #endregion Space
 
         #region TextField
+
         public static string TextField(string val)
         {
             return UGUI.TextField(val, Style.TextField, DefaultOption);
@@ -308,6 +336,7 @@ namespace Anarchy.UI
             UGUI.EndHorizontal();
             return val;
         }
+
         public static string TextField(string val, string label, GUILayoutOption[] lblOpts, GUILayoutOption[] txtopts)
         {
             UGUI.BeginHorizontal();
@@ -336,6 +365,7 @@ namespace Anarchy.UI
             val.Value = UGUI.TextField(val.Value, Style.TextButton, DefaultOption);
             UGUI.EndHorizontal();
         }
+
         public static void TextField(Setting<string> val, string label, GUILayoutOption[] lblOpts, GUILayoutOption[] txtopts)
         {
             UGUI.BeginHorizontal();
@@ -348,7 +378,10 @@ namespace Anarchy.UI
         public static void TextField(Setting<float> val)
         {
             if (!setFloats.ContainsKey(val))
+            {
                 setFloats.Add(val, val.Value.ToString());
+            }
+
             string text = setFloats[val];
             text = UGUI.TextField(text, Style.TextField, DefaultOption);
             float.TryParse(text, out val.Value);
@@ -358,7 +391,10 @@ namespace Anarchy.UI
         public static void TextField(Setting<float> val, GUILayoutOption[] opts)
         {
             if (!setFloats.ContainsKey(val))
+            {
                 setFloats.Add(val, val.Value.ToString());
+            }
+
             string text = setFloats[val];
             text = UGUI.TextField(text, Style.TextField, opts);
             float.TryParse(text, out val.Value);
@@ -373,6 +409,7 @@ namespace Anarchy.UI
             TextField(val);
             UGUI.EndHorizontal();
         }
+
         public static void TextField(Setting<float> val, string label, GUILayoutOption[] lblOpts, GUILayoutOption[] txtopts)
         {
             UGUI.BeginHorizontal();
@@ -385,7 +422,10 @@ namespace Anarchy.UI
         public static void TextField(Setting<int> val)
         {
             if (!setIntegers.ContainsKey(val))
+            {
                 setIntegers.Add(val, val.Value.ToString());
+            }
+
             string text = setIntegers[val];
             text = UGUI.TextField(text, Style.TextField, DefaultOption);
             int.TryParse(text, out val.Value);
@@ -395,7 +435,10 @@ namespace Anarchy.UI
         public static void TextField(Setting<int> val, GUILayoutOption[] opts)
         {
             if (!setIntegers.ContainsKey(val))
+            {
                 setIntegers.Add(val, val.Value.ToString());
+            }
+
             string text = setIntegers[val];
             text = UGUI.TextField(text, Style.TextField, opts);
             int.TryParse(text, out val.Value);
@@ -410,6 +453,7 @@ namespace Anarchy.UI
             TextField(val);
             UGUI.EndHorizontal();
         }
+
         public static void TextField(Setting<int> val, string label, GUILayoutOption[] lblOpts, GUILayoutOption[] txtopts)
         {
             UGUI.BeginHorizontal();
@@ -418,13 +462,16 @@ namespace Anarchy.UI
             TextField(val, txtopts);
             UGUI.EndHorizontal();
         }
-        #endregion
+
+        #endregion TextField
 
         #region Toggle
+
         public static bool Toggle(bool val)
         {
             return UGUI.Toggle(val, string.Empty, Style.Toggle, DefaultOption);
         }
+
         public static bool Toggle(bool val, GUILayoutOption[] opts)
         {
             return UGUI.Toggle(val, string.Empty, Style.Toggle, opts);
@@ -477,9 +524,11 @@ namespace Anarchy.UI
             val.Value = UGUI.Toggle(val.Value, string.Empty, Style.Toggle, tglOpts);
             UGUI.EndHorizontal();
         }
-        #endregion
+
+        #endregion Toggle
 
         #region ToggleButton
+
         public static bool ToggleButton(bool val, string label)
         {
             UGUI.BeginHorizontal();
@@ -517,6 +566,7 @@ namespace Anarchy.UI
             val.Value = UGUI.Button(val.Value ? GUI.LabelEnabled : GUI.LabelDisabled, Style.TextButton, btnOpts);
             UGUI.EndHorizontal();
         }
-        #endregion
+
+        #endregion ToggleButton
     }
 }

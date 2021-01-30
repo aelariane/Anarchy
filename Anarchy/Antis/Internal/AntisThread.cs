@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 
 namespace Antis.Internal
@@ -18,29 +17,28 @@ namespace Antis.Internal
             }
             set
             {
-                if(value > 0)
+                if (value > 0)
                 {
                     nextSleepTime = value;
                 }
             }
         }
 
-
         internal static Thread ThreadInstance { get; private set; }
 
         static AntisThread()
         {
-            if(executables == null)
+            if (executables == null)
             {
                 executables = new List<AntisThreadExecutable>();
             }
-            ThreadInstance = new Thread(Loop) { IsBackground = true, Name = "AntisThread" };
+            ThreadInstance = new Thread(Loop) { IsBackground = false, Name = "AntisThread" };
             ThreadInstance.Start();
         }
 
         internal static void AddExecutable(AntisThreadExecutable execute)
         {
-            if(executables == null)
+            if (executables == null)
             {
                 executables = new List<AntisThreadExecutable>();
             }
@@ -78,13 +76,13 @@ namespace Antis.Internal
                 {
                     exec = executables.ToArray();
                 }
-                if(exec.Length > 0)
+                if (exec.Length > 0)
                 {
                     int iterator = 0;
                     while (iterator < exec.Length)
                     {
                         AntisThreadExecutable executable = exec[iterator++];
-                        if(executable == null)
+                        if (executable == null)
                         {
                             needRemove = true;
                             continue;
@@ -92,7 +90,7 @@ namespace Antis.Internal
                         executable.Check();
                     }
                 }
-                if(needRemove)
+                if (needRemove)
                 {
                     lock (executables)
                     {
@@ -101,7 +99,7 @@ namespace Antis.Internal
                     needRemove = false;
                 }
                 Thread.Sleep(sleepTime);
-                if(nextSleepTime > 0)
+                if (nextSleepTime > 0)
                 {
                     sleepTime = nextSleepTime;
                     nextSleepTime = -1;

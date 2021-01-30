@@ -36,13 +36,13 @@ namespace Optimization.Caching
         public static GameObject NetworkInstantiate(string name, Vector3 position, Quaternion rotation, int instantioationId, int[] viewIDs, short prefix = 0, int group = 0, object[] data = null)
         {
             GameObject res = (name.StartsWith("RCAsset/") ? CacheResources.RCLoad(name) : CacheResources.Load(name)) as GameObject;
-            if(res == null)
+            if (res == null)
             {
                 Debug.LogError($"Pool.NetworkInstantiate(): Cannot fint prefab with name \"{name}\".");
                 return null;
             }
             PhotonView[] views = res.GetPhotonViewsInChildren();
-            if(views.Length != viewIDs.Length)
+            if (views.Length != viewIDs.Length)
             {
                 throw new System.Exception($"Pool.NetworkInstantiate(): Error in Instantiation(\"{name}\")! The resource's PhotonView count is not the same as in incoming data. {views.Length} != {viewIDs.Length}");
             }

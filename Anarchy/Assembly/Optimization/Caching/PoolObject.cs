@@ -148,7 +148,9 @@ namespace Optimization.Caching
             }
             PhotonNetwork.networkingPeer.SendInstantiate(name, position, rotation, group, viewIDs, data, isSceneObject);
             return NetworkInstantiate(name, position, rotation, viewIDs[0], viewIDs, (short)(PhotonNetwork.networkingPeer.currentLevelPrefix > 0 ? PhotonNetwork.networkingPeer.currentLevelPrefix : 0), group, data);
+
             #region Old version
+
             //for (int i = 0; i < photonViews.Length; i++)
             //{
             //    photonViews[i].viewID = viewIDs[i];
@@ -165,7 +167,7 @@ namespace Optimization.Caching
             //peer.RemoveInstantiationData(instantiationId);
             //if (peer.instantiatedObjects.ContainsKey(instantiationId))
             //{
-            //    GameObject gameobj = peer.instantiatedObjects[instantiationId]; 
+            //    GameObject gameobj = peer.instantiatedObjects[instantiationId];
             //    string str2 = string.Empty;
             //    if (gameobj != null)
             //    {
@@ -183,7 +185,8 @@ namespace Optimization.Caching
             //}
             //peer.instantiatedObjects.Add(instantiationId, go);
             //return go;
-            #endregion
+
+            #endregion Old version
         }
 
         public GameObject NetworkInstantiate(string name, Vector3 position, Quaternion rotation, int instantioationId, int[] viewIDs, short prefix = 0, int group = 0, object[] data = null)
@@ -249,7 +252,10 @@ namespace Optimization.Caching
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i].activeInHierarchy)
+                    {
                         continue;
+                    }
+
                     result = list[i];
                 }
                 if (result == null)

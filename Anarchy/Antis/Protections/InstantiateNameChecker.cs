@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Antis.Protections
+﻿namespace Antis.Protections
 {
     public class InstantiateNameChecker : IProtection<string>
     {

@@ -15,7 +15,9 @@ namespace Optimization
                 foreach (object obj in Data)
                 {
                     if (obj is string msg)
+                    {
                         return msg;
+                    }
                 }
                 return string.Empty;
             }
@@ -28,7 +30,9 @@ namespace Optimization
                 foreach (object obj in Data)
                 {
                     if (obj is DisconnectCause cause)
+                    {
                         return cause;
+                    }
                 }
                 return DisconnectCause.DisconnectByServerLogic;
             }
@@ -36,13 +40,14 @@ namespace Optimization
 
         public Hashtable Hashtable
         {
-
             get
             {
                 foreach (object obj in Data)
                 {
                     if (obj is Hashtable hash)
+                    {
                         return hash;
+                    }
                 }
                 return null;
             }
@@ -52,10 +57,12 @@ namespace Optimization
         {
             get
             {
-                foreach(object obj in Data)
+                foreach (object obj in Data)
                 {
                     if (obj is OperationResponse op)
+                    {
                         return op;
+                    }
                 }
                 return null;
             }
@@ -65,10 +72,12 @@ namespace Optimization
         {
             get
             {
-                foreach(object obj in Data)
+                foreach (object obj in Data)
                 {
                     if (obj is PhotonPlayer player)
+                    {
                         return player;
+                    }
                 }
                 return null;
             }
@@ -78,9 +87,9 @@ namespace Optimization
         {
             get
             {
-                foreach(object obj in Data)
+                foreach (object obj in Data)
                 {
-                    if(obj is short sh)
+                    if (obj is short sh)
                     {
                         return sh;
                     }

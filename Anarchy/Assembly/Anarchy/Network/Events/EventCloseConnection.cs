@@ -4,7 +4,6 @@ namespace Anarchy.Network.Events
 {
     public class EventCloseConnection : INetworkEvent
     {
-
         public byte Code => 203;
 
         public EventCloseConnection()
@@ -15,7 +14,7 @@ namespace Anarchy.Network.Events
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = "";
-            if(sender == null)
+            if (sender == null)
             {
                 return false;
             }

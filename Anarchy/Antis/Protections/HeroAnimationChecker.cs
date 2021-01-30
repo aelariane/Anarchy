@@ -9,7 +9,7 @@
         bool IProtection.Check(object data)
         {
             string str = data as string;
-            if(str != null)
+            if (str != null)
             {
                 return Check(str);
             }

@@ -17,7 +17,7 @@ public class RoomInfo
         get
         {
             string[] array = Name.Split('`');
-            if(array.Length != 7)
+            if (array.Length != 7)
             {
                 return false;
             }
@@ -74,11 +74,11 @@ public class RoomInfo
     {
         if (((propertiesToCache != null) && (propertiesToCache.Count != 0)) && !CustomProperties.Equals(propertiesToCache))
         {
-            if(propertiesToCache.CheckKey(RoomProperty.RemovedFromList, out bool removed, true))
+            if (propertiesToCache.CheckKey(RoomProperty.RemovedFromList, out bool removed, true))
             {
                 RemovedFromList = removed;
             }
-            if(propertiesToCache.CheckKey(RoomProperty.MaxPlayers, out byte max, true))
+            if (propertiesToCache.CheckKey(RoomProperty.MaxPlayers, out byte max, true))
             {
                 maxPlayersField = max;
             }
@@ -94,7 +94,7 @@ public class RoomInfo
             {
                 PlayerCount = players;
             }
-            if(propertiesToCache.CheckKey(RoomProperty.CleanUpCacheOnLeave, out bool cleanup, true))
+            if (propertiesToCache.CheckKey(RoomProperty.CleanUpCacheOnLeave, out bool cleanup, true))
             {
                 autoCleanUpField = cleanup;
             }
@@ -127,8 +127,6 @@ public class RoomInfo
         string decrypted = new SimpleAES().Decrypt(array[5]);
         return decrypted.Equals(pass);
     }
-
-
 
     public override string ToString()
     {

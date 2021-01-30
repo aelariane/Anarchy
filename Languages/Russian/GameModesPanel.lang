@@ -61,7 +61,7 @@ maxwaveInt0:Количество:
 
 punkWavesState:Панки каждые 5 волн:
 
-globalDisableMinimapState:Глобальный запрет мини-карты:
+globalDisableMinimapState:Глобальный запрет миникарты:
 
 endlessState:Возрождение:
 endlessInt0:Время:
@@ -94,3 +94,13 @@ racingTimeLimitInt0:Лимит:
 racingRestartTimeState:Перезапуска после Финиша:
 racingRestartTimeInt0:Таймер:
 btnReset:Сбросить
+autoPickMapState:Автосмена карты при рестарте
+autoPickMapFilter:Фильтр
+infiniteGasPvpState:Бесконечный газ в ПвП:
+autoPickMapInt0:Раундов перед сменой карты:
+autoPickMapAnnounce:Аннонсировать карту перед сменой:
+maximumSpeedLimitState:Лимит максимальной скорости:
+maximumSpeedLimitInt0:Максимальная скорость:
+nonStopRacingState:Режим "гонка без остановки":
+nonStopRacingInt0:Минимальная скорость:
+nonStopRacingInt1:Таймер возвращения скорости:

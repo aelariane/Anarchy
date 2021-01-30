@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.Configuration;
 using Anarchy.Localization;
 using Anarchy.UI;
@@ -9,6 +7,8 @@ using ExitGames.Client.Photon;
 using GameLogic;
 using Optimization.Caching;
 using RC;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -19,13 +19,24 @@ internal partial class FengGameManagerMKII
     [RPC]
     private void Chat(string content, string sender, PhotonMessageInfo info)
     {
-        if (info != null && !info.Sender.IsLocal && info.Sender.Muted) return;
+        if (info != null && !info.Sender.IsLocal && info.Sender.Muted)
+        {
+            return;
+        }
 
         string message;
         if (sender != string.Empty)
+        {
+            if (Settings.RemoveColors)
+            {
+                sender = sender.RemoveAll();
+            }
             message = sender + ": " + content;
+        }
         else
+        {
             message = content;
+        }
 
         message = AnarchyExtensions.ValidateUnityTags(message).RemoveSize();
         Anarchy.UI.Chat.Add(User.Chat(info.Sender.ID, message));
@@ -59,18 +70,28 @@ internal partial class FengGameManagerMKII
             }
         }
 
-        if (!locale.IsOpen) locale.KeepOpen(60);
+        if (!locale.IsOpen)
+        {
+            locale.KeepOpen(60);
+        }
 
         if (args.Length > 0)
+        {
             Anarchy.UI.Chat.Add(locale.Format(key, args));
+        }
         else
+        {
             Anarchy.UI.Chat.Add(locale[key]);
+        }
     }
 
     [RPC]
     private void ChatPM(string sender, string content, PhotonMessageInfo info)
     {
-        if (info != null && !info.Sender.IsLocal && info.Sender.Muted) return;
+        if (info != null && !info.Sender.IsLocal && info.Sender.Muted)
+        {
+            return;
+        }
 
         content = sender + ": " + content;
         content = AnarchyExtensions.ValidateUnityTags(content).RemoveSize();
@@ -91,25 +112,37 @@ internal partial class FengGameManagerMKII
         {
             case 0:
                 IN_GAME_MAIN_CAMERA.GameMode = GameMode.KILL_TITAN;
-                if (!(logic is KillTitanLogic)) logic = new KillTitanLogic(logic);
+                if (!(logic is KillTitanLogic))
+                {
+                    logic = new KillTitanLogic(logic);
+                }
 
                 break;
 
             case 1:
                 IN_GAME_MAIN_CAMERA.GameMode = GameMode.SURVIVE_MODE;
-                if (!(logic is SurviveLogic)) logic = new SurviveLogic(logic);
+                if (!(logic is SurviveLogic))
+                {
+                    logic = new SurviveLogic(logic);
+                }
 
                 break;
 
             case 2:
                 IN_GAME_MAIN_CAMERA.GameMode = GameMode.PVP_AHSS;
-                if (!(logic is PVPLogic)) logic = new PVPLogic(logic);
+                if (!(logic is PVPLogic))
+                {
+                    logic = new PVPLogic(logic);
+                }
 
                 break;
 
             case 3:
                 IN_GAME_MAIN_CAMERA.GameMode = GameMode.RACING;
-                if (!(logic is RacingLogic)) logic = new RacingLogic(logic);
+                if (!(logic is RacingLogic))
+                {
+                    logic = new RacingLogic(logic);
+                }
 
                 break;
 
@@ -117,16 +150,20 @@ internal partial class FengGameManagerMKII
             case 4:
                 IN_GAME_MAIN_CAMERA.GameMode = GameMode.None;
                 if (logic == null || logic.GetType() != typeof(GameLogic.GameLogic))
+                {
                     logic = new GameLogic.GameLogic(logic);
+                }
 
                 break;
         }
 
-        if (SkinSettings.CustomSkins.Value != 1) return;
+        if (SkinSettings.CustomSkins.Value != 1)
+        {
+            return;
+        }
 
         CustomLevel.LoadSkin(link, info);
     }
-
 
     [RPC]
     private void customlevelRPC(string[] content, PhotonMessageInfo info = null)
@@ -168,7 +205,10 @@ internal partial class FengGameManagerMKII
         }
 
         var photonPlayer = PhotonPlayer.Find(ID);
-        if (photonPlayer != null && !photonPlayer.RCIgnored) photonPlayer.RCIgnored = true;
+        if (photonPlayer != null && !photonPlayer.RCIgnored)
+        {
+            photonPlayer.RCIgnored = true;
+        }
 
         PlayerList.Update();
     }
@@ -186,7 +226,10 @@ internal partial class FengGameManagerMKII
         foreach (var ID in IDS)
         {
             var photonPlayer = PhotonPlayer.Find(ID);
-            if (photonPlayer != null && !photonPlayer.RCIgnored) photonPlayer.RCIgnored = true;
+            if (photonPlayer != null && !photonPlayer.RCIgnored)
+            {
+                photonPlayer.RCIgnored = true;
+            }
         }
 
         PlayerList.Update();
@@ -222,11 +265,20 @@ internal partial class FengGameManagerMKII
             return;
         }
 
-        if (!Level.MapName.Contains("City") && !Level.MapName.Contains("Forest")) return;
+        if (!Level.MapName.Contains("City") && !Level.MapName.Contains("Forest"))
+        {
+            return;
+        }
 
         if (Level.MapName.Contains("City") && SkinSettings.CitySkins.Value != 1)
+        {
             return;
-        if (Level.MapName.Contains("Forest") && SkinSettings.ForestSkins.Value != 1) return;
+        }
+
+        if (Level.MapName.Contains("Forest") && SkinSettings.ForestSkins.Value != 1)
+        {
+            return;
+        }
 
         LoadMapSkin(n, urls, str, skybox);
     }
@@ -268,7 +320,10 @@ internal partial class FengGameManagerMKII
         }
 
         localRacingResult = tmp;
-        if (logic is RacingLogic rac) rac.OnUpdateRacingResult();
+        if (logic is RacingLogic rac)
+        {
+            rac.OnUpdateRacingResult();
+        }
     }
 
     [RPC]
@@ -285,7 +340,10 @@ internal partial class FengGameManagerMKII
         {
             AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
             UnityEngine.Time.timeScale = 0.00001f;
-            if (!AnarchyManager.PauseWindow.Active) AnarchyManager.PauseWindow.EnableImmediate();
+            if (!AnarchyManager.PauseWindow.Active)
+            {
+                AnarchyManager.PauseWindow.EnableImmediate();
+            }
         }
         else
         {
@@ -320,7 +378,10 @@ internal partial class FengGameManagerMKII
             return;
         }
 
-        if (logic is PVPLogic log) log.Scores = score1;
+        if (logic is PVPLogic log)
+        {
+            log.Scores = score1;
+        }
     }
 
     [RPC]
@@ -353,7 +414,10 @@ internal partial class FengGameManagerMKII
     [RPC]
     private void respawnHeroInNewRound()
     {
-        if (needChooseSide) return;
+        if (needChooseSide)
+        {
+            return;
+        }
 
         if (IN_GAME_MAIN_CAMERA.MainCamera.gameOver)
         {
@@ -402,14 +466,16 @@ internal partial class FengGameManagerMKII
                 return;
             }
 
-            if (version == AnarchyManager.AnarchyVersion.ToString()) return;
+            if (version == AnarchyManager.AnarchyVersion.ToString())
+            {
+                return;
+            }
 
             info.Sender.AnarchySync = false;
             info.Sender.ModName = string.Format(ModNames.AnarchyCustom, version);
             info.Sender.ModLocked = true;
         }
     }
-
 
     [RPC]
     private void setMasterRC(PhotonMessageInfo info)
@@ -458,7 +524,10 @@ internal partial class FengGameManagerMKII
             return;
         }
 
-        if (gameTimesUp) return;
+        if (gameTimesUp)
+        {
+            return;
+        }
 
         gameTimesUp = true;
         NGUITools.SetActive(UIRefer.panels[0], false);
@@ -496,7 +565,7 @@ internal partial class FengGameManagerMKII
                 heroCostume2.Checkstat();
                 CostumeConeveter.HeroCostumeToLocalData(heroCostume2, id);
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
-                
+
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = heroCostume2;
                 IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume.stat = heroCostume2.stat;
 
@@ -507,13 +576,19 @@ internal partial class FengGameManagerMKII
             else
             {
                 for (var j = 0; j < HeroCostume.costume.Length; j++)
+                {
                     if (HeroCostume.costume[j].name.ToUpper() == id.ToUpper())
                     {
                         var num2 = HeroCostume.costume[j].id;
-                        if (id.ToUpper() != "AHSS") num2 += CheckBoxCostume.costumeSet - 1;
+                        if (id.ToUpper() != "AHSS")
+                        {
+                            num2 += CheckBoxCostume.costumeSet - 1;
+                        }
 
                         if (HeroCostume.costume[num2].name != HeroCostume.costume[j].name)
+                        {
                             num2 = HeroCostume.costume[j].id + 1;
+                        }
 
                         IN_GAME_MAIN_CAMERA.MainHERO.Setup.Init();
                         IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume = HeroCostume.costume[num2];
@@ -524,13 +599,16 @@ internal partial class FengGameManagerMKII
                         IN_GAME_MAIN_CAMERA.MainHERO.SetSkillHudPosition();
                         break;
                     }
+                }
             }
 
             CostumeConeveter.HeroCostumeToPhotonData(IN_GAME_MAIN_CAMERA.MainHERO.Setup.myCostume,
                 PhotonNetwork.player);
             if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+            {
                 IN_GAME_MAIN_CAMERA.MainT.position += new Vector3(Random.Range(-20, 20), 2f,
                     Random.Range(-20, 20));
+            }
 
             PhotonNetwork.player.Dead = false;
             PhotonNetwork.player.IsTitan = false;
@@ -551,8 +629,12 @@ internal partial class FengGameManagerMKII
         if (info.Sender.IsMasterClient)
         {
             foreach (var obj in titans)
+            {
                 if (obj.BasePV.IsMine && (!PhotonNetwork.IsMasterClient || obj.nonAI))
+                {
                     PhotonNetwork.Destroy(obj.BasePV);
+                }
+            }
 
             SpawnNonAiTitan(myLastHero);
         }
@@ -577,21 +659,31 @@ internal partial class FengGameManagerMKII
 
         killer = killer.LimitToLengthStripped(50);
         victim = victim.LimitToLengthStripped(50);
-        var killInfo = ((GameObject) Instantiate(CacheResources.Load("UI/KillInfo")))
+        var killInfo = ((GameObject)Instantiate(CacheResources.Load("UI/KillInfo")))
             .GetComponent<KillInfoComponent>();
         using (var ien = killInfoList.GetEnumerator())
         {
             while (ien.MoveNext())
+            {
                 if (ien.Current != null)
+                {
                     ien.Current.moveOn();
+                }
+            }
         }
 
-        if (killInfoList.Count > 4) killInfoList.Dequeue().destroy();
+        if (killInfoList.Count > 4)
+        {
+            killInfoList.Dequeue().destroy();
+        }
 
         killInfo.SetParent(UIRefer.panels[0].transform);
         killInfo.Show(t1, killer, t2, victim, dmg);
         killInfoList.Enqueue(killInfo);
-        if (!info.Sender.IsLocal) AnarchyManager.Feed.Kill(killer.ToHTMLFormat(), victim.ToHTMLFormat(), dmg);
+        if (!info.Sender.IsLocal)
+        {
+            AnarchyManager.Feed.Kill(killer.ToHTMLFormat(), victim.ToHTMLFormat(), dmg);
+        }
     }
 
     [RPC]
@@ -614,14 +706,17 @@ internal partial class FengGameManagerMKII
             return;
         }
 
-        if (Stylish != null) Stylish.Style(speed);
+        if (Stylish != null)
+        {
+            Stylish.Style(speed);
+        }
         //CacheGameObject.Find<StylishComponent>("Stylish").Style(speed);
         var target = CacheGameObject.Find<UILabel>("LabelScore");
         if (target != null)
         {
             target.text = speed.ToString();
             target.transform.localScale = Vectors.zero;
-            speed = (int) (speed * 0.1f);
+            speed = (int)(speed * 0.1f);
             speed = Mathf.Max(40, speed);
             speed = Mathf.Min(150, speed);
             iTween.Stop(target.cachedGameObject);

@@ -16,7 +16,9 @@
         {
             Value = Settings.Storage.GetString(Key, DefaultValue);
             if (Value.Equals("$null"))
+            {
                 Value = null;
+            }
         }
 
         public override void Save()

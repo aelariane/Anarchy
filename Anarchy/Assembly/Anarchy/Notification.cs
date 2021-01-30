@@ -1,12 +1,9 @@
-﻿using Anarchy.UI;
-
-namespace Anarchy
+﻿namespace Anarchy
 {
     public class Notification
     {
         public static void Notify(string head, string message, Type type = Type.Message)
         {
-
         }
     }
 

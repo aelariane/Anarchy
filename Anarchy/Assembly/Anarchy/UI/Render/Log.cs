@@ -1,14 +1,10 @@
-﻿using System;
+﻿using Anarchy.Configuration;
 using System.Collections.Generic;
 using System.Linq;
-using Anarchy;
-using Anarchy.Configuration;
-using Optimization;
 using UnityEngine;
 
 namespace Anarchy.UI
 {
-
     public class Log : GUIBase
     {
         internal static FloatSetting BackgroundTransparency = new FloatSetting("LogBackgroundTransparency", 0.15f);
@@ -38,7 +34,6 @@ namespace Anarchy.UI
         private OrderedDictionary<string, int> messages;
         private Rect position;
         private static readonly WaitForEndOfFrame awaiter = new WaitForEndOfFrame();
-
 
         internal Log() : base("Log", GUILayers.Log)
         {
@@ -102,7 +97,7 @@ namespace Anarchy.UI
 
         public static void AddLine(string key, MsgType type, params string[] values)
         {
-            if(Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.Active)
             {
                 return;
             }
@@ -163,7 +158,7 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            if(messages.Count > 0)
+            if (messages.Count > 0)
             {
                 lock (messages)
                 {
@@ -191,7 +186,7 @@ namespace Anarchy.UI
 
         public static string GetString(string key)
         {
-            if(Instance != null)
+            if (Instance != null)
             {
                 return Instance.locale[key];
             }

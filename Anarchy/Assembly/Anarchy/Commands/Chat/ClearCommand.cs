@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.Commands.Chat
+﻿namespace Anarchy.Commands.Chat
 {
     internal class ClearCommand : ChatCommand
     {
@@ -13,11 +8,11 @@ namespace Anarchy.Commands.Chat
 
         public override bool Execute(string[] args)
         {
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 UI.Chat.Clear();
             }
-            else if(args[0] == "-c")
+            else if (args[0] == "-c")
             {
                 UI.Log.Clear();
             }

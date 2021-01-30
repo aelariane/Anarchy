@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 internal class LoadbalancingPeer : PhotonPeer
 {
-
     public LoadbalancingPeer(IPhotonPeerListener listener, ConnectionProtocol protocolType) : base(listener, protocolType)
     {
     }

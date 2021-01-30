@@ -20,6 +20,8 @@ namespace Anarchy.Network.Events
 
         public bool Handle() => true;
 
-        public void OnFailedHandle() { }
+        public void OnFailedHandle()
+        {
+        }
     }
 }

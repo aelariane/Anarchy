@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
-using Antis.Spam;
+﻿using Antis.Spam;
 using ExitGames.Client.Photon;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PhotonPlayer
 {
-    private const float TIMER_DELAY = 0.25f;
+    public class Abuse
+    {
+        public bool InfiniteGas { get; set; }
+        public bool InfiniteBlades { get; set; }
+        public bool InfiniteBullets { get; set; }
+        public bool CharacterUnusualStats { get; set; }
+    }
+
+    private const float TIMER_DELAY = 0.1f;
     private static List<PhotonPlayer> anarchyUsersList = new List<PhotonPlayer>();
     private static List<PhotonPlayer> rcUsersList = new List<PhotonPlayer>();
     private static List<PhotonPlayer> vanillaUsersList = new List<PhotonPlayer>();
@@ -33,6 +41,8 @@ public class PhotonPlayer
     public bool ModLocked { get; set; } = false;
 
     public bool Muted { get; set; }
+
+    public Abuse AbuseInformation { get; set; } = new Abuse();
 
     public bool AnarchySync
     {
@@ -104,9 +114,13 @@ public class PhotonPlayer
     private bool rcIgnored = false;
 
     public bool RCIgnored
-    { 
+    {
         get => rcIgnored;
-        set { if (!IsLocal) rcIgnored = value; }
+        set { if (!IsLocal)
+            {
+                rcIgnored = value;
+            }
+        }
     }
 
     public bool RCSync
@@ -320,7 +334,6 @@ public class PhotonPlayer
             InitializeCounters();
         }
         targetArray[0] = ID;
-
     }
 
     internal void InternalCacheProperties(Hashtable properties)
@@ -361,7 +374,7 @@ public class PhotonPlayer
     private static void OnPhotonPlayerDisconnected(Optimization.AOTEventArgs args)
     {
         PhotonPlayer player = args.Player;
-        if(player != null)
+        if (player != null)
         {
             if (anarchyUsersList.Contains(player))
             {
@@ -398,7 +411,7 @@ public class PhotonPlayer
     }
 
 
-    public void SetCustomProperties(Hashtable propertiesToSet)
+    public void SetCustomProperties(Hashtable propertiesToSet, bool immediate = false)
     {
         if (propertiesToSet == null)
         {
@@ -409,7 +422,7 @@ public class PhotonPlayer
         Hashtable actorProperties = propertiesToSet.StripToStringKeys();
         if (ID > 0 && !PhotonNetwork.offlineMode)
         {
-            if (IsLocal)
+            if (IsLocal && !immediate)
             {
                 _localPropsToUpdate.MergeStringKeys(propertiesToSet);
                 return;
@@ -437,7 +450,7 @@ public class PhotonPlayer
         return $"#{this.ID:00} '{nameField}' {this.Properties.ToStringFull()}";
     }
 
-    public int[] ToTargetArray() 
+    public int[] ToTargetArray()
     {
         return targetArray;
     }
@@ -449,12 +462,12 @@ public class PhotonPlayer
             return;
         }
         _updateTimer -= Time.unscaledDeltaTime;
-        if(_updateTimer < 0f)
+        if (_updateTimer < 0f)
         {
-            if(_localPropsToUpdate.Count > 0 && PhotonNetwork.inRoom)
+            if (_localPropsToUpdate.Count > 0 && PhotonNetwork.inRoom)
             {
                 PhotonNetwork.networkingPeer.OpSetCustomPropertiesOfActor(ID, _localPropsToUpdate, true, 0);
-                NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { this, _localPropsToUpdate});
+                NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { this, _localPropsToUpdate });
                 _localPropsToUpdate.Clear();
             }
             _updateTimer = TIMER_DELAY;
@@ -531,7 +544,17 @@ public class PhotonPlayer
 
     public string GuildName
     {
-        get => Properties == null ? "Unknown" : Properties[PhotonPlayerProperty.guildName] as string ?? "Unknown";
+        get
+        {
+            string result = Properties == null ? "Unknown" : Properties[PhotonPlayerProperty.guildName] as string ?? "Unknown";
+
+            if (Anarchy.Configuration.Settings.RemoveColors.Value)
+            {
+                result = Anarchy.AnarchyExtensions.RemoveAll(result);
+            }
+
+            return result;
+        }
         set
         {
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.guildName, value } });
@@ -689,19 +712,36 @@ public class PhotonPlayer
         get => Properties == null || !(Properties[PhotonPlayerProperty.total_dmg] is int total) ? -1 : total;
         set
         {
-            if (Properties == null) return;
+            if (Properties == null)
+            {
+                return;
+            }
+
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.total_dmg, value } });
         }
     }
 
     public string UIName
     {
-        get => Properties == null ? "Unknown" : Properties[PhotonPlayerProperty.name] as string ?? "Unknown";
+        get
+        {
+            string result = Properties == null ? "Unknown" : Properties[PhotonPlayerProperty.name] as string ?? "Unknown";
+
+            if (Anarchy.Configuration.Settings.RemoveColors.Value)
+            {
+                result = Anarchy.AnarchyExtensions.RemoveAll(result);
+            }
+
+            return result;
+        }
         set
         {
-            if (Properties == null) return;
+            if (Properties == null)
+            {
+                return;
+            }
+
             SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.name, value } });
         }
     }
-
 }

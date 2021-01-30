@@ -18,8 +18,9 @@ namespace Anarchy.IO
         public bool Exists => info.Exists;
         public string Name => info.Name;
 
-
-        public File(string path) : this(path, false, true) { }
+        public File(string path) : this(path, false, true)
+        {
+        }
 
         public File(string path, bool alwaysOpen, bool autocreate)
         {
@@ -32,7 +33,9 @@ namespace Anarchy.IO
             if (autocreate)
             {
                 if (!info.Exists)
+                {
                     info.Create().Close();
+                }
             }
             if (alwaysOpen)
             {
@@ -48,7 +51,10 @@ namespace Anarchy.IO
         public void Close()
         {
             if (AlwaysOpen)
+            {
                 return;
+            }
+
             lock (locker)
             {
                 Dispose();
@@ -60,7 +66,10 @@ namespace Anarchy.IO
             lock (locker)
             {
                 if (info.Exists)
+                {
                     info.Delete();
+                }
+
                 info.Create();
                 using (StreamWriter writer = new StreamWriter(Path, false))
                 {
@@ -91,7 +100,10 @@ namespace Anarchy.IO
         public void Open()
         {
             if ((AlwaysOpen && fileStream != null) || !info.Exists)
+            {
                 return;
+            }
+
             Dispose();
             fileStream = info.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
             textReader = new StreamReader(fileStream);
@@ -101,12 +113,15 @@ namespace Anarchy.IO
         public virtual string ReadLine()
         {
             if (!info.Exists)
+            {
                 return string.Empty;
+            }
+
             if (AlwaysOpen)
             {
                 return textReader.ReadLine();
             }
-            using(textReader = info.OpenText())
+            using (textReader = info.OpenText())
             {
                 return textReader.ReadLine();
             }
@@ -115,13 +130,16 @@ namespace Anarchy.IO
         public virtual void WriteLine(string line)
         {
             if (!info.Exists)
+            {
                 return;
-            if(AlwaysOpen)
+            }
+
+            if (AlwaysOpen)
             {
                 textWriter.WriteLine(line);
                 return;
             }
-            using(textWriter = info.AppendText())
+            using (textWriter = info.AppendText())
             {
                 textWriter.WriteLine(line);
             }

@@ -1,6 +1,6 @@
-﻿using System;
-using ExitGames.Client.Photon;
+﻿using ExitGames.Client.Photon;
 using RC;
+using System;
 
 public class RCAction
 {
@@ -32,6 +32,7 @@ public class RCAction
             case 0:
                 this.nextEvent.checkEvent();
                 return;
+
             case 1:
                 {
                     string key = this.parameters[0].returnString(null);
@@ -46,6 +47,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = num2;
                             return;
+
                         case 1:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -54,6 +56,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)RCManager.intVariables[key] + num2;
                             return;
+
                         case 2:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -62,6 +65,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)RCManager.intVariables[key] - num2;
                             return;
+
                         case 3:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -70,6 +74,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)RCManager.intVariables[key] * num2;
                             return;
+
                         case 4:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -78,6 +83,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)RCManager.intVariables[key] / num2;
                             return;
+
                         case 5:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -86,6 +92,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)RCManager.intVariables[key] % num2;
                             return;
+
                         case 6:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -94,12 +101,14 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = (int)Math.Pow((double)((int)RCManager.intVariables[key]), (double)num2);
                             return;
+
                         case 7:
                         case 8:
                         case 9:
                         case 10:
                         case 11:
                             break;
+
                         case 12:
                             if (!RCManager.intVariables.ContainsKey(key))
                             {
@@ -108,6 +117,7 @@ public class RCAction
                             }
                             RCManager.intVariables[key] = UnityEngine.Random.Range(num2, this.parameters[2].returnInt(null));
                             return;
+
                         default:
                             return;
                     }
@@ -199,6 +209,7 @@ public class RCAction
                                 }
                                 RCManager.stringVariables[str3] = ((string)RCManager.stringVariables[str3]).Replace(this.parameters[1].returnString(null), this.parameters[2].returnString(null));
                                 return;
+
                             default:
                                 return;
                         }
@@ -229,6 +240,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = num5;
                             return;
+
                         case 1:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -237,6 +249,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)RCManager.floatVariables[str7] + num5;
                             return;
+
                         case 2:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -245,6 +258,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)RCManager.floatVariables[str7] - num5;
                             return;
+
                         case 3:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -253,6 +267,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)RCManager.floatVariables[str7] * num5;
                             return;
+
                         case 4:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -261,6 +276,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)RCManager.floatVariables[str7] / num5;
                             return;
+
                         case 5:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -269,6 +285,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)RCManager.floatVariables[str7] % num5;
                             return;
+
                         case 6:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -277,12 +294,14 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = (float)Math.Pow((double)((int)RCManager.floatVariables[str7]), (double)num5);
                             return;
+
                         case 7:
                         case 8:
                         case 9:
                         case 10:
                         case 11:
                             break;
+
                         case 12:
                             if (!RCManager.floatVariables.ContainsKey(str7))
                             {
@@ -291,6 +310,7 @@ public class RCAction
                             }
                             RCManager.floatVariables[str7] = UnityEngine.Random.Range(num5, this.parameters[2].returnFloat(null));
                             return;
+
                         default:
                             return;
                     }
@@ -353,6 +373,7 @@ public class RCAction
                         case 1:
                             FengGameManagerMKII.FGM.BasePV.RPC("respawnHeroInNewRound", targetPlayer, new object[0]);
                             return;
+
                         case 2:
                             FengGameManagerMKII.FGM.BasePV.RPC("spawnPlayerAtRPC", targetPlayer, new object[]
                             {
@@ -361,6 +382,7 @@ public class RCAction
                     this.parameters[3].returnFloat(null)
                             });
                             return;
+
                         case 3:
                             {
                                 int num6 = targetPlayer.ID;
@@ -386,6 +408,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 5:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -395,6 +418,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 6:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -404,6 +428,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 7:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -413,6 +438,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 8:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -422,6 +448,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 9:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -431,6 +458,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 10:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -440,6 +468,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 11:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -449,6 +478,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 12:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -458,6 +488,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 13:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -467,6 +498,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         case 14:
                             targetPlayer.SetCustomProperties(new Hashtable
                 {
@@ -476,6 +508,7 @@ public class RCAction
                     }
                 });
                             return;
+
                         default:
                             return;
                     }
@@ -497,9 +530,11 @@ public class RCAction
                     case 1:
                         FengGameManagerMKII.FGM.SpawnTitanAction(this.parameters[0].returnInt(null), this.parameters[1].returnFloat(null), this.parameters[2].returnInt(null), this.parameters[3].returnInt(null));
                         return;
+
                     case 2:
                         FengGameManagerMKII.FGM.SpawnTitanAtAction(this.parameters[0].returnInt(null), this.parameters[1].returnFloat(null), this.parameters[2].returnInt(null), this.parameters[3].returnInt(null), this.parameters[4].returnFloat(null), this.parameters[5].returnFloat(null), this.parameters[6].returnFloat(null));
                         return;
+
                     case 3:
                         {
                             TITAN titan3 = this.parameters[0].returnTitan(null);
@@ -546,6 +581,7 @@ public class RCAction
                     string.Empty
                         });
                         return;
+
                     case 1:
                         FengGameManagerMKII.FGM.GameWin();
                         if (this.parameters[0].returnBool(null))
@@ -558,6 +594,7 @@ public class RCAction
                             RCManager.titanVariables.Clear();
                         }
                         return;
+
                     case 2:
                         FengGameManagerMKII.FGM.GameLose();
                         if (this.parameters[0].returnBool(null))
@@ -570,6 +607,7 @@ public class RCAction
                             RCManager.titanVariables.Clear();
                         }
                         return;
+
                     case 3:
                         if (this.parameters[0].returnBool(null))
                         {
@@ -582,6 +620,7 @@ public class RCAction
                         }
                         FengGameManagerMKII.FGM.RestartGame(false, false);
                         return;
+
                     default:
                         return;
                 }

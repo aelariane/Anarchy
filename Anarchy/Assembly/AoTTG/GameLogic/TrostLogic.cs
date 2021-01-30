@@ -4,7 +4,6 @@
     {
         public TrostLogic() : base()
         {
-
         }
 
         public override void OnSomeOneIsDead(int id)

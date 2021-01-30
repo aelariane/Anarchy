@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Antis.Spam;
 
 namespace Antis
 {
@@ -9,12 +8,12 @@ namespace Antis
         {
             if (dict.Contains(key))
             {
-                if(dict[key] is T tValue)
+                if (dict[key] is T tValue)
                 {
                     value = tValue;
                     return true;
                 }
-                if (remove) 
+                if (remove)
                 {
                     dict.Remove(key);
                 }
@@ -25,7 +24,7 @@ namespace Antis
 
         public static bool CheckType<T>(this object obj, out T value)
         {
-            if(obj is T tValue)
+            if (obj is T tValue)
             {
                 value = tValue;
                 return true;

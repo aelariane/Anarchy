@@ -59,6 +59,7 @@ namespace Antis.Collections.Generic
             genericLink = this as IDictionary<TKey, TValue>;
             link = this as IDictionary;
         }
+
         public SyncDictionary(int size) : base(size)
         {
             genericLink = this as IDictionary<TKey, TValue>;
@@ -149,4 +150,4 @@ namespace Antis.Collections.Generic
             }
         }
     }
-}   
+}

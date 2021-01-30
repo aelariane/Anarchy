@@ -6,7 +6,7 @@ namespace Anarchy
     {
         public static readonly BoolSetting Enabled = new BoolSetting("GameFeedEnabled", false);
         public static readonly BoolSetting ConsoleMode = new BoolSetting("GameFeedConsole", true);
-        
+
         private readonly Localization.Locale lang;
 
         public GameFeed()
@@ -29,37 +29,48 @@ namespace Anarchy
         }
 
         private static string GetTimeString() => $"<color=#{User.MainColor}>(<color=#{User.SubColor}>"
-                                                 + FengGameManagerMKII.FGM.logic.RoundTime.ToString("F2") 
+                                                 + FengGameManagerMKII.FGM.logic.RoundTime.ToString("F2")
                                                  + "</color>)</color>";
 
         public void Kill(string killer, string target, int dmg)
         {
             if (!Enabled)
+            {
                 return;
-            AddLine(lang.Format("killed", killer.ToHTMLFormat(), target.ToHTMLFormat()) 
+            }
+
+            AddLine(lang.Format("killed", killer.ToHTMLFormat(), target.ToHTMLFormat())
                     + (dmg > 0 ? (" " + lang.Format("forDamage", dmg.ToString())) : string.Empty));
         }
 
         public void RoundLoose()
         {
             if (!Enabled)
-                return; 
+            {
+                return;
+            }
+
             AddLine(lang.Format("gameLoose", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
         }
 
         public void RoundWin()
         {
             if (!Enabled)
+            {
                 return;
+            }
+
             AddLine(lang.Format("gameWin", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
         }
 
         public void RoundStart()
         {
             if (!Enabled)
+            {
                 return;
+            }
+
             AddLine(lang.Format("roundStart", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
         }
-
     }
 }

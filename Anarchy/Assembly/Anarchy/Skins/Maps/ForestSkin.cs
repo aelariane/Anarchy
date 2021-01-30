@@ -6,7 +6,6 @@ namespace Anarchy.Skins.Maps
     {
         public override int DataLength => 24;
 
-
         public ForestSkin(string[] data) : base(new GameObject(), data)
         {
         }
@@ -16,25 +15,25 @@ namespace Anarchy.Skins.Maps
             ApplySkybox();
             int index = 0;
             GameObject[] objects = (GameObject[])GameObject.FindObjectsOfType(typeof(GameObject));
-            foreach(GameObject go in objects)
+            foreach (GameObject go in objects)
             {
-                if(go != null)
+                if (go != null)
                 {
                     if (go.name.Contains("TREE"))
                     {
                         int first, second;
                         int.TryParse(random[index++].ToString(), out first);
                         int.TryParse(random[index++].ToString(), out second);
-                        if(first >= 8 || first < 0)
+                        if (first >= 8 || first < 0)
                         {
                             first = Random.Range(0, 8);
                         }
-                        if(second >= 8 || second < 0)
+                        if (second >= 8 || second < 0)
                         {
                             second = Random.Range(0, 8);
                         }
                         Renderer[] rends = go.GetComponentsInChildren<Renderer>();
-                        foreach(Renderer render in rends)
+                        foreach (Renderer render in rends)
                         {
                             if (render.name.Contains("Cube"))
                             {
@@ -48,10 +47,10 @@ namespace Anarchy.Skins.Maps
                     }
                     else
                     {
-                        if(go.name.Contains("Cube_001") && go.transform.parent.gameObject.tag != "Player")
+                        if (go.name.Contains("Cube_001") && go.transform.parent.gameObject.tag != "Player")
                         {
                             Renderer[] rends = go.GetComponentsInChildren<Renderer>();
-                            foreach(Renderer rend in rends)
+                            foreach (Renderer rend in rends)
                             {
                                 if (!elements[17].IsTransparent)
                                 {

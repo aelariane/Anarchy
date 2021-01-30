@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Photon
+﻿namespace Photon
 {
     public class MonoBehaviour : UnityEngine.MonoBehaviour
     {

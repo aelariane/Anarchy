@@ -1,5 +1,4 @@
 ﻿using Anarchy;
-using Optimization.Caching;
 using UnityEngine;
 
 public class BTN_PAUSE_MENU_CONTINUE : MonoBehaviour

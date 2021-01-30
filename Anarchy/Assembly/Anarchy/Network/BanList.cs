@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Anarchy.IO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Anarchy.IO;
 
 namespace Anarchy.Network
 {
@@ -17,7 +15,7 @@ namespace Anarchy.Network
             get
             {
                 string[] result = new string[BannedPlayers.Count];
-                for(int i = 0; i < BannedPlayers.Count; i++)
+                for (int i = 0; i < BannedPlayers.Count; i++)
                 {
                     result[i] = BannedPlayers[i].Name;
                 }
@@ -27,12 +25,12 @@ namespace Anarchy.Network
 
         public static bool Banned(string name)
         {
-            if(name.Length == 0)
+            if (name.Length == 0)
             {
                 return false;
             }
             string hexRemoved = name.RemoveHex();
-            for(int i = 0; i < BannedPlayers.Count; i++)
+            for (int i = 0; i < BannedPlayers.Count; i++)
             {
                 if (BannedPlayers[i].Name.Equals(hexRemoved))
                 {
@@ -44,7 +42,7 @@ namespace Anarchy.Network
 
         public static bool Ban(PhotonPlayer player, string reason = "")
         {
-            if(player.UIName == "Unknown" || Banned(player.UIName.RemoveHex()))
+            if (player.UIName == "Unknown" || Banned(player.UIName.RemoveHex()))
             {
                 return false;
             }
@@ -66,7 +64,7 @@ namespace Anarchy.Network
 
         private static void InfoLine(string str)
         {
-            BanFile.WriteLine($"[{DateTime.Now.ToLongTimeString()}] " +str);
+            BanFile.WriteLine($"[{DateTime.Now.ToLongTimeString()}] " + str);
         }
 
         public static void Load()
@@ -78,7 +76,7 @@ namespace Anarchy.Network
                 foreach (string name in names)
                 {
                     BannedPlayers.Add(new BanInfo(name, PermaBanned.GetString(name), true));
-                } 
+                }
             }
         }
 
@@ -86,14 +84,14 @@ namespace Anarchy.Network
         {
             PermaBanned.Load();
             List<string> names = new List<string>();
-            foreach(var info in BannedPlayers)
+            foreach (var info in BannedPlayers)
             {
                 if (info.Perma)
                 {
                     names.Add(info.Name);
                 }
             }
-            if(names.Count > 0)
+            if (names.Count > 0)
             {
                 if (names.Count > 1)
                 {
@@ -137,9 +135,9 @@ namespace Anarchy.Network
 
         public static bool Unban(int id)
         {
-            for(int i = 0; i < BannedPlayers.Count; i++)
+            for (int i = 0; i < BannedPlayers.Count; i++)
             {
-                if(BannedPlayers[i].ID == id)
+                if (BannedPlayers[i].ID == id)
                 {
                     InfoLine($"Player [{id}] {BannedPlayers[i].Name} unbanned. Ban reason was: {BannedPlayers[i].Reason}");
                     BannedPlayers.RemoveAt(i);

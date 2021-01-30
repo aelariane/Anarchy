@@ -1,5 +1,6 @@
 ﻿using Anarchy.Configuration;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Anarchy.UI
 
         private void Awake()
         {
-            if(Instance != null)
+            if (Instance != null)
             {
                 Debug.LogError($"There should be only one instance of \"UIManager\". Please make sure yo spawn it just once.");
                 DestroyImmediate(this);
@@ -30,7 +31,9 @@ namespace Anarchy.UI
             onAwakeAdds = delegate () { };
             onAwakeRms = delegate () { };
         }
-         public static bool Disable(GUIBase gui)
+
+
+        public static bool Disable(GUIBase gui)
         {
             if (!gui.Active)
             {
@@ -48,6 +51,7 @@ namespace Anarchy.UI
             {
                 bool wasRemoved = false;
                 var list = new List<GUIBase>();
+                bool isLast = activeGUIs.LastOrDefault() == gui;
                 for (int i = 0; i < activeGUIs.Length; i++)
                 {
                     if (activeGUIs[i] == gui)
@@ -67,7 +71,10 @@ namespace Anarchy.UI
                     return wasRemoved;
                 }
                 activeGUIs = list.ToArray();
-                UpdateDepths();
+                if (!isLast)
+                {
+                    UpdateDepths();
+                }
                 return wasRemoved;
             }
         }
@@ -98,11 +105,14 @@ namespace Anarchy.UI
                 for (int i = 0; i < activeGUIs.Length; i++)
                 {
                     if (activeGUIs[i] == gui)
+                    {
                         return false;
+                    }
                 }
                 var copy = new Queue<GUIBase>(activeGUIs);
                 var tmp = new Queue<GUIBase>();
                 bool added = false;
+                bool isLast;
                 for (int i = 0; i < activeGUIs.Length + 1; i++)
                 {
                     if (!added && (copy.Count == 0 || gui.Layer < copy.Peek().Layer))
@@ -113,30 +123,50 @@ namespace Anarchy.UI
                     }
                     tmp.Enqueue(copy.Dequeue());
                 }
+                isLast = tmp.LastOrDefault() == gui;
                 if (added)
                 {
-                    gui.Drawer.Enable();
+                    if (isLast)
+                    {
+                        if(tmp.Count >= 2)
+                        {
+                            var arr = tmp.ToArray();
+                            gui.Drawer.Enable(arr[arr.Length - 2].Drawer.Depth - 1);
+                        }
+                        else
+                        {
+                            gui.Drawer.Enable();
+                            isLast = false;
+                        }
+                    }
+                    else
+                    {
+                        gui.Drawer.Enable(); 
+                    }
                 }
                 activeGUIs = tmp.ToArray();
-                UpdateDepths();
-                
+                if (!isLast)
+                {
+                    UpdateDepths();
+                }
+
                 return added;
             }
         }
 
-
         private static void UpdateDepths()
         {
-            int depth = activeGUIs.Length - 1;
-            for(int i = 0; i <activeGUIs.Length; i++)
+            int depth = activeGUIs.Length + 10;
+            for (int i = 0; i < activeGUIs.Length; i++)
             {
                 activeGUIs[i].Drawer.Depth = depth--;
             }
         }
 
+
         public static void SetParent(UIBase ui)
         {
-            if(Instance == null)
+            if (Instance == null)
             {
                 onAwakeAdds += delegate ()
                 {
@@ -153,22 +183,33 @@ namespace Anarchy.UI
             ui.transform.position = new Vector3(Instance.transform.position.x, Instance.transform.position.y, Instance.transform.position.z);
         }
 
+        private static System.Collections.IEnumerator WaitAndEnable(GUIBase baseG)
+        {
+            yield return new WaitForEndOfFrame();
+            baseG.DisableImmediate();
+            baseG.OnUpdateScaling();
+            yield return new WaitForEndOfFrame();
+            baseG.EnableImmediate();
+        }
+
         public static void UpdateGUIScaling()
         {
             Style.UpdateScaling();
             lock (activeGUIs)
             {
-                foreach(GUIBase baseg in GUIBase.AllBases)
+                foreach (GUIBase baseg in GUIBase.AllBases)
                 {
                     if (baseg.Active && baseg.Name != nameof(PauseWindow))
                     {
-                        baseg.DisableImmediate();
-                        baseg.OnUpdateScaling();
-                        baseg.EnableImmediate();
+                        //baseg.DisableImmediate();
+                        //baseg.OnUpdateScaling();
+                        //baseg.EnableImmediate();
+                        Instance.StartCoroutine(WaitAndEnable(baseg));
                         continue;
                     }
                     baseg.OnUpdateScaling();
                 }
+                //UpdateDepths();
             }
         }
     }

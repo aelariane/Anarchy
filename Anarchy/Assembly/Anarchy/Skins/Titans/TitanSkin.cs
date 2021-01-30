@@ -1,6 +1,4 @@
-﻿
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Anarchy.Skins.Titans
 {
@@ -15,7 +13,7 @@ namespace Anarchy.Skins.Titans
         public override void Apply()
         {
             Renderer[] renders = Owner.GetComponentsInChildren<Renderer>();
-            foreach(Renderer render in renders)
+            foreach (Renderer render in renders)
             {
                 if (render.name.Contains("eye"))
                 {
@@ -30,7 +28,7 @@ namespace Anarchy.Skins.Titans
 
         private void ApplyEye(Renderer rend)
         {
-            if(elements[1] != null && elements[1].IsDone)
+            if (elements[1] != null && elements[1].IsDone)
             {
                 rend.material.mainTextureScale = new Vector2(rend.material.mainTextureScale.x * 4f, rend.material.mainTextureScale.y * 8f);
                 rend.material.mainTextureOffset = new Vector2(0f, 0f);

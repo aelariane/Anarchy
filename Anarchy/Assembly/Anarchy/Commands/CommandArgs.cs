@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Anarchy.Commands
 {
@@ -14,7 +11,7 @@ namespace Anarchy.Commands
         public string[] RawArgs { get; private set; }
         public int RawArgsCount { get; private set; }
         public int FlagsCount => flags.Count;
-        
+
         public string this[int key]
         {
             get
@@ -25,13 +22,12 @@ namespace Anarchy.Commands
 
         public CommandArgs(string[] source) : this(source, '=')
         {
-
         }
 
         public CommandArgs(string[] source, char separator)
         {
             this.source = new string[source.Length];
-            for(int i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length; i++)
             {
                 this.source[i] = source[i];
             }
@@ -42,7 +38,7 @@ namespace Anarchy.Commands
         private void Parse(string[] src)
         {
             var tmp = new List<string>();
-            foreach(string str in src)
+            foreach (string str in src)
             {
                 if (str.StartsWith("-"))
                 {

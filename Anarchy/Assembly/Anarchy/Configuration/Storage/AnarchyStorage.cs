@@ -10,9 +10,13 @@ namespace Anarchy.Configuration.Storage
             Load();
         }
 
-        public AnarchyStorage(string path) : this(path, '`', true) { }
+        public AnarchyStorage(string path) : this(path, '`', true)
+        {
+        }
 
-        public AnarchyStorage(string path, char separator) : this(path, separator, true) { }
+        public AnarchyStorage(string path, char separator) : this(path, separator, true)
+        {
+        }
 
         public AnarchyStorage(string path, char separator, bool autocreate) : base(path, separator, autocreate)
         {

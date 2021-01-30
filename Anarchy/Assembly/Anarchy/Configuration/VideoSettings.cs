@@ -36,7 +36,7 @@ namespace Anarchy.Configuration
             {
                 IN_GAME_MAIN_CAMERA.MainCamera.GetComponent<TiltShift>().enabled = Blur.Value;
             }
-            if(IN_GAME_MAIN_CAMERA.BaseCamera != null)
+            if (IN_GAME_MAIN_CAMERA.BaseCamera != null)
             {
                 IN_GAME_MAIN_CAMERA.BaseCamera.useOcclusionCulling = OcclusionCulling;
                 IN_GAME_MAIN_CAMERA.BaseCamera.farClipPlane = Mathf.RoundToInt(DrawDistance.Value);

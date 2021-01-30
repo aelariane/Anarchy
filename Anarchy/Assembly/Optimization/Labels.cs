@@ -1,22 +1,26 @@
-﻿using UnityEngine;
+﻿using Anarchy;
+using Anarchy.Configuration;
+using UnityEngine;
 using static Optimization.Caching.Colors;
-using Anarchy;
 
 namespace Optimization
 {
     internal class Labels
     {
         internal static Font Font;
-        private static HUDLabel bottomRight = new HUDLabel("LabelInfoBottomRight", 32, TextAnchor.LowerRight, white, TextAlignment.Right);
-        private static HUDLabel center = new HUDLabel("LabelInfoCenter", 32, TextAnchor.LowerCenter, white,  TextAlignment.Center);
-        private static HUDLabel topCenter = new HUDLabel("LabelInfoTopCenter", 32, TextAnchor.UpperCenter, white,  TextAlignment.Center);
-        private static HUDLabel topLeft = new HUDLabel("LabelInfoTopLeft", 30, TextAnchor.UpperLeft, white, TextAlignment.Left, FontStyle.Bold);
-        private static HUDLabel topRight = new HUDLabel("LabelInfoTopRight", 28, TextAnchor.UpperRight, white,  TextAlignment.Right);
-        private static HUDLabel networkStatus = new HUDLabel("LabelNetworkStatus", 32, TextAnchor.UpperLeft, white, TextAlignment.Left);
-        private static HUDLabel version = new HUDLabel("VERSION", 30, TextAnchor.MiddleCenter, white, TextAlignment.Center);
+        private static readonly HUDLabel bottomRight = new HUDLabel("LabelInfoBottomRight", 32, TextAnchor.LowerRight, white, TextAlignment.Right);
+        private static readonly HUDLabel center = new HUDLabel("LabelInfoCenter", 32, TextAnchor.LowerCenter, white, TextAlignment.Center);
+        private static readonly HUDLabel topCenter = new HUDLabel("LabelInfoTopCenter", 32, TextAnchor.UpperCenter, white, TextAlignment.Center);
+        private static readonly HUDLabel topLeft = new HUDLabel("LabelInfoTopLeft", 30, TextAnchor.UpperLeft, white, TextAlignment.Left, FontStyle.Bold);
+        private static readonly HUDLabel topRight = new HUDLabel("LabelInfoTopRight", 28, TextAnchor.UpperRight, white, TextAlignment.Right);
+        private static readonly HUDLabel networkStatus = new HUDLabel("LabelNetworkStatus", 32, TextAnchor.UpperLeft, white, TextAlignment.Left);
+        private static readonly HUDLabel version = new HUDLabel("VERSION", 30, TextAnchor.MiddleCenter, white, TextAlignment.Center);
+
+        public static BoolSetting UseCustomLabels { get; } = new BoolSetting(nameof(UseCustomLabels), false);
 
         #region Labels
         public static string BottomRight
+
         {
             get
             {
@@ -99,22 +103,33 @@ namespace Optimization
                 version.text = value;
             }
         }
-        #endregion
+
+        #endregion Labels
 
         internal static TextMesh CreateLabel(string name, int size, TextAnchor anchor, Color color, Font font, TextAlignment align, FontStyle style = FontStyle.Normal)
         {
             if (font == null)
+            {
                 return null;
+            }
+
             GameObject res = GameObject.Find(name);
             if (res == null || res.GetComponent<UILabel>() == null)
+            {
                 return null;
+            }
 
             TextMesh text = res.GetComponent<TextMesh>();
             if (text == null)
+            {
                 text = res.AddComponent<TextMesh>();
+            }
+
             MeshRenderer render = res.GetComponent<MeshRenderer>();
             if (render == null)
+            {
                 render = res.AddComponent<MeshRenderer>();
+            }
 
             UILabel label = res.GetComponent<UILabel>();
             render.material = font.material;
@@ -142,19 +157,29 @@ namespace Optimization
         private static TextMesh CreateShadow(string name, int size, TextAnchor anchor, Color color, Font font, TextAlignment align, FontStyle style = FontStyle.Normal)
         {
             if (font == null)
+            {
                 return null;
+            }
+
             GameObject res1 = GameObject.Find(name);
             if (res1 == null || res1.GetComponent<UILabel>() == null)
+            {
                 return null;
+            }
 
             GameObject res = (GameObject)GameObject.Instantiate(res1, res1.transform.position, res1.transform.rotation);
 
             TextMesh text = res.GetComponent<TextMesh>();
             if (text == null)
+            {
                 text = res.AddComponent<TextMesh>();
+            }
+
             MeshRenderer render = res.GetComponent<MeshRenderer>();
             if (render == null)
+            {
                 render = res.AddComponent<MeshRenderer>();
+            }
 
             UILabel label = res.GetComponent<UILabel>();
             render.material = font.material;
@@ -170,18 +195,18 @@ namespace Optimization
             res.transform.localScale = new Vector3(4.9f, 4.9f);
             Transform tf = text.transform;
             float deltaX = 1.25f;
-            if(anchor == TextAnchor.MiddleRight || anchor == TextAnchor.UpperRight || anchor == TextAnchor.LowerRight)
+            if (anchor == TextAnchor.MiddleRight || anchor == TextAnchor.UpperRight || anchor == TextAnchor.LowerRight)
             {
                 deltaX = -deltaX;
             }
             float deltaY = 1.25f;
-            if((int)anchor >= 6)
+            if ((int)anchor >= 6)
             {
                 deltaY = -deltaY;
             }
-                    
+
             tf.localPosition = new Vector3(tf.localPosition.x + deltaX, tf.localPosition.y - deltaY, tf.localPosition.z + 0.00001f);
-            
+
             if (label != null)
             {
                 text.text = label.text;
@@ -194,13 +219,12 @@ namespace Optimization
 
         private class HUDLabel
         {
-
             private TextAlignment align;
             private TextAnchor anchor;
             public string Name;
             private Color color;
-            private TextMesh regular;
-            private TextMesh shadow;
+            private TextMesh regularTextMesh;
+            private TextMesh shadowTextMesh;
             private int size;
             private FontStyle style;
 
@@ -208,37 +232,34 @@ namespace Optimization
             {
                 get
                 {
-                    if(regular != null)
+                    if (regularTextMesh != null)
                     {
-                        return regular.text;
+                        return regularTextMesh.text;
                     }
                     CreateMeshes();
-                    if(regular == null)
+                    if (regularTextMesh == null)
                     {
                         return string.Empty;
                     }
-                    return regular.text;
+                    return regularTextMesh.text;
                 }
                 set
                 {
-                    if(regular == null)
+                    if (regularTextMesh == null)
                     {
                         CreateMeshes();
-                        if(regular == null)
+                        if (regularTextMesh == null)
                         {
                             return;
                         }
                     }
-                    regular.text = value.ToHTMLFormat();
-                    if (Anarchy.Configuration.VideoSettings.ShadowsUI.Value)
+                    regularTextMesh.text = value.ToHTMLFormat();
+                    if (VideoSettings.ShadowsUI.Value)
                     {
-                        shadow.text = $"<color=#111111>{value.RemoveHex().RemoveHTML()}</color>";
+                        shadowTextMesh.text = $"<color=#111111>{value.RemoveHex().RemoveHTML()}</color>";
                     }
                 }
             }
-
-
-
 
             public HUDLabel(string name, int size, TextAnchor anchor, Color color, TextAlignment align, FontStyle style = FontStyle.Normal)
             {
@@ -252,11 +273,11 @@ namespace Optimization
 
             private void CreateMeshes()
             {
-                if(regular == null)
+                if (regularTextMesh == null)
                 {
-                    regular = CreateLabel(Name, size, anchor, color, Anarchy.UI.Style.Font, align, style);
+                    regularTextMesh = CreateLabel(Name, size, anchor, color, Anarchy.UI.Style.Font, align, style);
                 }
-                shadow = CreateShadow(Name, size, anchor, color, Anarchy.UI.Style.Font, align, style);
+                shadowTextMesh = CreateShadow(Name, size, anchor, color, Anarchy.UI.Style.Font, align, style);
             }
         }
     }

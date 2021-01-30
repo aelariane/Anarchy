@@ -1,9 +1,8 @@
-﻿
-using System.Collections.Generic;
-using Anarchy.Configuration.Presets;
+﻿using Anarchy.Configuration.Presets;
 using Anarchy.Network;
 using Anarchy.UI.Animation;
 using Optimization;
+using System.Collections.Generic;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -16,8 +15,8 @@ namespace Anarchy.UI
         private const int SettingsPage = 2;
         private const int PasswordRequestPage = 3;
 
-        const int PresetsVisibleCount = 6;
-        const float UpdateTime = 2f;
+        private const int PresetsVisibleCount = 6;
+        private const float UpdateTime = 2f;
         private readonly string[] CustomServers = new string[] { "01042015", "verified343" };
 
         private bool connected = false;
@@ -71,7 +70,10 @@ namespace Anarchy.UI
         private void CheckReconnect()
         {
             if (oldRegion == region && customServer == oldCustomServer)
+            {
                 return;
+            }
+
             if (customServer <= 1)
             {
                 UIMainReferences.ConnectField = CustomServers[customServer];
@@ -84,14 +86,18 @@ namespace Anarchy.UI
             oldRegion = region;
             connectNext = true;
             if (PhotonNetwork.connected)
+            {
                 PhotonNetwork.Disconnect();
-
+            }
         }
 
         private bool CheckRoomFilters(RoomInfo room)
         {
             if (string.IsNullOrEmpty(nameFilter))
+            {
                 return true;
+            }
+
             return room.Name.ToUpper().Contains(nameFilter.ToUpper());
         }
 
@@ -528,7 +534,6 @@ namespace Anarchy.UI
                         {
                             roomToJoin = room;
                             pageSelection = PasswordRequestPage;
-
                         }
                         else
                         {
@@ -579,7 +584,7 @@ namespace Anarchy.UI
             rect.MoveY();
             int prot = NetworkSettings.ConnectionProtocol;
             SelectionGrid(rect, NetworkSettings.ConnectionProtocol, protocols, protocols.Length, true);
-            if(prot != NetworkSettings.ConnectionProtocol.Value)
+            if (prot != NetworkSettings.ConnectionProtocol.Value)
             {
                 PhotonNetwork.SwitchToProtocol(NetworkSettings.ConnectProtocol);
             }
@@ -607,13 +612,15 @@ namespace Anarchy.UI
                 pageSelection = ServerListPage;
                 return;
             }
-
         }
 
         private void TryConnect(int selection)
         {
             if (PhotonNetwork.connected)
+            {
                 PhotonNetwork.Disconnect();
+            }
+
             head = locale["connecting"] + " " + regions[selection] + "...";
             bool result = PhotonNetwork.ConnectToMaster(string.Format(NetworkSettings.AdressString, NetworkSettings.RegionAdresses[selection]), NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
             if (!result)
@@ -636,7 +643,10 @@ namespace Anarchy.UI
                 return;
             }
             if (!connected)
+            {
                 return;
+            }
+
             timeToUpdate -= Time.deltaTime;
             if (timeToUpdate <= 0f)
             {
@@ -653,7 +663,10 @@ namespace Anarchy.UI
         private void UpdateRoomList()
         {
             if (!connected || roomList == null)
+            {
                 return;
+            }
+
             lock (roomList)
             {
                 playersCount = 0;

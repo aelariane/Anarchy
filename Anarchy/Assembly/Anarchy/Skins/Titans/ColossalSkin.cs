@@ -8,7 +8,6 @@ namespace Anarchy.Skins.Titans
 
         public ColossalSkin(COLOSSAL_TITAN tit, string skin) : base(tit.gameObject, new string[] { skin })
         {
-
         }
 
         public override void Apply()

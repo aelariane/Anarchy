@@ -10,6 +10,14 @@ namespace Anarchy.Configuration
         private static object locker = new object();
         public static IDataStorage Storage;
 
+        public static BoolSetting DisableHookArrrows = new BoolSetting("DisableHookArrows", false);
+        public static BoolSetting InfiniteGasPvp = new BoolSetting("InfiniteGasPvp", false);
+
+        public static BoolSetting HideName = new BoolSetting("HideName", true);
+        public static BoolSetting RemoveColors = new BoolSetting("RemoveColors", false);
+
+        public static BoolSetting BodyLeanEnabled = new BoolSetting("BodyLeanEnabled", true);
+
         public static BoolSetting InvertY = new BoolSetting("InvertY", false);
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);
         public static BoolSetting SnapshotsInGame = new BoolSetting("SnapshotsInGame", false);
@@ -29,7 +37,10 @@ namespace Anarchy.Configuration
             lock (locker)
             {
                 if (allSettings == null)
+                {
                     allSettings = new List<ISetting>();
+                }
+
                 allSettings.Add(set);
             }
         }
@@ -45,13 +56,16 @@ namespace Anarchy.Configuration
         public static void Clear()
         {
             if (Storage == null)
+            {
                 CreateStorage();
+            }
+
             Storage.Clear();
         }
 
         public static void CreateStorage()
         {
-            switch(PlayerPrefs.GetInt("AnarchyDataStorage", 1))
+            switch (PlayerPrefs.GetInt("AnarchyDataStorage", 1))
             {
                 case 0:
                     Storage = new PrefStorage();
@@ -70,12 +84,18 @@ namespace Anarchy.Configuration
         public static void Load()
         {
             if (allSettings == null)
+            {
                 allSettings = new List<ISetting>();
+            }
+
             if (Storage == null)
+            {
                 CreateStorage();
+            }
+
             lock (locker)
             {
-                for(int i = 0; i < allSettings.Count; i++)
+                for (int i = 0; i < allSettings.Count; i++)
                 {
                     allSettings[i].Load();
                 }
@@ -86,24 +106,28 @@ namespace Anarchy.Configuration
         {
             lock (locker)
             {
-                if(allSettings.Contains(set))
+                if (allSettings.Contains(set))
+                {
                     allSettings.Remove(set);
+                }
             }
         }
 
         public static void Save()
         {
             if (allSettings == null)
+            {
                 allSettings = new List<ISetting>();
+            }
+
             lock (locker)
             {
-                for(int i = 0; i < allSettings.Count; i++)
+                for (int i = 0; i < allSettings.Count; i++)
                 {
                     allSettings[i].Save();
                 }
             }
             Storage.Save();
         }
-
     }
 }

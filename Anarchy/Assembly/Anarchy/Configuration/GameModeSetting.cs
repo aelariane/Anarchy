@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Anarchy.Configuration.Storage;
 using Anarchy.Localization;
-using Anarchy.Configuration.Storage;
 using Anarchy.UI;
 using ExitGames.Client.Photon;
+using System.Collections.Generic;
 using static Anarchy.UI.GUI;
 
 namespace Anarchy.Configuration
@@ -12,7 +12,9 @@ namespace Anarchy.Configuration
         private const char Separator = ',';
 
         public delegate void ChangedCallback(GameModeSetting sender, bool state, bool received);
-        public delegate void ApplyCallback(GameModeSetting sender, bool state,  int selection, float[] floats, int[] integers);
+
+        public delegate void ApplyCallback(GameModeSetting sender, bool state, int selection, float[] floats, int[] integers);
+
         private delegate void GameModeSettingDraw(SmartRect rect, Locale locale);
 
         private static readonly Locale english;
@@ -31,7 +33,7 @@ namespace Anarchy.Configuration
         private readonly float[] nextFloats = null;
         private readonly int[] nextIntegers = null;
         private int nextSelection = -1;
-        private ApplyCallback onApplyCallback = delegate(GameModeSetting set, bool state, int sel, float[] floats, int[] ints) { };
+        private ApplyCallback onApplyCallback = delegate (GameModeSetting set, bool state, int sel, float[] floats, int[] ints) { };
         private ChangedCallback onStateChanged = (set, val, received) => { };
         private readonly string saveKey;
         private bool state;
@@ -49,34 +51,45 @@ namespace Anarchy.Configuration
             get
             {
                 if (state == appliedState && appliedState == false)
+                {
                     return false;
+                }
+
                 if (forcedChange || state != appliedState)
+                {
                     return true;
+                }
+
                 if (nextSelection >= 0)
                 {
                     if (appliedSelection != nextSelection + 1)
+                    {
                         return true;
+                    }
                 }
                 if (nextFloats != null)
                 {
-                    for(int i = 0; i < nextFloats.Length; i++)
+                    for (int i = 0; i < nextFloats.Length; i++)
                     {
                         if (float.TryParse(floatStrings[i], out float val))
                         {
-                            
                             if (!appliedFloats[i].Equals(val))
+                            {
                                 return true;
+                            }
                         }
                     }
                 }
-                if (nextIntegers!= null)
+                if (nextIntegers != null)
                 {
                     for (int i = 0; i < nextIntegers.Length; i++)
                     {
                         if (int.TryParse(integerStrings[i], out int val))
                         {
                             if (!appliedIntegers[i].Equals(val))
+                            {
                                 return true;
+                            }
                         }
                     }
                 }
@@ -89,20 +102,30 @@ namespace Anarchy.Configuration
             get
             {
                 if (state == appliedState && appliedState == false)
+                {
                     return false;
+                }
+
                 if (forcedChange || state != appliedState)
+                {
                     return true;
+                }
+
                 if (nextSelection >= 0)
                 {
                     if (appliedSelection != nextSelection + 1)
+                    {
                         return true;
+                    }
                 }
                 if (nextFloats != null)
                 {
                     for (int i = 0; i < nextFloats.Length; i++)
                     {
                         if (!appliedFloats[i].Equals(nextFloats[i]))
+                        {
                             return true;
+                        }
                     }
                 }
                 if (nextIntegers != null)
@@ -110,7 +133,9 @@ namespace Anarchy.Configuration
                     for (int i = 0; i < nextIntegers.Length; i++)
                     {
                         if (!appliedIntegers[i].Equals(nextIntegers[i]))
+                        {
                             return true;
+                        }
                     }
                 }
                 return false;
@@ -122,7 +147,10 @@ namespace Anarchy.Configuration
             get
             {
                 if (appliedSelection <= 0)
+                {
                     return -1;
+                }
+
                 return appliedSelection;
             }
         }
@@ -139,22 +167,37 @@ namespace Anarchy.Configuration
             }
         }
 
-        public GameModeSetting(string key) : this(key, -1, null, null) { }
+        public GameModeSetting(string key) : this(key, -1, null, null)
+        {
+        }
 
-        public GameModeSetting(string key, int sel) : this(key, sel, null, null) { }
+        public GameModeSetting(string key, int sel) : this(key, sel, null, null)
+        {
+        }
 
-        public GameModeSetting(string key, float[] floats) : this(key, -1, floats, null) { }
+        public GameModeSetting(string key, float[] floats) : this(key, -1, floats, null)
+        {
+        }
 
-        public GameModeSetting(string key, int[] ints) : this(key, -1, null, ints) { }
+        public GameModeSetting(string key, int[] ints) : this(key, -1, null, ints)
+        {
+        }
 
-        public GameModeSetting(string key, int sel, float[] floats) : this(key, sel, floats, null)  { }
+        public GameModeSetting(string key, int sel, float[] floats) : this(key, sel, floats, null)
+        {
+        }
 
-        public GameModeSetting(string key, int sel, int[] ints) : this(key, sel, null, ints) { }
+        public GameModeSetting(string key, int sel, int[] ints) : this(key, sel, null, ints)
+        {
+        }
 
         public GameModeSetting(string key, int selection, float[] floats, int[] ints)
         {
             if (Settings.Storage == null)
+            {
                 Settings.CreateStorage();
+            }
+
             Settings.AddSetting(this);
             GameModes.AddSetting(this);
             string[] keys = key.Split(Separator);
@@ -208,7 +251,7 @@ namespace Anarchy.Configuration
 
         public GameModeSetting AddChangedCallback(ChangedCallback callback)
         {
-            if(onStateChanged == null)
+            if (onStateChanged == null)
             {
                 onStateChanged = callback;
                 return this;
@@ -232,7 +275,7 @@ namespace Anarchy.Configuration
 
         public void Apply()
         {
-            forcedChange = false; 
+            forcedChange = false;
             if (nextFloats != null)
             {
                 for (int i = 0; i < nextFloats.Length; i++)
@@ -255,19 +298,19 @@ namespace Anarchy.Configuration
             }
             onApplyCallback(this, state, nextSelection, nextFloats, nextIntegers);
             appliedState = state;
-            if(nextSelection >= 0)
+            if (nextSelection >= 0)
             {
                 appliedSelection = nextSelection + 1;
             }
-            if(nextFloats != null)
+            if (nextFloats != null)
             {
-                for(int i = 0; i < nextFloats.Length; i++)
+                for (int i = 0; i < nextFloats.Length; i++)
                 {
                     appliedFloats[i] = nextFloats[i];
                     floatStrings[i] = nextFloats[i].ToString("F2");
                 }
             }
-            if (nextIntegers!= null)
+            if (nextIntegers != null)
             {
                 for (int i = 0; i < nextIntegers.Length; i++)
                 {
@@ -307,12 +350,11 @@ namespace Anarchy.Configuration
         {
             state = ToggleButton(rect, state, locale[key + "State"], true);
             draw(rect, locale);
-            
         }
 
         private void DrawFloats(SmartRect rect, Locale loc)
         {
-            for(int i = 0; i < floatStrings.Length; i++)
+            for (int i = 0; i < floatStrings.Length; i++)
             {
                 floatStrings[i] = TextField(rect, floatStrings[i], Style.LabelSpace + loc[key + "Float" + i.ToString()], Style.BigLabelOffset, true);
             }
@@ -346,14 +388,20 @@ namespace Anarchy.Configuration
         public float GetFloat(int index)
         {
             if (appliedFloats == null || appliedFloats.Length <= index)
+            {
                 return 0f;
+            }
+
             return appliedFloats[index];
         }
 
         public int GetInt(int index)
         {
             if (appliedIntegers == null || appliedIntegers.Length <= index)
+            {
                 return 0;
+            }
+
             return appliedIntegers[index];
         }
 
@@ -365,14 +413,14 @@ namespace Anarchy.Configuration
             {
                 nextSelection = storage.GetInt(saveKey + "Selection", nextSelection);
             }
-            if(nextFloats != null)
+            if (nextFloats != null)
             {
                 floatStrings = new string[nextFloats.Length];
                 appliedFloats = new float[nextFloats.Length];
                 for (int i = 0; i < nextFloats.Length; i++)
                 {
                     floatStrings[i] = storage.GetFloat(saveKey + "Float" + i.ToString(), nextFloats[i]).ToString();
-                    if(!float.TryParse(floatStrings[i], out float val))
+                    if (!float.TryParse(floatStrings[i], out float val))
                     {
                         floatStrings[i] = nextFloats[i].ToString("F2");
                     }
@@ -407,7 +455,7 @@ namespace Anarchy.Configuration
         {
             IDataStorage storage = Settings.Storage;
             storage.SetBool(saveKey + "State", state);
-            if(nextSelection >= 0)
+            if (nextSelection >= 0)
             {
                 storage.SetInt(saveKey + "Selection", nextSelection);
             }
@@ -448,48 +496,61 @@ namespace Anarchy.Configuration
                 state = false;
                 return;
             }
-            if(HashKeys.Length == 1)
+            if (HashKeys.Length == 1)
             {
                 if (hash.ContainsKey(HashKeys[0]))
                 {
-                    if(hash[HashKeys[0]] is int state)
+                    if (hash[HashKeys[0]] is int state)
                     {
                         this.state = state > 0;
                         if (nextSelection >= 0)
+                        {
                             nextSelection = state - 1;
+                        }
+
                         if (nextIntegers != null && nextIntegers.Length == 1)
+                        {
                             nextIntegers[0] = state;
+                        }
                     }
-                    else if(hash[HashKeys[0]] is float val)
+                    else if (hash[HashKeys[0]] is float val)
                     {
                         this.state = val > 0f;
                         if (nextFloats != null && nextFloats.Length == 1)
+                        {
                             nextFloats[0] = val;
+                        }
                     }
                 }
                 return;
             }
             int i = 1;
             state = ((int)hash[HashKeys[0]] != 0);
-            if(nextSelection >= 0)
+            if (nextSelection >= 0)
             {
                 if (hash[HashKeys[0]] is int val)
-                    nextSelection = val - 1;
-            }
-            if(nextFloats != null)
-            {
-                for(int j = 0; j < nextFloats.Length; j++)
                 {
-                    if (hash[HashKeys[i++]] is float val)
-                        nextFloats[j] = val;
+                    nextSelection = val - 1;
                 }
             }
-            if(nextIntegers != null)
+            if (nextFloats != null)
+            {
+                for (int j = 0; j < nextFloats.Length; j++)
+                {
+                    if (hash[HashKeys[i++]] is float val)
+                    {
+                        nextFloats[j] = val;
+                    }
+                }
+            }
+            if (nextIntegers != null)
             {
                 for (int j = 0; j < nextIntegers.Length; j++)
                 {
                     if (hash[HashKeys[i++]] is int val)
+                    {
                         nextIntegers[j] = val;
+                    }
                 }
             }
         }
@@ -517,21 +578,27 @@ namespace Anarchy.Configuration
         public void SetFloat(int index, float value)
         {
             if (appliedFloats == null || appliedFloats.Length <= index)
+            {
                 return;
+            }
+
             nextFloats[index] = value;
         }
 
         public void SetInt(int index, int value)
         {
             if (appliedIntegers == null || appliedIntegers.Length <= index)
+            {
                 return;
+            }
+
             nextIntegers[index] = value;
         }
 
         public override string ToString()
         {
             List<object> args = new List<object>();
-            if (nextSelection>= 0)
+            if (nextSelection >= 0)
             {
                 args.Add(english.GetArray(key + "Selection")[nextSelection]);
             }
@@ -620,24 +687,30 @@ namespace Anarchy.Configuration
             if (HashKeys.Length == 1)
             {
                 if (appliedSelection >= 0)
+                {
                     hash[HashKeys[0]] = appliedSelection;
+                }
+
                 if (nextIntegers != null && nextIntegers.Length == 1)
+                {
                     hash[HashKeys[0]] = appliedIntegers[0];
+                }
+
                 return;
             }
             int i = 1;
-            if(appliedSelection >= 0)
+            if (appliedSelection >= 0)
             {
                 hash[HashKeys[0]] = appliedSelection;
             }
             if (appliedFloats != null)
             {
-                for(int j = 0 ; j < appliedFloats.Length; j++)
+                for (int j = 0; j < appliedFloats.Length; j++)
                 {
                     hash.Add(HashKeys[i++], appliedFloats[j]);
                 }
             }
-            if(appliedIntegers != null)
+            if (appliedIntegers != null)
             {
                 for (int j = 0; j < appliedIntegers.Length; j++)
                 {

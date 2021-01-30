@@ -6,7 +6,6 @@ namespace Anarchy.Commands.Chat
     {
         public RoomSettingCommands() : base("room", true, true, false)
         {
-
         }
 
         public override bool Execute(string[] args)
@@ -62,7 +61,7 @@ namespace Anarchy.Commands.Chat
                     break;
 
                 default:
-                    chatMessage = Lang.Format("errRoom", args[0].ToLower());    
+                    chatMessage = Lang.Format("errRoom", args[0].ToLower());
                     return false;
             }
             return true;

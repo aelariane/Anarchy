@@ -30,7 +30,6 @@ namespace Anarchy.UI
         private int skinSelection = 0;
         private string[] skinTypeSelection;
 
-
         public SkinsPanel() : base(nameof(SkinsPanel), GUILayers.SkinsPanel)
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
@@ -50,8 +49,6 @@ namespace Anarchy.UI
         {
             InitPresets(SkinSettings.CitySet, CityPreset.GetAllPresets());
         }
-
-
 
         [GUIPage(Custom)]
         private void CustomPage()
@@ -79,11 +76,11 @@ namespace Anarchy.UI
             if (Button(left, locale["btnAdd"], false))
             {
                 SkinPreset add = null;
-                if(pageSelection == Humans)
+                if (pageSelection == Humans)
                 {
                     add = new HumanSkinPreset(newSetName);
                 }
-                else if(pageSelection == Titans)
+                else if (pageSelection == Titans)
                 {
                     add = new TitanSkinPreset(newSetName);
                 }
@@ -91,7 +88,7 @@ namespace Anarchy.UI
                 {
                     add = new CityPreset(newSetName);
                 }
-                else if(pageSelection == Forest)
+                else if (pageSelection == Forest)
                 {
                     add = new ForestPreset(newSetName);
                 }
@@ -99,7 +96,7 @@ namespace Anarchy.UI
                 {
                     add = new SkyboxPreset(newSetName);
                 }
-                else if(pageSelection == Custom)
+                else if (pageSelection == Custom)
                 {
                     add = new CustomMapPreset(newSetName);
                 }
@@ -138,7 +135,6 @@ namespace Anarchy.UI
             scrollRect.Reset();
             scrollAreaView.height = (Style.Height * presetLabels.Length) + (Style.VerticalMargin * (presetLabels.Length + 1));
 
-
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
             skinSelection = SelectionGrid(scrollRect, skinSelection, presetLabels, 1, true);
             EndScrollView();
@@ -163,7 +159,7 @@ namespace Anarchy.UI
             rect.MoveToEndY(BoxPosition, Style.Height);
             rect.MoveToEndX(BoxPosition, Style.LabelOffset);
             rect.width = Style.LabelOffset;
-            if(Button(rect, locale["btnClose"]))
+            if (Button(rect, locale["btnClose"]))
             {
                 Disable();
             }
@@ -231,7 +227,7 @@ namespace Anarchy.UI
         protected override void OnAnyPageEnabled()
         {
             if (left != null)
-            { 
+            {
                 for (int i = 0; i < 5; i++)
                 {
                     left.MoveY();
@@ -273,7 +269,7 @@ namespace Anarchy.UI
 
         private void SavePresets()
         {
-            if(presets != null && presets.Count > 0)
+            if (presets != null && presets.Count > 0)
             {
                 foreach (var set in presets)
                 {
@@ -326,6 +322,5 @@ namespace Anarchy.UI
         {
             animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
-
     }
 }

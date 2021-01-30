@@ -30,7 +30,10 @@ namespace Anarchy.UI
         {
             DrawLeftColumn();
             if (!Active)
+            {
                 return;
+            }
+
             DrawRightColumn();
         }
 
@@ -49,6 +52,7 @@ namespace Anarchy.UI
             left.height = new AutoScaleFloat(30f);
             if (Button(left, locale["start"], true))
             {
+                PhotonNetwork.SetModProperties();
                 OnButtonStartClick();
                 DisableImmediate();
                 return;
@@ -60,7 +64,7 @@ namespace Anarchy.UI
             right.Reset();
             LabelCenter(right, locale["character"], true);
             SelectionGrid(right, costumeSelection, costumeList, 3, true);
-            SelectionGrid(right, characterSelection, characterList, 1, true);
+            DropdownMenu(this, right, characterSelection, characterList, true);
             right.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
             right.MoveOffsetX(new AutoScaleFloat(150f));
             right.height = new AutoScaleFloat(30f);
@@ -69,7 +73,6 @@ namespace Anarchy.UI
                 Disable();
                 return;
             }
-
         }
 
         private void OnButtonStartClick()
@@ -97,7 +100,7 @@ namespace Anarchy.UI
             costumeList = null;
             dayLightList = null;
             difficulityList = null;
-            if(Application.loadedLevelName == "menu")
+            if (Application.loadedLevelName == "menu")
             {
                 AnarchyManager.MainMenu.EnableImmediate();
             }
@@ -109,7 +112,7 @@ namespace Anarchy.UI
             left = init[0];
             right = init[1];
             mapList = new string[] { "[S]Tutorial", "[S]Battle training", "[S]City", "[S]Forest", "[S]Forest Survive(no crawler)", "[S]Forest Survive(no crawler no punk)", "[S]Racing - Akina" };
-            cameraList = new string[] { "ORIGINAL", "WOW", "TPS" };
+            cameraList = new string[] { "ORIGINAL", "WOW", "TPS", "NewTPS" };
             characterList = locale.GetArray("characters");
             costumeList = new string[] { "Cos1", "Cos2", "Cos3" };
             dayLightList = locale.GetArray("daylights");

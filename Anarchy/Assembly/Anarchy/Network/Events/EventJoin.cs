@@ -13,7 +13,7 @@ namespace Anarchy.Network.Events
 
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
-            if(sender != null && !sender.IsLocal)
+            if (sender != null && !sender.IsLocal)
             {
                 reason = UI.Log.GetString("senderMustBeNull");
                 return false;
@@ -58,6 +58,8 @@ namespace Anarchy.Network.Events
             return true;
         }
 
-        public void OnFailedHandle() { }
+        public void OnFailedHandle()
+        {
+        }
     }
 }

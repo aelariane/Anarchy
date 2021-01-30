@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Anarchy.Network;
+using Anarchy.Configuration;
+
 public static class PhotonNetwork
 {
     private static bool _mAutomaticallySyncScene = false;
@@ -46,6 +49,49 @@ public static class PhotonNetwork
     }
 
     public delegate void EventCallback(byte eventCode, object content, int senderId);
+
+    public static void SetModProperties()
+    {
+        int anarchyFlags;
+        int abuseFlags = 0;
+        player.Properties.TryGetValue(PhotonPlayerProperty.anarchyAbuseFlags, out object val);
+        if(val is int)
+        {
+            abuseFlags = (int) val;
+        }
+        try
+        {
+            anarchyFlags = (int)player.Properties[PhotonPlayerProperty.anarchyFlags];
+        }
+        catch
+        {
+            anarchyFlags = 0;
+        }
+
+        //Check abuse
+        if(Anarchy.GameModes.BombMode.Enabled && Settings.InfiniteGasPvp.Value)
+        {
+            abuseFlags |= (int)AbuseFlags.InfiniteGasInPvp;
+        }
+
+
+        if(Settings.BodyLeanEnabled.Value == false)
+        {
+            anarchyFlags |= (int)AnarchyFlags.DisableBodyLean;
+        }
+
+        if (Anarchy.InputManager.LegacyGasRebind.Value)
+        {
+            anarchyFlags |= (int)AnarchyFlags.LegacyBurst;
+        }
+
+        if (Settings.CameraMode.Value == 3)
+        {
+            anarchyFlags |= (int)AnarchyFlags.NewTPSCamera;
+        }
+
+        player.SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.anarchyFlags, anarchyFlags }, {  PhotonPlayerProperty.anarchyAbuseFlags, abuseFlags} });
+    }
 
     public static AuthenticationValues AuthValues
     {
@@ -777,11 +823,14 @@ public static class PhotonNetwork
     public static bool ConnectToMaster(string masterServerAddress, int port, string appID, string gameVersion)
     {
         string url = string.Empty;
-        if(networkingPeer.TransportProtocol >= ConnectionProtocol.WebSocket)
+        if (networkingPeer.TransportProtocol >= ConnectionProtocol.WebSocket)
         {
             url = "ws";
             if (networkingPeer.UsedProtocol == ConnectionProtocol.WebSocketSecure)
+            {
                 url += "s";
+            }
+
             url += "://";
         }
         masterServerAddress = url + masterServerAddress;

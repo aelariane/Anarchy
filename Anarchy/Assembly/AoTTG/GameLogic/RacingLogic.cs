@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Anarchy;
+﻿using Anarchy;
 using Optimization;
 using RC;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Setting = Anarchy.Configuration.GameModeSetting;
 
@@ -23,6 +24,8 @@ namespace GameLogic
         private float maxSpeed = 0f;
         private int finishersCount;
         private readonly List<string> finishers = new List<string>();
+        private string nextRacingScript = string.Empty;
+        private Dictionary<PhotonPlayer, float> nonStopDictionary = new Dictionary<PhotonPlayer, float>();
 
         public bool CustomRestartTime
         {
@@ -60,15 +63,16 @@ namespace GameLogic
             get => Round.GameEndTimer;
             set => Round.GameEndTimer = value;
         }
+
         public float StartTime { get; set; } = 20f;
 
         public RacingLogic() : base()
         {
             StartTime = IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? 5f : (GameModes.RacingStartTime.Enabled ? GameModes.RacingStartTime.GetInt(0) : 20f);
-            if (GameModes.AsoRacing.Enabled)
+            if (GameModes.AsoRacing.Enabled || GameModes.RacingRestartTime.Enabled)
             {
                 CustomRestartTime = true;
-                RestartTime = 999f;
+                RestartTime = GameModes.AsoRacing.Enabled ? 999f : GameModes.RacingRestartTime.GetFloat(0);
             }
             else
             {
@@ -92,7 +96,7 @@ namespace GameLogic
                 }
                 else
                 {
-                    if (!GameModes.RacingRestartTime.Enabled)
+                    if (!GameModes.RacingRestartTime.State)
                     {
                         log.RestartTime = 20f;
                     }
@@ -167,7 +171,7 @@ namespace GameLogic
             if (!GameModes.RacingStartTime.Enabled)
             {
                 FengGameManagerMKII.FGM.BasePV.RPC("refreshStatus", PhotonTargets.Others, new object[]
-                { 
+                {
                     HumanScore,
                     TitanScore,
                     0,
@@ -206,10 +210,10 @@ namespace GameLogic
 
         public void OnPlayerFinished(float time, string name)
         {
-            if (finishers.Count >= MaxFinishers)
-            {
-                return;
-            }
+            //if (finishers.Count >= MaxFinishers)
+            //{
+            //    return;
+            //}
             if (!Round.IsWinning)
             {
                 finishers.Clear();
@@ -234,7 +238,6 @@ namespace GameLogic
             }
         }
 
-
         protected override void OnRestart()
         {
             needShowFinishers = false;
@@ -244,10 +247,38 @@ namespace GameLogic
             {
                 needDestroyDoors = true;
             }
+            nonStopDictionary.Clear();
             doorsDestroyed = false;
             if (PhotonNetwork.IsMasterClient && GameModes.RacingStartTime.Enabled)
             {
                 OnRequireStatus();
+            }
+
+            if(nextRacingScript.Length > 0)
+            {
+                CustomLevel.currentScript = nextRacingScript;
+                nextRacingScript = string.Empty;
+            }
+
+            if (GameModes.AutoPickNextMap.Enabled)
+            {
+                if (RoundsCount % GameModes.AutoPickNextMap.GetInt(0) == 0)
+                {
+                    string[] fileNames = System.IO.Directory.GetFiles(Anarchy.UI.CustomPanel.MapsPath)
+                        .Select(x => x)
+                        .Where(x => GameModes.AutoPickNextMapFilter.Value.Trim().Length == 0 || x.ToLower().Contains(GameModes.AutoPickNextMapFilter.Value.Trim().ToLower()))
+                        .ToArray();
+
+                    if (fileNames.Length > 0)
+                    {
+                        var file = new System.IO.FileInfo(fileNames[Random.Range(0, fileNames.Length)]);
+                        nextRacingScript = System.IO.File.ReadAllText(file.FullName);
+                        if (GameModes.AnnounceMapSwitch)
+                        {
+                            FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"<color=#{User.MainColor}>[Map-Switch] Next map is set: <i><color=#{User.SubColor}>{file.Name.Replace(file.Extension, "")}</color></i></color>", "" });
+                        }
+                    }
+                }
             }
         }
 
@@ -271,13 +302,13 @@ namespace GameLogic
                     {
                         GameModes.AsoRacing.State = false;
                     }
-                    Anarchy.Configuration.AnarchyGameModeSetting.AnarchySettingCallback(sender, true, false);
+                    Anarchy.Configuration.AnarchyGameModeSetting.AnarchySettingCallback(sender, true, rcv);
                     log.RestartTime = sender.GetInt(0);
                 }
                 else
                 {
                     log.RestartTime = 20f;
-                    Anarchy.Configuration.AnarchyGameModeSetting.AnarchySettingCallback(sender, false, false);
+                    Anarchy.Configuration.AnarchyGameModeSetting.AnarchySettingCallback(sender, false, rcv);
                 }
             }
         }
@@ -319,9 +350,9 @@ namespace GameLogic
             if (RaceStart)
             {
                 topCenter = Lang.Format("time", (Round.Time - StartTime).ToString("F1"));
-                if(PhotonNetwork.IsMasterClient && GameModes.RacingTimeLimit.Enabled)
+                if (PhotonNetwork.IsMasterClient && GameModes.RacingTimeLimit.Enabled)
                 {
-                    if((Round.Time - StartTime) >= GameModes.RacingTimeLimit.GetInt(0))
+                    if ((Round.Time - StartTime) >= GameModes.RacingTimeLimit.GetInt(0))
                     {
                         FengGameManagerMKII.FGM.RestartGame(false, false);
                         return;
@@ -345,7 +376,6 @@ namespace GameLogic
                         topCenter += "\n\n" + Lang.Format("racingRestart", Round.GameEndCD.ToString("F0"));
                     }
                 }
-
             }
             else
             {
@@ -357,7 +387,7 @@ namespace GameLogic
                     center += GetFinishers();
                     center += "\n\n";
                 }
-                topCenter += "\n" + Lang.Format("racingRemaining", (StartTime - Round.Time).ToString("F0"));
+                topCenter += "\n" + Lang.Format("racingRemaining", (StartTime - Round.Time).ToString("F1"));
             }
 
             Labels.TopCenter = topCenter;
@@ -387,9 +417,67 @@ namespace GameLogic
                 TryDestroyDoors();
                 doorsDestroyed = true;
             }
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
                 UpdateRespawnTime();
+            }
+            if (RaceStart)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    if (GameModes.MaximumSpeedLimit.Enabled)
+                    {
+                        int speed = GameModes.MaximumSpeedLimit.GetInt(0);
+                        foreach(var hero in FengGameManagerMKII.Heroes)
+                        {
+                            if(hero.currentSpeed > speed)
+                            {
+                                Abuse.Kill(hero.BasePV.owner, "Too fast");
+                            }
+                        }
+                    }
+                    if (GameModes.NonStopRacing.Enabled)
+                    {
+                        int speed = GameModes.NonStopRacing.GetInt(0);
+                        int timer = GameModes.NonStopRacing.GetInt(1);
+
+                        foreach (var hero in FengGameManagerMKII.Heroes)
+                        {
+                            var owner = hero.BasePV.owner;
+                            if (hero.currentSpeed < speed)
+                            {
+                                float currentTime;
+                                if (nonStopDictionary.TryGetValue(owner, out currentTime))
+                                {
+                                    if(currentTime >= timer)
+                                    {
+                                        Abuse.Kill(owner, "Too slow");
+                                        nonStopDictionary[owner] = 0f;
+                                    }
+                                    else
+                                    {
+                                        nonStopDictionary[owner] = currentTime + UpdateInterval;
+                                    }
+                                }
+                                else
+                                {
+                                    nonStopDictionary.Add(owner, 0f);
+                                }
+                            }
+                            else
+                            {
+                                if (nonStopDictionary.ContainsKey(owner))
+                                {
+                                    nonStopDictionary[owner] = 0f;
+                                }
+                                else
+                                {
+                                    nonStopDictionary.Add(owner, 0f);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

@@ -14,8 +14,8 @@ namespace Anarchy.Configuration.Presets
     {
         public static readonly string TitansPath = Application.dataPath + "/Configuration/TitanSkins/";
 
-        const int Length = 5;
-        const int HairTypeLength = 11;
+        private const int Length = 5;
+        private const int HairTypeLength = 11;
 
         public string Annie = string.Empty;
         public string[] Bodies;
@@ -33,7 +33,7 @@ namespace Anarchy.Configuration.Presets
             Bodies = new string[Length].Select(x => string.Empty).ToArray();
             Eyes = new string[Length].Select(x => string.Empty).ToArray();
             Hairs = new string[Length].Select(x => string.Empty).ToArray();
-            HairTypes = new HairType[Length].Select(x => HairType.Random).ToArray(); 
+            HairTypes = new HairType[Length].Select(x => HairType.Random).ToArray();
         }
 
         public override void Draw(SmartRect rect, Locale locale)
@@ -45,21 +45,24 @@ namespace Anarchy.Configuration.Presets
                 Hairs[i] = TextField(rect, Hairs[i], locale["titanHair"] + (i + 1).ToString() + ":", 80f, false);
                 rect.MoveX();
                 rect.width = 100;
-                if(Button(rect, HairTypes[i].ToString(), true))
+                if (Button(rect, HairTypes[i].ToString(), true))
                 {
                     int val = (int)HairTypes[i];
                     val++;
                     if (val >= (int)HairType.Count)
+                    {
                         val = -1;
+                    }
+
                     HairTypes[i] = (HairType)val;
                 }
                 rect.ResetX();
             }
-            for(int i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 Eyes[i] = TextField(rect, Eyes[i], locale["titanEye"] + (i + 1).ToString() + ":", 80f, true);
             }
-            for(int i = 0; i < Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 Bodies[i] = TextField(rect, Bodies[i], locale["titanBody"] + (i + 1).ToString() + ":", 80f, true);
             }
@@ -73,7 +76,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(TitansPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
@@ -85,7 +91,7 @@ namespace Anarchy.Configuration.Presets
 
         public override void Load()
         {
-            using(AnarchyStorage storage = new AnarchyStorage(FullPath,'`', false))
+            using (AnarchyStorage storage = new AnarchyStorage(FullPath, '`', false))
             {
                 storage.Load();
                 storage.AutoSave = false;
@@ -117,7 +123,7 @@ namespace Anarchy.Configuration.Presets
                 storage.SetString(nameof(Eyes), string.Join(",", Eyes));
                 storage.SetString(nameof(Hairs), string.Join(",", Hairs));
                 string[] types = new string[Length];
-                for(int i = 0; i < HairTypes.Length; i++)
+                for (int i = 0; i < HairTypes.Length; i++)
                 {
                     types[i] = ((int)HairTypes[i]).ToString();
                 }
@@ -129,7 +135,7 @@ namespace Anarchy.Configuration.Presets
         public override string[] ToSkinData()
         {
             List<string> temp = new List<string>();
-            for(int i = 0; i < Hairs.Length; i++)
+            for (int i = 0; i < Hairs.Length; i++)
             {
                 temp.Add(Hairs[i]);
             }

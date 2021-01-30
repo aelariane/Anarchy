@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using ExitGames.Client.Photon;
 using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using UnityEngine;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
@@ -25,7 +23,6 @@ namespace Anarchy.Network.Events
             Code = 206;
             NetworkManager.RegisterEvent(this);
         }
-
 
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
@@ -60,7 +57,7 @@ namespace Anarchy.Network.Events
             }
             hashViews.Clear();
             hashData.Clear();
-            for (short i = index; i< hash.Count; i++)
+            for (short i = index; i < hash.Count; i++)
             {
                 if (hash[(short)i] is Hashtable add && add != null)
                 {
@@ -103,7 +100,6 @@ namespace Anarchy.Network.Events
             }
             val = default(T);
             return force;
-
         }
 
         public bool Handle()

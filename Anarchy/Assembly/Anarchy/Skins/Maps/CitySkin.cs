@@ -23,7 +23,10 @@ namespace Anarchy.Skins.Maps
             foreach (GameObject go in objects)
             {
                 if (go == null)
+                {
                     continue;
+                }
+
                 if (go.name.Contains("Cube_") && go.transform.parent.gameObject.tag != "Player")
                 {
                     int elementIntex = 0;
@@ -46,7 +49,10 @@ namespace Anarchy.Skins.Maps
                         case "002":
                             Vector3 pos = go.transform.position;
                             if (pos.x == 0f && pos.y == 0f && pos.z == 0f)
+                            {
                                 goto case "labelWall";
+                            }
+
                             goto case "labelHouse";
 
                         case "005":

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GameLogic
+﻿namespace GameLogic
 {
     internal class PVPLogic : GameLogic
     {
@@ -22,7 +17,7 @@ namespace GameLogic
         public override void CopyFrom(GameLogic other)
         {
             base.CopyFrom(other);
-            if(other == null || !(other is PVPLogic pvplog))
+            if (other == null || !(other is PVPLogic pvplog))
             {
                 return;
             }
@@ -91,7 +86,7 @@ namespace GameLogic
             {
                 center = Lang.Format("humanityFail", Round.GameEndCD.ToString("F0")) + "\n\n";
             }
-            if(center != "")
+            if (center != "")
             {
                 center += "\n\n";
             }

@@ -5,10 +5,10 @@ namespace Anarchy.UI
 {
     public class ProfilePanel : GUIPanel
     {
-        const int MainPage = 0;
-        const int AdvancedPage = 1;
-        const int PreviewPage = 2;
-        const int MaxProfiles = 15;
+        private const int MainPage = 0;
+        private const int AdvancedPage = 1;
+        private const int PreviewPage = 2;
+        private const int MaxProfiles = 15;
 
         private int checkProfile;
         private int currentProfile;
@@ -18,17 +18,15 @@ namespace Anarchy.UI
         private SmartRect right;
 
         //sort later
-        
 
         public ProfilePanel() : base(nameof(ProfilePanel), GUILayers.ProfilePanel)
         {
             animator = new Animation.AngleAnimation(this, Animation.AngleAnimation.StartPoint.TopLeft, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
-            if(animator is Animation.AngleAnimation anim)
+            if (animator is Animation.AngleAnimation anim)
             {
                 anim.Speed = 1.5f;
             }
         }
-
 
         [GUIPage(AdvancedPage)]
         private void AdvancedSettings()
@@ -55,7 +53,7 @@ namespace Anarchy.UI
             TextField(right, User.McSwitch, string.Empty, 0f, true);
 
             right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
-            if(Button(right, locale["preview"], true))
+            if (Button(right, locale["preview"], true))
             {
                 pageSelection = PreviewPage;
                 return;
@@ -76,7 +74,7 @@ namespace Anarchy.UI
 
         private void CheckChange()
         {
-            if(checkProfile == currentProfile)
+            if (checkProfile == currentProfile)
             {
                 return;
             }
@@ -124,7 +122,6 @@ namespace Anarchy.UI
             {
                 if (User.AllProfiles.Length > 1)
                 {
-
                     User.DeleteProfile(User.ProfileName);
                     newProfile = User.ProfileName;
                     currentProfile = FindCurrentProfile();
@@ -143,9 +140,9 @@ namespace Anarchy.UI
 
         private int FindCurrentProfile()
         {
-            for(int i = 0; i < User.AllProfiles.Length; i++)
+            for (int i = 0; i < User.AllProfiles.Length; i++)
             {
-                if(User.AllProfiles[i] == User.ProfileName)
+                if (User.AllProfiles[i] == User.ProfileName)
                 {
                     return i;
                 }
@@ -231,10 +228,14 @@ namespace Anarchy.UI
             right.Reset();
             previewPage = SelectionGrid(right, previewPage, locale.GetArray("previews"), 2, true);
 
-            if(previewPage == 0)
+            if (previewPage == 0)
+            {
                 PreviewOne();
+            }
             else
+            {
                 PreviewSecond();
+            }
 
             right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
             if (Button(right, locale["preview"], true))
@@ -291,14 +292,14 @@ namespace Anarchy.UI
             right.MoveY();
             LabelCenter(right, locale["chatSettings"], true);
             Label(right, locale["chatFormat"] + " " + User.Chat(1, "Player: Message").ToHTMLFormat(), true);
-            Label(right, locale["chatPMFormat"] + " " + User.ChatPm(1, "Player: Message").ToHTMLFormat(),  true);
+            Label(right, locale["chatPMFormat"] + " " + User.ChatPm(1, "Player: Message").ToHTMLFormat(), true);
             Label(right, locale["chatFormatSend"] + ": " + User.ChatSend("message").ToHTMLFormat(), true);
             Label(right, locale["chatPMFormatSend"] + ": " + User.ChatPmSend(1, "<color=white>Message</color>").ToHTMLFormat(), true);
 
             right.MoveY();
             LabelCenter(right, locale["others"], true);
             LabelCenter(right, locale["restart"], true);
-            LabelCenter(right, User.MsgRestart.ToHTMLFormat(),  true);
+            LabelCenter(right, User.MsgRestart.ToHTMLFormat(), true);
             LabelCenter(right, locale["mcswitch"], true);
             LabelCenter(right, User.MasterClientSwitch.ToHTMLFormat(), true);
         }

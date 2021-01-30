@@ -1,5 +1,4 @@
-﻿using Optimization;
-using RC;
+﻿using RC;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -45,9 +44,9 @@ namespace Anarchy.UI
 
             LabelCenter(right, locale["picker" + pageSelection.ToString()], true);
             right.BeginHorizontal(2);
-            if(Button(right, locale["update"], false))
+            if (Button(right, locale["update"], false))
             {
-                if(pageSelection == CustomLogicPage)
+                if (pageSelection == CustomLogicPage)
                 {
                     allNames = LoadFiles(LogicsPath);
                 }
@@ -57,7 +56,7 @@ namespace Anarchy.UI
                 }
             }
             right.MoveX();
-            if(Button(right, locale["random"], true))
+            if (Button(right, locale["random"], true))
             {
                 int pickId = Random.Range(0, allNames.Length);
                 if (filter.Length > 0)
@@ -98,7 +97,7 @@ namespace Anarchy.UI
 
         private string GetSendString(bool rnd, string name)
         {
-            return 
+            return
                 User.FormatColors($"<color=#$maincolor$>Next " +
                 $"{(pageSelection == CustomLogicPage ? "logic" : "map")}" +
                 $"{(rnd ? " (Random)" : "")}: " +
@@ -117,7 +116,7 @@ namespace Anarchy.UI
 
         private string LoadByName(string name, string path)
         {
-            if(System.IO.File.Exists(path + name + ".txt"))
+            if (System.IO.File.Exists(path + name + ".txt"))
             {
                 return System.IO.File.ReadAllText(path + name + ".txt");
             }
@@ -127,11 +126,11 @@ namespace Anarchy.UI
         private string[] LoadFiles(string path)
         {
             string[] files = System.IO.Directory.GetFiles(path);
-            if(files.Length == 0)
+            if (files.Length == 0)
             {
                 return new string[0];
             }
-            for(int i = 0; i < files.Length; i++)
+            for (int i = 0; i < files.Length; i++)
             {
                 var file = new System.IO.FileInfo(files[i]);
                 string name = file.Name;
@@ -192,7 +191,6 @@ namespace Anarchy.UI
             left.height = (BoxPosition.y + BoxPosition.height - Style.WindowBottomOffset - Style.Height - Style.VerticalMargin) - left.y;
             CustomLevel.currentScript = UnityEngine.GUI.TextArea(left.ToRect(), CustomLevel.currentScript, areaStyle);
 
-
             rect.MoveToEndY(BoxPosition, Style.Height);
             rect.width = 144f;
             rect.height = Style.Height;
@@ -247,7 +245,7 @@ namespace Anarchy.UI
 
         private void Pick(int id, string name, bool rnd)
         {
-            if(pageSelection == CustomLogicPage)
+            if (pageSelection == CustomLogicPage)
             {
                 CustomLevel.currentScriptLogic = Load(id, LogicsPath);
             }
@@ -274,7 +272,7 @@ namespace Anarchy.UI
             else
             {
                 CustomLevel.currentScript = LoadByName(name, MapsPath);
-                if(CustomLevel.currentScript == string.Empty)
+                if (CustomLevel.currentScript == string.Empty)
                 {
                     return;
                 }
@@ -293,14 +291,14 @@ namespace Anarchy.UI
                 return;
             }
             filterUpdate += Time.unscaledDeltaTime;
-            if(filterUpdate >= 1f)
+            if (filterUpdate >= 1f)
             {
                 string[] loaded = LoadFiles(pageSelection == CustomMapsPage ? MapsPath : LogicsPath);
-                if(filter != string.Empty)
+                if (filter != string.Empty)
                 {
                     var list = new System.Collections.Generic.List<string>();
                     string flt = filter.ToLower();
-                    foreach(string str in loaded)
+                    foreach (string str in loaded)
                     {
                         if (str.ToLower().Contains(flt))
                         {

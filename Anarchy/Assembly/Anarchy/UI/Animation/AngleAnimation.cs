@@ -2,7 +2,7 @@
 
 namespace Anarchy.UI.Animation
 {
-    public class AngleAnimation : Animation
+    public class AngleAnimation : GUIAnimation
     {
         private float deltaHeight;
         private float deltaWidth;

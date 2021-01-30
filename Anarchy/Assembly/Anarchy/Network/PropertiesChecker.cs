@@ -4,7 +4,7 @@ namespace Anarchy.Network
 {
     internal static class PropertiesChecker
     {
-        //Here is placed detection of most public mods 
+        //Here is placed detection of most public mods
         private static bool TryCheckMod(System.Collections.DictionaryEntry entry, out string modName)
         {
             modName = string.Empty;
@@ -70,7 +70,14 @@ namespace Anarchy.Network
                         if (entry.Value is string)
                         {
                             modName = ModNames.Universe;
+                            break;
                         }
+                        else if(entry.Value is int)
+                        {
+                            modName = ModNames.RRC;
+                            break;
+                        }
+                        detected = false;
                         break;
 
                     //Ranked RC mod by ????
@@ -91,17 +98,40 @@ namespace Anarchy.Network
                             switch (teamSting)
                             {
                                 //GucciGang mod by JustlPain
+                                case "GGM":
                                 case "GGM83":
                                 case "GucciLab":
                                     modName = ModNames.GucciGang;
                                     break;
 
+                                //Another DeadInside mod check
+                                case "Dead Inside":
+                                    modName = ModNames.DeadInside;
+                                    break;
+
                                 default:
-                                    detected = false;
                                     break;
                             }
                         }
-                        detected = false;
+                        detected = modName != string.Empty;
+                        break;
+
+                    case "Destroy":
+                        modName = ModNames.Destroy;
+                        break;
+
+                    case "BRM":
+                        modName = ModNames.Brm;
+                        break;
+
+                    case "DeadInside":
+                        modName = ModNames.DeadInside;
+                        break;
+
+                    case "INSANE":
+                    case "INS":
+                    case "INSANE new mod":
+                        modName = ModNames.Insane;
                         break;
 
                     default:
@@ -207,7 +237,7 @@ namespace Anarchy.Network
                     NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerPropertiesChanged, new object[] { player, properties });
                 }
             }
-        }   
+        }
 
         public static void CheckRoomProperties(Hashtable hash, PhotonPlayer sender)
         {

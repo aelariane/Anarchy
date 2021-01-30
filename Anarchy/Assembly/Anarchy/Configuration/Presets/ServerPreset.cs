@@ -6,7 +6,7 @@ namespace Anarchy.Configuration.Presets
 {
     public class ServerPreset : ISetting
     {
-        const string Extension = ".serverpreset";
+        private const string Extension = ".serverpreset";
         private static readonly string Path = Application.dataPath + "/Configuration/ServerPresets/";
 
         public int Daylight;
@@ -53,7 +53,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(Path);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             ServerPreset[] result = new ServerPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {

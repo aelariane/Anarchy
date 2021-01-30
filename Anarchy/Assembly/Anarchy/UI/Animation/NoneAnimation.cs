@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Anarchy.UI.Animation
+﻿namespace Anarchy.UI.Animation
 {
-    class NoneAnimation : Animation
+    internal class NoneAnimation : GUIAnimation
     {
         public NoneAnimation(GUIBase @base) : base(@base)
         {

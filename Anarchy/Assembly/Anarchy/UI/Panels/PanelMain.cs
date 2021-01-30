@@ -58,6 +58,11 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
+            var urlRect = new Rect(0f, 0f, new AutoScaleFloat(400), new AutoScaleFloat(100f));
+            if(GUI.Button(urlRect, locale["aottg2Message1"] + "\n" + locale["aottg2Message2"]))
+            {
+                Application.OpenURL("https://www.patreon.com/aottg2");
+            }
             enabledPanel = CheckActivePanel();
             if (GUI.Button(profileRect, locale["profile"] + " <b>" + User.ProfileName + "</b>"))
             {
@@ -109,7 +114,6 @@ namespace Anarchy.UI
             style.normal.background = style.hover.background = style.active.background = EmptyTexture;
             style.font = AnarchyAssets.Load<Font>(Style.FontName);
             allUsedPanels = new GUIBase[] { AnarchyManager.ProfilePanel, AnarchyManager.SinglePanel, AnarchyManager.ServerList, AnarchyManager.SettingsPanel };
-
         }
 
         public override void OnUpdateScaling()

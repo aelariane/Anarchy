@@ -13,7 +13,7 @@ namespace Anarchy.Skins.Maps
         public override void Apply()
         {
             var mat = Camera.main.GetComponent<Skybox>().renderer.material;
-            for(int i = 0; i < DataLength - 1; i++)
+            for (int i = 0; i < DataLength - 1; i++)
             {
                 SkinElement skin = elements[i];
                 if (skin != null && skin.IsDone)
@@ -44,9 +44,9 @@ namespace Anarchy.Skins.Maps
 
             foreach (Renderer render in tmp)
             {
-                if(render != null)
+                if (render != null)
                 {
-                    if(groundSkin.Path.ToLower() == "transparent")
+                    if (groundSkin.Path.ToLower() == "transparent")
                     {
                         render.enabled = false;
                         continue;

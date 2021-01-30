@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Optimization
 {
-    class PlayerList
+    internal class PlayerList
     {
         public PlayerList()
         {
@@ -21,7 +21,38 @@ namespace Optimization
             bld.Append(player.IsMasterClient ? "[MC] " : "");
             bld.Append(player.Dead ? $"[{ColorSet.color_red}]*dead* " : "");
             bld.Append(player.IsTitan ? $"[{ColorSet.color_titan_player}][T] " : (player.Team == 2 ? $"[{ColorSet.color_human_1}][A] " : $"[{ColorSet.color_human}][H] "));
-            bld.Append($"{((player.UIName.Contains("<") || player.UIName.Contains(">")) ? "InvalidName" : player.UIName)}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.Max_Dmg}/{player.Total_Dmg}");
+            bld.Append($"{(player.UIName.RemoveHTML())}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.Max_Dmg}/{player.Total_Dmg} ");
+            //if (player.AbuseInformation.InfiniteGas)
+            //{
+            //    bld.Append("[CB0000][GAS][-] ");
+            //}
+            //if (player.AbuseInformation.InfiniteBlades)
+            //{
+            //    bld.Append("[CB0000][BLA][-] ");
+            //}
+            //if (player.AbuseInformation.InfiniteBullets)
+            //{
+            //    bld.Append("[CB0000][BUL][-] ");
+            //}
+            if (player.AbuseInformation.CharacterUnusualStats)
+            {
+                bld.Append("[CB0000][STATS][-] ");
+            }
+
+            if (player.Properties.ContainsKey(PhotonPlayerProperty.anarchyFlags))
+            {
+                int? anarchyFlag = player.Properties[PhotonPlayerProperty.anarchyFlags] as int?;
+                if(anarchyFlag.HasValue && anarchyFlag.Value > 0)
+                {
+                    bld.Append("[CCCCDD][?][-] ");
+                }
+                int? abuseFlag = player.Properties[PhotonPlayerProperty.anarchyAbuseFlags] as int?;
+                if (abuseFlag.HasValue && abuseFlag.Value > 0)
+                {
+                    bld.Append("[FF0000][A][-] ");
+                }
+
+            }
             return bld.ToString();
         }
 
@@ -80,7 +111,7 @@ namespace Optimization
             {
                 for (int i = 0; i < PhotonNetwork.playerList.Length; i++)
                 {
-                    if(i >= 25)
+                    if (i >= 25)
                     {
                         bld.Append("And " + (PhotonNetwork.playerList.Length - 25) + " players...");
                         break;
@@ -95,6 +126,5 @@ namespace Optimization
         {
             return $"{stats[0]}/{stats[1]}/{stats[2]}/{stats[3]}";
         }
-
     }
 }

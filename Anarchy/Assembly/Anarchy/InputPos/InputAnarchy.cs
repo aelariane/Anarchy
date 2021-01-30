@@ -2,9 +2,10 @@
 {
     internal enum InputAnarchy
     {
-        Restart,
-        Pause,
-        DebugPanel,
-        StatsPanel
+        Restart = 0,
+        Pause = 1,
+        DebugPanel = 2,
+        ChatHistoryPanel = 3,
+        StatsPanel = 4,
     }
 }

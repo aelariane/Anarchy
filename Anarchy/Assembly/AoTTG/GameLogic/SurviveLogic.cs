@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Anarchy;
+﻿using Anarchy;
 using Optimization;
 
 namespace GameLogic
@@ -76,7 +72,7 @@ namespace GameLogic
             }
         }
 
-        public  override void OnRefreshStatus(int score1, int score2, int wav, int highestWav, float time1, float time2, bool startRacin, bool endRacin)
+        public override void OnRefreshStatus(int score1, int score2, int wav, int highestWav, float time1, float time2, bool startRacin, bool endRacin)
         {
             HumanScore = score1;
             TitanScore = score2;
@@ -114,7 +110,7 @@ namespace GameLogic
             string center = string.Empty;
             string top = string.Empty;
             top += Lang.Format("titans", FengGameManagerMKII.Titans.Count.ToString());
-            top += " " +Lang.Format("wave", Round.Wave.ToString());
+            top += " " + Lang.Format("wave", Round.Wave.ToString());
             if (!Multiplayer)
             {
                 Labels.TopLeft = Lang.Format("singleState", FengGameManagerMKII.FGM.singleKills.ToString(), FengGameManagerMKII.FGM.singleMax.ToString(), FengGameManagerMKII.FGM.singleTotal.ToString());
@@ -141,7 +137,7 @@ namespace GameLogic
                     center = Lang.Format("surviveSingleFail", Round.Wave.ToString(), Anarchy.InputManager.Settings[InputCode.Restart].ToString());
                 }
             }
-            if(center != "")
+            if (center != "")
             {
                 center += "\n\n";
             }

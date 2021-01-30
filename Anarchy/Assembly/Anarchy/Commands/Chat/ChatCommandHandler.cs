@@ -39,6 +39,7 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("mute", new MuteCommand(true));
             allCommands.Add("unmute", new MuteCommand(false));
             allCommands.Add("animate", new AnimateNameCommand());
+            allCommands.Add("checkuser", new CheckAnarchyUserCommand());
         }
 
         private void NotFound(string name)
@@ -56,7 +57,7 @@ namespace Anarchy.Commands.Chat
 
         public void TryHandleCommand(ICommand cmd, string inputLine)
         {
-            if(cmd.Execute(inputLine.Split(' ')))
+            if (cmd.Execute(inputLine.Split(' ')))
             {
                 cmd.OnSuccess();
             }
@@ -69,12 +70,12 @@ namespace Anarchy.Commands.Chat
         public void TryHandle(string inputLine)
         {
             string[] strArray = inputLine.Substring(1).Split(' ');
-            if(!allCommands.TryGetValue(strArray[0].ToLower(), out ChatCommand cmd))
+            if (!allCommands.TryGetValue(strArray[0].ToLower(), out ChatCommand cmd))
             {
                 NotFound(strArray[0].ToLower());
                 return;
             }
-            if(cmd.RequireMC && !PhotonNetwork.IsMasterClient)
+            if (cmd.RequireMC && !PhotonNetwork.IsMasterClient)
             {
                 UI.Chat.Add(ChatCommand.Lang["errMC"]);
                 return;
@@ -91,7 +92,7 @@ namespace Anarchy.Commands.Chat
                     cmd.OnFail();
                 }
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 UI.Chat.Add(ChatCommand.Lang.Format("errExecute", cmd.CommandName));
                 UnityEngine.Debug.Log($"Exception occured while executing command: {cmd.CommandName}\nException message: {ex.Message}\nStackTrace:\n{ex.StackTrace}");

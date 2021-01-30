@@ -13,7 +13,9 @@ public class CatchDestroy : MonoBehaviour
     private void OnDestroy()
     {
         if (target != null && !destroyed)
+        {
             Optimization.Caching.Pool.Disable(target);
+        }
     }
 
     private void OnEnable()

@@ -1,5 +1,4 @@
-﻿
-public class RaiseEventOptions
+﻿public class RaiseEventOptions
 {
     public static readonly RaiseEventOptions Default = new RaiseEventOptions();
 

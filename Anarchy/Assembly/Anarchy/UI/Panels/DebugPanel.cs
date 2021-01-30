@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Anarchy;
-using Anarchy.Configuration;
-using Optimization;
-using UnityEngine;
-using GUI = Anarchy.UI.GUI;
-using GUILayout = Anarchy.UI.GUILayout;
-using static Anarchy.UI.GUI;
+﻿using Anarchy.Configuration;
 using ExitGames.Client.Photon;
-
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using static Anarchy.UI.GUI;
 
 namespace Anarchy.UI
 {
@@ -65,7 +59,8 @@ namespace Anarchy.UI
         public DebugPanel() : base(nameof(DebugPanel), GUILayers.DebugPanel)
         {
             PhotonNetwork.networkingPeer.TrafficStatsEnabled = NetworkStats.Value;
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+            animator = new Animation.NoneAnimation(this);
+            //animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
             messages = new List<LogMessage>();
             Application.RegisterLogCallback(Log);
         }
@@ -73,6 +68,7 @@ namespace Anarchy.UI
         public void Log(string message, string trace, LogType type)
         {
             messages.Add(new LogMessage(message, trace, type));
+            //scrollAreaView.height = messages.Count * Style.Height + (messages.Count + 1) * Style.VerticalMargin;
         }
 
         [GUIPage(Debug)]
@@ -82,13 +78,17 @@ namespace Anarchy.UI
             rect.MoveY();
             scrollRect.Reset();
             scrollArea.y = rect.y;
-            scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
-            var options = new GUILayoutOption[0];
-            foreach (var msg in messages)
+
+            if (messages.Count > 0)
             {
-                GUILayout.Label(msg.ToString(), options);
+                scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
+                var options = new GUILayoutOption[0];
+                foreach (var msg in messages)
+                {
+                    GUILayout.Label(msg.ToString(), options);
+                }
+                EndScrollView();
             }
-            EndScrollView();
         }
 
         [GUIPage(Players)]
@@ -137,7 +137,7 @@ namespace Anarchy.UI
         private void DrawLowerButtons()
         {
             rect.MoveToEndY(BoxPosition, Style.Height);
-            if(pageSelection == Players)
+            if (pageSelection == Players)
             {
                 rect.width = left.width;
                 ToggleButton(rect, PlayersColor, "Use coloring:", false);
@@ -162,7 +162,8 @@ namespace Anarchy.UI
 
         public override void OnUpdateScaling()
         {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+            animator = new Animation.NoneAnimation(this);
+            //animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         protected override void DrawMainPart()
@@ -180,7 +181,7 @@ namespace Anarchy.UI
                 IN_GAME_MAIN_CAMERA.isPausing = false;
                 InputManager.MenuOn = false;
             }
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
                 Time.timeScale = 1f;
             }
@@ -189,7 +190,7 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
             {
                 Time.timeScale = 0f;
             }
@@ -207,7 +208,6 @@ namespace Anarchy.UI
                 }
             }
             rect = Helper.GetSmartRects(BoxPosition, 1)[0];
-
 
             scroll = Optimization.Caching.Vectors.v2zero;
             scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
@@ -271,7 +271,6 @@ namespace Anarchy.UI
                 PhotonNetwork.networkingPeer.TrafficStatsEnabled = true;
             }
 
-
             LabelCenter(right, locale["in"], true);
             var stats = PhotonNetwork.networkingPeer.TrafficStatsIncoming;
             Label(right, locale.Format("bytesCountPackets", stats.TotalPacketBytes.ToString()), true);
@@ -279,14 +278,12 @@ namespace Anarchy.UI
             Label(right, locale.Format("packetsCount", stats.TotalPacketCount.ToString()), true);
             Label(right, locale.Format("cmdCount", stats.TotalCommandsInPackets.ToString()), true);
 
-
             LabelCenter(right, locale["out"], true);
             stats = PhotonNetwork.networkingPeer.TrafficStatsOutgoing;
             Label(right, locale.Format("bytesCountPackets", stats.TotalPacketBytes.ToString()), true);
             Label(right, locale.Format("bytesCountCmd", stats.TotalCommandBytes.ToString()), true);
             Label(right, locale.Format("packetsCount", stats.TotalPacketCount.ToString()), true);
             Label(right, locale.Format("cmdCount", stats.TotalCommandsInPackets.ToString()), true);
-
         }
 
         internal class LogMessage

@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Linq;
-using Anarchy.Configuration.Storage;
+﻿using Anarchy.Configuration.Storage;
 using Anarchy.Localization;
 using Anarchy.UI;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
 
@@ -12,7 +12,7 @@ namespace Anarchy.Configuration.Presets
     {
         public static readonly string SkyboxPath = Application.dataPath + "/Configuration/SkyboxSkins/";
         private const int Length = 6;
-        private static readonly string[] labels = new string[Length] { "Front", "Back", "Left", "Right", "Up", "Down" }; 
+        private static readonly string[] labels = new string[Length] { "Front", "Back", "Left", "Right", "Up", "Down" };
 
         private string[] data;
 
@@ -30,13 +30,13 @@ namespace Anarchy.Configuration.Presets
 
         public override void Draw(SmartRect rect, Locale locale)
         {
-            for(int i = 0; i< Length; i++)
+            for (int i = 0; i < Length; i++)
             {
                 LabelCenter(rect, locale["skybox" + labels[i]], true);
                 data[i] = TextField(rect, data[i], string.Empty, 0f, true);
             }
             rect.MoveY();
-            if(SkinSettings.CitySet.Value != Anarchy.Configuration.StringSetting.NotDefine)
+            if (SkinSettings.CitySet.Value != Anarchy.Configuration.StringSetting.NotDefine)
             {
                 if (Button(rect, locale.Format("btnLinkCity", SkinSettings.CitySet.Value), true))
                 {
@@ -66,7 +66,7 @@ namespace Anarchy.Configuration.Presets
         public void LinkToForestSet(string setName)
         {
             ForestPreset set = new ForestPreset(setName);
-            if(set.Exists())
+            if (set.Exists())
             {
                 set.Load();
                 set.LinkedSkybox = Name;
@@ -107,7 +107,10 @@ namespace Anarchy.Configuration.Presets
             DirectoryInfo info = new DirectoryInfo(SkyboxPath);
             FileInfo[] files = info.GetFiles();
             if (files.Length == 0)
+            {
                 return null;
+            }
+
             SkinPreset[] result = new SkinPreset[files.Length];
             for (int i = 0; i < files.Length; i++)
             {
