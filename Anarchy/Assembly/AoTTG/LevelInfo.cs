@@ -51,7 +51,7 @@ public class LevelInfo
         if (!initialized)
         {
             initialized = true;
-            Levels = new LevelInfo[28];
+            Levels = new LevelInfo[32];
             Levels[0] = new LevelInfo();
             Levels[1] = new LevelInfo();
             Levels[2] = new LevelInfo();
@@ -79,13 +79,12 @@ public class LevelInfo
             Levels[24] = new LevelInfo();
             Levels[25] = new LevelInfo();
             Levels[26] = new LevelInfo();
-            Levels[27] = new LevelInfo();
 
             Levels[0].Name = "The City";
             Levels[0].MapName = "The City I";
             Levels[0].Description = "kill all the titans with your friends.(No RESPAWN/SUPPLY/PLAY AS TITAN)";
             Levels[0].EnemyNumber = 10;
-            Levels[0].Mode = GameMode.KILL_TITAN;
+            Levels[0].Mode = GameMode.KillTitan;
             Levels[0].RespawnMode = RespawnMode.NEVER;
             Levels[0].Supply = true;
             Levels[0].TeamTitan = true;
@@ -97,7 +96,7 @@ public class LevelInfo
             Levels[1].MapName = "The City I";
             Levels[1].Description = "Fight the titans with your friends.(RESPAWN AFTER 10 SECONDS/SUPPLY/TEAM TITAN)";
             Levels[1].EnemyNumber = 10;
-            Levels[1].Mode = GameMode.KILL_TITAN;
+            Levels[1].Mode = GameMode.KillTitan;
             Levels[1].RespawnMode = RespawnMode.DEATHMATCH;
             Levels[1].Supply = true;
             Levels[1].TeamTitan = true;
@@ -117,7 +116,7 @@ public class LevelInfo
             Levels[3].MapName = "The Forest";
             Levels[3].Description = "The Forest Of Giant Trees.(No RESPAWN/SUPPLY/PLAY AS TITAN)";
             Levels[3].EnemyNumber = 5;
-            Levels[3].Mode = GameMode.KILL_TITAN;
+            Levels[3].Mode = GameMode.KillTitan;
             Levels[3].RespawnMode = RespawnMode.NEVER;
             Levels[3].Supply = true;
             Levels[3].TeamTitan = true;
@@ -129,7 +128,7 @@ public class LevelInfo
             Levels[4].MapName = "The Forest";
             Levels[4].Description = "Survive for 20 waves.";
             Levels[4].EnemyNumber = 3;
-            Levels[4].Mode = GameMode.SURVIVE_MODE;
+            Levels[4].Mode = GameMode.SurviveMode;
             Levels[4].RespawnMode = RespawnMode.NEVER;
             Levels[4].Supply = true;
             Levels[4].DiscordName = "forest";
@@ -139,7 +138,7 @@ public class LevelInfo
             Levels[5].MapName = "The Forest";
             Levels[5].Description = "Survive for 20 waves.player will respawn in every new wave";
             Levels[5].EnemyNumber = 3;
-            Levels[5].Mode = GameMode.SURVIVE_MODE;
+            Levels[5].Mode = GameMode.SurviveMode;
             Levels[5].RespawnMode = RespawnMode.NEWROUND;
             Levels[5].Supply = true;
             Levels[5].DiscordName = "forest";
@@ -149,7 +148,7 @@ public class LevelInfo
             Levels[6].MapName = "The Forest";
             Levels[6].Description = "Nape Armor/ Ankle Armor:\nNormal:1000/50\nHard:2500/100\nAbnormal:4000/200\nYou only have 1 life.Don't do this alone.";
             Levels[6].EnemyNumber = 15;
-            Levels[6].Mode = GameMode.KILL_TITAN;
+            Levels[6].Mode = GameMode.KillTitan;
             Levels[6].RespawnMode = RespawnMode.NEVER;
             Levels[6].PunksEnabled = false;
             Levels[6].PVPEnabled = true;
@@ -160,7 +159,7 @@ public class LevelInfo
             Levels[7].MapName = "The Forest";
             Levels[7].Description = "Nape Armor/ Ankle Armor:\nNormal:1000/50\nHard:3000/200\nAbnormal:6000/1000\n(RESPAWN AFTER 10 SECONDS)";
             Levels[7].EnemyNumber = 15;
-            Levels[7].Mode = GameMode.KILL_TITAN;
+            Levels[7].Mode = GameMode.KillTitan;
             Levels[7].RespawnMode = RespawnMode.DEATHMATCH;
             Levels[7].PunksEnabled = false;
             Levels[7].PVPEnabled = true;
@@ -171,7 +170,7 @@ public class LevelInfo
             Levels[8].MapName = "Colossal Titan";
             Levels[8].Description = "Defeat the Colossal Titan.\nPrevent the abnormal titan from running to the north gate.\n Nape Armor:\n Normal:2000\nHard:3500\nAbnormal:5000\n";
             Levels[8].EnemyNumber = 2;
-            Levels[8].Mode = GameMode.BOSS_FIGHT_CT;
+            Levels[8].Mode = GameMode.BossFightCT;
             Levels[8].RespawnMode = RespawnMode.NEVER;
             Levels[8].DiscordName = "colossal";
             Levels[8].LogicType = typeof(GameLogic.CTFightLogic);
@@ -180,7 +179,7 @@ public class LevelInfo
             Levels[9].MapName = "Colossal Titan";
             Levels[9].Description = "Defeat the Colossal Titan.\nPrevent the abnormal titan from running to the north gate.\n Nape Armor:\n Normal:5000\nHard:8000\nAbnormal:12000\n(RESPAWN AFTER 10 SECONDS)";
             Levels[9].EnemyNumber = 2;
-            Levels[9].Mode = GameMode.BOSS_FIGHT_CT;
+            Levels[9].Mode = GameMode.BossFightCT;
             Levels[9].RespawnMode = RespawnMode.DEATHMATCH;
             Levels[9].DiscordName = "colossal";
             Levels[9].LogicType = typeof(GameLogic.CTFightLogic);
@@ -189,7 +188,7 @@ public class LevelInfo
             Levels[10].MapName = "Colossal Titan";
             Levels[10].Description = "Escort Titan Eren";
             Levels[10].EnemyNumber = 2;
-            Levels[10].Mode = GameMode.TROST;
+            Levels[10].Mode = GameMode.Trost;
             Levels[10].RespawnMode = RespawnMode.NEVER;
             Levels[10].PunksEnabled = false;
             Levels[10].DiscordName = "city";
@@ -199,7 +198,7 @@ public class LevelInfo
             Levels[11].MapName = "Colossal Titan";
             Levels[11].Description = "Escort Titan Eren(RESPAWN AFTER 10 SECONDS)";
             Levels[11].EnemyNumber = 2;
-            Levels[11].Mode = GameMode.TROST;
+            Levels[11].Mode = GameMode.Trost;
             Levels[11].RespawnMode = RespawnMode.DEATHMATCH;
             Levels[11].PunksEnabled = false;
             Levels[11].DiscordName = "city";
@@ -209,7 +208,7 @@ public class LevelInfo
             Levels[12].MapName = "The City I";
             Levels[12].Description = "Kill all 15 Titans";
             Levels[12].EnemyNumber = 15;
-            Levels[12].Mode = GameMode.KILL_TITAN;
+            Levels[12].Mode = GameMode.KillTitan;
             Levels[12].RespawnMode = RespawnMode.NEVER;
             Levels[12].Supply = true;
             Levels[12].DiscordName = "city";
@@ -219,7 +218,7 @@ public class LevelInfo
             Levels[13].MapName = "The Forest";
             Levels[13].Description = string.Empty;
             Levels[13].EnemyNumber = 15;
-            Levels[13].Mode = GameMode.KILL_TITAN;
+            Levels[13].Mode = GameMode.KillTitan;
             Levels[13].RespawnMode = RespawnMode.NEVER;
             Levels[13].Supply = true;
             Levels[13].DiscordName = "forest";
@@ -229,7 +228,7 @@ public class LevelInfo
             Levels[14].MapName = "The Forest";
             Levels[14].Description = string.Empty;
             Levels[14].EnemyNumber = 3;
-            Levels[14].Mode = GameMode.SURVIVE_MODE;
+            Levels[14].Mode = GameMode.SurviveMode;
             Levels[14].RespawnMode = RespawnMode.NEVER;
             Levels[14].Supply = true;
             Levels[14].NoCrawler = true;
@@ -241,7 +240,7 @@ public class LevelInfo
             Levels[15].MapName = "tutorial";
             Levels[15].Description = string.Empty;
             Levels[15].EnemyNumber = 1;
-            Levels[15].Mode = GameMode.KILL_TITAN;
+            Levels[15].Mode = GameMode.KillTitan;
             Levels[15].RespawnMode = RespawnMode.NEVER;
             Levels[15].Supply = true;
             Levels[15].Hint = true;
@@ -253,7 +252,7 @@ public class LevelInfo
             Levels[16].MapName = "tutorial 1";
             Levels[16].Description = string.Empty;
             Levels[16].EnemyNumber = 7;
-            Levels[16].Mode = GameMode.KILL_TITAN;
+            Levels[16].Mode = GameMode.KillTitan;
             Levels[16].RespawnMode = RespawnMode.NEVER;
             Levels[16].Supply = true;
             Levels[16].PunksEnabled = false;
@@ -264,7 +263,7 @@ public class LevelInfo
             Levels[17].MapName = "The Forest";
             Levels[17].Description = "Survive for 20 waves.player will respawn in every new wave.\nNO CRAWLERS\n***YOU CAN'T TOUCH THE GROUND!***";
             Levels[17].EnemyNumber = 3;
-            Levels[17].Mode = GameMode.SURVIVE_MODE;
+            Levels[17].Mode = GameMode.SurviveMode;
             Levels[17].RespawnMode = RespawnMode.NEWROUND;
             Levels[17].Supply = true;
             Levels[17].NoCrawler = true;
@@ -321,7 +320,7 @@ public class LevelInfo
             Levels[22].MapName = "CaveFight";
             Levels[22].Description = "***Spoiler Alarm!***";
             Levels[22].EnemyNumber = -1;
-            Levels[22].Mode = GameMode.PVP_AHSS;
+            Levels[22].Mode = GameMode.PvpAhss;
             Levels[22].RespawnMode = RespawnMode.NEVER;
             Levels[22].Supply = true;
             Levels[22].HorsesEnabled = false;
@@ -334,7 +333,7 @@ public class LevelInfo
             Levels[23].MapName = "HouseFight";
             Levels[23].Description = "***Spoiler Alarm!***";
             Levels[23].EnemyNumber = -1;
-            Levels[23].Mode = GameMode.PVP_AHSS;
+            Levels[23].Mode = GameMode.PvpAhss;
             Levels[23].RespawnMode = RespawnMode.NEVER;
             Levels[23].Supply = true;
             Levels[23].HorsesEnabled = false;
@@ -347,7 +346,7 @@ public class LevelInfo
             Levels[24].MapName = "The Forest";
             Levels[24].Description = string.Empty;
             Levels[24].EnemyNumber = 3;
-            Levels[24].Mode = GameMode.SURVIVE_MODE;
+            Levels[24].Mode = GameMode.SurviveMode;
             Levels[24].RespawnMode = RespawnMode.NEVER;
             Levels[24].Supply = true;
             Levels[24].NoCrawler = true;
@@ -359,7 +358,7 @@ public class LevelInfo
             Levels[25].MapName = "The Forest";
             Levels[25].Description = "Custom Map.";
             Levels[25].EnemyNumber = 1;
-            Levels[25].Mode = GameMode.KILL_TITAN;
+            Levels[25].Mode = GameMode.KillTitan;
             Levels[25].RespawnMode = RespawnMode.NEVER;
             Levels[25].Supply = true;
             Levels[25].TeamTitan = true;
@@ -372,7 +371,7 @@ public class LevelInfo
             Levels[26].MapName = "The Forest";
             Levels[26].Description = "Custom Map (No Player Titans).";
             Levels[26].EnemyNumber = 1;
-            Levels[26].Mode = GameMode.KILL_TITAN;
+            Levels[26].Mode = GameMode.KillTitan;
             Levels[26].RespawnMode = RespawnMode.NEVER;
             Levels[26].Supply = true;
             Levels[26].TeamTitan = false;
@@ -388,6 +387,49 @@ public class LevelInfo
             Levels[19].minimapPreset = new Minimap.Preset(new Vector3(443.2f, 0f, 1912.6f), 1929.042f);
             Levels[20].minimapPreset = new Minimap.Preset(new Vector3(2549.4f, 0f, 3042.4f), 3697.16f);
             Levels[21].minimapPreset = new Minimap.Preset(new Vector3(22.6f, 0f, 13f), 734.9738f);
+
+            //Guardian maps (27,28,29)
+            Levels[27] = new LevelInfo();//TODO: Multi-Map
+            Levels[28] = new LevelInfo
+            {
+                Name = "The City IV",
+                MapName = "The City I",
+                Description = "Survive all 20 waves. (No respawns)",
+                EnemyNumber = 3,
+                Mode = GameMode.SurviveMode,
+                RespawnMode = RespawnMode.NEVER,
+                Supply = true,
+                DiscordName = "city",
+                LogicType = typeof(GameLogic.SurviveLogic)
+            };
+            Levels[29] = new LevelInfo
+            {
+                Name = "The City V",
+                MapName = "The City I",
+                Description = "Survive all 20 waves. (Respawn on each new wave)",
+                EnemyNumber = 3,
+                Mode = GameMode.SurviveMode,
+                RespawnMode = RespawnMode.NEWROUND,
+                Supply = true,
+                DiscordName = "city",
+                LogicType = typeof(GameLogic.SurviveLogic)
+            };
+            //Anarchy maps (30)
+            Levels[30] = new LevelInfo
+            {
+                Name = "Custom-Anarchy (No PT)",
+                MapName = "The Forest",
+                Description = "Custom maps with Anarchy extension (No PT)",
+                EnemyNumber = 1,
+                Mode = GameMode.KillTitan,
+                RespawnMode = RespawnMode.NEVER,
+                Supply = true,
+                TeamTitan = false,
+                PVPEnabled = true,
+                PunksEnabled = true,
+                DiscordName = "custom",
+                LogicType = typeof(GameLogic.KillTitanLogic)
+            };
         }
     }
 }

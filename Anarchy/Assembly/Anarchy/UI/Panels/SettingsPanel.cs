@@ -232,6 +232,7 @@ namespace Anarchy.UI
                     if (Button(left, "Apply changes"))
                     {
                         Style.PublicSettings[0] = AnarchyAssets.FontNames[Style.FontSetting.Value];
+                        UIManager.HUDScaleGUI.Value = (float)System.Math.Round(UIManager.HUDScaleGUI.Value, 2);
                         Style.Save();
                         Style.Load();
                         Style.Initialize();
@@ -500,6 +501,7 @@ namespace Anarchy.UI
 
         protected override void OnPanelDisable()
         {
+            UIManager.HUDScaleGUI.Value = (float)System.Math.Round(UIManager.HUDScaleGUI.Value, 2);
             pagesSelection = null;
             head = null;
             left = null;

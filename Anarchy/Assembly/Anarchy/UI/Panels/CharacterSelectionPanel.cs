@@ -52,7 +52,7 @@ namespace Anarchy.UI
                 return;
             }
 
-            if (FengGameManagerMKII.Level.TeamTitan && IN_GAME_MAIN_CAMERA.GameMode != GameMode.PVP_AHSS)
+            if (FengGameManagerMKII.Level.TeamTitan && IN_GAME_MAIN_CAMERA.GameMode != GameMode.PvpAhss)
             {
                 if (Button(left, locale["titanStart"], true))
                 {
@@ -144,7 +144,7 @@ namespace Anarchy.UI
                     FengGameManagerMKII.FGM.BasePV.RPC("restartGameByClient", PhotonTargets.MasterClient, new object[0]);
                 }
             }
-            else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.BOSS_FIGHT_CT || IN_GAME_MAIN_CAMERA.GameMode == GameMode.TROST || IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
+            else if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.BossFightCT || IN_GAME_MAIN_CAMERA.GameMode == GameMode.Trost || IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_CAPTURE)
             {
                 if (FengGameManagerMKII.IsPlayerAllDead())
                 {

@@ -19,6 +19,8 @@ namespace Anarchy.UI
         private const float UpdateTime = 2f;
         private readonly string[] CustomServers = new string[] { "01042015", "verified343" };
 
+        private Anarchy.Configuration.IntSetting mapSelectionSetting;
+
         private bool connected = false;
         private bool connectNext = false;
         private int customServer = 0;
@@ -31,7 +33,7 @@ namespace Anarchy.UI
         private bool disconnectByJoin = false;
         private SmartRect left;
         private string[] maps;
-        private int mapSelection;
+        //private int mapSelection;
         private string maxPlayers;
         private string nameFilter;
         private string newPresetName;
@@ -123,6 +125,7 @@ namespace Anarchy.UI
             presets = null;
             newPresetName = null;
             presetRect = null;
+            mapSelectionSetting = null;
         }
 
         [GUIPage(ServerListPage, GUIPageType.DisableMethod)]
@@ -160,8 +163,14 @@ namespace Anarchy.UI
             serverName = "Food for titoons";
             serverTime = "83";
             password = string.Empty;
-            mapSelection = 0;
-            maps = new string[] { "The City", "The Forest", "The Forest II", "The Forest III", "The Forest IV  - LAVA", "Annie", "Annie II", "Colossal Titan", "Colossal Titan II", "Trost", "Trost II", "Racing - Akina", "Outside The Walls", "The City III", "Cave Fight", "House Fight", "Custom", "Custom (No PT)" };
+            //mapSelection = 0;
+            maps = new string[] { 
+                "The City", "The Forest", "The Forest II", "The Forest III", "The Forest IV  - LAVA", "Annie", "Annie II", "Colossal Titan", "Colossal Titan II", 
+                "Trost", "Trost II", "Racing - Akina", "Outside The Walls", "The City III", "Cave Fight", "House Fight", "Custom", "Custom (No PT)", //End RC maps
+                //Custom maps, added in Anarchy or other mods
+                "The City II", "The City IV", "The City V",
+                //Anarchy maps
+                "Custom-Anarchy (No PT)" };
             daylight = 0;
             daylights = locale.GetArray("dayLights");
             difficulity = 0;
@@ -185,6 +194,8 @@ namespace Anarchy.UI
             presetView = new Rect(0f, 0f, left.width, Style.Height * presets.Count + (Style.VerticalMargin * (presets.Count - 1)));
             presetRect = new SmartRect(0f, 0f, left.width, Style.Height, 0f, Style.VerticalMargin);
             presetScroll = Optimization.Caching.Vectors.v2zero;
+            mapSelectionSetting = new Configuration.IntSetting("tempMapSelectionSetting", 0);
+            mapSelectionSetting.Value = 0;
         }
 
         [GUIPage(ServerListPage, GUIPageType.EnableMethod)]
@@ -223,7 +234,7 @@ namespace Anarchy.UI
         {
             set.Daylight = daylight;
             set.Difficulity = difficulity;
-            set.Map = mapSelection;
+            set.Map = mapSelectionSetting.Value;
             set.Password = password;
             set.Players = maxPlayers;
             set.ServerName = serverName;
@@ -234,7 +245,7 @@ namespace Anarchy.UI
         {
             daylight = preset.Daylight;
             difficulity = preset.Difficulity;
-            mapSelection = preset.Map;
+            mapSelectionSetting.Value = preset.Map;
             password = preset.Password;
             serverName = preset.ServerName;
             maxPlayers = preset.Players;
@@ -426,7 +437,7 @@ namespace Anarchy.UI
                 string[] args = new string[]
                 {
                     serverName,
-                    maps[mapSelection],
+                    maps[mapSelectionSetting],
                     new string[] { "normal", "hard", "abnormal" }[difficulity],
                     serverTime,
                     new string[] { "day", "dawn", "night" }[daylight],
@@ -451,7 +462,7 @@ namespace Anarchy.UI
                 string[] args = new string[]
                 {
                     serverName,
-                    maps[mapSelection],
+                    maps[mapSelectionSetting.Value],
                     new string[] { "normal", "hard", "abnormal" }[difficulity],
                     serverTime,
                     new string[] { "day", "dawn", "night" }[daylight],
@@ -469,7 +480,11 @@ namespace Anarchy.UI
             }
 
             LabelCenter(right, locale["mapSelection"], true);
-            mapSelection = SelectionGrid(right, mapSelection, maps, 1);
+            //mapSelection = SelectionGrid(right, mapSelection, maps, 1);
+            DropdownMenuScrollable(right, mapSelectionSetting, maps, 10, true);
+            right.MoveY();
+            right.MoveY();
+            Label(right, LevelInfo.GetInfo(maps[mapSelectionSetting.Value], false).Description, true);
             right.MoveToEndY(BoxPosition, Style.Height);
             right.MoveToEndX(BoxPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
             right.width = new AutoScaleFloat(120f);

@@ -56,6 +56,7 @@ namespace Anarchy.UI
                     }
                 }
             }
+
         }
 
         private void CheckPageChange()

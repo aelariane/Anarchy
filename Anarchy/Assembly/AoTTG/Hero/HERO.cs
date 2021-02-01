@@ -591,7 +591,7 @@ public partial class HERO : HeroBase
 
     private void ChangeBlade()
     {
-        if (Gunner && !grounded && FengGameManagerMKII.Level.Mode == GameMode.PVP_AHSS)
+        if (Gunner && !grounded && FengGameManagerMKII.Level.Mode == GameMode.PvpAhss)
         {
             return;
         }
@@ -3644,7 +3644,7 @@ public partial class HERO : HeroBase
                     {
                         if (FengGameManagerMKII.Level.TeamTitan || FengGameManagerMKII.Level.Mode == GameMode.RACING ||
                             FengGameManagerMKII.Level.Mode == GameMode.PVP_CAPTURE ||
-                            FengGameManagerMKII.Level.Mode == GameMode.TROST)
+                            FengGameManagerMKII.Level.Mode == GameMode.Trost)
                         {
                             skillID = "petra";
                             skillCDLast = 1f;
@@ -4485,7 +4485,7 @@ public partial class HERO : HeroBase
                         targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
                         ShowBullets();
                     }
-                    else if (flag4 && (grounded || FengGameManagerMKII.Level.Mode != GameMode.PVP_AHSS))
+                    else if (flag4 && (grounded || FengGameManagerMKII.Level.Mode != GameMode.PvpAhss))
                     {
                         ChangeBlade();
                         ShowBullets();

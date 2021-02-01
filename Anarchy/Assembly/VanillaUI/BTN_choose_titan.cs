@@ -6,7 +6,7 @@ public class BTN_choose_titan : MonoBehaviour
 {
     private void OnClick()
     {
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_AHSS)
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PvpAhss)
         {
             string text = "AHSS";
             NGUITools.SetActive(FengGameManagerMKII.UIRefer.panels[0], true);

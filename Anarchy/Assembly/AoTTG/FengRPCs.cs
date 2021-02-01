@@ -111,7 +111,7 @@ internal partial class FengGameManagerMKII
         switch (gametype)
         {
             case 0:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.KILL_TITAN;
+                IN_GAME_MAIN_CAMERA.GameMode = GameMode.KillTitan;
                 if (!(logic is KillTitanLogic))
                 {
                     logic = new KillTitanLogic(logic);
@@ -120,7 +120,7 @@ internal partial class FengGameManagerMKII
                 break;
 
             case 1:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.SURVIVE_MODE;
+                IN_GAME_MAIN_CAMERA.GameMode = GameMode.SurviveMode;
                 if (!(logic is SurviveLogic))
                 {
                     logic = new SurviveLogic(logic);
@@ -129,7 +129,7 @@ internal partial class FengGameManagerMKII
                 break;
 
             case 2:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.PVP_AHSS;
+                IN_GAME_MAIN_CAMERA.GameMode = GameMode.PvpAhss;
                 if (!(logic is PVPLogic))
                 {
                     logic = new PVPLogic(logic);

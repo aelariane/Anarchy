@@ -1783,8 +1783,8 @@ public partial class TITAN : TitanBase
             chaseDistance *= 1.3f;
         }
 
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.ENDLESS_TITAN ||
-            IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.EndlessTitan ||
+            IN_GAME_MAIN_CAMERA.GameMode == GameMode.SurviveMode)
         {
             chaseDistance = 999999f;
         }
@@ -2565,7 +2565,7 @@ public partial class TITAN : TitanBase
     {
         var num = 0;
         var num2 = 0.02f * (IN_GAME_MAIN_CAMERA.Difficulty + 1);
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_AHSS)
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PvpAhss)
         {
             num2 = 100f;
         }
@@ -2629,7 +2629,7 @@ public partial class TITAN : TitanBase
                     num = 1;
                 }
 
-                if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
+                if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SurviveMode)
                 {
                     var wave = FengGameManagerMKII.FGM.logic.Round.Wave;
                     if (wave % 5 != 0)
@@ -3755,7 +3755,7 @@ public partial class TITAN : TitanBase
                         {
                             if (checkPoints.Count == 1)
                             {
-                                if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.BOSS_FIGHT_CT)
+                                if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.BossFightCT)
                                 {
                                     FengGameManagerMKII.FGM.GameLose();
                                     checkPoints = new ArrayList();

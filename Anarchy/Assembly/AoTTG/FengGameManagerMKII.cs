@@ -997,7 +997,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
                 num = 0;
             }
         }
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SURVIVE_MODE)
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.SurviveMode)
         {
             if (count == 3 && !punk && GameModes.CustomAmount.Enabled)
             {

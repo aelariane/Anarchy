@@ -420,10 +420,14 @@ namespace RC
                     {
                         ','
                     });
+
+                    bool addMovingScript = strArray.Length > 19;
+                    GameObject resultObject = null;
+
                     if (strArray[0].StartsWith("custom"))
                     {
                         float num3 = 1f;
-                        GameObject obj2 = (GameObject)UnityEngine.Object.Instantiate((GameObject)RCManager.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[12]), Convert.ToSingle(strArray[13]), Convert.ToSingle(strArray[14])), new Quaternion(Convert.ToSingle(strArray[15]), Convert.ToSingle(strArray[16]), Convert.ToSingle(strArray[17]), Convert.ToSingle(strArray[18])));
+                        resultObject = (GameObject)UnityEngine.Object.Instantiate((GameObject)RCManager.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[12]), Convert.ToSingle(strArray[13]), Convert.ToSingle(strArray[14])), new Quaternion(Convert.ToSingle(strArray[15]), Convert.ToSingle(strArray[16]), Convert.ToSingle(strArray[17]), Convert.ToSingle(strArray[18])));
                         if (strArray[2] != "default")
                         {
                             if (strArray[2].StartsWith("transparent"))
@@ -433,7 +437,7 @@ namespace RC
                                 {
                                     num3 = num4;
                                 }
-                                foreach (Renderer renderer in obj2.GetComponentsInChildren<Renderer>())
+                                foreach (Renderer renderer in resultObject.GetComponentsInChildren<Renderer>())
                                 {
                                     renderer.material = (Material)RCManager.Load("transparent");
                                     if (Convert.ToSingle(strArray[10]) != 1f || Convert.ToSingle(strArray[11]) != 1f)
@@ -444,7 +448,7 @@ namespace RC
                             }
                             else
                             {
-                                foreach (Renderer renderer2 in obj2.GetComponentsInChildren<Renderer>())
+                                foreach (Renderer renderer2 in resultObject.GetComponentsInChildren<Renderer>())
                                 {
                                     renderer2.material = (Material)RCManager.Load(strArray[2]);
                                     if (Convert.ToSingle(strArray[10]) != 1f || Convert.ToSingle(strArray[11]) != 1f)
@@ -454,15 +458,15 @@ namespace RC
                                 }
                             }
                         }
-                        float num5 = obj2.transform.localScale.x * Convert.ToSingle(strArray[3]);
+                        float num5 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[3]);
                         num5 -= 0.001f;
-                        float num6 = obj2.transform.localScale.y * Convert.ToSingle(strArray[4]);
-                        float num7 = obj2.transform.localScale.z * Convert.ToSingle(strArray[5]);
-                        obj2.transform.localScale = new Vector3(num5, num6, num7);
+                        float num6 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[4]);
+                        float num7 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[5]);
+                        resultObject.transform.localScale = new Vector3(num5, num6, num7);
                         if (strArray[6] != "0")
                         {
                             Color color = new Color(Convert.ToSingle(strArray[7]), Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), num3);
-                            MeshFilter[] componentsInChildren2 = obj2.GetComponentsInChildren<MeshFilter>();
+                            MeshFilter[] componentsInChildren2 = resultObject.GetComponentsInChildren<MeshFilter>();
                             for (int i = 0; i < componentsInChildren2.Length; i++)
                             {
                                 Mesh mesh = componentsInChildren2[i].mesh;
@@ -479,12 +483,12 @@ namespace RC
                     {
                         if (strArray.Length < 15)
                         {
-                            UnityEngine.Object.Instantiate(Resources.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[2]), Convert.ToSingle(strArray[3]), Convert.ToSingle(strArray[4])), new Quaternion(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7]), Convert.ToSingle(strArray[8])));
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(Resources.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[2]), Convert.ToSingle(strArray[3]), Convert.ToSingle(strArray[4])), new Quaternion(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7]), Convert.ToSingle(strArray[8])));
                         }
                         else
                         {
                             float num9 = 1f;
-                            GameObject obj3 = (GameObject)UnityEngine.Object.Instantiate((GameObject)Resources.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[12]), Convert.ToSingle(strArray[13]), Convert.ToSingle(strArray[14])), new Quaternion(Convert.ToSingle(strArray[15]), Convert.ToSingle(strArray[16]), Convert.ToSingle(strArray[17]), Convert.ToSingle(strArray[18])));
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate((GameObject)Resources.Load(strArray[1]), new Vector3(Convert.ToSingle(strArray[12]), Convert.ToSingle(strArray[13]), Convert.ToSingle(strArray[14])), new Quaternion(Convert.ToSingle(strArray[15]), Convert.ToSingle(strArray[16]), Convert.ToSingle(strArray[17]), Convert.ToSingle(strArray[18])));
                             if (strArray[2] != "default")
                             {
                                 if (strArray[2].StartsWith("transparent"))
@@ -494,7 +498,7 @@ namespace RC
                                     {
                                         num9 = num10;
                                     }
-                                    foreach (Renderer renderer3 in obj3.GetComponentsInChildren<Renderer>())
+                                    foreach (Renderer renderer3 in resultObject.GetComponentsInChildren<Renderer>())
                                     {
                                         renderer3.material = (Material)RCManager.Load("transparent");
                                         if (Convert.ToSingle(strArray[10]) != 1f || Convert.ToSingle(strArray[11]) != 1f)
@@ -505,9 +509,9 @@ namespace RC
                                 }
                                 else
                                 {
-                                    foreach (Renderer renderer4 in obj3.GetComponentsInChildren<Renderer>())
+                                    foreach (Renderer renderer4 in resultObject.GetComponentsInChildren<Renderer>())
                                     {
-                                        if (!renderer4.name.Contains("Particle System") || !obj3.name.Contains("aot_supply"))
+                                        if (!renderer4.name.Contains("Particle System") || !resultObject.name.Contains("aot_supply"))
                                         {
                                             renderer4.material = (Material)RCManager.Load(strArray[2]);
                                             if (Convert.ToSingle(strArray[10]) != 1f || Convert.ToSingle(strArray[11]) != 1f)
@@ -518,15 +522,15 @@ namespace RC
                                     }
                                 }
                             }
-                            float num11 = obj3.transform.localScale.x * Convert.ToSingle(strArray[3]);
+                            float num11 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[3]);
                             num11 -= 0.001f;
-                            float num12 = obj3.transform.localScale.y * Convert.ToSingle(strArray[4]);
-                            float num13 = obj3.transform.localScale.z * Convert.ToSingle(strArray[5]);
-                            obj3.transform.localScale = new Vector3(num11, num12, num13);
+                            float num12 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[4]);
+                            float num13 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[5]);
+                            resultObject.transform.localScale = new Vector3(num11, num12, num13);
                             if (strArray[6] != "0")
                             {
                                 Color color2 = new Color(Convert.ToSingle(strArray[7]), Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), num9);
-                                MeshFilter[] componentsInChildren3 = obj3.GetComponentsInChildren<MeshFilter>();
+                                MeshFilter[] componentsInChildren3 = resultObject.GetComponentsInChildren<MeshFilter>();
                                 for (int j = 0; j < componentsInChildren3.Length; j++)
                                 {
                                     Mesh mesh2 = componentsInChildren3[j].mesh;
@@ -544,35 +548,35 @@ namespace RC
                     {
                         if (strArray[1].StartsWith("barrier"))
                         {
-                            GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num15 = gameObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num15 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num15 -= 0.001f;
-                            float num16 = gameObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num17 = gameObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            gameObject.transform.localScale = new Vector3(num15, num16, num17);
+                            float num16 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num17 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num15, num16, num17);
                         }
                         else if (strArray[1].StartsWith("racingStart"))
                         {
-                            GameObject obj4 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num18 = obj4.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num18 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num18 -= 0.001f;
-                            float num19 = obj4.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num20 = obj4.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            obj4.transform.localScale = new Vector3(num18, num19, num20);
+                            float num19 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num20 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num18, num19, num20);
                             if (racingDoors != null)
                             {
-                                racingDoors.Add(obj4);
+                                racingDoors.Add(resultObject);
                             }
                         }
                         else if (strArray[1].StartsWith("racingEnd"))
                         {
-                            GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num21 = gameObject2.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num21 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num21 -= 0.001f;
-                            float num22 = gameObject2.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num23 = gameObject2.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            gameObject2.transform.localScale = new Vector3(num21, num22, num23);
-                            gameObject2.AddComponent<LevelTriggerRacingEnd>();
+                            float num22 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num23 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num21, num22, num23);
+                            resultObject.AddComponent<LevelTriggerRacingEnd>();
                         }
                         else if (strArray[1].StartsWith("region") && PhotonNetwork.IsMasterClient)
                         {
@@ -581,16 +585,16 @@ namespace RC
                             string key = strArray[2];
                             if (RCManager.RCRegionTriggers.ContainsKey(key))
                             {
-                                GameObject obj5 = (GameObject)UnityEngine.Object.Instantiate((GameObject)RCManager.Load("region"));
-                                obj5.transform.position = loc;
-                                obj5.AddComponent<RegionTrigger>();
-                                obj5.GetComponent<RegionTrigger>().CopyTrigger((RegionTrigger)RCManager.RCRegionTriggers[key]);
-                                float num24 = obj5.transform.localScale.x * Convert.ToSingle(strArray[3]);
+                                resultObject = (GameObject)UnityEngine.Object.Instantiate((GameObject)RCManager.Load("region"));
+                                resultObject.transform.position = loc;
+                                resultObject.AddComponent<RegionTrigger>();
+                                resultObject.GetComponent<RegionTrigger>().CopyTrigger((RegionTrigger)RCManager.RCRegionTriggers[key]);
+                                float num24 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[3]);
                                 num24 -= 0.001f;
-                                float num25 = obj5.transform.localScale.y * Convert.ToSingle(strArray[4]);
-                                float num26 = obj5.transform.localScale.z * Convert.ToSingle(strArray[5]);
-                                obj5.transform.localScale = new Vector3(num24, num25, num26);
-                                region.myBox = obj5;
+                                float num25 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[4]);
+                                float num26 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[5]);
+                                resultObject.transform.localScale = new Vector3(num24, num25, num26);
+                                region.myBox = resultObject;
                             }
                             RCManager.RCRegions.Add(key, region);
                         }
@@ -599,46 +603,46 @@ namespace RC
                     {
                         if (strArray[1].StartsWith("start"))
                         {
-                            GameObject obj6 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num27 = obj6.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num27 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num27 -= 0.001f;
-                            float num28 = obj6.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num29 = obj6.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            obj6.transform.localScale = new Vector3(num27, num28, num29);
+                            float num28 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num29 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num27, num28, num29);
                             if (racingDoors != null)
                             {
-                                racingDoors.Add(obj6);
+                                racingDoors.Add(resultObject);
                             }
                         }
                         else if (strArray[1].StartsWith("end"))
                         {
-                            GameObject gameObject3 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num30 = gameObject3.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num30 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num30 -= 0.001f;
-                            float num31 = gameObject3.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num32 = gameObject3.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            gameObject3.transform.localScale = new Vector3(num30, num31, num32);
-                            gameObject3.GetComponentInChildren<Collider>().gameObject.AddComponent<LevelTriggerRacingEnd>();
+                            float num31 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num32 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num30, num31, num32);
+                            resultObject.GetComponentInChildren<Collider>().gameObject.AddComponent<LevelTriggerRacingEnd>();
                         }
                         else if (strArray[1].StartsWith("kill"))
                         {
-                            GameObject gameObject4 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num33 = gameObject4.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num33 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num33 -= 0.001f;
-                            float num34 = gameObject4.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num35 = gameObject4.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            gameObject4.transform.localScale = new Vector3(num33, num34, num35);
-                            gameObject4.GetComponentInChildren<Collider>().gameObject.AddComponent<RacingKillTrigger>();
+                            float num34 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num35 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num33, num34, num35);
+                            resultObject.GetComponentInChildren<Collider>().gameObject.AddComponent<RacingKillTrigger>();
                         }
                         else if (strArray[1].StartsWith("checkpoint"))
                         {
-                            GameObject gameObject5 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
-                            float num36 = gameObject5.transform.localScale.x * Convert.ToSingle(strArray[2]);
+                            resultObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.RCLoad(strArray[1]), new Vector3(Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]), Convert.ToSingle(strArray[7])), new Quaternion(Convert.ToSingle(strArray[8]), Convert.ToSingle(strArray[9]), Convert.ToSingle(strArray[10]), Convert.ToSingle(strArray[11])));
+                            float num36 = resultObject.transform.localScale.x * Convert.ToSingle(strArray[2]);
                             num36 -= 0.001f;
-                            float num37 = gameObject5.transform.localScale.y * Convert.ToSingle(strArray[3]);
-                            float num38 = gameObject5.transform.localScale.z * Convert.ToSingle(strArray[4]);
-                            gameObject5.transform.localScale = new Vector3(num36, num37, num38);
-                            gameObject5.GetComponentInChildren<Collider>().gameObject.AddComponent<RacingCheckpointTrigger>();
+                            float num37 = resultObject.transform.localScale.y * Convert.ToSingle(strArray[3]);
+                            float num38 = resultObject.transform.localScale.z * Convert.ToSingle(strArray[4]);
+                            resultObject.transform.localScale = new Vector3(num36, num37, num38);
+                            resultObject.GetComponentInChildren<Collider>().gameObject.AddComponent<RacingCheckpointTrigger>();
                         }
                     }
                     else if (strArray[0].StartsWith("map"))
@@ -686,6 +690,22 @@ namespace RC
                             item.location = new Vector3(Convert.ToSingle(strArray[4]), Convert.ToSingle(strArray[5]), Convert.ToSingle(strArray[6]));
                             titanSpawners.Add(item);
                         }
+                    }
+
+                    if (addMovingScript && resultObject != null && FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
+                    {
+                        string rmo = string.Join(",", strArray, 19, strArray.Length - 19);
+                        if(rmo.StartsWith("rmo") == false)
+                        {
+                            continue;
+                        }
+                        string[] rmoRaw = rmo.Split(':')[1].Split(',');
+                        Vector3 startPoint = new Vector3(Convert.ToSingle(rmoRaw[0]), Convert.ToSingle(rmoRaw[1]), Convert.ToSingle(rmoRaw[2]));
+                        Vector3 endPoint = new Vector3(Convert.ToSingle(rmoRaw[3]), Convert.ToSingle(rmoRaw[4]), Convert.ToSingle(rmoRaw[5]));
+                        float speed = Convert.ToSingle(rmoRaw[6]);
+                        Anarchy.CustomLevelScripts.RacingMovingObject component = resultObject.AddComponent<Anarchy.CustomLevelScripts.RacingMovingObject>();
+                        component.Speed = speed;
+                        component.SetPosition(startPoint, endPoint);
                     }
                 }
             }
@@ -846,6 +866,7 @@ namespace RC
         public static void OnLoadLevel()
         {
             FengGameManagerMKII.FGM.logic.RoundTime = 0f;
+            Anarchy.CustomLevelScripts.RacingMovingObject.ResetNextId();
             RCManager.racingSpawnPoint = Vectors.zero;
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();

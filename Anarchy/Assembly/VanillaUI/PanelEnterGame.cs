@@ -28,7 +28,7 @@ public class PanelEnterGame : MonoBehaviour
         this.label_select_titan.GetComponent<UILabel>().text = Language.select_titan[Language.type];
         this.label_camera_type.GetComponent<UILabel>().text = Language.camera_type[Language.type];
         this.label_camera_info.GetComponent<UILabel>().text = Language.camera_info[Language.type];
-        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PVP_AHSS)
+        if (IN_GAME_MAIN_CAMERA.GameMode == GameMode.PvpAhss)
         {
             this.label_select_titan.GetComponent<UILabel>().text = "Play As AHSS";
             this.label_titan.GetComponent<UILabel>().text = "AHSS";

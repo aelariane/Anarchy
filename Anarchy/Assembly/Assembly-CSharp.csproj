@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;GUI_TEST;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE;USEPOOL;GUI_TEST;</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
@@ -159,6 +159,7 @@
     <Compile Include="Anarchy\Commands\CommandArgs.cs" />
     <Compile Include="Anarchy\Commands\CommandsExtensions.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
+    <Compile Include="Anarchy\CustomLevelScripts\RacingMovingObject.cs" />
     <Compile Include="Anarchy\GameFeed.cs" />
     <Compile Include="Anarchy\InputPos\InputAnarchy.cs" />
     <Compile Include="Anarchy\IO\Style.cs" />

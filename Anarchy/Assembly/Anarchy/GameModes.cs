@@ -25,7 +25,7 @@ namespace Anarchy
 
         public static readonly GameModeSetting SpawnRate =
             new GameModeSetting("spawnMode,nRate,aRate,jRate,cRate,pRate",
-                new[] { 20f, 20f, 20f, 20f, 20f }).AddApplyCallback(CheckCustomSpawn);
+                new float[] { 20f, 20f, 20f, 20f, 20f }).AddApplyCallback(CheckCustomSpawn);
 
         public static readonly GameModeSetting SizeMode =
             new GameModeSetting("sizeMode,sizeLower,sizeUpper", new[] { 0.7f, 3f });
@@ -73,17 +73,17 @@ namespace Anarchy
         public static readonly StringSetting Motd = new StringSetting("motd", string.Empty);
 
         public static readonly AnarchyGameModeSetting RacingStartTime =
-            (AnarchyGameModeSetting)new AnarchyGameModeSetting("startTime,startTimeValue", new[] { 20 })
+            (AnarchyGameModeSetting)new AnarchyGameModeSetting("startTime,startTimeValue", new int[] { 20 })
                 .AddChangedCallback(RacingLogic.StartTimeCheck);
 
         public static readonly AnarchyGameModeSetting RacingFinishersRestart =
-            new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new[] { 5 });
+            new AnarchyGameModeSetting("restartOnFinishers,finishersCount", new int[] { 5 });
 
         public static readonly AnarchyGameModeSetting RacingTimeLimit =
-            new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new[] { 500 });
+            new AnarchyGameModeSetting("racingTimeLimit,racingTimeLimitValue", new int[] { 500 });
 
         public static readonly AnarchyGameModeSetting RacingRestartTime =
-            (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new[] { 999 })
+            (AnarchyGameModeSetting)new AnarchyGameModeSetting("racingRestartTime,restartTimeValue", new int[] { 999 })
                 .RemoveChangedCallback(AnarchyGameModeSetting.AnarchySettingCallback)
                 .AddChangedCallback(RacingLogic.RestartTimeCheck);
 

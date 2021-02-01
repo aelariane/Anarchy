@@ -1,12 +1,12 @@
 ﻿public enum GameMode
 {
-    KILL_TITAN,
-    PVP_AHSS,
-    ENDLESS_TITAN,
-    SURVIVE_MODE,
-    BOSS_FIGHT_CT,
-    TROST,
-    TUTORIAL,
+    KillTitan,
+    PvpAhss,
+    EndlessTitan,
+    SurviveMode,
+    BossFightCT,
+    Trost,
+    Tutorial,
     RACING,
     PVP_CAPTURE,
     None

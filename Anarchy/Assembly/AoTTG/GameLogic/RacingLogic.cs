@@ -406,6 +406,14 @@ namespace GameLogic
                     TryDestroyDoors();
                     Labels.TopCenter = string.Empty;
                     Labels.Center = string.Empty;
+                    var rmos = GameObject.FindObjectsOfType<Anarchy.CustomLevelScripts.RacingMovingObject>();
+                    if(rmos.Length > 0)
+                    {
+                        foreach(var rmo in rmos)
+                        {
+                            rmo.Launch();
+                        }
+                    }
                 }
                 if (GameModes.RacingRestartTime.Enabled && PhotonNetwork.IsMasterClient)
                 {

@@ -55,6 +55,17 @@ namespace Anarchy.UI
                     if (log.RaceStart)
                     {
                         log.TryDestroyDoors();
+                        if (FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
+                        {
+                            var rmos = GameObject.FindObjectsOfType<Anarchy.CustomLevelScripts.RacingMovingObject>();
+                            if (rmos.Length > 0)
+                            {
+                                foreach (var rmo in rmos)
+                                {
+                                    rmo.Launch();
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -147,7 +147,7 @@ internal partial class FengGameManagerMKII
         CustomLevel.OnLoadLevel();
         switch (info.Mode)
         {
-            case GameMode.TROST:
+            case GameMode.Trost:
                 {
                     CacheGameObject.Find("playerRespawn").SetActive(false);
                     Destroy(CacheGameObject.Find("playerRespawn"));
@@ -158,7 +158,7 @@ internal partial class FengGameManagerMKII
                     Destroy(CacheGameObject.Find("ppl"));
                     break;
                 }
-            case GameMode.BOSS_FIGHT_CT:
+            case GameMode.BossFightCT:
                 CacheGameObject.Find("playerRespawnTrost").SetActive(false);
                 Destroy(CacheGameObject.Find("playerRespawnTrost"));
                 break;
@@ -193,7 +193,7 @@ internal partial class FengGameManagerMKII
             }
         }
 
-        if (info.Mode == GameMode.BOSS_FIGHT_CT)
+        if (info.Mode == GameMode.BossFightCT)
         {
             Destroy(CacheGameObject.Find("rock"));
         }
@@ -202,7 +202,7 @@ internal partial class FengGameManagerMKII
         {
             switch (info.Mode)
             {
-                case GameMode.TROST:
+                case GameMode.Trost:
                     {
                         if (!IsPlayerAllDead())
                         {
@@ -231,7 +231,7 @@ internal partial class FengGameManagerMKII
 
                         break;
                     }
-                case GameMode.BOSS_FIGHT_CT:
+                case GameMode.BossFightCT:
                     {
                         if (!IsPlayerAllDead())
                         {
@@ -240,9 +240,9 @@ internal partial class FengGameManagerMKII
 
                         break;
                     }
-                case GameMode.KILL_TITAN:
-                case GameMode.ENDLESS_TITAN:
-                case GameMode.SURVIVE_MODE:
+                case GameMode.KillTitan:
+                case GameMode.EndlessTitan:
+                case GameMode.SurviveMode:
                     {
                         if (info.Name == "Annie" || info.Name == "Annie II")
                         {
@@ -264,7 +264,7 @@ internal partial class FengGameManagerMKII
                     }
                 default:
                     {
-                        if (info.Mode != GameMode.TROST)
+                        if (info.Mode != GameMode.Trost)
                         {
                             if (info.Mode == GameMode.PVP_CAPTURE && Level.MapName == "OutSide")
                             {
