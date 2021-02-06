@@ -707,7 +707,7 @@ public class Horse : Photon.MonoBehaviour
                     });
                 }
             }
-            float num = -Mathf.DeltaAngle(FengMath.getHorizontalAngle(base.transform.position, this.setPoint), base.gameObject.transform.rotation.eulerAngles.y - 90f);
+            float num = -Mathf.DeltaAngle(FengMath.GetHorizontalAngle(base.transform.position, this.setPoint), base.gameObject.transform.rotation.eulerAngles.y - 90f);
             base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, base.gameObject.transform.rotation.eulerAngles.y + num, 0f), 200f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
             if (Vector3.Distance(this.setPoint, base.transform.position) < 20f)
             {

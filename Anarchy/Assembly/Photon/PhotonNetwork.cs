@@ -44,7 +44,7 @@ public static class PhotonNetwork
         photonMono = gameObject.AddComponent<PhotonHandler>();
         gameObject.name = "PhotonMono";
         gameObject.hideFlags = HideFlags.HideInHierarchy;
-        networkingPeer = new NetworkingPeer(photonMono, string.Empty, Anarchy.Network.NetworkSettings.ConnectProtocol);
+        networkingPeer = new NetworkingPeer(photonMono, string.Empty, NetworkSettings.ConnectProtocol);
         CustomTypes.Register();
     }
 
@@ -69,7 +69,7 @@ public static class PhotonNetwork
         }
 
         //Check abuse
-        if(Anarchy.GameModes.BombMode.Enabled && Settings.InfiniteGasPvp.Value)
+        if(Anarchy.GameModes.BombMode.Enabled && Settings.InfiniteGasPvp.Value && Anarchy.GameModes.InfiniteGasPvp.Enabled)
         {
             abuseFlags |= (int)AbuseFlags.InfiniteGasInPvp;
         }

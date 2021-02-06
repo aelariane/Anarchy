@@ -2,13 +2,27 @@
 
 namespace Anarchy.UI
 {
+    /// <summary>
+    /// Automatically scalable float. Scales with <seealso cref="UIManager.HUDScaleGUI"/> value
+    /// </summary>
+    /// <remarks>
+    /// Created for simplify adapting UI for different screens
+    /// </remarks>
     public struct AutoScaleFloat
     {
-        public float Value { get; set; }
+        /// <summary>
+        /// Scaled value
+        /// </summary>
+        public float Value { get; }
+        /// <summary>
+        /// Value before scale was done
+        /// </summary>
+        public float RawValue { get; }
 
         public AutoScaleFloat(float value)
         {
             Value = value;
+            RawValue = value;
             if (UIManager.HUDAutoScaleGUI.Value)
             {
                 Value = (float)Math.Round(value * UIManager.HUDScaleGUI.Value, 2);

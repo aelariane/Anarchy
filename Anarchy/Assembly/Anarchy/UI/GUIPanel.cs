@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace Anarchy.UI
 {
+    /// <summary>
+    /// Base class for GUI panels
+    /// </summary>
+    /// <remarks>
+    /// Basically, this base helps to unify all panels in game, make them have same style etc.
+    /// Animation set to <seealso cref="Animation.CenterAnimation"/> be default
+    /// Must have title key in <seealso cref="GUIBase.locale"/>
+    /// </remarks>
     public abstract class GUIPanel : GUIBase
     {
         private static readonly object[] parameters = new object[0];
@@ -14,9 +22,16 @@ namespace Anarchy.UI
         private MethodInfo currentPage;
         protected string head = string.Empty;
         private int oldPageSelection = -1;
+
+        /// <summary>
+        /// Current page. Change this to switch between pages
+        /// </summary>
         protected int pageSelection = 0;
 
-        protected Rect BoxPosition { get; private set; }
+        /// <summary>
+        /// Rect of panel's window
+        /// </summary>
+        protected Rect WindowPosition { get; private set; }
 
         public GUIPanel(string name) : this(name, -1)
         {
@@ -56,7 +71,7 @@ namespace Anarchy.UI
                     }
                 }
             }
-
+            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         private void CheckPageChange()
@@ -98,7 +113,7 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            GUI.Box(BoxPosition, head);
+            GUI.Box(WindowPosition, head);
             DrawMainPart();
             if (currentPage != null)
             {
@@ -107,24 +122,41 @@ namespace Anarchy.UI
             CheckPageChange();
         }
 
+        /// <summary>
+        /// Draws main part of panel
+        /// </summary>
         protected abstract void DrawMainPart();
 
         private void EmptyPage()
         {
         }
 
+        /// <summary>
+        /// Calls when any of pages was disabled
+        /// </summary>
         protected virtual void OnAnyPageDisabled()
         {
         }
 
+        /// <summary>
+        /// Calls when any of pages was enabled
+        /// </summary>
         protected virtual void OnAnyPageEnabled()
         {
         }
 
+        /// <summary>
+        /// Calls just before any page will be changed
+        /// </summary>
+        /// <remarks>Calls before <seealso cref="OnAnyPageDisabled"/> and <seealso cref="OnAnyPageEnabled"/></remarks>
         protected virtual void OnBeforePageChanged()
         {
         }
 
+        /// <summary>Avoid overriding this on <see cref="GUIPanel"/> unless you're not sure what you do</summary>
+        /// <remarks>
+        /// Override <seealso cref="OnPanelDisable"/> for panels
+        /// </remarks>
         protected override void OnDisable()
         {
             currentPage = null;
@@ -138,18 +170,35 @@ namespace Anarchy.UI
             OnPanelDisable();
         }
 
+        /// <summary>Avoid overriding this on <see cref="GUIPanel"/> unless you're not sure what you do</summary>
+        /// <remarks>
+        /// Override <seealso cref="OnPanelEnable"/> for panels
+        /// </remarks>
         protected override void OnEnable()
         {
             head = locale["title"];
-            BoxPosition = Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight);
+            WindowPosition = Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight);
             pageSelection = 0;
             oldPageSelection = -1;
             OnPanelEnable();
             CheckPageChange();
         }
 
+        public override void OnUpdateScaling()
+        {
+            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
+        }
+
+        /// <summary>
+        /// Calls when panel is disabled
+        /// </summary>
+        /// <remarks>Override this instead of <see cref="OnDisable"/></remarks>
         protected abstract void OnPanelDisable();
 
+        /// <summary>
+        /// Calls when panel was enabled
+        /// </summary>
+        /// <remarks>Override this instead of <see cref="OnEnable"/></remarks>
         protected abstract void OnPanelEnable();
     }
 }

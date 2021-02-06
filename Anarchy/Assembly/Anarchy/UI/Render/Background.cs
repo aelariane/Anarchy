@@ -2,7 +2,7 @@
 
 namespace Anarchy.UI
 {
-    internal class Background : GUIBase
+    public class Background : GUIBase
     {
         private Rect screenRect;
         private GUIStyle style;
@@ -34,7 +34,7 @@ namespace Anarchy.UI
             var random = allImages[UnityEngine.Random.Range(0, allImages.Length)].Substring(Directory.Length);
             if (random.EndsWith(".ogv"))
             {
-                movie = LoadVideo(random, "");
+                movie = LoadVideo(random);
                 if (movie != null)
                 {
                     movie.loop = true;

@@ -13,7 +13,7 @@
 
         protected override bool Open()
         {
-            myBase.Draw();
+            owner.Draw();
             return false;
         }
     }

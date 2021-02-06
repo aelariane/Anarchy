@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Anarchy.IO
+namespace Anarchy.Custom.Level
 {
-    public class Style
+    public class CustomAnarchyLevel
     {
-        //TODO
     }
 }

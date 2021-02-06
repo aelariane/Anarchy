@@ -2,6 +2,9 @@
 
 namespace Anarchy.UI.Animation
 {
+    /// <summary>
+    /// Animation thant makes window appear from one of the 4 angles of screen
+    /// </summary>
     public class AngleAnimation : GUIAnimation
     {
         private float deltaHeight;

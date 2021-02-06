@@ -366,9 +366,9 @@ namespace GameLogic
         {
             if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && FengGameManagerMKII.FGM.needChooseSide)
             {
-                if (InputManager.IsInputDown[InputCode.Flare1] && !AnarchyManager.Pause.Active)
+                if (InputManager.IsInputDown[InputCode.Flare1] && !AnarchyManager.Pause.IsActive)
                 {
-                    if (AnarchyManager.CharacterSelectionPanel.Active)
+                    if (AnarchyManager.CharacterSelectionPanel.IsActive)
                     {
                         Screen.lockCursor = true;
                         Screen.showCursor = true;
@@ -385,9 +385,9 @@ namespace GameLogic
                         AnarchyManager.CharacterSelectionPanel.Enable();
                     }
                 }
-                if (InputManager.IsInputDown[InputCode.Pause] && !AnarchyManager.CharacterSelectionPanel.Active)
+                if (InputManager.IsInputDown[InputCode.Pause] && !AnarchyManager.CharacterSelectionPanel.IsActive)
                 {
-                    if (!AnarchyManager.Pause.Active)
+                    if (!AnarchyManager.Pause.IsActive)
                     {
                         AnarchyManager.Pause.Enable();
                         Screen.showCursor = true;

@@ -2,13 +2,13 @@
 
 public class FengMath
 {
-    public static float getHorizontalAngle(Vector3 from, Vector3 to)
+    public static float GetHorizontalAngle(Vector3 from, Vector3 to)
     {
         Vector3 vector = to - from;
         return -Mathf.Atan2(vector.z, vector.x) * 57.29578f;
     }
 
-    public static Quaternion getHorizontalRotation(Vector3 from, Vector3 to)
+    public static Quaternion GetHorizontalRotation(Vector3 from, Vector3 to)
     {
         Vector3 vector = from - to;
         float y = -Mathf.Atan2(vector.z, vector.x) * 57.29578f;

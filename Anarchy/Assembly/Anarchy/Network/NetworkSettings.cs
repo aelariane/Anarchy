@@ -3,15 +3,36 @@ using ExitGames.Client.Photon;
 
 namespace Anarchy.Network
 {
+    /// <summary>
+    /// Contains Anarchy-Specific network settings
+    /// </summary>
     public class NetworkSettings
     {
         public const string AdressString = "app-{0}.exitgamescloud.com";
 
+        /// <summary>
+        /// Connection network protocol
+        /// </summary>
+        /// <remarks>UDP, TCP, WebSocket, WebSocketSecure</remarks>
         public static readonly IntSetting ConnectionProtocol = new IntSetting("ConnectionProtocol", 0);
+
+        /// <summary>
+        /// Region preferred by player. Serverlist automatically connects to it
+        /// </summary>
+        /// <remarks>US, Europe, Asia, Japan</remarks>
         public static readonly IntSetting PreferedRegion = new IntSetting("PrefRegion", 1);
         public static readonly string[] RegionAdresses = new string[] { "us", "eu", "asia", "jp" };
+
+        /// <summary>
+        /// If Auto-Rejoin is enabled
+        /// </summary>
+        /// <remarks>0 - disabled, 1 - Enabled, rejoin by button, 2 - Rejoins instantly and automatically if dc'd</remarks>
         public static readonly IntSetting Rejoin = new IntSetting(nameof(Rejoin), 0);
 
+
+        /// <summary>
+        /// Connection protocol, selected at <seealso cref="ConnectionProtocol"/> setting
+        /// </summary>
         public static ConnectionProtocol ConnectProtocol
         {
             get

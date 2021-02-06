@@ -23,12 +23,12 @@
             //    chatMessage = Lang["unpauseErr"];
             //    return false;
             //}
-            if (value && AnarchyManager.PauseWindow.Active)
+            if (value && AnarchyManager.PauseWindow.IsActive)
             {
                 chatMessage = Lang["pauseErr"];
                 return false;
             }
-            else if (!value && !AnarchyManager.PauseWindow.Active)
+            else if (!value && !AnarchyManager.PauseWindow.IsActive)
             {
                 chatMessage = Lang["unpauseErr"];
                 return false;

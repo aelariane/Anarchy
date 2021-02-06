@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Anarchy.Custom.Scripts;
 using Setting = Anarchy.Configuration.GameModeSetting;
 
 namespace GameLogic
@@ -72,7 +73,7 @@ namespace GameLogic
             if (GameModes.AsoRacing.Enabled || GameModes.RacingRestartTime.Enabled)
             {
                 CustomRestartTime = true;
-                RestartTime = GameModes.AsoRacing.Enabled ? 999f : GameModes.RacingRestartTime.GetFloat(0);
+                RestartTime = GameModes.AsoRacing.Enabled ? 999f : GameModes.RacingRestartTime.GetInt(0);
             }
             else
             {
@@ -406,7 +407,7 @@ namespace GameLogic
                     TryDestroyDoors();
                     Labels.TopCenter = string.Empty;
                     Labels.Center = string.Empty;
-                    var rmos = GameObject.FindObjectsOfType<Anarchy.CustomLevelScripts.RacingMovingObject>();
+                    var rmos = GameObject.FindObjectsOfType<RacingMovingObject>();
                     if(rmos.Length > 0)
                     {
                         foreach(var rmo in rmos)

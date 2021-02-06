@@ -52,7 +52,7 @@ namespace Anarchy.UI
             LabelCenter(right, locale["mcswitch"], true);
             TextField(right, User.McSwitch, string.Empty, 0f, true);
 
-            right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
+            right.MoveToEndY(WindowPosition, Style.Height * 2f + Style.VerticalMargin);
             if (Button(right, locale["preview"], true))
             {
                 pageSelection = PreviewPage;
@@ -176,7 +176,7 @@ namespace Anarchy.UI
             TextField(right, User.TitanNames[3], locale["crawler"], Style.LabelOffset, true);
             TextField(right, User.TitanNames[4], locale["punk"], Style.LabelOffset, true);
 
-            right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
+            right.MoveToEndY(WindowPosition, Style.Height * 2f + Style.VerticalMargin);
             if (Button(right, locale["preview"], true))
             {
                 pageSelection = PreviewPage;
@@ -213,7 +213,7 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            SmartRect[] rects = Helper.GetSmartRects(BoxPosition, 2);
+            SmartRect[] rects = Helper.GetSmartRects(WindowPosition, 2);
             left = rects[0];
             right = rects[1];
             newProfile = "Profile" + (User.AllProfiles.Length + 1);
@@ -237,7 +237,7 @@ namespace Anarchy.UI
                 PreviewSecond();
             }
 
-            right.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
+            right.MoveToEndY(WindowPosition, Style.Height * 2f + Style.VerticalMargin);
             if (Button(right, locale["preview"], true))
             {
                 pageSelection = MainPage;

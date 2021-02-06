@@ -66,7 +66,6 @@ namespace Anarchy.UI
 
         public ServerListPanel() : base(nameof(ServerListPanel), GUILayers.ServerList)
         {
-            animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         private void CheckReconnect()
@@ -156,7 +155,7 @@ namespace Anarchy.UI
         private void EnableCreation()
         {
             head = locale["roomCreationTitle"];
-            SmartRect[] rects = Helper.GetSmartRects(BoxPosition, 2);
+            SmartRect[] rects = Helper.GetSmartRects(WindowPosition, 2);
             left = rects[0];
             right = rects[1];
 
@@ -202,10 +201,10 @@ namespace Anarchy.UI
         private void EnableList()
         {
             head = locale["title"];
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             scroll = Optimization.Caching.Vectors.v2zero;
             scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
-            scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollArea = new Rect(rect.x, rect.y, rect.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaView = new Rect(0f, 0f, rect.width, 1000f);
             roomList = new List<RoomInfo>();
             nameFilter = string.Empty;
@@ -224,7 +223,7 @@ namespace Anarchy.UI
         private void EnableSettings()
         {
             head = locale["roomSettings"];
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             regions = locale.GetArray("regions");
             serProtocols = new string[] { "GPBinaryV16", "GPBinaryV18" };
             protocols = new string[] { "UDP", "TCP", "WebSocket", "WebSocketSecure" };
@@ -429,7 +428,7 @@ namespace Anarchy.UI
                 EndScrollView();
             }
 
-            left.MoveToEndY(BoxPosition, Style.Height);
+            left.MoveToEndY(WindowPosition, Style.Height);
             left.width = left.DefaultWidth / 2f - Style.HorizontalMargin;
             if (Button(left, locale["btnCreation"], false))
             {
@@ -481,12 +480,12 @@ namespace Anarchy.UI
 
             LabelCenter(right, locale["mapSelection"], true);
             //mapSelection = SelectionGrid(right, mapSelection, maps, 1);
-            DropdownMenuScrollable(right, mapSelectionSetting, maps, 10, true);
+            DropdownMenuScrollable(this, right, mapSelectionSetting, maps, 10, true);
             right.MoveY();
             right.MoveY();
             Label(right, LevelInfo.GetInfo(maps[mapSelectionSetting.Value], false).Description, true);
-            right.MoveToEndY(BoxPosition, Style.Height);
-            right.MoveToEndX(BoxPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
+            right.MoveToEndY(WindowPosition, Style.Height);
+            right.MoveToEndX(WindowPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
             right.width = new AutoScaleFloat(120f);
             if (Button(right, locale["btnSettings"], false))
             {
@@ -562,7 +561,7 @@ namespace Anarchy.UI
             }
             EndScrollView();
 
-            rect.MoveToEndY(BoxPosition, Style.Height);
+            rect.MoveToEndY(WindowPosition, Style.Height);
             rect.width = new AutoScaleFloat(170f);
             if (Button(rect, locale["btnCreation"], false))
             {
@@ -578,7 +577,7 @@ namespace Anarchy.UI
                 return;
             }
             rect.width = new AutoScaleFloat(120f);
-            rect.MoveToEndX(BoxPosition, new AutoScaleFloat(120f));
+            rect.MoveToEndX(WindowPosition, new AutoScaleFloat(120f));
             if (Button(rect, locale["btnBack"]))
             {
                 Disable();
@@ -607,9 +606,9 @@ namespace Anarchy.UI
             Label(rect, locale["connectionProtocolDescTCP"], true);
             Label(rect, locale["connectionProtocolDescWS"], true);
             rect.ResetX();
-            rect.MoveToEndY(BoxPosition, Style.Height * 2f + Style.VerticalMargin);
+            rect.MoveToEndY(WindowPosition, Style.Height * 2f + Style.VerticalMargin);
             Label(rect, locale["settingsDesc"], true);
-            rect.MoveToEndX(BoxPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
+            rect.MoveToEndX(WindowPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
             rect.width = new AutoScaleFloat(120f);
             if (Button(rect, locale["btnCreation"], false))
             {
@@ -668,11 +667,6 @@ namespace Anarchy.UI
                 UpdateRoomList();
                 timeToUpdate = UpdateTime;
             }
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         private void UpdateRoomList()

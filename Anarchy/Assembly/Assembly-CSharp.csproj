@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE;GUI_TEST;</DefineConstants>
+    <DefineConstants>TRACE;PUBLIC;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\..\..\AoTTG_Data\Managed\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;USEPOOL;GUI_TEST;</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
@@ -112,10 +112,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Photon3Unity3D, Version=4.1.2.14, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assemblies\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>..\Assemblies\System.dll</HintPath>
@@ -154,7 +150,10 @@
     <Compile Include="Anarchy\Commands\CommandArgs.cs" />
     <Compile Include="Anarchy\Commands\CommandsExtensions.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
-    <Compile Include="Anarchy\CustomLevelScripts\RacingMovingObject.cs" />
+    <Compile Include="Anarchy\Custom\Level\CustomAnarchyLevel.cs" />
+    <Compile Include="Anarchy\Custom\Level\CustomLevelData.cs" />
+    <Compile Include="Anarchy\Custom\Level\CustomLevelElement.cs" />
+    <Compile Include="Anarchy\Custom\Scripts\RacingMovingObject.cs" />
     <Compile Include="Anarchy\GameFeed.cs" />
     <Compile Include="Anarchy\InputPos\InputAnarchy.cs" />
     <Compile Include="Anarchy\IO\Style.cs" />
@@ -830,8 +829,13 @@
       <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
       <Name>Antis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
+      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
+      <Name>Photon3Unity3D</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Anarchy\Custom\Logic\" />
     <Folder Include="Anarchy\Replays\Players\" />
     <Folder Include="Anarchy\Replays\Readers\" />
   </ItemGroup>

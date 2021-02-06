@@ -2735,7 +2735,7 @@ public partial class HERO : HeroBase
             Minimap.TrackGameObjectOnMinimap(gameObject, Color.green, false, true);
             wLeft.Active = false;
             wRight.Active = false;
-            if (AnarchyManager.Pause.Active)
+            if (AnarchyManager.Pause.IsActive)
             {
                 AnarchyManager.Pause.DisableImmediate();
             }

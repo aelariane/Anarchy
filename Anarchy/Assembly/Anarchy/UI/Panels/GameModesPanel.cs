@@ -18,20 +18,19 @@ namespace Anarchy.UI
 
         public GameModesPanel() : base(nameof(GameModesPanel), GUILayers.GameModesPanel)
         {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         protected override void DrawMainPart()
         {
             rect.Reset();
-            Box(BoxPosition, locale["title"]);
+            Box(WindowPosition, locale["title"]);
             float offset = new AutoScaleFloat(120f);
             rect.MoveOffsetX(offset);
             rect.width -= offset;
             pageSelection = SelectionGrid(rect, pageSelection, modeSelection, modeSelection.Length);
             rect.ResetX();
-            rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset * 2f + Style.HorizontalMargin);
+            rect.MoveToEndY(WindowPosition, Style.Height);
+            rect.MoveToEndX(WindowPosition, Style.LabelOffset * 2f + Style.HorizontalMargin);
             rect.width = Style.LabelOffset;
             if (Button(rect, locale["btnReset"], false))
             {
@@ -81,8 +80,8 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
-            pageRect = new Rect(BoxPosition.x, BoxPosition.y + ((Style.Height + Style.VerticalMargin) * 2f), BoxPosition.width, BoxPosition.height - ((Style.VerticalMargin + Style.Height) * 2f));
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
+            pageRect = new Rect(WindowPosition.x, WindowPosition.y + ((Style.Height + Style.VerticalMargin) * 2f), WindowPosition.width, WindowPosition.height - ((Style.VerticalMargin + Style.Height) * 2f));
             SmartRect[] rects = Helper.GetSmartRects(pageRect, 2);
             left = rects[0];
             right = rects[1];
@@ -171,11 +170,6 @@ namespace Anarchy.UI
                 Disable();
                 return;
             }
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
     }
 }

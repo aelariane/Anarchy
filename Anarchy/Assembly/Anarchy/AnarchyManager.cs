@@ -22,7 +22,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.9.3.0");
+        public static readonly Version AnarchyVersion = new Version("0.9.3.3");
 
         /// <summary>
         /// Your version Custom name
@@ -128,40 +128,81 @@ namespace Anarchy
             };
         }
 
+
+        /// <summary>
+        /// Imports settings from RC mod
+        /// </summary>
         public static void ImportRCSettings()
         {
-            //PlayerPrefs.GetInt("human", (int)FengGameManagerMKII.settings[0]);
-            //PlayerPrefs.GetInt("titan", (int)FengGameManagerMKII.settings[1]);
-            //PlayerPrefs.GetInt("level", (int)FengGameManagerMKII.settings[2]);
-            //PlayerPrefs.GetString("horse", (string)FengGameManagerMKII.settings[3]);
-            //PlayerPrefs.GetString("hair", (string)FengGameManagerMKII.settings[4]);
-            //PlayerPrefs.GetString("eye", (string)FengGameManagerMKII.settings[5]);
-            //PlayerPrefs.GetString("glass", (string)FengGameManagerMKII.settings[6]);
-            //PlayerPrefs.GetString("face", (string)FengGameManagerMKII.settings[7]);
-            //PlayerPrefs.GetString("skin", (string)FengGameManagerMKII.settings[8]);
-            //PlayerPrefs.GetString("costume", (string)FengGameManagerMKII.settings[9]);
-            //PlayerPrefs.GetString("logo", (string)FengGameManagerMKII.settings[10]);
-            //PlayerPrefs.GetString("bladel", (string)FengGameManagerMKII.settings[11]);
-            //PlayerPrefs.GetString("blader", (string)FengGameManagerMKII.settings[12]);
-            //PlayerPrefs.GetString("gas", (string)FengGameManagerMKII.settings[13]);
-            //PlayerPrefs.GetString("haircolor", (string)FengGameManagerMKII.settings[14]);
-            //PlayerPrefs.GetInt("gasenable", (int)FengGameManagerMKII.settings[15]);
-            //PlayerPrefs.GetInt("titantype1", (int)FengGameManagerMKII.settings[16]);
-            //PlayerPrefs.GetInt("titantype2", (int)FengGameManagerMKII.settings[17]);
-            //PlayerPrefs.GetInt("titantype3", (int)FengGameManagerMKII.settings[18]);
-            //PlayerPrefs.GetInt("titantype4", (int)FengGameManagerMKII.settings[19]);
-            //PlayerPrefs.GetInt("titantype5", (int)FengGameManagerMKII.settings[20]);
-            //PlayerPrefs.GetString("titanhair1", (string)FengGameManagerMKII.settings[21]);
-            //PlayerPrefs.GetString("titanhair2", (string)FengGameManagerMKII.settings[22]);
-            //PlayerPrefs.GetString("titanhair3", (string)FengGameManagerMKII.settings[23]);
-            //PlayerPrefs.GetString("titanhair4", (string)FengGameManagerMKII.settings[24]);
-            //PlayerPrefs.GetString("titanhair5", (string)FengGameManagerMKII.settings[25]);
-            //PlayerPrefs.GetString("titaneye1", (string)FengGameManagerMKII.settings[26]);
-            //PlayerPrefs.GetString("titaneye2", (string)FengGameManagerMKII.settings[27]);
-            //PlayerPrefs.GetString("titaneye3", (string)FengGameManagerMKII.settings[28]);
-            //PlayerPrefs.GetString("titaneye4", (string)FengGameManagerMKII.settings[29]);
-            //PlayerPrefs.GetString("titaneye5", (string)FengGameManagerMKII.settings[30]);
-            //PlayerPrefs.GetInt("titanR", (int)FengGameManagerMKII.settings[32]);
+            //Importing titan skins
+            SkinSettings.TitanSkins.Value = PlayerPrefs.GetInt("titan", 0) > 2 ? 0 : PlayerPrefs.GetInt("titan", 0);
+            var titanSet = new Configuration.Presets.TitanSkinPreset("Set 1 (Imported)");
+            for(int i = 1; i <= 5; i++)
+            {
+                titanSet.HairTypes[i - 1] = (Configuration.Presets.TitanSkinPreset.HairType) PlayerPrefs.GetInt("titiantype" + i, 0); //Hair type
+                titanSet.Hairs[i - 1] = PlayerPrefs.GetString("titanhair" + i, string.Empty); //Hair links
+                titanSet.Eyes[i - 1] = PlayerPrefs.GetString("titaneye" + i, string.Empty); //Eye links
+                titanSet.Bodies[i - 1] = PlayerPrefs.GetString("titanbody" + i, string.Empty); //Body links
+            }
+            titanSet.Colossal = PlayerPrefs.GetString("colossal", string.Empty); //Colossal
+            titanSet.Annie = PlayerPrefs.GetString("annie", string.Empty); //Annie
+            titanSet.Eren = PlayerPrefs.GetString("eren", string.Empty); //Eren
+
+            titanSet.RandomizePairs = PlayerPrefs.GetInt("titanR", 0) == 1;
+            titanSet.Save();
+            SkinSettings.TitanSet.Value = titanSet.Name;
+
+            //Importing
+            string[] citySkinKeys = new string[]
+            {
+
+            };
+
+            string[] forestSkinKeys = new string[]
+            {
+
+            };
+
+            //Importing human skins
+            string[] humanSkinKeys = new string[]
+            {
+                "horse",
+                "hair",
+                "eye",
+                "glass",
+                "face",
+                "skin",
+                "costume",
+                "logo",
+                "bladel",
+                "blader",
+                "gas",
+                "hoodie",
+                "trail"
+            };
+            SkinSettings.HumanSkins.Value = PlayerPrefs.GetInt("human", 0) > 2 ? 0 : PlayerPrefs.GetInt("human", 0);
+            for (int i = 0; i < 3; i++)
+            {
+                var set = new Configuration.Presets.HumanSkinPreset("Set " + (i + 1).ToString() + " (Imported)");
+                for(int j = 0; j < humanSkinKeys.Length; j++)
+                {
+                    string key = humanSkinKeys[j];
+                    if(i > 0)
+                    {
+                        key += (i + 1).ToString();
+                    }
+                    set.SkinData[j] = PlayerPrefs.GetString(key, string.Empty);
+                }
+                set.Save();
+            }
+            SkinSettings.HumanSet.Value = "Set " + (PlayerPrefs.GetInt("humangui", 0) + 1).ToString() + " (Imported)"; //Set selection
+            SkinSettings.DisableCustomGas.Value = PlayerPrefs.GetInt("gasenable", 0) == 0; //If custom gas textures are enabled
+
+            SkinSettings.CitySkins.Value = PlayerPrefs.GetInt("level", 0) > 2 ? 0 : PlayerPrefs.GetInt("level", 0);
+            SkinSettings.ForestSkins.Value = PlayerPrefs.GetInt("level", 0) > 2 ? 0 : PlayerPrefs.GetInt("level", 0);
+            SkinSettings.CustomSkins.Value = PlayerPrefs.GetInt("level", 0) > 2 ? 0 : PlayerPrefs.GetInt("level", 0);
+                
+
             //PlayerPrefs.GetString("tree1", (string)FengGameManagerMKII.settings[33]);
             //PlayerPrefs.GetString("tree2", (string)FengGameManagerMKII.settings[34]);
             //PlayerPrefs.GetString("tree3", (string)FengGameManagerMKII.settings[35]);
@@ -193,17 +234,9 @@ namespace Anarchy
             //PlayerPrefs.GetString("cityH", (string)FengGameManagerMKII.settings[61]);
             //PlayerPrefs.GetInt("skinQ", QualitySettings.masterTextureLimit);
             //PlayerPrefs.GetInt("skinQL", (int)FengGameManagerMKII.settings[63]);
-            //PlayerPrefs.GetString("eren", (string)FengGameManagerMKII.settings[65]);
-            //PlayerPrefs.GetString("annie", (string)FengGameManagerMKII.settings[66]);
-            //PlayerPrefs.GetString("colossal", (string)FengGameManagerMKII.settings[67]);
-            //PlayerPrefs.GetString("hoodie", (string)FengGameManagerMKII.settings[14]);
+
             //PlayerPrefs.GetString("cnumber", (string)FengGameManagerMKII.settings[82]);
             //PlayerPrefs.GetString("cmax", (string)FengGameManagerMKII.settings[85]);
-            //PlayerPrefs.GetString("titanbody1", (string)FengGameManagerMKII.settings[86]);
-            //PlayerPrefs.GetString("titanbody2", (string)FengGameManagerMKII.settings[87]);
-            //PlayerPrefs.GetString("titanbody3", (string)FengGameManagerMKII.settings[88]);
-            //PlayerPrefs.GetString("titanbody4", (string)FengGameManagerMKII.settings[89]);
-            //PlayerPrefs.GetString("titanbody5", (string)FengGameManagerMKII.settings[90]);
             //PlayerPrefs.GetInt("customlevel", (int)FengGameManagerMKII.settings[91]);
             //PlayerPrefs.GetInt("traildisable", (int)FengGameManagerMKII.settings[92]);
             //PlayerPrefs.GetInt("wind", (int)FengGameManagerMKII.settings[93]);
@@ -230,33 +263,7 @@ namespace Anarchy
             //PlayerPrefs.GetString("tcover", (string)FengGameManagerMKII.settings[114]);
             //PlayerPrefs.GetString("tsit", (string)FengGameManagerMKII.settings[115]);
             //PlayerPrefs.GetInt("reel2", (int)FengGameManagerMKII.settings[116]);
-            //PlayerPrefs.GetInt("humangui", (int)FengGameManagerMKII.settings[133]);
-            //PlayerPrefs.GetString("horse2", (string)FengGameManagerMKII.settings[134]);
-            //PlayerPrefs.GetString("hair2", (string)FengGameManagerMKII.settings[135]);
-            //PlayerPrefs.GetString("eye2", (string)FengGameManagerMKII.settings[136]);
-            //PlayerPrefs.GetString("glass2", (string)FengGameManagerMKII.settings[137]);
-            //PlayerPrefs.GetString("face2", (string)FengGameManagerMKII.settings[138]);
-            //PlayerPrefs.GetString("skin2", (string)FengGameManagerMKII.settings[139]);
-            //PlayerPrefs.GetString("costume2", (string)FengGameManagerMKII.settings[140]);
-            //PlayerPrefs.GetString("logo2", (string)FengGameManagerMKII.settings[141]);
-            //PlayerPrefs.GetString("bladel2", (string)FengGameManagerMKII.settings[142]);
-            //PlayerPrefs.GetString("blader2", (string)FengGameManagerMKII.settings[143]);
-            //PlayerPrefs.GetString("gas2", (string)FengGameManagerMKII.settings[144]);
-            //PlayerPrefs.GetString("hoodie2", (string)FengGameManagerMKII.settings[145]);
-            //PlayerPrefs.GetString("trail2", (string)FengGameManagerMKII.settings[146]);
-            //PlayerPrefs.GetString("horse3", (string)FengGameManagerMKII.settings[147]);
-            //PlayerPrefs.GetString("hair3", (string)FengGameManagerMKII.settings[148]);
-            //PlayerPrefs.GetString("eye3", (string)FengGameManagerMKII.settings[149]);
-            //PlayerPrefs.GetString("glass3", (string)FengGameManagerMKII.settings[150]);
-            //PlayerPrefs.GetString("face3", (string)FengGameManagerMKII.settings[151]);
-            //PlayerPrefs.GetString("skin3", (string)FengGameManagerMKII.settings[152]);
-            //PlayerPrefs.GetString("costume3", (string)FengGameManagerMKII.settings[153]);
-            //PlayerPrefs.GetString("logo3", (string)FengGameManagerMKII.settings[154]);
-            //PlayerPrefs.GetString("bladel3", (string)FengGameManagerMKII.settings[155]);
-            //PlayerPrefs.GetString("blader3", (string)FengGameManagerMKII.settings[156]);
-            //PlayerPrefs.GetString("gas3", (string)FengGameManagerMKII.settings[157]);
-            //PlayerPrefs.GetString("hoodie3", (string)FengGameManagerMKII.settings[158]);
-            //PlayerPrefs.GetString("trail3", (string)FengGameManagerMKII.settings[159]);
+
             //PlayerPrefs.GetString("customGround", (string)FengGameManagerMKII.settings[162]);
             //PlayerPrefs.GetString("forestskyfront", (string)FengGameManagerMKII.settings[163]);
             //PlayerPrefs.GetString("forestskyback", (string)FengGameManagerMKII.settings[164]);
@@ -399,18 +406,18 @@ namespace Anarchy
         {
             if (Application.loadedLevelName == "menu")
             {
-                if (!Background.Active)
+                if (!Background.IsActive)
                 {
                     Background.Enable();
                 }
 
-                if (Chat != null && Chat.Active)
+                if (Chat != null && Chat.IsActive)
                 {
                     Chat.Disable();
                     Chat.Clear();
                 }
 
-                if (Log != null && Log.Active)
+                if (Log != null && Log.IsActive)
                 {
                     Log.Disable();
                     Log.Clear();
@@ -427,7 +434,7 @@ namespace Anarchy
                     SingleRunStats.Reset();
 
                 }
-                if (Background.Active)
+                if (Background.IsActive)
                 {
                     Background.Disable();
                 }
@@ -435,12 +442,12 @@ namespace Anarchy
                 if (Application.loadedLevelName != "characterCreation" && Application.loadedLevelName != "SnapShot" &&
                     PhotonNetwork.inRoom)
                 {
-                    if (Chat != null && !Chat.Active)
+                    if (Chat != null && !Chat.IsActive)
                     {
                         Chat.Enable();
                     }
 
-                    if (Log != null && !Log.Active)
+                    if (Log != null && !Log.IsActive)
                     {
                         Log.Enable();
                     }
@@ -453,11 +460,11 @@ namespace Anarchy
             Pause?.Continue();
             Settings.Apply();
             VideoSettings.Apply();
-            if (PauseWindow.Active)
+            if (PauseWindow.IsActive)
             {
                 PauseWindow.DisableImmediate();
             }
-            if (StatsPanel.Active)
+            if (StatsPanel.IsActive)
             {
                 StatsPanel.DisableImmediate();
             }
@@ -476,7 +483,7 @@ namespace Anarchy
         {
             if (Input.GetKeyDown(KeyCode.F5)/*InputManager.IsInputAnarchy((int)InputPos.InputAnarchy.DebugPanel)*/)
             {
-                if (DebugPanel.Active)
+                if (DebugPanel.IsActive)
                 {
                     DebugPanel.DisableImmediate();
                 }
@@ -487,7 +494,7 @@ namespace Anarchy
             }
             if (InputManager.IsInputAnarchy((int)InputPos.InputAnarchy.ChatHistoryPanel))
             {
-                if (ChatHistory.Active)
+                if (ChatHistory.IsActive)
                 {
                     ChatHistory.DisableImmediate();
                 }

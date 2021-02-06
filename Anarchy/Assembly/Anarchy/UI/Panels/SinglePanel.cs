@@ -23,13 +23,12 @@ namespace Anarchy.UI
 
         public SinglePanel() : base(nameof(SinglePanel), GUILayers.SinglePanel)
         {
-            animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         protected override void DrawMainPart()
         {
             DrawLeftColumn();
-            if (!Active)
+            if (!IsActive)
             {
                 return;
             }
@@ -48,7 +47,7 @@ namespace Anarchy.UI
             SelectionGrid(left, dayLightSelection, dayLightList, 3, true);
             LabelCenter(left, locale["camera"], true);
             SelectionGrid(left, Settings.CameraMode, cameraList, cameraList.Length, true);
-            left.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
+            left.MoveToEndY(WindowPosition, new AutoScaleFloat(30f));
             left.height = new AutoScaleFloat(30f);
             if (Button(left, locale["start"], true))
             {
@@ -65,7 +64,7 @@ namespace Anarchy.UI
             LabelCenter(right, locale["character"], true);
             SelectionGrid(right, costumeSelection, costumeList, 3, true);
             DropdownMenu(this, right, characterSelection, characterList, true);
-            right.MoveToEndY(BoxPosition, new AutoScaleFloat(30f));
+            right.MoveToEndY(WindowPosition, new AutoScaleFloat(30f));
             right.MoveOffsetX(new AutoScaleFloat(150f));
             right.height = new AutoScaleFloat(30f);
             if (Button(right, locale["back"], false))
@@ -108,7 +107,7 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            SmartRect[] init = Helper.GetSmartRects(BoxPosition, 2);
+            SmartRect[] init = Helper.GetSmartRects(WindowPosition, 2);
             left = init[0];
             right = init[1];
             mapList = new string[] { "[S]Tutorial", "[S]Battle training", "[S]City", "[S]Forest", "[S]Forest Survive(no crawler)", "[S]Forest Survive(no crawler no punk)", "[S]Racing - Akina" };
@@ -118,11 +117,6 @@ namespace Anarchy.UI
             dayLightList = locale.GetArray("daylights");
             difficulityList = locale.GetArray("difficulities");
             AnarchyManager.MainMenu.DisableImmediate();
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         public override void Update()

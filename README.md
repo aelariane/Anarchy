@@ -28,7 +28,7 @@
 **What will you need?**
   * **.NET Framework** - Version 3.5.
   * **IDE** - IDE with C# 7.0 support. (Ex: **[Visual Studio 2019 Community](https://visualstudio.microsoft.com/ru/thank-you-downloading-visual-studio/?sku=community)**)
-  *  **Download [Modding-(Version).zip](https://github.com/Orrder/Anarchy/releases/download/BETA-9.3.0/Modding-9.3.0.zip) archieve (This link always refers to latest release)**
+  *  **Download [Modding-(Version).zip](https://github.com/Orrder/Anarchy/releases/download/BETA-9.3.3/Modding-9.3.3.zip) archieve (This link always refers to latest release)**
 <br/>
 
 After you installed IDE we can continue.<br/>
@@ -47,6 +47,8 @@ While mod is in early stage we don't have a strict rules.<br/>
 Special thanks to following people: <br/>
 * **[Ritis](https://vk.com/dont_touch_plz) - For great art for mod**<br/>
 * **[Syne](https://github.com/DaLNakii) - for testing and advises**<br/>
+* **[Summer](https://github.com/alerithe) - for allowing to use her Guardian mod features**<br/>
+* **[Sadico](https://github.com/Mi-Sad) - for helping with code**<br/>
 * **[Shy](https://vk.com/shylime) - For help with Russian translation**
 
 # Contacts

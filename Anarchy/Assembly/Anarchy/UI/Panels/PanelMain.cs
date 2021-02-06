@@ -28,14 +28,14 @@ namespace Anarchy.UI
 
         private void CheckEnabled(GUIBase obj, GUIBase[] toCheck)
         {
-            if (obj.Active)
+            if (obj.IsActive)
             {
                 obj.Disable();
                 return;
             }
             for (int i = 0; i < toCheck.Length; i++)
             {
-                if (toCheck[i].Active)
+                if (toCheck[i].IsActive)
                 {
                     toCheck[i].EnableNext(obj);
                     return;
@@ -48,7 +48,7 @@ namespace Anarchy.UI
         {
             for (int i = 0; i < allUsedPanels.Length; i++)
             {
-                if (allUsedPanels[i].Active)
+                if (allUsedPanels[i].IsActive)
                 {
                     return i;
                 }

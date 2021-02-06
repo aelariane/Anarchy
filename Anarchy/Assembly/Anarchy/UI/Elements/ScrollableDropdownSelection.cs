@@ -17,7 +17,7 @@ namespace Anarchy.UI.Elements
         private Vector2 scroll = Vector2.zero;
         private Rect viewRect;
 
-        private ScrollableDropdownSelection() : base(nameof(ScrollableDropdownSelection))
+        private ScrollableDropdownSelection() : base(nameof(ScrollableDropdownSelection), GUILayers.DropdownBox)
         {
             boxStyle = new GUIStyle();
             boxStyle.normal.background = Style.Button.normal.background;
@@ -30,7 +30,7 @@ namespace Anarchy.UI.Elements
         protected internal override void Draw()
         {
             var pos = new Vector2(Event.current.mousePosition.x, Event.current.mousePosition.y);
-            if (!cursorLimits.Contains(pos) || (guiOwner != null && guiOwner.Active == false))
+            if (!cursorLimits.Contains(pos) || (guiOwner != null && guiOwner.IsActive == false))
             {
                 Disable();
                 return;

@@ -26,7 +26,7 @@ namespace Anarchy.UI
         public void AddMessage(string message)
         {
             messages.Add(message.RemoveAll());
-            if (Active)
+            if (IsActive)
             {
                 showString += "\n" + message;
             }
@@ -56,7 +56,7 @@ namespace Anarchy.UI
         {
             Screen.lockCursor = Application.loadedLevelName == "menu" ? false : (IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS);
             Screen.showCursor = Application.loadedLevelName == "menu";
-            if (!AnarchyManager.Pause.Active)
+            if (!AnarchyManager.Pause.IsActive)
             {
                 IN_GAME_MAIN_CAMERA.isPausing = false;
                 InputManager.MenuOn = false;
@@ -66,7 +66,7 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            if (!AnarchyManager.Pause.Active)
+            if (!AnarchyManager.Pause.IsActive)
             {
                 IN_GAME_MAIN_CAMERA.isPausing = true;
                 InputManager.MenuOn = true;
@@ -79,11 +79,11 @@ namespace Anarchy.UI
                     Screen.showCursor = true;
                 }
             }
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
 
             scroll = Optimization.Caching.Vectors.v2zero;
             scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
-            scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollArea = new Rect(rect.x, rect.y, rect.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaView = new Rect(0f, 0f, rect.width, int.MaxValue);
 
             var bld = new StringBuilder();

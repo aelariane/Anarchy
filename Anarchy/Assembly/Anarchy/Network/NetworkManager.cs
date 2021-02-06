@@ -82,7 +82,7 @@ namespace Anarchy.Network
 
         private static void OnJoinedRoom(Optimization.AOTEventArgs args)
         {
-            //RejoinRoom = PhotonNetwork.room;
+            RejoinRoom = PhotonNetwork.room.Name;
         }
 
         public static bool TryRejoin()

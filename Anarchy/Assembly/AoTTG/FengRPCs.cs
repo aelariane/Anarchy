@@ -340,7 +340,7 @@ internal partial class FengGameManagerMKII
         {
             AnarchyManager.PauseWindow.PauseWaitTime = 100000f;
             UnityEngine.Time.timeScale = 0.00001f;
-            if (!AnarchyManager.PauseWindow.Active)
+            if (!AnarchyManager.PauseWindow.IsActive)
             {
                 AnarchyManager.PauseWindow.EnableImmediate();
             }

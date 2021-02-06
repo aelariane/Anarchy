@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Anarchy.Custom.Scripts;
 
 namespace RC
 {
@@ -703,7 +704,7 @@ namespace RC
                         Vector3 startPoint = new Vector3(Convert.ToSingle(rmoRaw[0]), Convert.ToSingle(rmoRaw[1]), Convert.ToSingle(rmoRaw[2]));
                         Vector3 endPoint = new Vector3(Convert.ToSingle(rmoRaw[3]), Convert.ToSingle(rmoRaw[4]), Convert.ToSingle(rmoRaw[5]));
                         float speed = Convert.ToSingle(rmoRaw[6]);
-                        Anarchy.CustomLevelScripts.RacingMovingObject component = resultObject.AddComponent<Anarchy.CustomLevelScripts.RacingMovingObject>();
+                        RacingMovingObject component = resultObject.AddComponent<RacingMovingObject>();
                         component.Speed = speed;
                         component.SetPosition(startPoint, endPoint);
                     }
@@ -866,7 +867,7 @@ namespace RC
         public static void OnLoadLevel()
         {
             FengGameManagerMKII.FGM.logic.RoundTime = 0f;
-            Anarchy.CustomLevelScripts.RacingMovingObject.ResetNextId();
+            RacingMovingObject.ResetNextId();
             RCManager.racingSpawnPoint = Vectors.zero;
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();

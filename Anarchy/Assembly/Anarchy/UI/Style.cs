@@ -6,6 +6,10 @@ using static Optimization.Caching.Colors;
 
 namespace Anarchy.UI
 {
+    /// <summary>
+    /// Unified Anarchy mod style definitions
+    /// </summary>
+    //TODO: Add docs
     public static class Style
     {
         public static float ScreenWidthDefault { get; private set; }
@@ -48,6 +52,9 @@ namespace Anarchy.UI
         public static readonly GUIStyle Toggle = new GUIStyle();
         private static bool wasLoaded = false;
 
+        /// <summary>
+        /// Base colors for background of <seealso cref="GUIPanel"/>
+        /// </summary>
         public static Color BackgroundColor => BackgroundHex.HexToColor((byte)BackgroundTransparency);
         public static string BackgroundHex { get; set; }
         public static int BackgroundTransparency { get; set; } = 250;

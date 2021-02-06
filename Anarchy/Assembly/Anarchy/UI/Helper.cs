@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Anarchy.UI
 {
-    internal static class Helper
+    /// <summary>
+    /// Set of UI Helper methods
+    /// </summary>
+    public static class Helper
     {
         #region Useless stuff
 
@@ -253,6 +256,14 @@ namespace Anarchy.UI
         //}
 
         #endregion Useless stuff
+        /// <summary>
+        /// Applies given parameters to style   
+        /// </summary>
+        /// <param name="style"></param>
+        /// <param name="anchor"></param>
+        /// <param name="fontStyle"></param>
+        /// <param name="fontSize"></param>
+        /// <param name="wordWrap"></param>
 
         public static void ApplyStyle(this GUIStyle style, TextAnchor anchor, FontStyle fontStyle, int fontSize, bool wordWrap)
         {

@@ -44,7 +44,7 @@ namespace Anarchy.UI
 
         private static void AddLine(string message)
         {
-            if (Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.IsActive)
             {
                 return;
             }
@@ -79,7 +79,7 @@ namespace Anarchy.UI
 
         public static void AddLine(string key, MsgType type = MsgType.None)
         {
-            if (Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.IsActive)
             {
                 return;
             }
@@ -88,7 +88,7 @@ namespace Anarchy.UI
 
         public static void AddLine(string key, params string[] values)
         {
-            if (Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.IsActive)
             {
                 return;
             }
@@ -97,7 +97,7 @@ namespace Anarchy.UI
 
         public static void AddLine(string key, MsgType type, params string[] values)
         {
-            if (Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.IsActive)
             {
                 return;
             }
@@ -106,7 +106,7 @@ namespace Anarchy.UI
 
         public static void AddLineRaw(string message, MsgType type = MsgType.None)
         {
-            if (Instance == null || !Instance.Active)
+            if (Instance == null || !Instance.IsActive)
             {
                 return;
             }

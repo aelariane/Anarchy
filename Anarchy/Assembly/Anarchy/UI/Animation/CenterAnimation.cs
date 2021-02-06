@@ -2,6 +2,9 @@
 
 namespace Anarchy.UI.Animation
 {
+    /// <summary>
+    /// Animation that makes window appear from the center of the screen
+    /// </summary>
     public class CenterAnimation : GUIAnimation
     {
         private readonly Rect defaultRect;

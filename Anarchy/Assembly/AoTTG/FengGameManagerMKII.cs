@@ -416,7 +416,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (AnarchyManager.PauseWindow.Active)
+            if (AnarchyManager.PauseWindow.IsActive)
             {
                 BasePV.RPC("pauseRPC", player, true);
             }

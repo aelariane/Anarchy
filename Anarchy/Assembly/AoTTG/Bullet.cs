@@ -104,6 +104,7 @@ public class Bullet : Photon.MonoBehaviour
                         break;
 
                     case Layers.GroundN:
+                        baseT.parent = tf;
                         master.LastHook = null;
                         break;
 

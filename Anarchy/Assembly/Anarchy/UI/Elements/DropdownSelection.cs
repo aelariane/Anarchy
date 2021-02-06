@@ -15,7 +15,7 @@ namespace Anarchy.UI.Elements
         private Setting<int> refSet;
         private string[] selections;
 
-        private DropdownSelection() : base(nameof(DropdownSelection))
+        private DropdownSelection() : base(nameof(DropdownSelection), GUILayers.DropdownBox)
         {
             boxStyle = new GUIStyle();
             boxStyle.normal.background = Style.Button.normal.background;
@@ -28,7 +28,7 @@ namespace Anarchy.UI.Elements
         protected internal override void Draw()
         {
             var pos = new Vector2(Event.current.mousePosition.x, Event.current.mousePosition.y);
-            if (!cursorLimits.Contains(pos) || (guiOwner != null && guiOwner.Active == false))
+            if (!cursorLimits.Contains(pos) || (guiOwner != null && guiOwner.IsActive == false))
             {
                 Disable();
                 return;

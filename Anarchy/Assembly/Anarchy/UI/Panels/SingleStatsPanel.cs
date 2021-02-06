@@ -37,7 +37,7 @@
 
         protected override void OnPanelEnable()
         {
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             stats = SingleRunStats.Generate();
             statString = stats.ToString();
             UnityEngine.Time.timeScale = 0f;

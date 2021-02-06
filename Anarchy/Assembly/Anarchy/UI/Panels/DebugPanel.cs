@@ -136,13 +136,13 @@ namespace Anarchy.UI
 
         private void DrawLowerButtons()
         {
-            rect.MoveToEndY(BoxPosition, Style.Height);
+            rect.MoveToEndY(WindowPosition, Style.Height);
             if (pageSelection == Players)
             {
                 rect.width = left.width;
                 ToggleButton(rect, PlayersColor, "Use coloring:", false);
             }
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            rect.MoveToEndX(WindowPosition, Style.LabelOffset);
             rect.width = Style.LabelOffset;
             if (Button(rect, locale["btnClose"]))
             {
@@ -176,7 +176,7 @@ namespace Anarchy.UI
         {
             Screen.lockCursor = Application.loadedLevelName == "menu" ? false : (IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS);
             Screen.showCursor = Application.loadedLevelName == "menu";
-            if (!AnarchyManager.Pause.Active)
+            if (!AnarchyManager.Pause.IsActive)
             {
                 IN_GAME_MAIN_CAMERA.isPausing = false;
                 InputManager.MenuOn = false;
@@ -194,7 +194,7 @@ namespace Anarchy.UI
             {
                 Time.timeScale = 0f;
             }
-            if (!AnarchyManager.Pause.Active)
+            if (!AnarchyManager.Pause.IsActive)
             {
                 IN_GAME_MAIN_CAMERA.isPausing = true;
                 InputManager.MenuOn = true;
@@ -207,28 +207,28 @@ namespace Anarchy.UI
                     Screen.showCursor = true;
                 }
             }
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
 
             scroll = Optimization.Caching.Vectors.v2zero;
             scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
-            scrollArea = new Rect(rect.x, rect.y, rect.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollArea = new Rect(rect.x, rect.y, rect.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaView = new Rect(0f, 0f, rect.width, int.MaxValue);
 
             head = locale["title"];
             pagesSelection = locale.GetArray("buttons");
-            pagePosition = new Rect(BoxPosition.x, BoxPosition.y + ((rect.height + Style.VerticalMargin) * 2f), BoxPosition.width, BoxPosition.height - (rect.y + rect.height + Style.VerticalMargin) - Style.WindowBottomOffset - Style.WindowTopOffset);
+            pagePosition = new Rect(WindowPosition.x, WindowPosition.y + ((rect.height + Style.VerticalMargin) * 2f), WindowPosition.width, WindowPosition.height - (rect.y + rect.height + Style.VerticalMargin) - Style.WindowBottomOffset - Style.WindowTopOffset);
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
             left = rects[0];
             right = rects[1];
 
             scrollName = Optimization.Caching.Vectors.v2zero;
             scrollRectName = new SmartRect(left.x, left.y, left.width, left.height, 0f, Style.VerticalMargin);
-            scrollAreaName = new Rect(left.x, left.y, left.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollAreaName = new Rect(left.x, left.y, left.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaViewName = new Rect(left.x, left.y, left.width, int.MaxValue);
 
             scrollProperties = Optimization.Caching.Vectors.v2zero;
             scrollRectProperties = new SmartRect(right.x, right.y, right.width, right.height, 0f, Style.VerticalMargin);
-            scrollAreaProperties = new Rect(right.x, right.y, right.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollAreaProperties = new Rect(right.x, right.y, right.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaViewProperties = new Rect(0, 0, right.width, int.MaxValue);
         }
 
@@ -264,7 +264,7 @@ namespace Anarchy.UI
             Label(left, locale.Format("deltaEvent", trafficStatsGameLevel.LongestEventCallbackCode.ToString(), trafficStatsGameLevel.LongestEventCallback.ToString()), true);
             Label(left, locale.Format("deltaOperation", trafficStatsGameLevel.LongestOpResponseCallbackOpCode.ToString(), trafficStatsGameLevel.LongestOpResponseCallback.ToString()), true);
 
-            left.MoveToEndY(BoxPosition, Style.Height);
+            left.MoveToEndY(WindowPosition, Style.Height);
             if (Button(left, locale["btnReset"]))
             {
                 PhotonNetwork.networkingPeer.TrafficStatsReset();

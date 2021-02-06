@@ -53,7 +53,6 @@ namespace Anarchy.UI
 
         public SettingsPanel() : base(nameof(SettingsPanel), GUILayers.SettingsPanel)
         {
-            animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         [GUIPage(Anarchy, GUIPageType.EnableMethod)]
@@ -191,7 +190,7 @@ namespace Anarchy.UI
                     }
                     LabelCenter(rects[1], locale["styleColors"], true);
 
-                    DropdownMenuScrollable(rects[1], Style.FontSetting, AnarchyAssets.FontNames, locale["fontName"], Style.LabelOffset, 6, true);
+                    DropdownMenuScrollable(this, rects[1], Style.FontSetting, AnarchyAssets.FontNames, locale["fontName"], Style.LabelOffset, 6, true);
 
                     Style.PublicSettings[1] = TextField(rects[1], Style.PublicSettings[1], locale["background"], Style.LabelOffset, true);
                     HorizontalSlider(rects[1], Style.BackgroundTransparencySetting, locale.Format("backgroundTransparency", Style.BackgroundTransparencySetting.Value.ToString("F0")), 32f, 255f, Style.LabelOffsetSlider, true);
@@ -227,7 +226,7 @@ namespace Anarchy.UI
                         Style.PublicSettings[21] = TextField(rects[1], Style.PublicSettings[21], locale["color"] + " " + locale["onActive"], Style.LabelOffset, true);
                     }
                     var left = rects[0];
-                    left.MoveToEndY(BoxPosition, Style.Height);
+                    left.MoveToEndY(WindowPosition, Style.Height);
                     left.width = Style.LabelOffsetSlider;
                     if (Button(left, "Apply changes"))
                     {
@@ -348,8 +347,8 @@ namespace Anarchy.UI
 
         private void DrawLowerButtons()
         {
-            rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            rect.MoveToEndY(WindowPosition, Style.Height);
+            rect.MoveToEndX(WindowPosition, Style.LabelOffset);
             rect.width = Style.LabelOffset;
             if (Button(rect, locale["btnBack"]))
             {
@@ -450,7 +449,7 @@ namespace Anarchy.UI
             ToggleButton(left, VideoSettings.Mipmap, locale["mipmap"], true);
             ToggleButton(left, VideoSettings.VSync, locale["vsync"], true);
 
-            DropdownMenu(left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), locale["texturesQuality"], left.width - Style.LabelOffset, true);
+            DropdownMenu(this, left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), locale["texturesQuality"], left.width - Style.LabelOffset, true);
 
             //LabelCenter(left, locale["texturesQuality"], true);
             //SelectionGrid(left, VideoSettings.TextureQuality, locale.GetArray("texturesLevels"), 4, true);
@@ -520,9 +519,9 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             head = locale["title"];
-            pagePosition = new Rect(BoxPosition.x, BoxPosition.y + ((rect.height + Style.VerticalMargin) * 2f), BoxPosition.width, BoxPosition.height - (rect.y + rect.height + Style.VerticalMargin) - Style.WindowBottomOffset - Style.WindowTopOffset);
+            pagePosition = new Rect(WindowPosition.x, WindowPosition.y + ((rect.height + Style.VerticalMargin) * 2f), WindowPosition.width, WindowPosition.height - (rect.y + rect.height + Style.VerticalMargin) - Style.WindowBottomOffset - Style.WindowTopOffset);
             SmartRect[] rects = Helper.GetSmartRects(pagePosition, 2);
             left = rects[0];
             right = rects[1];
@@ -625,11 +624,6 @@ namespace Anarchy.UI
                 Disable();
                 return;
             }
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
     }
 }

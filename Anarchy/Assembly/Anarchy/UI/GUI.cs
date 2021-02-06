@@ -12,8 +12,6 @@ namespace Anarchy.UI
     /// <remarks>Use this class to draw Anarchy-styled unified GUI</remarks>
     public static class GUI
     {
-        private const float Height = 20f;
-
         public static string LabelEnabled = "<color=lime>Enabled</color>";
         public static string LabelDisabled = "<color=red>Disabled</color>";
 
@@ -568,19 +566,19 @@ namespace Anarchy.UI
         public static bool Toggle(Rect position, bool val, string label)
         {
             UGUI.Label(position, label, Style.Label);
-            return UGUI.Toggle(new Rect(position.x + position.width - Height, position.y, Height, Height), val, string.Empty, Style.Toggle);
+            return UGUI.Toggle(new Rect(position.x + position.width - Style.Height, position.y, Style.Height, Style.Height), val, string.Empty, Style.Toggle);
         }
 
         public static void Toggle(Rect position, Setting<bool> val, string label)
         {
             UGUI.Label(position, label, Style.Label);
-            val.Value = UGUI.Toggle(new Rect(position.x + position.width - Height, position.y, Height, Height), val.Value, string.Empty, Style.Toggle);
+            val.Value = UGUI.Toggle(new Rect(position.x + position.width - Style.Height, position.y, Style.Height, Style.Height), val.Value, string.Empty, Style.Toggle);
         }
 
         public static bool Toggle(SmartRect position, bool val, string label, bool move = false)
         {
             UGUI.Label(position.ToRect(), label, Style.Label);
-            position.MoveOffsetX(position.width - Height);
+            position.MoveOffsetX(position.width - Style.Height);
             val = UGUI.Toggle(position.ToRect(), val, string.Empty, Style.Toggle);
             position.ResetX();
             if (move)
@@ -594,7 +592,7 @@ namespace Anarchy.UI
         public static void Toggle(SmartRect position, Setting<bool> val, string label, float offset, bool move = false)
         {
             UGUI.Label(position.ToRect(), label, Style.Label);
-            position.MoveOffsetX(position.width - Height);
+            position.MoveOffsetX(position.width - Style.Height);
             val.Value = UGUI.Toggle(position.ToRect(), val.Value, string.Empty, Style.Toggle);
             position.ResetX();
             if (move)

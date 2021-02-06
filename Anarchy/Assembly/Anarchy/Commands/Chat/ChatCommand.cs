@@ -72,7 +72,7 @@
             {
                 UI.Chat.Add(chatMessage);
             }
-            if (useLog && AnarchyManager.Log.Active && logMessage != string.Empty)
+            if (useLog && AnarchyManager.Log.IsActive && logMessage != string.Empty)
             {
                 UI.Log.AddLineRaw(logMessage);
             }

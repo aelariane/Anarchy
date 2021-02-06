@@ -50,8 +50,8 @@ internal partial class FengGameManagerMKII
     {
         if (focus)
         {
-            if (Application.loadedLevelName == "menu" || AnarchyManager.SettingsPanel.Active ||
-                AnarchyManager.CharacterSelectionPanel.Active || IN_GAME_MAIN_CAMERA.isPausing)
+            if (Application.loadedLevelName == "menu" || AnarchyManager.SettingsPanel.IsActive ||
+                AnarchyManager.CharacterSelectionPanel.IsActive || IN_GAME_MAIN_CAMERA.isPausing)
             {
                 Screen.showCursor = true;
                 Screen.lockCursor = false;

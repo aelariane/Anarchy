@@ -28,7 +28,6 @@ namespace Anarchy.UI
 
         public CustomPanel() : base(nameof(CustomPanel), GUILayers.CustomPanel)
         {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         protected override void DrawMainPart()
@@ -72,7 +71,7 @@ namespace Anarchy.UI
             filter = TextField(right, filter, locale["filter"], Style.LabelOffset, true);
 
             scrollArea.y = right.y;
-            right.MoveToEndY(BoxPosition, Style.Height + Style.VerticalMargin);
+            right.MoveToEndY(WindowPosition, Style.Height + Style.VerticalMargin);
             scrollArea.height = right.y - scrollArea.y;
             scrollRect.Reset();
             scrollAreaView.height = (Style.Height * allNames.Length) + ((Style.VerticalMargin * 2) * allNames.Length);
@@ -147,10 +146,10 @@ namespace Anarchy.UI
         private void LogicPage()
         {
             LabelCenter(left, locale["logicScript"], true);
-            left.height = (BoxPosition.y + BoxPosition.height - Style.WindowBottomOffset - Style.Height - Style.VerticalMargin) - left.y;
+            left.height = (WindowPosition.y + WindowPosition.height - Style.WindowBottomOffset - Style.Height - Style.VerticalMargin) - left.y;
             CustomLevel.currentScriptLogic = UnityEngine.GUI.TextArea(left.ToRect(), CustomLevel.currentScriptLogic, areaStyle);
 
-            rect.MoveToEndY(BoxPosition, Style.Height);
+            rect.MoveToEndY(WindowPosition, Style.Height);
             rect.width = 144f;
             rect.height = Style.Height;
             if (Button(rect, locale["btnClear"], false))
@@ -158,7 +157,7 @@ namespace Anarchy.UI
                 CustomLevel.currentScriptLogic = "";
             }
 
-            rect.MoveToEndX(BoxPosition, 144f);
+            rect.MoveToEndX(WindowPosition, 144f);
             if (Button(rect, locale["btnClose"]))
             {
                 Disable();
@@ -169,7 +168,7 @@ namespace Anarchy.UI
         [GUIPage(CustomLogicPage, GUIPageType.EnableMethod)]
         private void LogicPageEnable()
         {
-            Rect pos = BoxPosition;
+            Rect pos = WindowPosition;
             pos.y += (Style.Height + Style.VerticalMargin);
             SmartRect[] rects = Helper.GetSmartRects(pos, 2);
             left = rects[0];
@@ -188,10 +187,10 @@ namespace Anarchy.UI
             TextField(rect, RCManager.SpawnCapCustom, locale["spawnCap"], Style.BigLabelOffset, true);
 
             LabelCenter(left, locale["mapScript"], true);
-            left.height = (BoxPosition.y + BoxPosition.height - Style.WindowBottomOffset - Style.Height - Style.VerticalMargin) - left.y;
+            left.height = (WindowPosition.y + WindowPosition.height - Style.WindowBottomOffset - Style.Height - Style.VerticalMargin) - left.y;
             CustomLevel.currentScript = UnityEngine.GUI.TextArea(left.ToRect(), CustomLevel.currentScript, areaStyle);
 
-            rect.MoveToEndY(BoxPosition, Style.Height);
+            rect.MoveToEndY(WindowPosition, Style.Height);
             rect.width = 144f;
             rect.height = Style.Height;
             if (Button(rect, locale["btnClear"], false))
@@ -199,7 +198,7 @@ namespace Anarchy.UI
                 CustomLevel.currentScript = "";
             }
 
-            rect.MoveToEndX(BoxPosition, 144f);
+            rect.MoveToEndX(WindowPosition, 144f);
             if (Button(rect, locale["btnClose"]))
             {
                 Disable();
@@ -210,13 +209,13 @@ namespace Anarchy.UI
         [GUIPage(CustomMapsPage, GUIPageType.EnableMethod)]
         private void MapPageEnable()
         {
-            Rect pos = BoxPosition;
+            Rect pos = WindowPosition;
             float k = ((Style.Height + Style.VerticalMargin) * 3f);
             pos.y += k;
             SmartRect[] rects = Helper.GetSmartRects(pos, 2);
             left = rects[0];
             right = rects[1];
-            scrollArea = new Rect(right.x, right.y, right.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+            scrollArea = new Rect(right.x, right.y, right.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollRect = new SmartRect(0f, 0f, right.width, right.height);
             scrollAreaView = new Rect(0f, 0f, rect.width, 1000f);
             allNames = LoadFiles(MapsPath);
@@ -235,7 +234,7 @@ namespace Anarchy.UI
         protected override void OnPanelEnable()
         {
             gameTypes = locale.GetArray("gameTypes");
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             selections = locale.GetArray("selection");
             areaStyle = new GUIStyle(Style.TextField);
             areaStyle.alignment = TextAnchor.UpperLeft;
@@ -318,11 +317,6 @@ namespace Anarchy.UI
         protected override void OnAnyPageEnabled()
         {
             filter = string.Empty;
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
     }
 }

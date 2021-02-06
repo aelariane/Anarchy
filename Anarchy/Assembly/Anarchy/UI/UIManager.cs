@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Anarchy.UI
 {
-    internal class UIManager : MonoBehaviour
+    public class UIManager : MonoBehaviour
     {
         private static GUIBase[] activeGUIs = new GUIBase[0];
         internal static FloatSetting HUDScaleGUI = new FloatSetting("HUDScaleGUI", 1f);
@@ -31,11 +31,9 @@ namespace Anarchy.UI
             onAwakeAdds = delegate () { };
             onAwakeRms = delegate () { };
         }
-
-
-        public static bool Disable(GUIBase gui)
+         public static bool Disable(GUIBase gui)
         {
-            if (!gui.Active)
+            if (!gui.IsActive)
             {
                 return false;
             }
@@ -49,29 +47,28 @@ namespace Anarchy.UI
             }
             lock (activeGUIs)
             {
-                bool wasRemoved = false;
-                var list = new List<GUIBase>();
-                bool isLast = activeGUIs.LastOrDefault() == gui;
-                for (int i = 0; i < activeGUIs.Length; i++)
-                {
-                    if (activeGUIs[i] == gui)
-                    {
-                        wasRemoved = true;
-                        continue;
-                    }
-                    list.Add(activeGUIs[i]);
-                }
+                bool wasLast = activeGUIs
+                    .OrderBy(g => g.Layer)
+                    .LastOrDefault() == gui;
+
+                int oldCount = activeGUIs.Length;
+
+                activeGUIs = activeGUIs
+                    .Where(x => x != gui)
+                    .ToArray();
+
+                bool wasRemoved = oldCount != activeGUIs.Length;
+
                 if (wasRemoved)
                 {
                     gui.Disable();
                 }
-                if (list.Count == 0)
+                if (activeGUIs.Length == 0)
                 {
                     activeGUIs = new GUIBase[0];
                     return wasRemoved;
                 }
-                activeGUIs = list.ToArray();
-                if (!isLast)
+                if (!wasLast)
                 {
                     UpdateDepths();
                 }
@@ -81,7 +78,7 @@ namespace Anarchy.UI
 
         public static bool Enable(GUIBase gui)
         {
-            if (gui.Active)
+            if (gui.IsActive)
             {
                 return false;
             }
@@ -102,6 +99,7 @@ namespace Anarchy.UI
                     UpdateDepths();
                     return true;
                 }
+
                 for (int i = 0; i < activeGUIs.Length; i++)
                 {
                     if (activeGUIs[i] == gui)
@@ -109,48 +107,32 @@ namespace Anarchy.UI
                         return false;
                     }
                 }
-                var copy = new Queue<GUIBase>(activeGUIs);
-                var tmp = new Queue<GUIBase>();
-                bool added = false;
-                bool isLast;
-                for (int i = 0; i < activeGUIs.Length + 1; i++)
+
+                var list = activeGUIs.ToList();
+                list.Add(gui);
+                activeGUIs = list
+                    .OrderBy(x => x.Layer)
+                    .ToArray();
+
+                if(activeGUIs.Last() == gui)
                 {
-                    if (!added && (copy.Count == 0 || gui.Layer < copy.Peek().Layer))
+                    if(activeGUIs.Length >= 2)
                     {
-                        added = true;
-                        tmp.Enqueue(gui);
-                        continue;
-                    }
-                    tmp.Enqueue(copy.Dequeue());
-                }
-                isLast = tmp.LastOrDefault() == gui;
-                if (added)
-                {
-                    if (isLast)
-                    {
-                        if(tmp.Count >= 2)
-                        {
-                            var arr = tmp.ToArray();
-                            gui.Drawer.Enable(arr[arr.Length - 2].Drawer.Depth - 1);
-                        }
-                        else
-                        {
-                            gui.Drawer.Enable();
-                            isLast = false;
-                        }
+                        gui.Drawer.Enable(activeGUIs[activeGUIs.Length - 2].Drawer.Depth - 1);
                     }
                     else
                     {
-                        gui.Drawer.Enable(); 
+                        gui.Drawer.Enable();
+                        UpdateDepths();
                     }
                 }
-                activeGUIs = tmp.ToArray();
-                if (!isLast)
+                else
                 {
+                    gui.Drawer.Enable();
                     UpdateDepths();
                 }
 
-                return added;
+                return true;
             }
         }
 
@@ -162,7 +144,6 @@ namespace Anarchy.UI
                 activeGUIs[i].Drawer.Depth = depth--;
             }
         }
-
 
         public static void SetParent(UIBase ui)
         {
@@ -199,7 +180,7 @@ namespace Anarchy.UI
             {
                 foreach (GUIBase baseg in GUIBase.AllBases)
                 {
-                    if (baseg.Active && baseg.Name != nameof(PauseWindow))
+                    if (baseg.IsActive && baseg.Name != nameof(PauseWindow))
                     {
                         //baseg.DisableImmediate();
                         //baseg.OnUpdateScaling();

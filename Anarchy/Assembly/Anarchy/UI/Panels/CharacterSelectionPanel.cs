@@ -22,7 +22,6 @@ namespace Anarchy.UI
 
         public CharacterSelectionPanel() : base(nameof(CharacterSelectionPanel), GUILayers.CharacterSelection)
         {
-            animator = new CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         protected override void DrawMainPart()
@@ -44,7 +43,7 @@ namespace Anarchy.UI
             LabelCenter(left, locale["camera"], true);
             SelectionGrid(left, Settings.CameraMode, cameraList, cameraList.Length, true);
             float height = Style.Height * (FengGameManagerMKII.Level.PVPEnabled ? 3f : 2f) + (Style.VerticalMargin * (FengGameManagerMKII.Level.PVPEnabled ? 2f : 1f)) + (Style.Height + Style.VerticalMargin);
-            left.MoveToEndY(BoxPosition, height);
+            left.MoveToEndY(WindowPosition, height);
             if (Button(left, locale["humanStart"], true))
             {
                 SpawnHero();
@@ -198,18 +197,13 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            SmartRect[] init = Helper.GetSmartRects(BoxPosition, 2);
+            SmartRect[] init = Helper.GetSmartRects(WindowPosition, 2);
             left = init[0];
             right = init[1];
             cameraList = new string[] { "ORIGINAL", "WOW", "TPS" };
             characterList = locale.GetArray("characters");
             costumeList = new string[] { "Cos1", "Cos2", "Cos3" };
             charactersList = new string[] { "Mikasa", "Levi", "Armin", "Marco", "Jean", "Eren", "Petra", "Sasha", "Set 1", "Set 2", "Set 3" };
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         public override void Update()

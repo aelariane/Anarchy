@@ -1,6 +1,6 @@
 ﻿namespace Anarchy.UI
 {
-    internal enum ElementType
+    public enum ElementType
     {
         Box,
         Button,

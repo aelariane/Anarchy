@@ -31,7 +31,7 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            if (activePanel != null && activePanel.Active)
+            if (activePanel != null && activePanel.IsActive)
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Anarchy.UI
             activePanel = null;
             pauseStyle = null;
             pauseRect = null;
-            if (!AnarchyManager.PauseWindow.Active)
+            if (!AnarchyManager.PauseWindow.IsActive)
             {
                 Time.timeScale = 1f;
             }
@@ -167,7 +167,7 @@ namespace Anarchy.UI
 
         public override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && (activePanel == null || !activePanel.Active))
+            if (Input.GetKeyDown(KeyCode.Escape) && (activePanel == null || !activePanel.IsActive))
             {
                 Continue();
                 return;

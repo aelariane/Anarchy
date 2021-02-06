@@ -45,7 +45,7 @@ namespace Anarchy.Commands.Chat
         private void NotFound(string name)
         {
             string message = User.FormatColors(ChatCommand.Lang.Format("cmdNotFound", name));
-            if (AnarchyManager.Log.Active)
+            if (AnarchyManager.Log.IsActive)
             {
                 UI.Log.AddLineRaw(message, UI.MsgType.Error);
             }

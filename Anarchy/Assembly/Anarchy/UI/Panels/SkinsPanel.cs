@@ -32,7 +32,6 @@ namespace Anarchy.UI
 
         public SkinsPanel() : base(nameof(SkinsPanel), GUILayers.SkinsPanel)
         {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
 
         [GUIPage(City)]
@@ -130,7 +129,7 @@ namespace Anarchy.UI
             left.ResetX();
 
             scrollArea.y = left.y;
-            left.MoveToEndY(BoxPosition, Style.Height + Style.VerticalMargin);
+            left.MoveToEndY(WindowPosition, Style.Height + Style.VerticalMargin);
             scrollArea.height = left.y - scrollArea.y;
             scrollRect.Reset();
             scrollAreaView.height = (Style.Height * presetLabels.Length) + (Style.VerticalMargin * (presetLabels.Length + 1));
@@ -143,7 +142,7 @@ namespace Anarchy.UI
         protected override void DrawMainPart()
         {
             rect.Reset();
-            Box(BoxPosition, locale["title"]);
+            Box(WindowPosition, locale["title"]);
             rect.MoveOffsetX(new AutoScaleFloat(120f));
             rect.width -= new AutoScaleFloat(120f);
             pageSelection = SelectionGrid(rect, pageSelection, skinTypeSelection, skinTypeSelection.Length);
@@ -156,8 +155,8 @@ namespace Anarchy.UI
             }
 
             rect.ResetX();
-            rect.MoveToEndY(BoxPosition, Style.Height);
-            rect.MoveToEndX(BoxPosition, Style.LabelOffset);
+            rect.MoveToEndY(WindowPosition, Style.Height);
+            rect.MoveToEndX(WindowPosition, Style.LabelOffset);
             rect.width = Style.LabelOffset;
             if (Button(rect, locale["btnClose"]))
             {
@@ -232,7 +231,7 @@ namespace Anarchy.UI
                 {
                     left.MoveY();
                 }
-                scrollArea = new Rect(left.x, left.y, left.width, BoxPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
+                scrollArea = new Rect(left.x, left.y, left.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
                 scrollRect = new SmartRect(0f, 0f, left.width, left.height);
                 scrollAreaView = new Rect(0f, 0f, rect.width, 1000f);
                 scroll = Optimization.Caching.Vectors.v2zero;
@@ -259,9 +258,9 @@ namespace Anarchy.UI
 
         protected override void OnPanelEnable()
         {
-            rect = Helper.GetSmartRects(BoxPosition, 1)[0];
+            rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             skinTypeSelection = locale.GetArray("skinSelection");
-            pageRect = new Rect(BoxPosition.x, BoxPosition.y + ((Style.Height + Style.VerticalMargin) * 2f), BoxPosition.width, BoxPosition.height - ((Style.VerticalMargin + Style.Height) * 2f));
+            pageRect = new Rect(WindowPosition.x, WindowPosition.y + ((Style.Height + Style.VerticalMargin) * 2f), WindowPosition.width, WindowPosition.height - ((Style.VerticalMargin + Style.Height) * 2f));
             SmartRect[] rects = Helper.GetSmartRects(pageRect, 2);
             left = rects[0];
             right = rects[1];
@@ -316,11 +315,6 @@ namespace Anarchy.UI
                 Disable();
                 return;
             }
-        }
-
-        public override void OnUpdateScaling()
-        {
-            animator = new Animation.CenterAnimation(this, Helper.GetScreenMiddle(Style.WindowWidth, Style.WindowHeight));
         }
     }
 }

@@ -259,7 +259,7 @@ namespace Anarchy
             if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 float delta = Time.deltaTime;
-                if (AnarchyManager.PauseWindow.Active)
+                if (AnarchyManager.PauseWindow.IsActive)
                 {
                     delta *= 100000f;
                 }
@@ -275,7 +275,7 @@ namespace Anarchy
                 {
                     if (pauseTimer == 0f)
                     {
-                        bool val = AnarchyManager.PauseWindow.Active;
+                        bool val = AnarchyManager.PauseWindow.IsActive;
                         Commands.ICommand cmd = new Commands.Chat.PauseCommand(!val);
                         cmd.Execute(new string[0]);
                         pauseTimer += 0.001f;

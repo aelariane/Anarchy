@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace Anarchy.IO
 {
+    //TODO
     public class StyleConfigurationFile
     {
         public StyleConfigurationFile(string path)
