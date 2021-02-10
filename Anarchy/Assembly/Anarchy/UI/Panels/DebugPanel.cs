@@ -55,6 +55,7 @@ namespace Anarchy.UI
         private string[] pagesSelection;
 
         private int selectedPlayer = 0;
+        private GUIStyle scrollStyle;
 
         public DebugPanel() : base(nameof(DebugPanel), GUILayers.DebugPanel)
         {
@@ -230,6 +231,20 @@ namespace Anarchy.UI
             scrollRectProperties = new SmartRect(right.x, right.y, right.width, right.height, 0f, Style.VerticalMargin);
             scrollAreaProperties = new Rect(right.x, right.y, right.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaViewProperties = new Rect(0, 0, right.width, int.MaxValue);
+
+
+            scrollStyle = new GUIStyle();
+            scrollStyle.normal.background = Textures.TextureCache[ElementType.Button][0];
+            scrollStyle.hover.background = Textures.TextureCache[ElementType.SelectionGrid][0];
+            scrollStyle.active.background = Textures.TextureCache[ElementType.SelectionGrid][1];
+            scrollStyle.focused.background = Textures.TextureCache[ElementType.SelectionGrid][2];
+            //scrollStyle.fixedHeight = 200f;
+            scrollStyle.fixedWidth = 25f;
+
+            scrollStyle.onNormal.background = Textures.TextureCache[ElementType.Button][0];
+            scrollStyle.onHover.background = Textures.TextureCache[ElementType.SelectionGrid][3];
+            scrollStyle.onActive.background = Textures.TextureCache[ElementType.SelectionGrid][4];
+            scrollStyle.onFocused.background = Textures.TextureCache[ElementType.SelectionGrid][5];
         }
 
         [GUIPage(Traffic)]

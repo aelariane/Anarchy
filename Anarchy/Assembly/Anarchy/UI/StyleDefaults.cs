@@ -9,10 +9,10 @@
         public const int FontIndex = 3;
         public const int FontSize = 14;
         public const float ElementHeight = 22f;
-        public const int HorizontalMargin = 5;
+        public const int HorizontalMargin = 3;
         public const float LabelOffset = 140f;
         public const float LabelOffsetSlider = 180f;
-        public const int VerticalMargin = 5;
+        public const int VerticalMargin = 3;
         public const float WindowBottom = 12f;
         public const float WindowHeight = 600f;
         public const float WindowSideOffset = 24f;

@@ -27,7 +27,7 @@ public partial class TITAN : TitanBase
 
     private Vector3 abnorma_jump_bite_horizon_v;
     public AbnormalType abnormalType;
-    public int activeRad = int.MaxValue;
+    public int activeRadPow = int.MaxValue;
     private float angle;
     internal int armor;
     public bool asClientLookTarget;
@@ -83,6 +83,7 @@ public partial class TITAN : TitanBase
     public float myDistance;
     public Group myGroup = Group.T;
     public GameObject myHero;
+    public Transform myHeroT;
 
     public float myLevel = 1f;
     public TitanTrigger MyTitanTrigger;
@@ -109,7 +110,7 @@ public partial class TITAN : TitanBase
     private float stuckTurnAngle;
     private Vector3 targetCheckPt;
     private Quaternion targetHeadRotation;
-    private float targetR;
+    private float targetRPow;
     private float tauntTime;
     private GameObject throwRock;
     private string turnAnimation;
@@ -413,13 +414,11 @@ public partial class TITAN : TitanBase
     {
         var num = rad * myLevel;
         var array = GameObject.FindGameObjectsWithTag("Player");
-        return (from gameObject in array
-                where !gameObject.GetComponent<TITAN_EREN>()
-                where !gameObject.GetComponent<HERO>() || !gameObject.GetComponent<HERO>().IsInvincible()
-                let num2 = gameObject.GetComponent<CapsuleCollider>().height * 0.5f
-                where Vector3.Distance(gameObject.transform.position + Vectors.up * num2,
-                    head.position - Vectors.up * 1.5f * myLevel) < num + num2
-                select gameObject).FirstOrDefault();
+        return (from hero in FengGameManagerMKII.Heroes
+                where !hero.titanForm && !hero.IsInvincible()
+                let num2 = hero.GetComponent<CapsuleCollider>().height * 0.5f
+                where ((hero.transform.position + Vectors.up * num2) - (head.position - Vectors.up * 1.5f * myLevel)).sqrMagnitude < Math.Pow(num + num2, 2)
+                select hero).FirstOrDefault().baseG;
     }
 
     private HERO CheckHitHeadAndCrawlerMouth(float rad)
@@ -643,9 +642,9 @@ public partial class TITAN : TitanBase
         var vector = baseT.position + Vectors.up * d;
         Pool.NetworkEnable("FX/Thunder", vector, Quaternion.Euler(270f, 0f, 0f));
         Pool.NetworkEnable("FX/boom1", vector, Quaternion.Euler(270f, 0f, 0f));
-        var rad = GameModes.ExplodeMode.GetInt(0);
+        var radPow = Math.Pow(GameModes.ExplodeMode.GetInt(0), 2);
         foreach (var hero in FengGameManagerMKII.Heroes.Where(hero =>
-            Vector3.Distance(hero.baseT.position, vector) < rad))
+            (hero.baseT.position - vector).sqrMagnitude < radPow))
         {
             hero.MarkDie();
             hero.BasePV.RPC("netDie2", PhotonTargets.All, -1, "Server");
@@ -654,14 +653,13 @@ public partial class TITAN : TitanBase
 
     private void FindNearestFacingHero()
     {
-        var array = GameObject.FindGameObjectsWithTag("Player");
-        GameObject x = null;
+        HERO x = null;
         var num = float.PositiveInfinity;
         var position = baseT.position;
         var num2 = abnormalType != AbnormalType.Normal ? 180f : 100f;
-        foreach (var go in array)
+        foreach (var go in FengGameManagerMKII.Heroes)
         {
-            var sqrMagnitude = (go.transform.position - position).sqrMagnitude;
+            var sqrMagnitude = (go.baseT.position - position).sqrMagnitude;
             if (sqrMagnitude < num)
             {
                 var vector = go.transform.position - baseT.position;
@@ -678,7 +676,8 @@ public partial class TITAN : TitanBase
         if (x != null)
         {
             var x2 = myHero;
-            myHero = x;
+            myHero = x.baseG;
+            myHeroT = x.baseT;
             if (x2 != myHero && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
             {
                 BasePV.RPC("setMyTarget", PhotonTargets.Others, myHero == null ? -1 : myHero.GetPhotonView().viewID);
@@ -692,6 +691,7 @@ public partial class TITAN : TitanBase
     {
         var y = myHero;
         myHero = GetNearestHero();
+        myHeroT = myHero?.transform;
         if (myHero != y && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient)
         {
             BasePV.RPC("setMyTarget", PhotonTargets.Others, myHero == null ? -1 : myHero.GetPhotonView().viewID);
@@ -970,7 +970,7 @@ public partial class TITAN : TitanBase
                     return;
                 }
 
-                var vector2 = myHero.transform.position - baseT.position;
+                var vector2 = myHeroT.position - baseT.position;
                 num3 = -Mathf.Atan2(vector2.z, vector2.x) * 57.29578f;
             }
 
@@ -1013,13 +1013,14 @@ public partial class TITAN : TitanBase
     private string[] GetAttackStrategy()
     {
         string[] array = null;
-        if (isAlarm || myHero.transform.position.y + 3f <= Neck.position.y + 10f * myLevel)
+        if (isAlarm || myHeroT.position.y + 3f <= Neck.position.y + 10f * myLevel)
         {
-            if (myHero.transform.position.y > Neck.position.y - 3f * myLevel)
+            if (myHeroT.position.y > Neck.position.y - 3f * myLevel)
             {
                 if (myDistance < attackDistance * 0.5f)
                 {
-                    if (Vector3.Distance(myHero.transform.position, chkOverHead.position) < 3.6f * myLevel)
+                    //if (Vector3.Distance(myHeroT.position, chkOverHead.position) < 3.6f * myLevel)
+                    if ((myHeroT.position - chkOverHead.position).sqrMagnitude < Mathf.Pow(3.6f * myLevel, 2))
                     {
                         if (between2 > 0f)
                         {
@@ -1038,9 +1039,10 @@ public partial class TITAN : TitanBase
                     }
                     else if (Mathf.Abs(between2) < 90f)
                     {
+                        float powValue = Mathf.Pow(2.5f * myLevel, 2);
                         if (Mathf.Abs(between2) < 30f)
                         {
-                            if (Vector3.Distance(myHero.transform.position, chkFront.position) < 2.5f * myLevel)
+                            if ((myHeroT.position - chkFront.position).sqrMagnitude < powValue)
                             {
                                 array = new[]
                                 {
@@ -1052,7 +1054,7 @@ public partial class TITAN : TitanBase
                         }
                         else if (between2 > 0f)
                         {
-                            if (Vector3.Distance(myHero.transform.position, chkFrontRight.position) < 2.5f * myLevel)
+                            if ((myHeroT.position - chkFrontRight.position).sqrMagnitude < powValue)
                             {
                                 array = new[]
                                 {
@@ -1060,7 +1062,7 @@ public partial class TITAN : TitanBase
                                 };
                             }
                         }
-                        else if (Vector3.Distance(myHero.transform.position, chkFrontLeft.position) < 2.5f * myLevel)
+                        else if ((myHeroT.position - chkFrontLeft.position).sqrMagnitude < powValue)
                         {
                             array = new[]
                             {
@@ -1070,7 +1072,7 @@ public partial class TITAN : TitanBase
                     }
                     else if (between2 > 0f)
                     {
-                        if (Vector3.Distance(myHero.transform.position, chkBackRight.position) < 2.8f * myLevel)
+                        if ((myHeroT.position - chkBackRight.position).sqrMagnitude < Mathf.Pow(2.8f * myLevel, 2f))
                         {
                             array = new[]
                             {
@@ -1080,7 +1082,7 @@ public partial class TITAN : TitanBase
                             };
                         }
                     }
-                    else if (Vector3.Distance(myHero.transform.position, chkBackLeft.position) < 2.8f * myLevel)
+                    else if ((myHeroT.position - chkBackLeft.position).sqrMagnitude < Mathf.Pow(2.8f * myLevel, 2))
                     {
                         array = new[]
                         {
@@ -1404,13 +1406,12 @@ public partial class TITAN : TitanBase
 
     private GameObject GetNearestHero()
     {
-        var array = GameObject.FindGameObjectsWithTag("Player");
-        GameObject result = null;
+        HERO result = null;
         var num = float.PositiveInfinity;
         var position = baseT.position;
-        foreach (var go in array)
+        foreach (var go in FengGameManagerMKII.Heroes)
         {
-            var sqrMagnitude = (go.transform.position - position).sqrMagnitude;
+            var sqrMagnitude = (go.baseT.position - position).sqrMagnitude;
             if (sqrMagnitude < num)
             {
                 result = go;
@@ -1418,7 +1419,7 @@ public partial class TITAN : TitanBase
             }
         }
 
-        return result;
+        return result?.baseG;
     }
 
     private int GetPunkNumber()
@@ -1606,32 +1607,32 @@ public partial class TITAN : TitanBase
             var vector = myHero.rigidbody.velocity * Time.deltaTime * 30f;
             if (vector.sqrMagnitude > 10f)
             {
-                if (SimpleHitTestLineAndBall(vector, chkAeLeft.position - myHero.transform.position, 5f * myLevel))
+                if (SimpleHitTestLineAndBall(vector, chkAeLeft.position - myHeroT.position, 5f * myLevel))
                 {
                     Attack("anti_AE_l");
                     return true;
                 }
 
-                if (SimpleHitTestLineAndBall(vector, chkAeLLeft.position - myHero.transform.position, 5f * myLevel))
+                if (SimpleHitTestLineAndBall(vector, chkAeLLeft.position - myHeroT.position, 5f * myLevel))
                 {
                     Attack("anti_AE_low_l");
                     return true;
                 }
 
-                if (SimpleHitTestLineAndBall(vector, chkAeRight.position - myHero.transform.position, 5f * myLevel))
+                if (SimpleHitTestLineAndBall(vector, chkAeRight.position - myHeroT.position, 5f * myLevel))
                 {
                     Attack("anti_AE_r");
                     return true;
                 }
 
-                if (SimpleHitTestLineAndBall(vector, chkAeLRight.position - myHero.transform.position, 5f * myLevel))
+                if (SimpleHitTestLineAndBall(vector, chkAeLRight.position - myHeroT.position, 5f * myLevel))
                 {
                     Attack("anti_AE_low_r");
                     return true;
                 }
             }
 
-            var vector2 = myHero.transform.position - baseT.position;
+            var vector2 = myHeroT.position - baseT.position;
             var current = -Mathf.Atan2(vector2.z, vector2.x) * 57.29578f;
             var f = -Mathf.DeltaAngle(current, baseGT.rotation.eulerAngles.y - 90f);
             if (rockInterval > 0f)
@@ -1640,7 +1641,7 @@ public partial class TITAN : TitanBase
             }
             else if (Mathf.Abs(f) < 5f)
             {
-                var a = myHero.transform.position + vector;
+                var a = myHeroT.position + vector;
                 var sqrMagnitude = (a - baseT.position).sqrMagnitude;
                 if (sqrMagnitude > 8000f && sqrMagnitude < 90000f && !GameModes.NoRocks.Enabled)
                 {
@@ -1966,6 +1967,7 @@ public partial class TITAN : TitanBase
             PhotonNetwork.IsMasterClient)
         {
             myHero = whoHasTauntMe;
+            myHeroT = whoHasTauntMe.transform;
             BasePV.RPC("setMyTarget", PhotonTargets.Others, myHero.GetPhotonView().viewID);
         }
     }
@@ -2151,7 +2153,7 @@ public partial class TITAN : TitanBase
                                 myDistance < 100f && myHero != null;
                     if (flag6)
                     {
-                        var position = myHero.transform.position;
+                        var position = myHeroT.position;
                         var vector = position - baseT.position;
                         angle = -Mathf.Atan2(vector.z, vector.x) * 57.29578f;
                         var num = -Mathf.DeltaAngle(angle, baseT.rotation.eulerAngles.y - 90f);
@@ -2198,7 +2200,7 @@ public partial class TITAN : TitanBase
                     var flag10 = flag3;
                     if (flag10)
                     {
-                        var position = myHero.transform.position;
+                        var position = myHeroT.position;
                         var position1 = baseT.position;
                         myDistance =
                             Mathf.Sqrt(
@@ -2216,7 +2218,7 @@ public partial class TITAN : TitanBase
                     var flag11 = asClientLookTarget && flag3 && myDistance < 100f;
                     if (flag11)
                     {
-                        var position = myHero.transform.position;
+                        var position = myHeroT.position;
                         var vector2 = position - baseT.position;
                         angle = -Mathf.Atan2(vector2.z, vector2.x) * 57.29578f;
                         var num3 = -Mathf.DeltaAngle(angle, baseT.rotation.eulerAngles.y - 90f);
@@ -2244,7 +2246,7 @@ public partial class TITAN : TitanBase
                              state != TitanState.Hit_Eye && !hasDie && myDistance < 100f && myHero != null;
                 if (flag13)
                 {
-                    var position = myHero.transform.position;
+                    var position = myHeroT.position;
                     var vector3 = position - baseT.position;
                     angle = -Mathf.Atan2(vector3.z, vector3.x) * 57.29578f;
                     var num6 = -Mathf.DeltaAngle(angle, baseT.rotation.eulerAngles.y - 90f);
@@ -2288,11 +2290,11 @@ public partial class TITAN : TitanBase
         //            bool flag = false;
         //            if (this.abnormalType != AbnormalType.Crawler && this.state != TitanState.attack && this.state != TitanState.down && this.state != TitanState.hit && this.state != TitanState.recover && this.state != TitanState.eat && this.state != TitanState.hit_eye && !this.hasDie && this.myDistance < 100f && this.myHero != null)
         //            {
-        //                Vector3 vector = this.myHero.transform.position - baseT.position;
+        //                Vector3 vector = this.myHeroT.position - baseT.position;
         //                this.angle = -Mathf.Atan2(vector.z, vector.x) * 57.29578f;
         //                float num = -Mathf.DeltaAngle(this.angle, baseT.rotation.eulerAngles.y - 90f);
         //                num = Mathf.Clamp(num, -40f, 40f);
-        //                float y = this.Neck.position.y + this.myLevel * 2f - this.myHero.transform.position.y;
+        //                float y = this.Neck.position.y + this.myLevel * 2f - this.myHeroT.position.y;
         //                float num2 = Mathf.Atan2(y, this.myDistance) * 57.29578f;
         //                num2 = Mathf.Clamp(num2, -40f, 30f);
         //                this.targetHeadRotation = Quaternion.Euler(this.Head.rotation.eulerAngles.x + num2, this.Head.rotation.eulerAngles.y + num, this.Head.rotation.eulerAngles.z);
@@ -2328,11 +2330,11 @@ public partial class TITAN : TitanBase
         //            this.targetHeadRotation = this.Head.rotation;
         //            if (this.asClientLookTarget && this.myHero != null)
         //            {
-        //                Vector3 vector2 = this.myHero.transform.position - baseT.position;
+        //                Vector3 vector2 = this.myHeroT.position - baseT.position;
         //                this.angle = -Mathf.Atan2(vector2.z, vector2.x) * 57.29578f;
         //                float num3 = -Mathf.DeltaAngle(this.angle, baseT.rotation.eulerAngles.y - 90f);
         //                num3 = Mathf.Clamp(num3, -40f, 40f);
-        //                float y2 = this.Neck.position.y + this.myLevel * 2f - this.myHero.transform.position.y;
+        //                float y2 = this.Neck.position.y + this.myLevel * 2f - this.myHeroT.position.y;
         //                float num4 = Mathf.Atan2(y2, this.myDistance) * 57.29578f;
         //                num4 = Mathf.Clamp(num4, -40f, 30f);
         //                this.targetHeadRotation = Quaternion.Euler(this.Head.rotation.eulerAngles.x + num4, this.Head.rotation.eulerAngles.y + num3, this.Head.rotation.eulerAngles.z);
@@ -2348,11 +2350,11 @@ public partial class TITAN : TitanBase
         //        this.targetHeadRotation = this.Head.rotation;
         //        if (this.abnormalType != AbnormalType.Crawler && this.state != TitanState.attack && this.state != TitanState.down && this.state != TitanState.hit && this.state != TitanState.recover && this.state != TitanState.hit_eye && !this.hasDie && this.myDistance < 100f && this.myHero != null)
         //        {
-        //            Vector3 vector3 = this.myHero.transform.position - baseT.position;
+        //            Vector3 vector3 = this.myHeroT.position - baseT.position;
         //            this.angle = -Mathf.Atan2(vector3.z, vector3.x) * 57.29578f;
         //            float num5 = -Mathf.DeltaAngle(this.angle, baseT.rotation.eulerAngles.y - 90f);
         //            num5 = Mathf.Clamp(num5, -40f, 40f);
-        //            float y3 = this.Neck.position.y + this.myLevel * 2f - this.myHero.transform.position.y;
+        //            float y3 = this.Neck.position.y + this.myLevel * 2f - this.myHeroT.position.y;
         //            float num6 = Mathf.Atan2(y3, this.myDistance) * 57.29578f;
         //            num6 = Mathf.Clamp(num6, -40f, 30f);
         //            this.targetHeadRotation = Quaternion.Euler(this.Head.rotation.eulerAngles.x + num6, this.Head.rotation.eulerAngles.y + num5, this.Head.rotation.eulerAngles.z);
@@ -2550,7 +2552,7 @@ public partial class TITAN : TitanBase
     {
         state = TitanState.Random_Run;
         targetCheckPt = targetPt;
-        targetR = r;
+        targetRPow = Mathf.Pow(r, 2f);
         random_run_time = Random.Range(1f, 2f);
         CrossFade(runAnimation, 0.5f);
     }
@@ -2706,7 +2708,7 @@ public partial class TITAN : TitanBase
     {
         state = TitanState.To_CheckPoint;
         targetCheckPt = targetPt;
-        targetR = r;
+        targetRPow = Mathf.Pow(r, 2f);
         CrossFade(runAnimation, 0.5f);
     }
 
@@ -2714,7 +2716,7 @@ public partial class TITAN : TitanBase
     {
         state = TitanState.To_PVP_PT;
         targetCheckPt = targetPt;
-        targetR = r;
+        targetRPow = Mathf.Pow(r, 2f);
         CrossFade(runAnimation, 0.5f);
     }
 
@@ -2742,17 +2744,17 @@ public partial class TITAN : TitanBase
         Explode();
         if (!nonAI)
         {
-            if (activeRad < 2147483647 &&
+            if (activeRadPow < 2147483647 &&
                 (state == TitanState.Idle || state == TitanState.Wander || state == TitanState.Chase))
             {
                 if (checkPoints.Count > 1)
                 {
-                    if (Vector3.Distance((Vector3)checkPoints[0], baseT.position) > activeRad)
+                    if (((Vector3)checkPoints[0] - baseT.position).sqrMagnitude > activeRadPow)
                     {
                         ToCheckPoint((Vector3)checkPoints[0], 10f);
                     }
                 }
-                else if (Vector3.Distance(spawnPt, baseT.position) > activeRad)
+                else if ((spawnPt - baseT.position).sqrMagnitude > activeRadPow)
                 {
                     ToCheckPoint(spawnPt, 10f);
                 }
@@ -2808,7 +2810,7 @@ public partial class TITAN : TitanBase
                 }
                 else
                 {
-                    var position = myHero.transform.position;
+                    var position = myHeroT.position;
                     var position1 = baseT.position;
                     myDistance =
                         Mathf.Sqrt(
@@ -2950,7 +2952,7 @@ public partial class TITAN : TitanBase
                         between2 = 0f;
                         if (myDistance < chaseDistance || whoHasTauntMe != null)
                         {
-                            var vector = myHero.transform.position - baseT.position;
+                            var vector = myHeroT.position - baseT.position;
                             angle = -Mathf.Atan2(vector.z, vector.x) * 57.29578f;
                             between2 = -Mathf.DeltaAngle(angle, baseGT.rotation.eulerAngles.y - 90f);
                             if (myDistance >= attackDistance)
@@ -2976,22 +2978,22 @@ public partial class TITAN : TitanBase
 
                         if (myDistance < chaseDistance)
                         {
-                            var position = myHero.transform.position;
+                            var position = myHeroT.position;
                             switch (abnormalType)
                             {
                                 case AbnormalType.Jumper when (myDistance > attackDistance ||
                                                                position.y > Head.position.y + 4f * myLevel) &&
                                                               Mathf.Abs(between2) < 120f &&
-                                                              Vector3.Distance(baseT.position, position) <
-                                                              1.5f * position.y:
+                                                              (baseT.position - position).sqrMagnitude <
+                                                              Mathf.Pow(1.5f * position.y, 2f):
                                     Attack("jumper_0");
                                     return;
 
                                 case AbnormalType.Crawler when myDistance < attackDistance * 3f &&
                                                                Mathf.Abs(between2) < 90f &&
-                                                               myHero.transform.position.y <
+                                                               myHeroT.position.y <
                                                                Neck.position.y + 30f * myLevel &&
-                                                               myHero.transform.position.y >
+                                                               myHeroT.position.y >
                                                                Neck.position.y + 10f * myLevel:
                                     Attack("crawler_jump_0");
                                     return;
@@ -3027,7 +3029,7 @@ public partial class TITAN : TitanBase
                         {
                             if (abnormalType == AbnormalType.Crawler)
                             {
-                                if (myHero.transform.position.y + 3f <= Neck.position.y + 20f * myLevel)
+                                if (myHeroT.position.y + 3f <= Neck.position.y + 20f * myLevel)
                                 {
                                     if (Random.Range(0f, 1f) < 0.1f)
                                     {
@@ -3289,8 +3291,8 @@ public partial class TITAN : TitanBase
 
                         if (baseA["attack_" + attackAnimation].normalizedTime >= 0.11f)
                         {
-                            var y = Mathf.Atan2(myHero.transform.position.x - baseT.position.x,
-                                myHero.transform.position.z - baseT.position.z) * 57.29578f;
+                            var y = Mathf.Atan2(myHeroT.position.x - baseT.position.x,
+                                myHeroT.position.z - baseT.position.z) * 57.29578f;
                             baseGT.rotation = Quaternion.Euler(0f, y, 0f);
                         }
 
@@ -3302,7 +3304,7 @@ public partial class TITAN : TitanBase
                             if (myHero != null)
                             {
                                 var position = throwRock.transform.position;
-                                var position1 = myHero.transform.position;
+                                var position1 = myHeroT.position;
                                 v = (position1 - position) / num2 +
                                     myHero.rigidbody.velocity;
                                 var num4 = position1.y + 2f * myLevel;
@@ -3352,7 +3354,7 @@ public partial class TITAN : TitanBase
                                             var y3 = Neck.position.y;
                                             var num9 = (num7 - num8) * 0.5f;
                                             var num10 = y2;
-                                            var position = myHero.transform.position;
+                                            var position = myHeroT.position;
                                             var num11 = position.y - y3;
                                             var d2 = Mathf.Abs((Mathf.Sqrt(num10 * num10 - 4f * num9 * num11) - num10) /
                                                                (2f * num9));
@@ -3382,7 +3384,7 @@ public partial class TITAN : TitanBase
                                                 abnorma_jump_bite_horizon_v.z) - velocity3;
                                             baseR.AddForce(force, ForceMode.VelocityChange);
                                             baseR.AddForce(Vectors.up * num12, ForceMode.VelocityChange);
-                                            var position1 = myHero.transform.position;
+                                            var position1 = myHeroT.position;
                                             var y5 = Mathf.Atan2(position1.x - position2.x,
                                                 position1.z - position2.z) * 57.29578f;
                                             baseGT.rotation = Quaternion.Euler(0f, y5, 0f);
@@ -3607,12 +3609,12 @@ public partial class TITAN : TitanBase
 
                     if (abnormalType == AbnormalType.Crawler)
                     {
-                        var vector3 = myHero.transform.position - baseT.position;
+                        var vector3 = myHeroT.position - baseT.position;
                         var current = -Mathf.Atan2(vector3.z, vector3.x) * 57.29578f;
                         var f = -Mathf.DeltaAngle(current, baseGT.rotation.eulerAngles.y - 90f);
                         if (myDistance < attackDistance * 3f && Random.Range(0f, 1f) < 0.1f && Mathf.Abs(f) < 90f &&
-                            myHero.transform.position.y < Neck.position.y + 30f * myLevel &&
-                            myHero.transform.position.y > Neck.position.y + 10f * myLevel)
+                            myHeroT.position.y < Neck.position.y + 30f * myLevel &&
+                            myHeroT.position.y > Neck.position.y + 10f * myLevel)
                         {
                             Attack("crawler_jump_0");
                             return;
@@ -3657,10 +3659,9 @@ public partial class TITAN : TitanBase
                     {
                         if (abnormalType == AbnormalType.Jumper &&
                             (myDistance > attackDistance &&
-                             myHero.transform.position.y > Head.position.y + 4f * myLevel ||
-                             myHero.transform.position.y > Head.position.y + 4f * myLevel) &&
-                            Vector3.Distance(baseT.position, myHero.transform.position) <
-                            1.5f * myHero.transform.position.y)
+                             myHeroT.position.y > Head.position.y + 4f * myLevel ||
+                             myHeroT.position.y > Head.position.y + 4f * myLevel) &&
+                             (baseT.position - myHeroT.position).sqrMagnitude < Mathf.Pow(1.5f * myHeroT.position.y, 2f))
                         {
                             Attack("jumper_0");
                             return;
@@ -3678,7 +3679,7 @@ public partial class TITAN : TitanBase
 
                     if (myDistance < chaseDistance || whoHasTauntMe != null)
                     {
-                        var vector4 = myHero.transform.position - baseT.position;
+                        var vector4 = myHeroT.position - baseT.position;
                         var current2 = -Mathf.Atan2(vector4.z, vector4.x) * 57.29578f;
                         var f2 = -Mathf.DeltaAngle(current2, baseGT.rotation.eulerAngles.y - 90f);
                         if (isAlarm || Mathf.Abs(f2) < 90f)
@@ -3749,7 +3750,7 @@ public partial class TITAN : TitanBase
                         }
                     }
 
-                    if (Vector3.Distance(baseT.position, targetCheckPt) < targetR)
+                    if ((baseT.position - targetCheckPt).sqrMagnitude < targetRPow)
                     {
                         if (checkPoints.Count > 0)
                         {
@@ -3789,7 +3790,7 @@ public partial class TITAN : TitanBase
                         Chase();
                     }
 
-                    if (Vector3.Distance(baseT.position, targetCheckPt) < targetR)
+                    if ((baseT.position - targetCheckPt).sqrMagnitude < targetRPow)
                     {
                         Idle();
                     }
@@ -3798,7 +3799,7 @@ public partial class TITAN : TitanBase
 
                 case TitanState.Random_Run:
                     random_run_time -= dt;
-                    if (Vector3.Distance(baseT.position, targetCheckPt) < targetR || random_run_time <= 0f)
+                    if ((baseT.position - targetCheckPt).sqrMagnitude < targetRPow || random_run_time <= 0f)
                     {
                         Idle();
                     }
@@ -3836,7 +3837,7 @@ public partial class TITAN : TitanBase
                         }
                         else
                         {
-                            var vector6 = myHero.transform.position - baseT.position;
+                            var vector6 = myHeroT.position - baseT.position;
                             angle = -Mathf.Atan2(vector6.z, vector6.x) * 57.29578f;
                             between2 = -Mathf.DeltaAngle(angle, baseGT.rotation.eulerAngles.y - 90f);
                             if (Mathf.Abs(between2) < 100f)

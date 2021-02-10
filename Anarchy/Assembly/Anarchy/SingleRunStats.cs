@@ -13,7 +13,7 @@ namespace Anarchy
         private static int reloads;
 
         public float FixedDeltaTime { get; private set; }
-        public int GasRefillsCount { get; set; }
+        public int GasRefillsCount { get; private set; }
         public int Kills { get; private set; }
         public float KillTimeAverage => (float)Math.Round(TimeStamp / Kills, 2);
         public float LastKillTime { get; private set; }

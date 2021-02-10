@@ -1,5 +1,5 @@
 ﻿using Anarchy;
-using Anarchy.InputPos;
+using Anarchy.Inputs;
 using Optimization.Caching;
 using RC;
 using System;

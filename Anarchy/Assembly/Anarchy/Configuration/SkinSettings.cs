@@ -2,13 +2,31 @@
 
 namespace Anarchy.Configuration
 {
+    /// <summary>
+    /// Contains specific settings for skins
+    /// </summary>
     public static class SkinSettings
     {
+        /// <summary>
+        /// Path to folder with presets for <seealso cref="HERO"/>
+        /// </summary>
         public static readonly string HumansPath = Application.dataPath + "/Configuration/HumanSkins/";
+        /// <summary>
+        /// Path to folder with presets for Map skins
+        /// </summary>
         public static readonly string MapsPath = Application.dataPath + "/Configuration/MapSkins/";
+        /// <summary>
+        /// Path to folder with presets for Skybox skins
+        /// </summary>
         public static readonly string SkyboxesPath = Application.dataPath + "/Configuration/SkyboxSkins/";
+        /// <summary>
+        /// Path to folder with presets for <seealso cref="TITAN"/> skins
+        /// </summary>
         public static readonly string TitansPath = Application.dataPath + "/Configuration/TitanSkins/";
 
+        /// <summary>
+        /// If gas skins are disabled
+        /// </summary>
         public static BoolSetting DisableCustomGas = new BoolSetting(nameof(DisableCustomGas), false);
 
         public static StringSetting CitySet = new StringSetting(nameof(CitySet), StringSetting.NotDefine);

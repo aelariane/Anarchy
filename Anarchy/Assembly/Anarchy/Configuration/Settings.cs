@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Anarchy.Configuration
 {
+    /// <summary>
+    /// Main settings storage
+    /// </summary>
     public class Settings
     {
         private static List<ISetting> allSettings;

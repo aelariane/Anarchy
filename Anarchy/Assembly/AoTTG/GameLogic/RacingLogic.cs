@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Anarchy.Custom.Level;
 using Anarchy.Custom.Scripts;
 using Setting = Anarchy.Configuration.GameModeSetting;
 
@@ -407,12 +408,11 @@ namespace GameLogic
                     TryDestroyDoors();
                     Labels.TopCenter = string.Empty;
                     Labels.Center = string.Empty;
-                    var rmos = GameObject.FindObjectsOfType<RacingMovingObject>();
-                    if(rmos.Length > 0)
+                    if(CustomAnarchyLevel.Instance.Scripts.Count > 0)
                     {
-                        foreach(var rmo in rmos)
+                        foreach(AnarchyCustomScript anarchyScript in CustomAnarchyLevel.Instance.Scripts)
                         {
-                            rmo.Launch();
+                            anarchyScript.Launch();
                         }
                     }
                 }

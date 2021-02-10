@@ -115,7 +115,8 @@ namespace Anarchy
             new KeySetting("RestartHotkey", KeyCode.F1), //Restarts game on press
             new KeySetting("PauseHotkey", KeyCode.F2), //Pause/Unpause game
             new KeySetting("DebugPanel", KeyCode.None), //Enables/Disables debug panel
-            new KeySetting("ChatHistory", KeyCode.F8)
+            new KeySetting("ChatHistory", KeyCode.F8) //Chat history panel
+            //new KeySetting("SingleStats", KeyCode.Tab)
         };
 
         #endregion Anarchy
@@ -139,7 +140,7 @@ namespace Anarchy
         public static int TitanKeyCodesLength => titanKeyCodes.Length;
 
         //Sadly this is needed specifically for this one keybind
-        public static KeyCode OpenChatCode => rebindKeyCodes[(int)InputPos.InputRebinds.OpenChat].Value;
+        public static KeyCode OpenChatCode => rebindKeyCodes[(int)Inputs.InputRebinds.OpenChat].Value;
 
         public static void AddToList(KeySetting set)
         {
@@ -263,7 +264,7 @@ namespace Anarchy
                 {
                     delta *= 100000f;
                 }
-                if (anarchyKeyCodes[(int)InputPos.InputAnarchy.Restart].IsKeyDown())
+                if (anarchyKeyCodes[(int)Inputs.InputAnarchy.Restart].IsKeyDown())
                 {
                     if (restartTimer == 0f)
                     {
@@ -271,7 +272,7 @@ namespace Anarchy
                         restartTimer += 0.001f;
                     }
                 }
-                if (anarchyKeyCodes[(int)InputPos.InputAnarchy.Pause].IsKeyDown())
+                if (anarchyKeyCodes[(int)Inputs.InputAnarchy.Pause].IsKeyDown())
                 {
                     if (pauseTimer == 0f)
                     {

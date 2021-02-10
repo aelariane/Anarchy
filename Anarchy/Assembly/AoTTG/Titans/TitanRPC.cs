@@ -369,12 +369,14 @@ public partial class TITAN
         if (ID == -1)
         {
             myHero = null;
+            return;
         }
 
         var photonView = PhotonView.Find(ID);
         if (photonView != null)
         {
             myHero = photonView.gameObject;
+            myHeroT = myHero.transform;
         }
     }
 

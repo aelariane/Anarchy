@@ -22,7 +22,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.9.3.3");
+        public static readonly Version AnarchyVersion = new Version("0.9.4.0");
 
         /// <summary>
         /// Your version Custom name
@@ -67,6 +67,7 @@ namespace Anarchy
             Chat = new Chat();
             Log = new Log();
             ChatHistory = new ChatHistoryPanel();
+            StatsPanel = new SingleStatsPanel();
             DontDestroyOnLoad(new GameObject("DiscordManager").AddComponent<Network.Discord.DiscordSDK>());
             DestroyMainScene();
             GameModes.ResetOnLoad();
@@ -118,7 +119,6 @@ namespace Anarchy
             //    }
             //    Network.Antis.Kick(player, ban, reason);
             //};
-            StatsPanel = new SingleStatsPanel();
             Network.BanList.Load();
             Antis.AntisManager.ResponseAction += (a, b, c) => { Network.Antis.Kick(PhotonPlayer.Find(a), b, c); };
             Antis.AntisManager.OnResponseCallback += (id, banned, reason) =>
@@ -481,7 +481,7 @@ namespace Anarchy
 
         private void LateUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.F5)/*InputManager.IsInputAnarchy((int)InputPos.InputAnarchy.DebugPanel)*/)
+            if (InputManager.IsInputAnarchy((int)Inputs.InputAnarchy.DebugPanel))
             {
                 if (DebugPanel.IsActive)
                 {
@@ -492,7 +492,7 @@ namespace Anarchy
                     DebugPanel.EnableImmediate();
                 }
             }
-            if (InputManager.IsInputAnarchy((int)InputPos.InputAnarchy.ChatHistoryPanel))
+            if (InputManager.IsInputAnarchy((int)Inputs.InputAnarchy.ChatHistoryPanel))
             {
                 if (ChatHistory.IsActive)
                 {
@@ -502,6 +502,13 @@ namespace Anarchy
                 {
                     ChatHistory.EnableImmediate();
                 }
+            }
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single && Input.GetKeyDown(KeyCode.Tab))
+            {
+                InputManager.MenuOn = true;
+                Screen.showCursor = true;
+                Screen.lockCursor = false;
+                StatsPanel.EnableImmediate();
             }
         }
     }

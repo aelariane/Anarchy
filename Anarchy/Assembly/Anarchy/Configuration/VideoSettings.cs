@@ -2,6 +2,9 @@
 
 namespace Anarchy.Configuration
 {
+    /// <summary>
+    /// Specific settings that apply to Video/Graphics
+    /// </summary>
     public static class VideoSettings
     {
         public static BoolSetting BladeTrails = new BoolSetting("BladeTrails", true);

@@ -66,7 +66,7 @@ namespace Anarchy.UI
                     break;
                 }
             }
-            Style.FontSetting.Value = i;
+            StyleSettings.FontSelection.Value = i;
         }
 
         [GUIPage(Anarchy, GUIPageType.DisableMethod)]
@@ -173,28 +173,28 @@ namespace Anarchy.UI
                     {
                         Label(rects[0], locale["guiScaleWarning"], true);
                         Label(rects[0], locale["guiScaleWarning1"], true);
-                        TextField(rects[0], Style.FontSizeSetting, locale["fontSize"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.WindowWidthSetting, locale["windowWidth"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.WindowHeightSetting, locale["windowHeight"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.HeightSetting, locale["height"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.FontSize, locale["fontSize"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.WindowWidth, locale["windowWidth"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.WindowHeight, locale["windowHeight"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.Height, locale["height"], Style.BigLabelOffset, true);
                         LabelCenter(rects[0], string.Empty, true);
-                        TextField(rects[0], Style.WindowBottomOffsetSetting, locale["windowBottomOffset"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.WindowSideOffsetSetting, locale["windowSideOffset"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.WindowTopOffsetSetting, locale["windowTopOffset"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.LabelOffsetSetting, locale["labelOffset"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.LabelOffsetSliderSetting, locale["labelOffsetSlider"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.BigLabelOffsetSetting, locale["bigLabelOffset"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.HorizontalMarginSetting, locale["horizontalMargin"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.VerticalMarginSetting, locale["verticalMargin"], Style.BigLabelOffset, true);
-                        TextField(rects[0], Style.LabelSpaceSetting, locale["labelSpace"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.WindowBottomOffset, locale["windowBottomOffset"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.WindowSideOffset, locale["windowSideOffset"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.WindowTopOffset, locale["windowTopOffset"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.LabelOffset, locale["labelOffset"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.LabelOffsetSlider, locale["labelOffsetSlider"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.BigLabelOffset, locale["bigLabelOffset"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.HorizontalMargin, locale["horizontalMargin"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.VerticalMargin, locale["verticalMargin"], Style.BigLabelOffset, true);
+                        TextField(rects[0], StyleSettings.LabelSpace, locale["labelSpace"], Style.BigLabelOffset, true);
                     }
                     LabelCenter(rects[1], locale["styleColors"], true);
 
-                    DropdownMenuScrollable(this, rects[1], Style.FontSetting, AnarchyAssets.FontNames, locale["fontName"], Style.LabelOffset, 6, true);
+                    DropdownMenuScrollable(this, rects[1], StyleSettings.FontSelection, AnarchyAssets.FontNames, locale["fontName"], Style.LabelOffset, 6, true);
 
                     Style.PublicSettings[1] = TextField(rects[1], Style.PublicSettings[1], locale["background"], Style.LabelOffset, true);
-                    HorizontalSlider(rects[1], Style.BackgroundTransparencySetting, locale.Format("backgroundTransparency", Style.BackgroundTransparencySetting.Value.ToString("F0")), 32f, 255f, Style.LabelOffsetSlider, true);
-                    Style.BackgroundTransparency = System.Convert.ToInt32(Style.BackgroundTransparencySetting.Value);
+                    HorizontalSlider(rects[1], StyleSettings.BackgroundTransparency, locale.Format("backgroundTransparency", StyleSettings.BackgroundTransparency.Value.ToString("F0")), 32f, 255f, Style.LabelOffsetSlider, true);
+                    Style.BackgroundTransparency = System.Convert.ToInt32(StyleSettings.BackgroundTransparency.Value);
                     Style.PublicSettings[2] = Style.BackgroundTransparency.ToString();
                     rects[1].MoveY();
                     Style.PublicSettings[3] = TextField(rects[1], Style.PublicSettings[3], locale["text"] + " " + locale["normal"], Style.LabelOffset, true);
@@ -230,7 +230,7 @@ namespace Anarchy.UI
                     left.width = Style.LabelOffsetSlider;
                     if (Button(left, "Apply changes"))
                     {
-                        Style.PublicSettings[0] = AnarchyAssets.FontNames[Style.FontSetting.Value];
+                        Style.PublicSettings[0] = AnarchyAssets.FontNames[StyleSettings.FontSelection.Value];
                         UIManager.HUDScaleGUI.Value = (float)System.Math.Round(UIManager.HUDScaleGUI.Value, 2);
                         Style.Save();
                         Style.Load();

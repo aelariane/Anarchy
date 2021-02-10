@@ -1,5 +1,9 @@
 ﻿namespace Anarchy.Configuration
 {
+    /// <summary>
+    /// Base class that defines Setting
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class Setting<T> : ISetting
     {
         public readonly T DefaultValue;

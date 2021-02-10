@@ -18,7 +18,7 @@ namespace Anarchy
         private static List<GameModeSetting> allGameSettings;
         private static readonly List<int> antiReviveList = new List<int>();
 
-        private static Hashtable oldHash = new Hashtable();
+        public static Hashtable oldHash = new Hashtable();
         private static Hashtable infection = new Hashtable();
 
         public static readonly GameModeSetting CustomAmount = new GameModeSetting("titanc", new[] { 5 });
@@ -419,6 +419,12 @@ namespace Anarchy
                 }
 
                 bld.Append("MOTD: " + hash["motd"]);
+                oldHash["motd"] = hash["motd"];
+            }
+            else if(hash.ContainsKey("motd") && oldHash.ContainsKey("motd") == false)
+            {
+                bld.AppendLine("MOTD: " + hash["motd"]);
+                oldHash.Add("motd", hash["motd"]);
             }
 
             oldHash = new Hashtable();
@@ -587,6 +593,11 @@ namespace Anarchy
 
             if (count <= 0)
             {
+                if(Motd.Value.Trim().Length > 0 && oldHash["motd"] as string != Motd.Value.Trim())
+                {
+                    oldHash["motd"] = Motd.Value;
+                    FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, "MOTD: " + Motd.Value, string.Empty);
+                }
                 return;
             }
 
@@ -600,6 +611,12 @@ namespace Anarchy
             //    SendTeamInfo();
             //}
             FengGameManagerMKII.FGM.BasePV.RPC("settingRPC", PhotonTargets.Others, hash);
+
+            if (Motd.Value.Trim().Length > 0 && oldHash["motd"] as string != Motd.Value.Trim())
+            {
+                oldHash["motd"] = Motd.Value;
+                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.Others, "MOTD: " + Motd.Value, string.Empty);
+            }
             if (bld.ToString() != string.Empty)
             {
                 Chat.Add(bld.ToString());
@@ -642,7 +659,7 @@ namespace Anarchy
 
             if (count <= 0)
             {
-                if (Motd.Value.Length > 0)
+                if (Motd.Value.Trim().Length > 0)
                 {
                     FengGameManagerMKII.FGM.BasePV.RPC("Chat", player, "MOTD: " + Motd.Value, string.Empty);
                 }

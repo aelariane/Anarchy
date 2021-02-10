@@ -1,6 +1,6 @@
 ﻿using Anarchy;
 using Anarchy.Configuration;
-using Anarchy.InputPos;
+using Anarchy.Inputs;
 using Optimization.Caching;
 using RC;
 using System.Collections;

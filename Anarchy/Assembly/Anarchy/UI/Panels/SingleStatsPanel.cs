@@ -32,6 +32,15 @@
 
         protected override void OnPanelDisable()
         {
+            UnityEngine.Screen.lockCursor = IN_GAME_MAIN_CAMERA.CameraMode >= CameraType.TPS;
+            UnityEngine.Screen.showCursor = false;
+            IN_GAME_MAIN_CAMERA.isPausing = false;
+            InputManager.MenuOn = false;
+            if (IN_GAME_MAIN_CAMERA.MainCamera != null && !IN_GAME_MAIN_CAMERA.MainCamera.enabled)
+            {
+                IN_GAME_MAIN_CAMERA.SpecMov.disable = false;
+                IN_GAME_MAIN_CAMERA.Look.disable = false;
+            }
             UnityEngine.Time.timeScale = 1f;
         }
 
@@ -45,10 +54,9 @@
 
         public override void Update()
         {
-            if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.Escape))
+            if(UnityEngine.Input.GetKey(UnityEngine.KeyCode.Tab) == false)
             {
-                Disable();
-                return;
+                DisableImmediate();
             }
         }
     }

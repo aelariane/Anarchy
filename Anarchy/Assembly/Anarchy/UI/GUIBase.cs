@@ -189,6 +189,9 @@ namespace Anarchy.UI
             return @base.LoadTexture(name, ext);
         }
 
+        /// <summary>
+        /// Clears texture cache
+        /// </summary>
         public void ClearCache()
         {
             textureCache.Clear();

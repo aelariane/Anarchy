@@ -2,7 +2,7 @@
 using Anarchy.Commands.Chat;
 using Anarchy.Configuration;
 using Anarchy.Configuration.Presets;
-using Anarchy.InputPos;
+using Anarchy.Inputs;
 using Anarchy.Skins.Humans;
 using Optimization;
 using Optimization.Caching;
@@ -22,6 +22,10 @@ using Random = UnityEngine.Random;
 [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
 public partial class HERO : HeroBase
 {
+    //public bool IsAffectedByAura { get; set; }
+
+    public float GasMultiplier;
+
     private const int TotalBladeNum = 5;
 
     private int _shoots;
@@ -2858,6 +2862,8 @@ public partial class HERO : HeroBase
         {
             amount = UseGasSpeed;
         }
+
+        amount *= GasMultiplier;
 
         if (currentGas > 0f)
         {

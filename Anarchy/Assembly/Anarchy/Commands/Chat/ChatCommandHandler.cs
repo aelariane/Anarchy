@@ -2,6 +2,9 @@
 
 namespace Anarchy.Commands.Chat
 {
+    /// <summary>
+    /// Handler for <seealso cref="UI.Chat"/> commands
+    /// </summary>
     internal class ChatCommandHandler
     {
         private Dictionary<string, ChatCommand> allCommands;
@@ -67,6 +70,10 @@ namespace Anarchy.Commands.Chat
             }
         }
 
+        /// <summary>
+        /// Tries to handle command from given string
+        /// </summary>
+        /// <param name="inputLine">Chat line</param>
         public void TryHandle(string inputLine)
         {
             string[] strArray = inputLine.Substring(1).Split(' ');

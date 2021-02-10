@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
-namespace Anarchy.Custom.Level
+namespace Anarchy.Custom.Scripts
 {
-    //TODO
-    public class CustomLevelElement
+    public class Aura : UnityEngine.MonoBehaviour
     {
     }
 }

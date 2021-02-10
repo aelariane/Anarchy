@@ -31,7 +31,18 @@ namespace Anarchy.UI
             onAwakeAdds = delegate () { };
             onAwakeRms = delegate () { };
         }
-         public static bool Disable(GUIBase gui)
+
+
+        //private void OnGUI()
+        //{
+        //    if(Style.CustomStyles != null)
+        //    {
+        //        UnityEngine.GUI.skin.customStyles = Style.CustomStyles;
+        //    }
+        //}
+
+
+        public static bool Disable(GUIBase gui)
         {
             if (!gui.IsActive)
             {

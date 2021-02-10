@@ -6,7 +6,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Anarchy.Custom.Level;
 using Anarchy.Custom.Scripts;
+using System.Linq;
 
 namespace RC
 {
@@ -422,7 +424,9 @@ namespace RC
                         ','
                     });
 
-                    bool addMovingScript = strArray.Length > 19;
+                    int checkLength = strArray[0] == "misc" || strArray[0] == "racing" ? 12 : 19;
+                    bool hasAnarchyScript = strArray.Length > checkLength;
+
                     GameObject resultObject = null;
 
                     if (strArray[0].StartsWith("custom"))
@@ -693,20 +697,155 @@ namespace RC
                         }
                     }
 
-                    if (addMovingScript && resultObject != null && FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
+                    if (hasAnarchyScript && resultObject != null && FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
                     {
-                        string rmo = string.Join(",", strArray, 19, strArray.Length - 19);
-                        if(rmo.StartsWith("rmo") == false)
+                        string scriptAddon = string.Join(",", strArray, checkLength, strArray.Length - checkLength);
+                        //TODO: Move this part to AnarchyCustomLevel
+                        //Checks for scripts
+                        if (scriptAddon.StartsWith("rmo")) //Racing moving object
                         {
-                            continue;
+                            string[] rmoRaw = scriptAddon.Split(':')[1].Split(',');
+                            Vector3 startPoint = new Vector3(Convert.ToSingle(rmoRaw[0]), Convert.ToSingle(rmoRaw[1]), Convert.ToSingle(rmoRaw[2]));
+                            Vector3 endPoint = new Vector3(Convert.ToSingle(rmoRaw[3]), Convert.ToSingle(rmoRaw[4]), Convert.ToSingle(rmoRaw[5]));
+                            float speed = Convert.ToSingle(rmoRaw[6]);
+                            RacingMovingObject component = resultObject.AddComponent<RacingMovingObject>();
+                            component.Speed = speed;
+                            component.SetPosition(startPoint, endPoint);
+
+                            Debug.Log("Tf null ?" + resultObject.name + ", " + resultObject.transform == null);
+
+                            CustomAnarchyLevel.Instance.Scripts.Add(component);
                         }
-                        string[] rmoRaw = rmo.Split(':')[1].Split(',');
-                        Vector3 startPoint = new Vector3(Convert.ToSingle(rmoRaw[0]), Convert.ToSingle(rmoRaw[1]), Convert.ToSingle(rmoRaw[2]));
-                        Vector3 endPoint = new Vector3(Convert.ToSingle(rmoRaw[3]), Convert.ToSingle(rmoRaw[4]), Convert.ToSingle(rmoRaw[5]));
-                        float speed = Convert.ToSingle(rmoRaw[6]);
-                        RacingMovingObject component = resultObject.AddComponent<RacingMovingObject>();
-                        component.Speed = speed;
-                        component.SetPosition(startPoint, endPoint);
+                        else if (scriptAddon.StartsWith("umv")) //Universal moving script
+                        {
+                            string[] sourceArray = scriptAddon.Split(':');
+                            string source = sourceArray[1];
+
+                            string[] metadataraw = sourceArray[0]
+                                .Substring(sourceArray[0].IndexOf("(") + 1)
+                                .Replace(")", string.Empty)
+                                .Split(',');
+
+                            int id = Convert.ToInt32(metadataraw[0]);
+                            int count = Convert.ToInt32(metadataraw[1]);
+
+                            int indexOf = source.IndexOf(',');
+
+                            string[] rawPointData = source.Split('|');
+
+                            bool includeRotations = sourceArray[0].Contains("r");
+                            bool includeSpeed = sourceArray[0].Contains("s");
+                            bool includeDelay = sourceArray[0].Contains("d");
+
+                            MovingScript script = resultObject.AddComponent<MovingScript>();
+
+                            if(id > 0)
+                            {
+                                script.ScriptID = id;
+                            }
+
+                            for (int i = 0; i < count; i++)
+                            {
+                                MovingScriptArea area = MovingScriptArea.FromString(rawPointData[i], includeRotations, includeSpeed, includeDelay);
+
+                                if (!includeRotations)
+                                {
+                                    area.StartRotation = area.TargetRotation = resultObject.transform.rotation;
+                                }
+                                script.Areas.Add(area);
+                            }
+
+                            script.RotationEnabled = includeRotations;
+                            CustomAnarchyLevel.Instance.Scripts.Add(script);
+                        }
+                        //else if (scriptAddon.StartsWith("rts")) //Object rotation script
+                        //{
+                        //    //TODO
+                        //}
+                        else if (scriptAddon.StartsWith("fade")) //Fading object
+                        {
+                            string fadeSub = scriptAddon.Substring(scriptAddon.IndexOf("fade(") + 5);
+                            string[] fadeData = fadeSub.Substring(0, fadeSub.IndexOf(")")).Split(',');
+                            FadingScript script = resultObject.AddComponent<FadingScript>();
+
+                            script.FadeTimer = Convert.ToSingle(fadeData[0]);
+                            script.InitialState = fadeData[1] == "1";
+
+                            CustomAnarchyLevel.Instance.Scripts.Add(script);
+                        }
+                        //else if (scriptAddon.StartsWith("owp")) //One way portal
+                        //{
+                        //    //TODO
+                        //}
+                        //else if (scriptAddon.StartsWith("twp")) //Two way portal
+                        //{
+                        //    //TODO
+                        //}
+                        //else if (scriptAddon.Contains("aura")) //Area that triggers bigger gas usage, or kills if player was too slow
+                        //{
+                        //    if (scriptAddon.Contains("gasaura"))
+                        //    {
+
+                        //    }
+                        //    else if (scriptAddon.Contains("killaura"))
+                        //    {
+
+                        //    }
+                        //    else if (scriptAddon.Contains("multiaura"))
+                        //    {
+
+                        //    }
+                        //}
+
+                        //Checks for flags
+                        if (scriptAddon.Contains("clip")) //Clipping hooks to object
+                        {
+                            resultObject.AddComponent<ClippingObjectComponent>();
+                        }
+                        if (scriptAddon.Contains("nokill")) //Disables kill trigger on lava
+                        {
+                            RacingKillTrigger killtrigger = resultObject.GetComponentInChildren<Collider>().gameObject.GetComponent<RacingKillTrigger>();
+                            if (killtrigger != null)
+                            {
+                                killtrigger.Disabled = true;
+                            }
+                        }
+                        if (scriptAddon.Contains("trap"))
+                        {
+                            TrapComponent trap = resultObject.AddComponent<TrapComponent>();
+                            string trapSub = scriptAddon.Substring(scriptAddon.IndexOf("trap(") + 5);
+                            string[] trapData = trapSub.Substring(0, trapSub.IndexOf(")")).Split(',');
+                            if (scriptAddon.Contains("gastrap"))
+                            {
+                                trap.Type = TrapType.GasUsage;
+                                trap.GasUsageMultiplier = Convert.ToSingle(trapData[0]);
+                            }
+                            else if (scriptAddon.Contains("killtrap"))
+                            {
+                                trap.Type = TrapType.Kill;
+                                trap.KillTime = Convert.ToSingle(trapData[0]);
+                            }
+                            else if (scriptAddon.Contains("multitrap"))
+                            {
+                                trap.Type = TrapType.Both;
+                                trap.GasUsageMultiplier = Convert.ToSingle(trapData[0]);
+                                trap.KillTime = Convert.ToSingle(trapData[1]);
+                            }
+                        }
+                        if (scriptAddon.Contains("parent"))
+                        {
+                            string parentSub = scriptAddon.Substring(scriptAddon.IndexOf("parent(") + 7);
+                            int parentId = Convert.ToInt32(parentSub.Substring(0, parentSub.IndexOf(")")));
+
+                            AnarchyCustomScript script = CustomAnarchyLevel.Instance.Scripts
+                                .Where(x => x.ScriptID.HasValue && x.ScriptID.Value == parentId)
+                                .FirstOrDefault();
+
+                            if (script != null)
+                            {
+                                resultObject.transform.parent = script.gameObject.transform;
+                            }
+                        }
                     }
                 }
             }
@@ -867,7 +1006,6 @@ namespace RC
         public static void OnLoadLevel()
         {
             FengGameManagerMKII.FGM.logic.RoundTime = 0f;
-            RacingMovingObject.ResetNextId();
             RCManager.racingSpawnPoint = Vectors.zero;
             RCManager.racingSpawnPointSet = false;
             groundList = new List<GameObject>();
@@ -898,6 +1036,13 @@ namespace RC
             }
             if (FengGameManagerMKII.Level.Name.StartsWith("Custom") && IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
             {
+                if (FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
+                {
+                    if(FengGameManagerMKII.FGM.gameObject.GetComponent<Anarchy.Custom.Level.CustomAnarchyLevel>() == null)
+                    {
+                        FengGameManagerMKII.FGM.gameObject.AddComponent<Anarchy.Custom.Level.CustomAnarchyLevel>();
+                    }
+                }
                 GameObject supplyGO = GameObject.Find("aot_supply");
                 if (supplyGO != null)
                 {

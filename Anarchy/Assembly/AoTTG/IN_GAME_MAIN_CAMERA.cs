@@ -739,7 +739,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
                     this.lockAngle = false;
                 }
             }
-            if (InputManager.IsInputRebind((int)Anarchy.InputPos.InputRebinds.LiveSpectate))
+            if (InputManager.IsInputRebind((int)Anarchy.Inputs.InputRebinds.LiveSpectate))
             {
                 if (mainObject != null)
                 {

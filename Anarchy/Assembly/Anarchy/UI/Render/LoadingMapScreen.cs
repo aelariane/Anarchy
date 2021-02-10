@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Anarchy.Custom.Scripts;
+using Anarchy.Custom.Level;
 using static Anarchy.UI.GUI;
 
 namespace Anarchy.UI
@@ -58,12 +58,11 @@ namespace Anarchy.UI
                         log.TryDestroyDoors();
                         if (FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
                         {
-                            var rmos = GameObject.FindObjectsOfType<RacingMovingObject>();
-                            if (rmos.Length > 0)
+                            if (CustomAnarchyLevel.Instance.Scripts.Count > 0)
                             {
-                                foreach (var rmo in rmos)
+                                foreach (var anarchyScript in CustomAnarchyLevel.Instance.Scripts)
                                 {
-                                    rmo.Launch();
+                                    anarchyScript.Launch();
                                 }
                             }
                         }

@@ -28,6 +28,11 @@ public class Bullet : Photon.MonoBehaviour
     public float leviShootTime;
     public TITAN MyTitan;
 
+    //Used by anarchy trap
+    private float hookHoldTimer;
+    private float trapKillTimer;
+    private bool isOnTrap;
+
     private void Awake()
     {
         baseG = gameObject;
@@ -104,8 +109,27 @@ public class Bullet : Photon.MonoBehaviour
                         break;
 
                     case Layers.GroundN:
-                        baseT.parent = tf;
                         master.LastHook = null;
+                        if (FengGameManagerMKII.Level.Name.StartsWith("Custom-Anarchy"))
+                        {
+                            if (tf.gameObject.GetComponent<Anarchy.Custom.Scripts.ClippingObjectComponent>() != null)
+                            {
+                                baseT.parent = tf;
+                            }
+                            if (tf.gameObject.GetComponent<Anarchy.Custom.Scripts.TrapComponent>() != null)
+                            {
+                                isOnTrap = true;
+                                var trap = tf.gameObject.GetComponent<Anarchy.Custom.Scripts.TrapComponent>();
+                                if (trap.Type == Anarchy.Custom.Scripts.TrapType.Both || trap.Type == Anarchy.Custom.Scripts.TrapType.GasUsage)
+                                {
+                                    master.GasMultiplier = trap.GasUsageMultiplier;
+                                }
+                                if(trap.Type == Anarchy.Custom.Scripts.TrapType.Both || trap.Type == Anarchy.Custom.Scripts.TrapType.Kill)
+                                {
+                                    trapKillTimer = trap.KillTime;
+                                }
+                            }
+                        }
                         break;
 
                     case Layers.NetworkObjectN:
@@ -369,6 +393,14 @@ public class Bullet : Photon.MonoBehaviour
 
     public void Disable()
     {
+        if (isOnTrap)
+        {
+            if (master != null)
+            {
+                master.GasMultiplier = 1f;
+                isOnTrap = false;
+            }
+        }
         this.phase = 2;
         this.killTime = 0f;
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
@@ -434,6 +466,14 @@ public class Bullet : Photon.MonoBehaviour
 
     public void RemoveMe()
     {
+        if (isOnTrap)
+        {
+            if (master != null)
+            {
+                master.GasMultiplier = 1f;
+                isOnTrap = false;
+            }
+        }
         this.isdestroying = true;
         if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
         {
@@ -495,6 +535,18 @@ public class Bullet : Photon.MonoBehaviour
                 i++;
             }
             this.lineRenderer.SetPosition(num - 1, baseT.position);
+
+            if(isOnTrap && trapKillTimer > 0f)
+            {
+                hookHoldTimer += Time.deltaTime;
+                if(hookHoldTimer > trapKillTimer)
+                {
+                    if(master != null)
+                    {
+                        Anarchy.Abuse.Kill(PhotonNetwork.player, "Trap");
+                    }
+                }
+            }
         }
         else if (this.phase == 2)
         {

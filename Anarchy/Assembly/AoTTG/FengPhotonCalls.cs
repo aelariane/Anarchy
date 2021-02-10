@@ -595,6 +595,7 @@ internal partial class FengGameManagerMKII
         {
             GameModes.Load();
             GameModes.ForceChange();
+            GameModes.oldHash["motd"] = null;
             RCManager.ClearAll();
             RestartGame(true, false);
         }

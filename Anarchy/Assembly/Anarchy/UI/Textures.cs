@@ -10,6 +10,54 @@ namespace Anarchy.UI
         private static readonly int[] stateCounts = new int[7] { 1, 3, 6, 6, 6, 3, 6 };
         internal static Dictionary<ElementType, Texture2D[]> TextureCache;
 
+        public static Texture2D[] Test()
+        {
+            Color main = Style.BackgroundColor;
+            Color[] colors = Helper.TextureColors(main, 6);
+            List<Texture2D> liest = new List<Texture2D>();
+            Texture2D it = new Texture2D(20, 20, TextureFormat.ARGB32, false);
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    it.SetPixel(x, y, main);
+                }
+            }
+            it.Apply();
+            liest.Add(it);
+            for (int j = 0; j < 6; j++)
+            {
+                //int offset = Mathf.RoundToInt(4 * UIManager.HUDScaleGUI);
+                //int baseVal = Mathf.RoundToInt(15 * UIManager.HUDScaleGUI);
+                Texture2D tex = new Texture2D(20, 20, TextureFormat.ARGB32, false);
+                for(int x = 0; x < 20; x++)
+                {
+                    for (int y = 0; y < 20; y++)
+                    {
+                        tex.SetPixel(x, y, colors[j]);
+                    }
+                }
+                //int xPos = 0 + offset;
+                //int xPos1 = baseVal - offset;
+                //for (int x = 0; x < baseVal; x++)
+                //{
+                //    for (int y = 0; y < baseVal; y++)
+                //    {
+                //        if (x >= xPos && x <= xPos1)
+                //        {
+                //            tex.SetPixel(x, y, colors[j]);
+                //            continue;
+                //        }
+                //        tex.SetPixel(x, y, Optimization.Caching.Colors.empty);
+                //    }
+                //}
+                tex.Apply();
+                liest.Add(tex);
+            }
+
+            return liest.ToArray();
+        }
+
         public static void Initialize()
         {
             if (TextureCache == null)
@@ -70,7 +118,7 @@ namespace Anarchy.UI
                                     {
                                         if (y >= yPos && y <= yPos1)
                                         {
-                                            tex.SetPixel(x, y, colors[i]);
+                                            tex.SetPixel(x, y, colors[j]);
                                             continue;
                                         }
                                         tex.SetPixel(x, y, Optimization.Caching.Colors.empty);

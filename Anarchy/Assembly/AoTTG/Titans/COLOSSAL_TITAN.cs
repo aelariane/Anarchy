@@ -119,7 +119,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
             }
             gameObject3.GetComponent<TITAN>().SetRoute(gameObject4);
             gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Aberrant, false);
-            gameObject3.GetComponent<TITAN>().activeRad = 0;
+            gameObject3.GetComponent<TITAN>().activeRadPow = 0;
             gameObject3.GetComponent<TITAN>().ToCheckPoint((Vector3)gameObject3.GetComponent<TITAN>().checkPoints[0], 10f);
         }
         else
@@ -154,7 +154,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
                     gameObject3.GetComponent<TITAN>().SetAbnormalType(AbnormalType.Crawler, false);
                 }
             }
-            gameObject3.GetComponent<TITAN>().activeRad = 200;
+            gameObject3.GetComponent<TITAN>().activeRadPow = 40000;
         }
         if (FengGameManagerMKII.LAN)
         {
