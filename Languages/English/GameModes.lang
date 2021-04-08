@@ -111,3 +111,5 @@ maximumSpeedLimitInfoEnabled:<color=#$maincolor$>Maximum speed limit ({0}) <colo
 maximumSpeedLimitInfoDisabled:<color=#$maincolor$>Maximum speed limit <color=#$dColor$>disabled</color></color>
 nonStopRacingInfoEnabled:<color=#$maincolor$>Non-Stop Racing <color=#$eColor$>enabled</color> (Speed: {0}, Timer: {1})</color>
 nonStopRacingInfoDisabled:<color=#$maincolor$>Non-Stop Racing <color=#$dColor$>disabled</color></color>
+oneLifeRacingInfoEnabled:<color=#$maincolor$>One life mode <color=#$eColor$>enabled</color> (Lifes: {0}, RestartTimer: {1})</color>
+oneLifeRacingInfoDisabled:<color=#$maincolor$>One life mode <color=#$dColor$>disabled</color></color>

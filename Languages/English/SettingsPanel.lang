@@ -232,3 +232,8 @@ hideOwnName:Hide your hero name/guild:
 noColorNames:Disable colored names:
 hideCrosshairArrows:Hide crosshair arrows:
 infGasPvp:Infinite gas in PvP:
+SingleStats:Single run stats:
+disableFog:Disable fog:
+labelScale:Labels scale[{0}]:
+racingStartCrosshair:Race start timer on crosshair:
+bombCdCrosshair:Bomb CD on crosshair:

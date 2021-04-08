@@ -112,3 +112,5 @@ maximumSpeedLimitInfoEnabled:<color=#$maincolor$>Максимальный лим
 maximumSpeedLimitInfoDisabled:<color=#$maincolor$>Максимальный лимит скорости <color=#$dColor$>выключен</color></color>
 nonStopRacingInfoEnabled:<color=#$maincolor$>Режим "гонка без остановки" <color=#$eColor$>включен</color> (Скорость: {0}, Таймер: {1})</color>
 nonStopRacingInfoDisabled:<color=#$maincolor$>Режим "гонка без остановки" <color=#$dColor$>выключен</color></color>
+oneLifeRacingInfoEnabled:<color=#$maincolor$>Режим ограниченных жизней <color=#$eColor$>включен</color> (Жизни: {0}, Время рестарта: {1})</color>
+oneLifeRacingInfoDisabled:<color=#$maincolor$>Режим ограниченных жизней <color=#$dColor$>выключен</color></color>

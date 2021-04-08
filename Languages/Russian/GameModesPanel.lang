@@ -104,3 +104,6 @@ maximumSpeedLimitInt0:Максимальная скорость:
 nonStopRacingState:Режим "гонка без остановки":
 nonStopRacingInt0:Минимальная скорость:
 nonStopRacingInt1:Таймер возвращения скорости:
+oneLifeRacingState:Режим ограниченных жизней:
+oneLifeRacingInt0:Количество жизней:
+oneLifeRacingInt1:Время рестарта (сек):

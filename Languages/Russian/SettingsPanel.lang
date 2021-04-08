@@ -234,3 +234,8 @@ hideOwnName:Скрывать свои имя/гильдию:
 noColorNames:Выключить раскраску имён:
 hideCrosshairArrows:Скрыть стрелки на прицеле:
 infGasPvp:Бесконечный газ в ПВП:
+SingleStats:Статистика:
+disableFog:Отключить туман:
+labelScale:Размер лейблов[{0}]:
+racingStartCrosshair:Таймер гонки под прицелом:
+bombCdCrosshair:Кулдаун бомбы под прицелом:

@@ -104,3 +104,6 @@ maximumSpeedLimitInt0:Maximum speed:
 nonStopRacingState:Non-Stop racing:
 nonStopRacingInt0:Minimum speed:
 nonStopRacingInt1:Speed re-gain timer:
+oneLifeRacingState:One life mode:
+oneLifeRacingInt0:Amount of lifes:
+oneLifeRacingInt1:Restart time (s):
