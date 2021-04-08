@@ -19,7 +19,10 @@ namespace Anarchy.Configuration
         public static BoolSetting HideName = new BoolSetting("HideName", true);
         public static BoolSetting RemoveColors = new BoolSetting("RemoveColors", false);
 
-        public static BoolSetting BodyLeanEnabled = new BoolSetting("BodyLeanEnabled", true);
+        public static BoolSetting RacingTimerOnCrosshair = new BoolSetting("CrosshairRacingTimer", false);
+        public static BoolSetting BombTimerOnCrosshair = new BoolSetting("CrosshairBombTimer", false);
+
+        public static BoolSetting BodyLeanEnabled = new BoolSetting("BodyLeanEnabled", true);   
 
         public static BoolSetting InvertY = new BoolSetting("InvertY", false);
         public static BoolSetting Snapshots = new BoolSetting("Snapshots", false);

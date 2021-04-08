@@ -150,6 +150,14 @@ namespace Anarchy.Skins
                         return x.material;
                     }));
                 }
+                else if(element.Materials.Count != renderers.Length)
+                {
+                    element.Materials = new List<Material>(renderers.Select(x =>
+                    {
+                        x.material.mainTexture = element.Texture;
+                        return x.material;
+                    }));
+                }
                 for (int i = 0; i < renderers.Length; i++)
                 {
                     var render = renderers[i];

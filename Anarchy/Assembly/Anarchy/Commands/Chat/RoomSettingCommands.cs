@@ -17,6 +17,34 @@ namespace Anarchy.Commands.Chat
             }
             switch (args[0].ToLower())
             {
+
+               case "hide":
+                   {
+                       PhotonNetwork.room.Visible = false;
+                   }
+                   break;
+
+                   
+               case "show":
+                   {
+                       PhotonNetwork.room.Visible = true;
+                   }
+                   break;
+
+                   
+               case "close":
+                   {
+                       PhotonNetwork.room.Open = false;
+                   }
+                   break;
+
+                   
+               case "open":
+                   {
+                       PhotonNetwork.room.Open = true;
+                   }
+                   break;
+
                 case "max":
                     if(!int.TryParse(args[1], out int max))
                     {
@@ -42,8 +70,7 @@ namespace Anarchy.Commands.Chat
                             chatMessage = Lang.Format("errArg", CommandName + " time");
                             return false;
                         }
-                        var diff = time - FengGameManagerMKII.FGM.logic.ServerTime;
-                        FengGameManagerMKII.FGM.logic.ServerTime += diff;
+                        FengGameManagerMKII.FGM.logic.ServerTime = time;
                         FengGameManagerMKII.FGM.logic.OnRequireStatus();
                         chatMessage = Lang.Format("roomTimeSet", time.ToString());
                         SendLocalizedText("roomTimeSet", new string[] { time.ToString() });
@@ -54,7 +81,7 @@ namespace Anarchy.Commands.Chat
                         chatMessage = Lang.Format("errArg", CommandName + " time");
                         return false;
                     }
-                    FengGameManagerMKII.FGM.logic.ServerTimeBase += time;
+                    FengGameManagerMKII.FGM.logic.ServerTime += time;
                     FengGameManagerMKII.FGM.logic.OnRequireStatus();
                     chatMessage = Lang.Format("roomTime", time.ToString());
                     SendLocalizedText("roomTime", new string[] { time.ToString() });

@@ -418,12 +418,17 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         if (obj2 != null)
         {
             obj2.transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f);
+            Optimization.Labels.UpdateShadowPosition("LabelInfoBottomRight", new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(-Screen.height * 0.5f)), 0f));
         }
         Optimization.Labels.BottomRight = (GameType == GameType.Single ? $"Anarchy version: {AnarchyManager.AnarchyVersion}\n" : "") + "Pause : " + InputManager.Settings[InputCode.Pause] + " ";
         GameObject.Find("LabelInfoTopCenter").transform.localPosition = new Vector3(0f, (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelInfoTopRight").transform.localPosition = new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelNetworkStatus").transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f);
         GameObject.Find("LabelInfoTopLeft").transform.localPosition = new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)((Screen.height * 0.5f) - 20f)), 0f);
+        Optimization.Labels.UpdateShadowPosition("LabelInfoTopCenter", new Vector3(0f, (float)((int)(Screen.height * 0.5f)), 0f));
+        Optimization.Labels.UpdateShadowPosition("LabelInfoTopRight", new Vector3((float)((int)(Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f));
+        Optimization.Labels.UpdateShadowPosition("LabelNetworkStatus", new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)(Screen.height * 0.5f)), 0f));
+        Optimization.Labels.UpdateShadowPosition("LabelInfoTopLeft", new Vector3((float)((int)(-Screen.width * 0.5f)), (float)((int)((Screen.height * 0.5f) - 20f)), 0f));
         if (!usingTitan || GameType == GameType.Single)
         {
             CacheGameObject.Find("skill_cd_bottom").transform.localPosition = new Vector3(0f, (float)((int)((-Screen.height * 0.5f) + 5f)), 0f);

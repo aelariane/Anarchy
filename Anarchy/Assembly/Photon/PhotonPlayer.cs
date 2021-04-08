@@ -44,6 +44,27 @@ public class PhotonPlayer
 
     public Abuse AbuseInformation { get; set; } = new Abuse();
 
+    public Hashtable PropertiesHistory = new Hashtable();
+
+    public string HistoryToString()
+    {
+        var bld = new System.Text.StringBuilder();
+
+        foreach(var pair in PropertiesHistory)
+        {
+            bld.Append($"({pair.Key.GetType()}) {pair.Key.ToString()}: {{\n");
+            var dict = pair.Value as Dictionary<object, int>;
+
+            foreach(var meow in dict)
+            {
+                bld.Append($"    ({meow.Key.GetType()}){meow.Key.ToString()} x {meow.Value}\n");
+            }
+            bld.Append("},\n");
+        }
+
+        return bld.ToString();
+    }
+
     public bool AnarchySync
     {
         get => anarchySync;

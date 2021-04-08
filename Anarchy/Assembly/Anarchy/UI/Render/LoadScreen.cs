@@ -52,6 +52,7 @@ namespace Anarchy.UI
                 Localization.Language.SetLanguage(file.GetString("language"));
 
                 Configuration.Settings.Load();
+                Configuration.VideoSettings.Apply();
             }
             yield return new WaitForSeconds(0.5f);
 

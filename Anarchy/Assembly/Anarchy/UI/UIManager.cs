@@ -11,6 +11,7 @@ namespace Anarchy.UI
         private static GUIBase[] activeGUIs = new GUIBase[0];
         internal static FloatSetting HUDScaleGUI = new FloatSetting("HUDScaleGUI", 1f);
         internal static BoolSetting HUDAutoScaleGUI = new BoolSetting("HUDAutoScaleGUI", true);
+        internal static FloatSetting LabelScale = new FloatSetting("LabelScale", 1f);
         private static Action onAwakeAdds = delegate () { };
         private static Action onAwakeRms = delegate () { };
 

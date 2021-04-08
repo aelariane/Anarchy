@@ -79,10 +79,10 @@ namespace Anarchy.UI.Elements
                 position.x,
                 position.y,
                 position.width,
-                position.height * showItems + Style.VerticalMargin * (showItems - 1) +(showItems * Style.Height * 0.8f)
+                position.height * showItems + Style.VerticalMargin * (showItems - 1) + (showItems * Style.Height * 0.8f)
             );
 
-            element.viewRect = new Rect(0f, 0f, position.width, position.height * selections.Length + (Style.VerticalMargin * 1.5f * (selections.Length + 1)));
+            element.viewRect = new Rect(0f, 0f, position.width, position.height * selections.Length + (Style.VerticalMargin * (selections.Length - 1)) + (4 * (selections.Length - 1)));
             element.rect = new SmartRect(0f, 0f, position.width, position.height);
             element.animator = new Animation.DropDownAnimation(element, position, showItems + 1);
             element.Enable();

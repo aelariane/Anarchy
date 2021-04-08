@@ -18,6 +18,33 @@ namespace Optimization
 
         public static BoolSetting UseCustomLabels { get; } = new BoolSetting(nameof(UseCustomLabels), false);
 
+        public static void UpdateShadowPosition(string name, Vector3 newLocalPos)
+        {
+            if (VideoSettings.ShadowsUI.Value)
+            {
+                var shadow = GameObject.Find(name + "(Shadow)");
+                if(shadow != null)
+                {
+                    var mesh = shadow.GetComponent<TextMesh>();
+                    var anchor = mesh.anchor;
+                    float deltaX = 1.25f;
+                    if (anchor == TextAnchor.MiddleRight || anchor == TextAnchor.UpperRight || anchor == TextAnchor.LowerRight)
+                    {
+                        deltaX = -deltaX;
+                    }
+                    float deltaY = 1.25f;
+                    if ((int)anchor >= 6)
+                    {
+                        deltaY = -deltaY;
+                    }
+
+                    deltaY *= Anarchy.UI.UIManager.LabelScale.Value;
+                    deltaX *= Anarchy.UI.UIManager.LabelScale.Value;
+                    mesh.transform.localPosition = new Vector3(newLocalPos.x + deltaX, newLocalPos.y - deltaY, newLocalPos.z + 0.00001f);
+                }
+            }
+        }
+
         #region Labels
         public static string BottomRight
 
@@ -134,7 +161,7 @@ namespace Optimization
             UILabel label = res.GetComponent<UILabel>();
             render.material = font.material;
             text.font = font;
-            text.fontSize = size;
+            text.fontSize = Mathf.RoundToInt(size * Anarchy.UI.UIManager.LabelScale.Value);
             text.anchor = anchor;
             text.alignment = align;
             text.color = color;
@@ -184,7 +211,7 @@ namespace Optimization
             UILabel label = res.GetComponent<UILabel>();
             render.material = font.material;
             text.font = font;
-            text.fontSize = size;
+            text.fontSize = Mathf.RoundToInt(size * Anarchy.UI.UIManager.LabelScale.Value);
             text.anchor = anchor;
             text.alignment = align;
             text.color = color;
@@ -205,6 +232,8 @@ namespace Optimization
                 deltaY = -deltaY;
             }
 
+            deltaY *= Anarchy.UI.UIManager.LabelScale.Value;
+            deltaX *= Anarchy.UI.UIManager.LabelScale.Value;
             tf.localPosition = new Vector3(tf.localPosition.x + deltaX, tf.localPosition.y - deltaY, tf.localPosition.z + 0.00001f);
 
             if (label != null)
@@ -214,6 +243,7 @@ namespace Optimization
             }
             res.layer = 5;
             text.richText = true;
+            text.gameObject.name = name + "(Shadow)";
             return text;
         }
 

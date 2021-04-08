@@ -17,6 +17,7 @@ namespace Anarchy.Configuration
         public static BoolSetting UseShadows = new BoolSetting("UseShadows", true);
         public static BoolSetting WindEffect = new BoolSetting("WindEffect", true);
         public static BoolSetting ShadowsUI = new BoolSetting("ShadowsUI", true);
+        public static BoolSetting DisableFog = new BoolSetting("DisableFog", false);
 
         public static IntSetting AntiAliasing = new IntSetting("AntiAliasing", 0);
         public static IntSetting AnisotropicFiltering = new IntSetting("AnisoLevel", 0);
@@ -85,6 +86,15 @@ namespace Anarchy.Configuration
                 QualitySettings.shadowDistance = 0f;
                 QualitySettings.shadowCascades = 1;
                 QualitySettings.shadowProjection = UnityEngine.ShadowProjection.CloseFit;
+            }
+
+            if (FengGameManagerMKII.Level != null && FengGameManagerMKII.Level.HasFog)
+            {
+                RenderSettings.fog = !DisableFog.Value;
+            }
+            else
+            {
+                RenderSettings.fog = false;
             }
             Settings.Apply();
         }

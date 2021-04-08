@@ -153,6 +153,8 @@ namespace Anarchy.UI
                         ToggleButton(rects[0], Settings.HideName, locale["hideOwnName"], true);
                         ToggleButton(rects[0], Settings.RemoveColors, locale["noColorNames"], true);
                         ToggleButton(rects[0], Settings.DisableHookArrrows, locale["hideCrosshairArrows"], true);
+                        ToggleButton(rects[0], Settings.BombTimerOnCrosshair, locale["bombCdCrosshair"], true);
+                        ToggleButton(rects[0], Settings.RacingTimerOnCrosshair, locale["racingStartCrosshair"], true);
 
                         //Right column
                         LabelCenter(rects[1], locale["lblAbuse"], true);
@@ -164,6 +166,7 @@ namespace Anarchy.UI
                 case AnarchyStyle:
                     //TODO: Create separated Style panel
                     LabelCenter(rects[0], locale["windowOffset"], true);
+                    HorizontalSlider(rects[0], UIManager.LabelScale, locale.Format("labelScale", (UIManager.LabelScale.Value * 100f).ToString("F0")), 0.75f, 1.5f, Style.LabelOffsetSlider, true);
                     ToggleButton(rects[0], UIManager.HUDAutoScaleGUI, locale["guiAutoScale"], true);
                     if (UIManager.HUDAutoScaleGUI.Value)
                     {
@@ -303,6 +306,9 @@ namespace Anarchy.UI
             ToggleButton(left, VideoSettings.CameraTilt, locale["tilt"], true);
             ToggleButton(left, VideoSettings.Blur, locale["blur"], true);
             ToggleButton(left, VideoSettings.ShadowsUI, locale["shadowsUI"], true);
+
+            right.Reset();
+            ToggleButton(right, VideoSettings.DisableFog, locale["disableFog"]);
         }
 
         [GUIPage(General)]

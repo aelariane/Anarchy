@@ -1,6 +1,7 @@
 ﻿using Anarchy;
 using Antis;
 using ExitGames.Client.Photon;
+using System.Linq;
 
 public class RoomInfo
 {
@@ -41,6 +42,50 @@ public class RoomInfo
         {
             return this.maxPlayersField;
         }
+    }
+
+    private string[] cachedRoomStuff;
+
+    public void CacheAottgRoomStuff()
+    {
+        if (cachedRoomStuff != null)
+        {
+            return;
+        }
+        var strArray = Name.Split('`');
+        if (strArray.Length != 7)
+        {
+            cachedRoomStuff = new string[5].Select(x => string.Empty).ToArray();
+            cachedRoomStuff[1] = $"Invalid server name[{ strArray.Length}]";
+            return;
+        }
+        string open = openField ? "" : "[FF0000][Closed][-] ";
+        string pass = strArray[5].Length > 0 ? "[PWD] " : string.Empty;
+        int length = strArray[0].RemoveHex().Length;
+        string rname = strArray[0];
+        if (length > 43 && length < 100)
+        {
+            rname = rname.RemoveHex().Substring(0, 40) + "...";
+        }
+        else if (length > 100)
+        {
+            rname = "[FF0000]Big map name[" + length + "][-]";
+        }
+        cachedRoomStuff = new string[5];
+        cachedRoomStuff[0] = $"<color=red>{pass}</color>";
+        cachedRoomStuff[1] = rname.ToHTMLFormat();
+        cachedRoomStuff[2] = strArray[1];
+        cachedRoomStuff[3] = strArray[2];
+        cachedRoomStuff[4] = strArray[4];
+    }
+
+    public string[] GetRoomStuff()
+    {
+        if (cachedRoomStuff == null)
+        {
+            CacheAottgRoomStuff();
+        }
+        return cachedRoomStuff;
     }
 
     public string Name

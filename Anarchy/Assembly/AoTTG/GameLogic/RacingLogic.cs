@@ -256,28 +256,31 @@ namespace GameLogic
                 OnRequireStatus();
             }
 
-            if(nextRacingScript.Length > 0)
+            if (PhotonNetwork.IsMasterClient)
             {
-                CustomLevel.currentScript = nextRacingScript;
-                nextRacingScript = string.Empty;
-            }
-
-            if (GameModes.AutoPickNextMap.Enabled)
-            {
-                if (RoundsCount % GameModes.AutoPickNextMap.GetInt(0) == 0)
+                if (nextRacingScript.Length > 0)
                 {
-                    string[] fileNames = System.IO.Directory.GetFiles(Anarchy.UI.CustomPanel.MapsPath)
-                        .Select(x => x)
-                        .Where(x => GameModes.AutoPickNextMapFilter.Value.Trim().Length == 0 || x.ToLower().Contains(GameModes.AutoPickNextMapFilter.Value.Trim().ToLower()))
-                        .ToArray();
+                    CustomLevel.currentScript = nextRacingScript;
+                    nextRacingScript = string.Empty;
+                }
 
-                    if (fileNames.Length > 0)
+                if (GameModes.AutoPickNextMap.Enabled)
+                {
+                    if (RoundsCount % GameModes.AutoPickNextMap.GetInt(0) == 0)
                     {
-                        var file = new System.IO.FileInfo(fileNames[Random.Range(0, fileNames.Length)]);
-                        nextRacingScript = System.IO.File.ReadAllText(file.FullName);
-                        if (GameModes.AnnounceMapSwitch)
+                        string[] fileNames = System.IO.Directory.GetFiles(Anarchy.UI.CustomPanel.MapsPath)
+                            .Select(x => x)
+                            .Where(x => GameModes.AutoPickNextMapFilter.Value.Trim().Length == 0 || x.ToLower().Contains(GameModes.AutoPickNextMapFilter.Value.Trim().ToLower()))
+                            .ToArray();
+
+                        if (fileNames.Length > 0)
                         {
-                            FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"<color=#{User.MainColor}>[Map-Switch] Next map is set: <i><color=#{User.SubColor}>{file.Name.Replace(file.Extension, "")}</color></i></color>", "" });
+                            var file = new System.IO.FileInfo(fileNames[Random.Range(0, fileNames.Length)]);
+                            nextRacingScript = System.IO.File.ReadAllText(file.FullName);
+                            if (GameModes.AnnounceMapSwitch)
+                            {
+                                FengGameManagerMKII.FGM.BasePV.RPC("Chat", PhotonTargets.All, new object[] { $"<color=#{User.MainColor}>[Map-Switch] Next map is set: <i><color=#{User.SubColor}>{file.Name.Replace(file.Extension, "")}</color></i></color>", "" });
+                            }
                         }
                     }
                 }

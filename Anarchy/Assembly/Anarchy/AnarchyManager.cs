@@ -22,7 +22,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.9.4.0");
+        public static readonly Version AnarchyVersion = new Version("0.9.4.3");
 
         /// <summary>
         /// Your version Custom name
@@ -393,13 +393,20 @@ namespace Anarchy
 
         private void OnApplicationQuit()
         {
-            User.Save();
-            Network.BanList.Save();
-            GameModes.Load();
-            GameModes.Save();
-            Settings.Save();
-            Style.Save();
             Antis.AntisThreadManager.OnApplicationQuit();
+            try
+            {
+                User.Save();
+                Network.BanList.Save();
+                GameModes.Load();
+                GameModes.Save();
+                Settings.Save();
+                Style.Save();
+            }
+            catch(Exception ex)
+            {
+                Debug.Log("Error occured on ApplicationQuit\n" + ex.Message + "\n" + ex.StackTrace);
+            }
         }
 
         private void OnLevelWasLoaded(int id)

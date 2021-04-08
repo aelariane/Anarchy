@@ -50,6 +50,7 @@
             stats = SingleRunStats.Generate();
             statString = stats.ToString();
             UnityEngine.Time.timeScale = 0f;
+            IN_GAME_MAIN_CAMERA.isPausing = true;
         }
 
         public override void Update()

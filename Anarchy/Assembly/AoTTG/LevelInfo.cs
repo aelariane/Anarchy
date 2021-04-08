@@ -21,6 +21,7 @@ public class LevelInfo
     public RespawnMode RespawnMode;
     public bool Supply = true;
     public bool TeamTitan;
+    public bool HasFog = false;
 
     public static LevelInfo[] Levels { get; private set; }
 
@@ -123,6 +124,7 @@ public class LevelInfo
             Levels[3].PVPEnabled = true;
             Levels[3].DiscordName = "forest";
             Levels[3].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[3].HasFog = true;
 
             Levels[4].Name = "The Forest II";
             Levels[4].MapName = "The Forest";
@@ -133,6 +135,7 @@ public class LevelInfo
             Levels[4].Supply = true;
             Levels[4].DiscordName = "forest";
             Levels[4].LogicType = typeof(GameLogic.SurviveLogic);
+            Levels[4].HasFog = true;
 
             Levels[5].Name = "The Forest III";
             Levels[5].MapName = "The Forest";
@@ -143,6 +146,7 @@ public class LevelInfo
             Levels[5].Supply = true;
             Levels[5].DiscordName = "forest";
             Levels[5].LogicType = typeof(GameLogic.SurviveLogic);
+            Levels[5].HasFog = true;
 
             Levels[6].Name = "Annie";
             Levels[6].MapName = "The Forest";
@@ -154,6 +158,7 @@ public class LevelInfo
             Levels[6].PVPEnabled = true;
             Levels[6].DiscordName = "annie";
             Levels[6].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[6].HasFog = true;
 
             Levels[7].Name = "Annie II";
             Levels[7].MapName = "The Forest";
@@ -165,6 +170,7 @@ public class LevelInfo
             Levels[7].PVPEnabled = true;
             Levels[7].DiscordName = "annie";
             Levels[7].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[7].HasFog = true;
 
             Levels[8].Name = "Colossal Titan";
             Levels[8].MapName = "Colossal Titan";
@@ -223,6 +229,7 @@ public class LevelInfo
             Levels[13].Supply = true;
             Levels[13].DiscordName = "forest";
             Levels[13].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[13].HasFog = true;
 
             Levels[14].Name = "[S]Forest Survive(no crawler)";
             Levels[14].MapName = "The Forest";
@@ -235,6 +242,7 @@ public class LevelInfo
             Levels[14].PunksEnabled = true;
             Levels[14].DiscordName = "forest";
             Levels[14].LogicType = typeof(GameLogic.SurviveLogic);
+            Levels[14].HasFog = true;
 
             Levels[15].Name = "[S]Tutorial";
             Levels[15].MapName = "tutorial";
@@ -270,6 +278,7 @@ public class LevelInfo
             Levels[17].LavaMode = true;
             Levels[17].DiscordName = "forest";
             Levels[17].LogicType = typeof(GameLogic.SurviveLogic);
+            Levels[17].HasFog = true;
 
             Levels[18].Name = "[S]Racing - Akina";
             Levels[18].MapName = "track - akina";
@@ -353,6 +362,7 @@ public class LevelInfo
             Levels[24].PunksEnabled = false;
             Levels[24].DiscordName = "forest";
             Levels[24].LogicType = typeof(GameLogic.SurviveLogic);
+            Levels[24].HasFog = true;
 
             Levels[25].Name = "Custom";
             Levels[25].MapName = "The Forest";
@@ -366,6 +376,7 @@ public class LevelInfo
             Levels[25].PunksEnabled = true;
             Levels[25].DiscordName = "custom";
             Levels[25].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[25].HasFog = true;
 
             Levels[26].Name = "Custom (No PT)";
             Levels[26].MapName = "The Forest";
@@ -379,6 +390,7 @@ public class LevelInfo
             Levels[26].PunksEnabled = true;
             Levels[26].DiscordName = "custom";
             Levels[16].LogicType = typeof(GameLogic.KillTitanLogic);
+            Levels[16].HasFog = true;
 
             Levels[0].minimapPreset = new Minimap.Preset(new Vector3(22.6f, 0f, 13f), 731.9738f);
             Levels[8].minimapPreset = new Minimap.Preset(new Vector3(8.8f, 0f, 65f), 765.5751f);
@@ -428,8 +440,9 @@ public class LevelInfo
                 PVPEnabled = true,
                 PunksEnabled = true,
                 DiscordName = "custom",
-                LogicType = typeof(GameLogic.KillTitanLogic)
-            };
+                LogicType = typeof(GameLogic.KillTitanLogic),
+                HasFog = true
+        };
         }
     }
 }

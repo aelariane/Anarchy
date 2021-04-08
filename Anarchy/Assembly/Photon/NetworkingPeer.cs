@@ -61,7 +61,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
     {
         //DebugOut = DebugLevel.ALL;
         //PhotonNetwork.logLevel = PhotonLogLevel.Full;
-        this.playername = playername;
+        this.playername = string.Empty;
         mActors = new Dictionary<int, PhotonPlayer>();
         this.mOtherPlayerListCopy = new PhotonPlayer[0];
         this.mPlayerListCopy = new PhotonPlayer[0];
@@ -90,6 +90,9 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         base.SerializationProtocolType = Anarchy.Network.NetworkSettings.SerializationProtocol;
         base.ReuseEventInstance = true; //Well it doesn't change anything yet so
         this.State = global::PeerState.PeerCreated;
+
+        //DebugOut = DebugLevel.ALL;
+        //PhotonNetwork.logLevel = PhotonLogLevel.Full;
     }
 
     protected internal int FriendsListAge

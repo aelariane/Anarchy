@@ -15,10 +15,7 @@ namespace Anarchy.Network
                 {
                     //Guardian mod by alerithe (Summer)
                     case "GuardianMod":
-                        if (entry.Value is int)
-                        {
-                            modName = ModNames.Guardian;
-                        }
+                        modName = ModNames.Guardian;
                         break;
 
                     //Photon mod by Fleur

@@ -712,9 +712,10 @@ namespace RC
                             component.Speed = speed;
                             component.SetPosition(startPoint, endPoint);
 
-                            Debug.Log("Tf null ?" + resultObject.name + ", " + resultObject.transform == null);
-
-                            CustomAnarchyLevel.Instance.Scripts.Add(component);
+                            if (startPoint.Equals(endPoint) == false)
+                            {
+                                CustomAnarchyLevel.Instance.Scripts.Add(component);
+                            }
                         }
                         else if (scriptAddon.StartsWith("umv")) //Universal moving script
                         {
@@ -756,20 +757,53 @@ namespace RC
                             }
 
                             script.RotationEnabled = includeRotations;
+
                             CustomAnarchyLevel.Instance.Scripts.Add(script);
                         }
-                        //else if (scriptAddon.StartsWith("rts")) //Object rotation script
-                        //{
-                        //    //TODO
-                        //}
+                        else if (scriptAddon.StartsWith("rts")) //Object rotation script
+                        {
+                            float[] rotationData = scriptAddon
+                                .Substring(4, scriptAddon.IndexOf(")") - 4)
+                                .Split(',')
+                                .Select(x => Convert.ToSingle(x))
+                                .ToArray();
+
+                            RotationScript script = resultObject.AddComponent<RotationScript>();
+
+                            int index = 0;
+                            int id = Convert.ToInt32(rotationData[index++]);
+                            if(id > 0)
+                            {
+                                script.ScriptID = id;
+                            }
+
+                            script.BaseRotation= new Quaternion(
+                                rotationData[index++],
+                                rotationData[index++],
+                                rotationData[index++],
+                                rotationData[index++]
+                            );
+
+                            script.TargetRotation = new Quaternion(
+                                rotationData[index++],
+                                rotationData[index++],
+                                rotationData[index++],
+                                rotationData[index++]
+                            );
+
+                            script.Time = rotationData[index];
+
+                            CustomAnarchyLevel.Instance.Scripts.Add(script);
+                        }
                         else if (scriptAddon.StartsWith("fade")) //Fading object
                         {
-                            string fadeSub = scriptAddon.Substring(scriptAddon.IndexOf("fade(") + 5);
+                            string fadeSub = scriptAddon.Substring(5);
                             string[] fadeData = fadeSub.Substring(0, fadeSub.IndexOf(")")).Split(',');
-                            FadingScript script = resultObject.AddComponent<FadingScript>();
+                            FadeScript script = resultObject.AddComponent<FadeScript>();
 
-                            script.FadeTimer = Convert.ToSingle(fadeData[0]);
-                            script.InitialState = fadeData[1] == "1";
+                            script.ActiveTime = Convert.ToSingle(fadeData[0]);
+                            script.DisabledTime = Convert.ToSingle(fadeData[1]);
+                            script.InitialState = fadeData[2] == "1";
 
                             CustomAnarchyLevel.Instance.Scripts.Add(script);
                         }
@@ -804,11 +838,24 @@ namespace RC
                         }
                         if (scriptAddon.Contains("nokill")) //Disables kill trigger on lava
                         {
-                            RacingKillTrigger killtrigger = resultObject.GetComponentInChildren<Collider>().gameObject.GetComponent<RacingKillTrigger>();
-                            if (killtrigger != null)
-                            {
-                                killtrigger.Disabled = true;
-                            }
+                            //var comps = resultObject.GetComponentInChildren<Collider>().gameObject.GetComponents(typeof(IRacingKillTrigger));
+                            //Debug.Log(comps.Length);
+
+                            ////if (killtrigger != null)
+                            ////{
+                            ////    killtrigger.enabled = true;
+                            ////}
+                            resultObject.GetComponentInChildren<Collider>().enabled = false;
+                            //if (killtrigger != null)
+                            //{
+                            //    killtrigger.collider.enabled = false;
+                            //    killtrigger.enabled = true;
+                            //}
+                            //RacingKillTrigger killtrigger = resultObject.GetComponentInChildren<Collider>().gameObject.GetComponent<RacingKillTrigger>();
+                            //if (killtrigger != null)
+                            //{
+                            //    killtrigger.enabled = true;
+                            //}
                         }
                         if (scriptAddon.Contains("trap"))
                         {
@@ -818,7 +865,7 @@ namespace RC
                             if (scriptAddon.Contains("gastrap"))
                             {
                                 trap.Type = TrapType.GasUsage;
-                                trap.GasUsageMultiplier = Convert.ToSingle(trapData[0]);
+                                trap.GasUsageMultiplier = Convert.ToSingle(trapData[0]);    
                             }
                             else if (scriptAddon.Contains("killtrap"))
                             {

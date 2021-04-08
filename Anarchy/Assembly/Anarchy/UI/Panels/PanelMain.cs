@@ -10,6 +10,8 @@ namespace Anarchy.UI
         private GUIStyle style;
         private int enabledPanel = -1;
         private GUIBase[] allUsedPanels;
+        private Texture2D patreonIcon;
+        private Rect urlRect;
 
         public PanelMain() : base(nameof(PanelMain), GUILayers.PanelMain)
         {
@@ -58,8 +60,13 @@ namespace Anarchy.UI
 
         protected internal override void Draw()
         {
-            var urlRect = new Rect(0f, 0f, new AutoScaleFloat(400), new AutoScaleFloat(100f));
-            if(GUI.Button(urlRect, locale["aottg2Message1"] + "\n" + locale["aottg2Message2"]))
+            GUI.DrawTexture(urlRect, patreonIcon);
+            Vector2 position = Event.current.mousePosition;
+            if (urlRect.Contains(position))
+            {
+                GUI.Label(new Rect(position.x, position.y, 500f, 200f), locale["aottg2Message1"] + "\n" + locale["aottg2Message2"]);
+            }
+            if(UnityEngine.GUI.Button(urlRect, string.Empty, GUIStyle.none))
             {
                 Application.OpenURL("https://www.patreon.com/aottg2");
             }
@@ -89,6 +96,14 @@ namespace Anarchy.UI
                     return;
                 }
             }
+            if(Button("snapshots"))
+            {
+                if(enabledPanel < 0)
+                {
+                    Application.LoadLevel("SnapShot");
+                    return;
+                }
+            }
             if (Button("exit"))
             {
                 Application.Quit();
@@ -100,6 +115,7 @@ namespace Anarchy.UI
             rect = null;
             style = null;
             allUsedPanels = null;
+            patreonIcon = null;
             AnarchyManager.ProfilePanel.DisableImmediate();
             AnarchyManager.SinglePanel.DisableImmediate();
             AnarchyManager.SettingsPanel.DisableImmediate();
@@ -109,11 +125,13 @@ namespace Anarchy.UI
         protected override void OnEnable()
         {
             profileRect = new Rect(Style.ScreenWidth - new AutoScaleFloat(300f), 0f, new AutoScaleFloat(300f), new AutoScaleFloat(20f));
-            rect = new SmartRect(new Rect(Style.ScreenWidth - new AutoScaleFloat(400f), Style.ScreenHeight - new AutoScaleFloat(360f), new AutoScaleFloat(396f), new AutoScaleFloat(54f)), 0f, new AutoScaleFloat(18f));
+            rect = new SmartRect(new Rect(Style.ScreenWidth - new AutoScaleFloat(400f), Style.ScreenHeight - new AutoScaleFloat(420f), new AutoScaleFloat(396f), new AutoScaleFloat(54f)), 0f, new AutoScaleFloat(18f));
             style = Helper.CreateStyle(TextAnchor.MiddleRight, FontStyle.Normal, Mathf.RoundToInt(new AutoScaleFloat(35)), true, new Color[] { white, orange, yellow, white, white, white });
             style.normal.background = style.hover.background = style.active.background = EmptyTexture;
             style.font = AnarchyAssets.Load<Font>(Style.FontName);
             allUsedPanels = new GUIBase[] { AnarchyManager.ProfilePanel, AnarchyManager.SinglePanel, AnarchyManager.ServerList, AnarchyManager.SettingsPanel };
+            patreonIcon = LoadTexture("patreon-logo", "png");
+            urlRect = new Rect(0f, 0f, new AutoScaleFloat(125f), new AutoScaleFloat(125f));
         }
 
         public override void OnUpdateScaling()

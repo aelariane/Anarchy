@@ -162,6 +162,11 @@ public partial class TITAN
             return;
         }
 
+        if(Anarchy.Network.Antis.IsValidSkinURL(ref body, 1, info.Sender.ID) == false || Anarchy.Network.Antis.IsValidSkinURL(ref eye, 1, info.Sender.ID) == false)
+        {
+            return;
+        }
+
         if (Skin != null)
         {
             Debug.Log(

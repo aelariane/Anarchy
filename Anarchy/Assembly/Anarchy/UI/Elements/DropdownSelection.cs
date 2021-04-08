@@ -63,7 +63,7 @@ namespace Anarchy.UI.Elements
                 position.x - new AutoScaleFloat(10f),
                 position.y - new AutoScaleFloat(10f),
                 position.width + new AutoScaleFloat(20f),
-                position.height * selections.Length + Style.VerticalMargin * (selections.Length + 1) + new AutoScaleFloat(20f)
+                position.height * selections.Length + (Style.VerticalMargin * (selections.Length - 1)) + (2 * selections.Length) + new AutoScaleFloat(20f)
             );
 
             element.refSet = referenceSetting;
@@ -71,7 +71,7 @@ namespace Anarchy.UI.Elements
                 position.x,
                 position.y,
                 position.width,
-                position.height * selections.Length + Style.VerticalMargin * (selections.Length - 1)
+                position.height * selections.Length + (Style.VerticalMargin * (selections.Length - 1)) + (2 * selections.Length)
             );
 
             element.rect = new SmartRect(position);

@@ -102,6 +102,7 @@ namespace Anarchy
         public static readonly BoolSetting AnnounceMapSwitch = new BoolSetting(nameof(AnnounceMapSwitch), false);
         public static readonly AnarchyGameModeSetting MaximumSpeedLimit = new AnarchyGameModeSetting("maximumSpeedLimit,maximumAllowedSpeed", new int[] { 250 });
         public static readonly AnarchyGameModeSetting NonStopRacing = new AnarchyGameModeSetting("nonStopRacing,nonStopMinimumSpeed,nonStopGainTimer", new int[] { 100, 10 });
+        public static readonly AnarchyGameModeSetting OneLifeMode = new AnarchyGameModeSetting("oneLifeRacing,olrAmount,olrTimer", new int[] { 1, 5 });
 
         public static bool AntiReviveAdd(int id)
         {

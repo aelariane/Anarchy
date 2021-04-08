@@ -434,7 +434,7 @@ public class COLOSSAL_TITAN : Optimization.Caching.Bases.TitanBase
     [RPC]
     private void loadskinRPC(string url, PhotonMessageInfo info = null)
     {
-        if (SkinSettings.TitanSkins.Value == 1 && info != null && info.Sender.IsMasterClient)
+        if (SkinSettings.TitanSkins.Value == 1 && info != null && info.Sender.IsMasterClient && Anarchy.Network.Antis.IsValidSkinURL(ref url, 1, info.Sender.ID))
         {
             if (mySkin != null)
             {

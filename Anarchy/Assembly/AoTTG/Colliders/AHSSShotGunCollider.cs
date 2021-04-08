@@ -29,7 +29,7 @@ public sealed class AHSSShotGunCollider : MonoBehaviour
     {
         Transform transform = titan.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck/head");
         Vector3 to = baseT.position - transform.transform.position;
-        return Vector3.Angle(-transform.transform.Forward(), to) < 70f;
+        return Vector3.Angle(-transform.transform.Forward(), to) < 100f; //Note: was 70f before, Edited to 100 to fit RC mod
     }
 
     private void FixedUpdate()

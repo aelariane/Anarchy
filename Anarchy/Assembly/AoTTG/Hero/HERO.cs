@@ -24,7 +24,7 @@ public partial class HERO : HeroBase
 {
     //public bool IsAffectedByAura { get; set; }
 
-    public float GasMultiplier;
+    public float GasMultiplier = 1f;
 
     private const int TotalBladeNum = 5;
 
@@ -2389,7 +2389,21 @@ public partial class HERO : HeroBase
             crossT1.localPosition -= new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
             crossT2.localPosition = crossT1.localPosition;
             var magnitude = (raycastHit.point - baseT.position).magnitude;
-            var text = magnitude <= 1000f ? ((int)magnitude).ToString() : "???";
+            string text = "\n";
+
+            if (FengGameManagerMKII.FGM.logic.Mode == GameMode.RACING && Settings.RacingTimerOnCrosshair.Value)
+            {
+                var raceLogic = FengGameManagerMKII.FGM.logic as GameLogic.RacingLogic;
+                if(raceLogic.RaceStart == false)
+                {
+                    text += "Start in " + (raceLogic.StartTime - raceLogic.Round.Time).ToString("F1") + "\n";
+                }
+            }
+            if (GameModes.BombMode.Enabled && Settings.BombTimerOnCrosshair.Value)
+            {
+                text += "Bomb: " + (skillCDDuration <= 0f ? "Ready" : skillCDDuration.ToString("F1")) + "\n";
+            }
+            text += magnitude <= 1000f ? ((int)magnitude).ToString() : "???";
             if (Settings.Speedometer.Value)
             {
                 if (Settings.SpeedometerType.Value == 0)
@@ -2767,10 +2781,14 @@ public partial class HERO : HeroBase
         }
 
         Minimap.TrackGameObjectOnMinimap(gameObject, mapColor, false, true);
-        Setup.Init();
-        Setup.myCostume = new HeroCostume();
-        Setup.myCostume = CostumeConeveter.PhotonDataToHeroCostume(BasePV.owner);
-        Setup.SetCharacterComponent();
+        try
+        {
+            Setup.Init();
+            Setup.myCostume = new HeroCostume();
+            Setup.myCostume = CostumeConeveter.PhotonDataToHeroCostume(BasePV.owner);
+            Setup.SetCharacterComponent();
+        }
+        catch { }
         Destroy(checkBoxLeft);
         Destroy(checkBoxRight);
         Destroy(leftbladetrail);
@@ -3842,6 +3860,9 @@ public partial class HERO : HeroBase
     {
         if (IN_GAME_MAIN_CAMERA.isPausing || IsDead)
         {
+            //if(IsLocal && !IsDead) 
+            //{ 
+            //}
             return;
         }
 

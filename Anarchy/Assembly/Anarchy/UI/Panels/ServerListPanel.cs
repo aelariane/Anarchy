@@ -20,6 +20,7 @@ namespace Anarchy.UI
         private readonly string[] CustomServers = new string[] { "01042015", "verified343" };
 
         private Anarchy.Configuration.IntSetting mapSelectionSetting;
+        private SmartRect[] listRects;
 
         private bool connected = false;
         private bool connectNext = false;
@@ -136,6 +137,7 @@ namespace Anarchy.UI
             rect = null;
             scrollRect = null;
             customServers = null;
+            listRects = null;
         }
 
         [GUIPage(SettingsPage, GUIPageType.DisableMethod)]
@@ -204,6 +206,15 @@ namespace Anarchy.UI
             rect = Helper.GetSmartRects(WindowPosition, 1)[0];
             scroll = Optimization.Caching.Vectors.v2zero;
             scrollRect = new SmartRect(0f, 0f, rect.width, rect.height, 0f, Style.VerticalMargin);
+            float rawWidth = scrollRect.width - (Style.HorizontalMargin * 5);
+            float[] multipliers = new float[6] { 0.06f, 0.44f, 0.23f, 0.1f, 0.08f, 0.09f };
+            float prev = 0f;// rawWidth * multipliers[0];
+            listRects = new SmartRect[6];
+            for(int i = 0; i < 6; i++)
+            {
+                listRects[i] = new SmartRect(new Rect(prev, 0f, rawWidth * multipliers[i], Style.Height), 0f, Style.VerticalMargin);
+                prev += Style.HorizontalMargin + listRects[i].width;
+            }
             scrollArea = new Rect(rect.x, rect.y, rect.width, WindowPosition.height - (4 * (Style.Height + Style.VerticalMargin)) - (Style.WindowTopOffset + Style.WindowBottomOffset) - 10f);
             scrollAreaView = new Rect(0f, 0f, rect.width, 1000f);
             roomList = new List<RoomInfo>();
@@ -514,6 +525,7 @@ namespace Anarchy.UI
                 UpdateRoomList();
             }
 
+
             rect.Reset();
             region = SelectionGrid(rect, region, regions, regions.Length, true);
 
@@ -536,13 +548,18 @@ namespace Anarchy.UI
             rect.ResetX();
             rect.MoveY(Style.VerticalMargin);
             scrollRect.Reset();
+            foreach (var rect in listRects)
+            {
+                rect.Reset();
+            }
             scrollArea.y = rect.y;
             scroll = BeginScrollView(scrollArea, scroll, scrollAreaView);
             if (connected)
             {
                 foreach (var room in roomList)
                 {
-                    if (Button(scrollRect, room.UIName.ToHTMLFormat(), true) && room.PlayerCount != room.MaxPlayers)
+
+                    if (Button(scrollRect, string.Empty, true) && room.PlayerCount != room.MaxPlayers)
                     {
                         if (room.HasPassword)
                         {
@@ -557,6 +574,19 @@ namespace Anarchy.UI
                         }
                         return;
                     }
+
+                    string[] data = room.GetRoomStuff();
+                    Label(listRects[0], data[0], true);
+                    Label(listRects[1], data[1], true);
+                    Label(listRects[2], data[2], true);
+                    Label(listRects[3], data[3], true);
+                    Label(listRects[4], data[4], true);
+                    string slots = $"{room.PlayerCount} | {room.MaxPlayers}";
+                    if(room.PlayerCount >= room.MaxPlayers)
+                    {
+                        slots = "<color=red>" + slots + "</color>";
+                    }
+                    Label(listRects[5], slots , true);
                 }
             }
             EndScrollView();

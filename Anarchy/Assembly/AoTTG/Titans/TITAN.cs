@@ -176,7 +176,7 @@ public partial class TITAN : TitanBase
                 break;
 
             case "combo_2":
-                if (abnormalType != AbnormalType.Punk)
+                if (abnormalType != AbnormalType.Punk && !nonAI)
                 {
                     nextAttackAnimation = "combo_3";
                 }

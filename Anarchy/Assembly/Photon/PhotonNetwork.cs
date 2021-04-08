@@ -975,7 +975,7 @@ public static class PhotonNetwork
 
     public static void DestroyPlayerObjects(PhotonPlayer targetPlayer)
     {
-        if (player == null)
+        if (targetPlayer == null)
         {
             Debug.LogError("DestroyPlayerObjects() failed, cause parameter 'targetPlayer' was null.");
         }

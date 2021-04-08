@@ -110,10 +110,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D, Version=4.1.2.14, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assemblies\Photon3Unity3D.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <HintPath>..\Assemblies\System.dll</HintPath>
     </Reference>
@@ -151,10 +147,11 @@
     <Compile Include="Anarchy\Custom\Level\CustomAnarchyLevel.cs" />
     <Compile Include="Anarchy\Custom\Level\CustomLevelData.cs" />
     <Compile Include="Anarchy\Custom\Level\CustomLevelElement.cs" />
+    <Compile Include="Anarchy\Custom\Level\CustomLevelObject.cs" />
     <Compile Include="Anarchy\Custom\Level\CustomRacingLevel.cs" />
     <Compile Include="Anarchy\Custom\Scripts\AnarchyCustomScript.cs" />
     <Compile Include="Anarchy\Custom\Scripts\ClippingObjectComponent.cs" />
-    <Compile Include="Anarchy\Custom\Scripts\FadingScript.cs" />
+    <Compile Include="Anarchy\Custom\Scripts\FadeScript.cs" />
     <Compile Include="Anarchy\Custom\Scripts\MovingScript.cs" />
     <Compile Include="Anarchy\Custom\Scripts\MovingScriptArea.cs" />
     <Compile Include="Anarchy\Custom\Scripts\RacingMovingObject.cs" />
@@ -217,7 +214,6 @@
     <Compile Include="Anarchy\UI\Panels\ReplaysPanel.cs" />
     <Compile Include="Anarchy\UI\Panels\SingleStatsPanel.cs" />
     <Compile Include="Anarchy\UI\Render\CustomCharacterCreationGUI.cs" />
-    <Compile Include="Anarchy\UI\Render\LabelsGUI.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
     <Compile Include="Anarchy\UI\Elements\ScrollableDropdownSelection.cs" />
@@ -836,6 +832,10 @@
     <ProjectReference Include="..\Antis\Antis.csproj">
       <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
       <Name>Antis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
+      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
+      <Name>Photon3Unity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
