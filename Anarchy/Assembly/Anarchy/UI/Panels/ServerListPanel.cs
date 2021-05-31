@@ -636,6 +636,22 @@ namespace Anarchy.UI
             Label(rect, locale["connectionProtocolDescTCP"], true);
             Label(rect, locale["connectionProtocolDescWS"], true);
             rect.ResetX();
+            rect.MoveY();
+            rect.MoveY();
+            ToggleButton(rect, NetworkSettings.CustomSettings, locale["customPhotonSettings"], true);
+            if (NetworkSettings.CustomSettings.Value)
+            {
+                ToggleButton(rect, NetworkSettings.IsCustomPhotonServer, locale["customPhotonServer"], true);
+                if (NetworkSettings.IsCustomPhotonServer.Value)
+                {
+                    TextField(rect, NetworkSettings.IPAdress, locale["ipAdress"], new AutoScaleFloat(500f), true);
+                    TextField(rect, NetworkSettings.Port, locale["port"], new AutoScaleFloat(500f), true);
+                }
+                else
+                {
+                    TextField(rect, NetworkSettings.ApplicationId, locale["applicationId"], new AutoScaleFloat(300f), true);
+                }
+            }
             rect.MoveToEndY(WindowPosition, Style.Height * 2f + Style.VerticalMargin);
             Label(rect, locale["settingsDesc"], true);
             rect.MoveToEndX(WindowPosition, new AutoScaleFloat(240f) + Style.HorizontalMargin);
@@ -666,7 +682,40 @@ namespace Anarchy.UI
             }
 
             head = locale["connecting"] + " " + regions[selection] + "...";
-            bool result = PhotonNetwork.ConnectToMaster(string.Format(NetworkSettings.AdressString, NetworkSettings.RegionAdresses[selection]), NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], FengGameManagerMKII.ApplicationId, UIMainReferences.ConnectField);
+            bool result;
+            if(NetworkSettings.CustomSettings.Value)
+            {
+                if (NetworkSettings.IsCustomPhotonServer)
+                {
+                    result = PhotonNetwork.ConnectToMaster(NetworkSettings.IPAdress.Value, NetworkSettings.Port.Value, string.Empty, UIMainReferences.ConnectField);
+                }
+                else
+                {
+                    result = PhotonNetwork.ConnectToMaster(
+                        string.Format(NetworkSettings.AdressString,NetworkSettings.RegionAdresses[selection]), 
+                        NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], 
+                        NetworkSettings.ApplicationId.Value, 
+                        UIMainReferences.ConnectField);
+                }
+            }
+            else
+            {
+                if (selection == 0)
+                {
+                    result = PhotonNetwork.ConnectToMaster("142.44.242.29", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
+                }
+                else if(selection == 1)
+                {
+                    result = PhotonNetwork.ConnectToMaster("135.125.239.180", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
+                }
+                else
+                {
+                    this.region = 1;
+                    TryConnect(region);
+                    return;
+                }
+            }
+
             if (!result)
             {
                 FengGameManagerMKII.FGM.StartCoroutine(TryConnectI(selection));

@@ -7,7 +7,7 @@
     Laugh,
     Hit,
     Wander,
-    Grad,
+    Grab,
     Eat,
     Hit_Eye,
     To_CheckPoint,

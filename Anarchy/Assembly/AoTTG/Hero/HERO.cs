@@ -1458,7 +1458,7 @@ public partial class HERO : HeroBase
                 baseT.rotation = myHorse.transform.rotation;
                 isMounted = true;
                 CrossFade("horse_idle", 0.1f);
-                myHorse.GetComponent<Horse>().mounted();
+                myHorse.GetComponent<Horse>().Mounted();
             }
 
             if (State == HeroState.Idle && !baseA.IsPlaying("dash") && !baseA.IsPlaying("wallrun") &&
@@ -1565,14 +1565,17 @@ public partial class HERO : HeroBase
                 }
             }
 
-            if (State == HeroState.Idle && baseA.IsPlaying("air_release") && baseA["air_release"].normalizedTime >= 1f)
+            if (!baseA.IsPlaying("air_rise"))
             {
-                CrossFade("air_rise", 0.2f);
-            }
+                if (State == HeroState.Idle && baseA.IsPlaying("air_release") && baseA["air_release"].normalizedTime >= 1f)
+                {
+                    CrossFade("air_rise", 0.2f);
+                }
 
-            if (baseA.IsPlaying("horse_getoff") && baseA["horse_getoff"].normalizedTime >= 1f)
-            {
-                CrossFade("air_rise", 0.2f);
+                if (baseA.IsPlaying("horse_getoff") && baseA["horse_getoff"].normalizedTime >= 1f)
+                {
+                    CrossFade("air_rise", 0.2f);
+                }
             }
 
             if (baseA.IsPlaying("toRoof"))
@@ -1625,8 +1628,7 @@ public partial class HERO : HeroBase
                     CrossFade("air_fall", 0.1f);
                 }
             }
-            else if (!baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra") && !baseA.IsPlaying("dash") &&
-                     !baseA.IsPlaying("jump"))
+            else if (!baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra") && !baseA.IsPlaying("dash") && !baseA.IsPlaying("jump"))
             {
                 var vector7 = new Vector3(num, 0f, num2);
                 var num7 = GetGlobalFacingDirection(num, num2);
@@ -1775,24 +1777,31 @@ public partial class HERO : HeroBase
             IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView =
  Mathf.Lerp(IN_GAME_MAIN_CAMERA.BaseCamera.fieldOfView, 50f, 0.1f);
         }
-        if (flag)
+        if (!_cancelGasDisable)
         {
-            UseGas(UseGasSpeed * Time.deltaTime);
-            if (!smoke3Dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
+            if (flag)
             {
-                BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, true);
-            }
+                UseGas(UseGasSpeed * Time.deltaTime);
+                if (!smoke3Dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
+                {
+                    BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, true);
+                }
 
-            smoke3Dmg.enableEmission = true;
+                smoke3Dmg.enableEmission = true;
+            }
+            else
+            {
+                if (smoke3Dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
+                {
+                    BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, false);
+                }
+
+                smoke3Dmg.enableEmission = false;
+            }
         }
         else
         {
-            if (smoke3Dmg.enableEmission && IN_GAME_MAIN_CAMERA.GameType != GameType.Single)
-            {
-                BasePV.RPC("net3DMGSMOKE", PhotonTargets.Others, false);
-            }
-
-            smoke3Dmg.enableEmission = false;
+            _cancelGasDisable = false;
         }
 
         if (VideoSettings.WindEffect.Value)
@@ -1811,6 +1820,12 @@ public partial class HERO : HeroBase
             {
                 speedFXPS.enableEmission = false;
             }
+        }
+
+        SetHookedPplDirection();
+        if (Settings.BodyLeanEnabled.Value)
+        {
+            BodyLean();
         }
     }
 
@@ -2389,8 +2404,7 @@ public partial class HERO : HeroBase
             crossT1.localPosition -= new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
             crossT2.localPosition = crossT1.localPosition;
             var magnitude = (raycastHit.point - baseT.position).magnitude;
-            string text = "\n";
-
+            string text = string.Empty;
             if (FengGameManagerMKII.FGM.logic.Mode == GameMode.RACING && Settings.RacingTimerOnCrosshair.Value)
             {
                 var raceLogic = FengGameManagerMKII.FGM.logic as GameLogic.RacingLogic;
@@ -2415,7 +2429,6 @@ public partial class HERO : HeroBase
                     text += "\n" + (baseR.velocity.magnitude / 100f).ToString("F1") + " k";
                 }
             }
-
             labelDistance.text = text;
             if (magnitude > 120f)
             {
@@ -2611,7 +2624,7 @@ public partial class HERO : HeroBase
             IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && BasePV.IsMine)
         {
             myHorse = Pool.NetworkEnable("horse", baseT.position + Vectors.up * 5f, baseT.rotation);
-            myHorse.GetComponent<Horse>().myHero = baseG;
+            myHorse.GetComponent<Horse>().Owner = this;
             myHorse.GetComponent<TITAN_CONTROLLER>().isHorse = true;
         }
 
@@ -2839,7 +2852,7 @@ public partial class HERO : HeroBase
 
     private void Unmounted()
     {
-        myHorse.GetComponent<Horse>().unmounted();
+        myHorse.GetComponent<Horse>().Unmounted();
         isMounted = false;
     }
 
@@ -3380,13 +3393,9 @@ public partial class HERO : HeroBase
                 RightArmAimTo(bulletRight.transform.position);
             }
         }
-
-        SetHookedPplDirection();
-        if (Settings.BodyLeanEnabled.Value)
-        {
-            BodyLean();
-        }
     }
+
+    private bool _cancelGasDisable = false;
 
     public void Launch(Vector3 des, bool left = true, bool leviMode = false)
     {
@@ -3507,6 +3516,7 @@ public partial class HERO : HeroBase
             }
         }
 
+        _cancelGasDisable = true;
         sparks.enableEmission = false;
     }
 

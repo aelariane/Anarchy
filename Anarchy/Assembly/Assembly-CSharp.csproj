@@ -11,6 +11,7 @@
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -109,6 +110,9 @@
     <Reference Include="Mono.Security, Version=2.0.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>..\Assemblies\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>..\Assemblies\System.dll</HintPath>
@@ -833,18 +837,11 @@
       <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
       <Name>Antis</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
-      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
-      <Name>Photon3Unity3D</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Anarchy\Custom\Logic\" />
     <Folder Include="Anarchy\Replays\Players\" />
     <Folder Include="Anarchy\Replays\Readers\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

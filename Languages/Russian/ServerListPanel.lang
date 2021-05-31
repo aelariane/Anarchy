@@ -43,3 +43,8 @@ advancedSettings:Расширенные настройки
 customServer:Сервера:
 joinRoom:Попробовать присоединиться
 pwdRequest:Введите пароль
+customPhotonSettings:Кастомные настройки фотона
+customPhotonServer:Свой фотон сервер (Photon SDK)
+ipAdress:IP Адрес сервера:
+port:Порт сервера:
+applicationId:ApplicationId облачного сервера:

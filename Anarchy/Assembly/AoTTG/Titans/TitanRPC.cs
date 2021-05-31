@@ -182,6 +182,7 @@ public partial class TITAN
     private void netCrossFade(string aniName, float time)
     {
         baseA.CrossFade(aniName, time);
+        CheckAnimationLookTarget(aniName);
     }
 
     [RPC]
@@ -220,6 +221,7 @@ public partial class TITAN
         }
 
         baseA.Play(aniName);
+        CheckAnimationLookTarget(aniName);
     }
 
     [RPC]
@@ -236,6 +238,7 @@ public partial class TITAN
         }
 
         baseA.Play(aniName);
+        CheckAnimationLookTarget(aniName);
         baseA[aniName].normalizedTime = normalizedTime;
     }
 
@@ -365,7 +368,7 @@ public partial class TITAN
     [RPC]
     private void setIfLookTarget(bool bo)
     {
-        asClientLookTarget = bo;
+        //asClientLookTarget = bo;
     }
 
     [RPC]

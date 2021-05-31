@@ -29,6 +29,11 @@ namespace Anarchy.Network
         /// <remarks>0 - disabled, 1 - Enabled, rejoin by button, 2 - Rejoins instantly and automatically if dc'd</remarks>
         public static readonly IntSetting Rejoin = new IntSetting(nameof(Rejoin), 0);
 
+        public static readonly BoolSetting CustomSettings = new BoolSetting("Network" + nameof(CustomSettings), false);
+        public static readonly StringSetting ApplicationId = new StringSetting(nameof(ApplicationId), FengGameManagerMKII.ApplicationId);
+        public static readonly StringSetting IPAdress = new StringSetting(nameof(IPAdress), "127.0.0.1");
+        public static readonly IntSetting Port = new IntSetting(nameof(Port), 5055);
+        public static readonly BoolSetting IsCustomPhotonServer = new BoolSetting(nameof(IsCustomPhotonServer), false);
 
         /// <summary>
         /// Connection protocol, selected at <seealso cref="ConnectionProtocol"/> setting

@@ -1,4 +1,5 @@
 ﻿using Anarchy.UI;
+using Optimization;
 using Optimization.Caching;
 using System.Collections;
 using UnityEngine;
@@ -31,6 +32,18 @@ public class PVPcheckPoint : Photon.MonoBehaviour
     public float titanInterval = 30f;
     public float titanPt;
     public float titanPtMax = 40f;
+    private float _lastTitanPt;
+    private float _lastHumanPt;
+
+    private void Awake()
+    {
+        NetworkingPeer.RegisterEvent(PhotonNetworkingMessage.OnPhotonPlayerConnected, OnPhotonPlayerConnected);
+    }
+
+    private void OnDestroy()
+    {
+        NetworkingPeer.RemoveEvent(PhotonNetworkingMessage.OnPhotonPlayerConnected, OnPhotonPlayerConnected);
+    }
 
     public GameObject chkPtNext
     {
@@ -278,14 +291,25 @@ public class PVPcheckPoint : Photon.MonoBehaviour
 
     private void syncPts()
     {
-        BasePV.RPC("changeTitanPt", PhotonTargets.Others, new object[]
+        if (titanPt != _lastTitanPt)
         {
-            this.titanPt
-        });
-        BasePV.RPC("changeHumanPt", PhotonTargets.Others, new object[]
+            BasePV.RPC("changeTitanPt", PhotonTargets.Others, new object[] { this.titanPt });
+            _lastTitanPt = titanPt;
+        }
+        if (humanPt != _lastHumanPt)
         {
-            this.humanPt
-        });
+            BasePV.RPC("changeHumanPt", PhotonTargets.Others, new object[] { this.humanPt });
+            _lastHumanPt = humanPt;
+        }
+    }
+
+    public void OnPhotonPlayerConnected(AOTEventArgs args)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            BasePV.RPC("changeTitanPt", args.Player, new object[] { this.titanPt });
+            BasePV.RPC("changeHumanPt", args.Player, new object[] { this.humanPt });
+        }
     }
 
     private void titanGetsPoint()

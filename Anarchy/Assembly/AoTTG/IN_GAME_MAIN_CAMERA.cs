@@ -459,6 +459,8 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
         this.createSnapShotRT();
     }
 
+    public static BoolSetting Interpolation = new BoolSetting("InterpolateEnabled", true);
+
     public GameObject SetMainObject(object obj, bool resetRotation = true, bool lockAngle = false)
     {
         if (obj == null)
@@ -473,6 +475,10 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
             MainTITAN = null;
             MainObject = (obj as HERO).baseG;
             Head = ((HERO)obj).baseT.Find("Amarture/Controller_Body/hip/spine/chest/neck/head");
+            if (Interpolation.Value)
+            {
+                MainHERO.rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            }
             this.distanceMulti = this.heightMulti = 0.64f;
             if (resetRotation)
             {

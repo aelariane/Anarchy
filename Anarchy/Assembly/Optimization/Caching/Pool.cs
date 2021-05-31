@@ -25,7 +25,12 @@ namespace Optimization.Caching
 
         public static GameObject Enable(string name, Vector3 position, Quaternion rotation)
         {
-            return (GameObject)Object.Instantiate(CacheResources.Load(name), position, rotation);
+            var result = (GameObject)Object.Instantiate(CacheResources.Load(name), position, rotation);
+            //if(result.rigidbody != null)
+            //{
+                //result.rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            //}
+            return result;
         }
 
         public static GameObject NetworkEnable(string name, Vector3 position, Quaternion rotation, int group = 0)

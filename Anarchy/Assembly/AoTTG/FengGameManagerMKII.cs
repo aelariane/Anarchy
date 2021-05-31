@@ -26,6 +26,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
     //Basic AoTTG ApplicationID
     //public const string ApplicationId = "f1f6195c-df4a-40f9-bae5-4744c32901ef";
     public const string ApplicationId = "5578b046-8264-438c-99c5-fb15c71b6744";
+    //public const string ApplicationId = "";
 
     private static readonly Hashtable itweenHash = new Hashtable
         {{"x", 0}, {"y", 0}, {"z", 0}, {"easetype", iTween.EaseType.easeInBounce}, {"time", 0.5f}, {"delay", 2f}};
@@ -79,6 +80,31 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         }
 
         return annie == null;
+    }
+
+    [RPC]
+    private void RequestAnarchyVersion(PhotonMessageInfo info)
+    {
+        if (info.Sender.CanRequestVersion)
+        {
+            BasePV.RPC(nameof(ReceiveAnarchyVersion), info.Sender, new object[] { AnarchyManager.AnarchyVersion.ToString(), true, AnarchyManager.CustomName });
+        }
+    }
+
+    [RPC]
+    private void ReceiveAnarchyVersion(string version, bool custom, string customVersion, PhotonMessageInfo info)
+    {
+
+    }
+
+    [RPC]
+    private void MarkMeAsNotAnarchy(PhotonMessageInfo info)
+    {
+        if (info.Sender.AnarchySync)
+        {
+            info.Sender.ModLocked = false;
+            info.Sender.AnarchySync = false;
+        }
     }
 
     private void LoadMapSkin(string n, string urls, string str, IList<string> skybox, PhotonMessageInfo info = null)
@@ -371,6 +397,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public void MultiplayerRacingFinish()
     {
+        Debug.LogError(nameof(MultiplayerRacingFinish));
         var num = logic.RoundTime - ((RacingLogic)logic).StartTime;
         if (PhotonNetwork.IsMasterClient)
         {
@@ -1161,7 +1188,7 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         PlayerKillInfoUpdate(PhotonNetwork.player, Damage);
     }
 
-    #region Show UILabels
+#region Show UILabels
 
     internal void ShowHUDInfoCenter(string content)
     {
@@ -1198,5 +1225,5 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         Labels.TopRight += content.ToHTMLFormat();
     }
 
-    #endregion Show UILabels
+#endregion Show UILabels
 }

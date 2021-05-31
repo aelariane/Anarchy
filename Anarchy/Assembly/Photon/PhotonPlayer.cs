@@ -1,7 +1,9 @@
 ﻿using Antis.Spam;
 using ExitGames.Client.Photon;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PhotonPlayer
 {
@@ -24,6 +26,8 @@ public class PhotonPlayer
     private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
 
+    private bool _canReqiestVersion = true;
+    private DateTime? _lastVersionRequest = null;
     private readonly Hashtable _localPropsToUpdate;
     private float _updateTimer;
     private bool anarchySync = false;
@@ -128,6 +132,22 @@ public class PhotonPlayer
             {
                 FengGameManagerMKII.FGM.PlayerList.Update();
             }
+        }
+    }
+
+    public bool CanRequestVersion
+    {
+        get
+        {
+            if(_lastVersionRequest == null)
+            {
+                _lastVersionRequest = DateTime.Now;
+                return true;
+            }
+            DateTime now = DateTime.Now;
+            bool result = (now - _lastVersionRequest) > TimeSpan.FromMinutes(1);
+            _lastVersionRequest = now;
+            return result;
         }
     }
 

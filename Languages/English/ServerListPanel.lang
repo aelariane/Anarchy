@@ -43,3 +43,8 @@ advancedSettings:Advanced settings
 customServer:Custom server:
 joinRoom:Try to join room
 pwdRequest:Enter password
+customPhotonSettings:Use custom photon settings
+customPhotonServer:Use custom photon server (Photon SDK)
+ipAdress:Server IP adress:
+port:Server port
+applicationId:Photon cloud Application id:

@@ -357,6 +357,18 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
     private void DisconnectToReconnect()
     {
+        if (NetworkSettings.CustomSettings.Value)
+        {
+            if(NetworkSettings.IsCustomPhotonServer.Value)
+            {
+                this.mGameserver = this.MasterServerAddress.Split(new char[] { ':' })[0] + ":" + this.mGameserver.Split(new char[] { ':' })[1];
+            }
+        }
+        else
+        {
+            this.mGameserver = this.MasterServerAddress.Split(new char[] { ':' })[0] + ":" + this.mGameserver.Split(new char[] { ':' })[1];
+        }
+
         switch (this.server)
         {
             case ServerConnection.MasterServer:
@@ -1018,7 +1030,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         }
         return Optimization.Caching.Pool.NetworkInstantiate(name, position, identity, instantiationId, viewIDs, prefix, group, data);
 
-        #region Vanilla version
+#region Vanilla version
 
         //if (resourceGameObject == null)
         //{
@@ -1072,7 +1084,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         ////obj2.SendMessage(PhotonNetworkingMessage.OnPhotonInstantiate.ToString(), new PhotonMessageInfo(photonPlayer, timestamp, null), SendMessageOptions.DontRequireReceiver);
         //return obj2;
 
-        #endregion Vanilla version
+#endregion Vanilla version
     }
 
     public static void RegisterEvent(PhotonNetworkingMessage msg, AOTEvent ev)
