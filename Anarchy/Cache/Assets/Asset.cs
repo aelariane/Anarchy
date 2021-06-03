@@ -14,8 +14,8 @@ namespace Cache.Assets
 
         public Asset(string name)
         {
-            this._path = Application.dataPath + "/Assets/" + name + ".unity3d";
-            this._cache = new Dictionary<string, Object>();
+            _path = Application.dataPath + "/Assets/" + name + ".unity3d";
+            _cache = new Dictionary<string, Object>();
         }
 
         private AssetBundle Bundle { get; set; }
@@ -35,7 +35,7 @@ namespace Cache.Assets
             }
 
             //If we find the asset in the cache.
-            if (this._cache.TryGetValue(name, out Object result) && result != null)
+            if (_cache.TryGetValue(name, out Object result) && result != null)
             {
                 return result;
             }
@@ -44,9 +44,9 @@ namespace Cache.Assets
             result = Bundle.Load(name);
             if (result != null)
             {
-                this._cache.Add(name, result);
+                _cache.Add(name, result);
             }
-            
+
             return result;
         }
 
@@ -56,15 +56,15 @@ namespace Cache.Assets
             {
                 yield break;
             }
-            
+
             //Create the bundle from the path.
-            AssetBundleCreateRequest bundle = AssetBundle.CreateFromMemory(File.ReadAllBytes(this._path));
+            AssetBundleCreateRequest bundle = AssetBundle.CreateFromMemory(File.ReadAllBytes(_path));
             yield return bundle;
 
             //Check if we found it.
             if (bundle == null)
             {
-                throw new Exception($"Could not load bundle from file, check if {this._path} exists.");
+                throw new Exception($"Could not load bundle from file, check if {_path} exists.");
             }
 
             //If we did, load it.
