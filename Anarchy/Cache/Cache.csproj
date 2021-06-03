@@ -37,17 +37,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\AoTTG_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\Dependencies\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\AssetManager.cs" />
     <Compile Include="Assets\AssetType.cs" />
-    <Compile Include="Bases\CharacterBase.cs" />
-    <Compile Include="Bases\Impl\HeroBase.cs" />
-    <Compile Include="Bases\Impl\TitanBase.cs" />
-    <Compile Include="Bases\TransformPaths.cs" />
     <Compile Include="CacheLoader.cs" />
     <Compile Include="CacheResources.cs" />
     <Compile Include="Colors.cs" />
@@ -55,7 +51,6 @@
     <Compile Include="Pooling\IPool.cs" />
     <Compile Include="Pooling\PoolableComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RespawnPosition.cs" />
     <Compile Include="Vectors.cs" />
     <Compile Include="VectorsExtensions.cs" />
   </ItemGroup>

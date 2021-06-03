@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Anarchy\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Antis", "Anarchy\Antis\Antis.csproj", "{61AE834A-671A-4599-B3CA-80AA69F145FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "Anarchy\Cache\Cache.csproj", "{D621C216-2759-4C1E-93E1-561188DCE573}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,14 +31,6 @@ Global
 		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|Any CPU.Build.0 = Release|x64
 		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|x86.ActiveCfg = Release|Any CPU
 		{61AE834A-671A-4599-B3CA-80AA69F145FC}.Release|x86.Build.0 = Release|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Debug|x86.Build.0 = Debug|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Release|x86.ActiveCfg = Release|Any CPU
-		{D621C216-2759-4C1E-93E1-561188DCE573}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
