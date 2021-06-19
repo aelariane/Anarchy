@@ -702,11 +702,23 @@ namespace Anarchy.UI
             {
                 if (selection == 0)
                 {
+                    //usa
                     result = PhotonNetwork.ConnectToMaster("142.44.242.29", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
                 }
-                else if(selection == 1)
+                else if (selection == 1)
                 {
+                    //europe
                     result = PhotonNetwork.ConnectToMaster("135.125.239.180", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
+                }
+                else if (selection == 2)
+                {
+                    //asia
+                    result = PhotonNetwork.ConnectToMaster("51.79.164.137", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
+                }
+                else if (selection == 4)
+                {
+                    //south america
+                    result = PhotonNetwork.ConnectToMaster("172.107.193.233", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
                 }
                 else
                 {
