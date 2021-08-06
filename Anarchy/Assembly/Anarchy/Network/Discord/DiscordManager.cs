@@ -73,6 +73,29 @@ namespace Anarchy.Network.Discord
                 if (PhotonNetwork.InsideLobby)
                 {
                     _presence.state = "In lobby: " + Regex.Replace(PhotonNetwork.ServerAddress, "app\\-|\\.exitgamescloud\\.com|\\:\\d+", "").ToUpper().Replace("WS://", "").Replace("WSS://", "");
+
+                    switch (PhotonNetwork.ServerAddress.Split(':')[0])
+                    {
+                        case "142.44.242.29":
+                            _presence.state = "In lobby: USA";
+                            break;
+
+                        case "135.125.239.180":
+                            _presence.state = "In lobby: Europe";
+                            break;
+
+                        case "51.79.164.137":
+                            _presence.state = "In lobby: Asia";
+                            break;
+
+                        case "172.107.193.233":
+                            _presence.state = "In lobby: South America";
+                            break;
+
+                        default:
+                            break;
+                    }
+
                     _presence.partySize = 0;
                     _presence.partyMax = 0;
                     _presence.largeImageKey = "anarchyicon";
