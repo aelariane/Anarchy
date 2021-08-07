@@ -366,7 +366,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         }
         else
         {
-            if (MasterServerAddress != "135.125.239.180")
+            if (MasterServerAddress.StartsWith("135.125.239.180") == false)
             {
                 this.mGameserver = this.MasterServerAddress.Split(new char[] { ':' })[0] + ":" + this.mGameserver.Split(new char[] { ':' })[1];
             }
