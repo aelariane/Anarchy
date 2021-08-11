@@ -112,9 +112,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>..\Assemblies\Photon3Unity3D.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <HintPath>..\Assemblies\System.dll</HintPath>
     </Reference>
@@ -218,6 +215,7 @@
     <Compile Include="Anarchy\UI\Panels\CustomizationPanel.cs" />
     <Compile Include="Anarchy\UI\Panels\ReplaysPanel.cs" />
     <Compile Include="Anarchy\UI\Panels\SingleStatsPanel.cs" />
+    <Compile Include="Anarchy\UI\Panels\VoiceChatPanel.cs" />
     <Compile Include="Anarchy\UI\Render\CustomCharacterCreationGUI.cs" />
     <Compile Include="Anarchy\UI\Render\LoadingMapScreen.cs" />
     <Compile Include="Anarchy\UI\Panels\CharacterSelectionPanel.cs" />
@@ -225,6 +223,8 @@
     <Compile Include="Anarchy\UI\StyleDefaults.cs" />
     <Compile Include="Anarchy\UI\StyleSettings.cs" />
     <Compile Include="Anarchy\VoiceChat\VCManager.cs" />
+    <Compile Include="Aottg\GameLogic\BombForestLogic.cs" />
+    <Compile Include="Aottg\GameLogic\CustomRacingLogic.cs" />
     <Compile Include="Aottg\Titans\AbnormalType.cs" />
     <Compile Include="Aottg\FengPhotonCalls.cs" />
     <Compile Include="Aottg\FengRPCs.cs" />
@@ -232,7 +232,18 @@
     <Compile Include="Aottg\Titans\TitanRPC.cs" />
     <Compile Include="Anarchy\UI\Panels\CreditsPanel.cs" />
     <Compile Include="Photon\ActorProperties.cs" />
+    <Compile Include="Photon\GlobalChatListener.cs" />
+    <Compile Include="Photon\GlobalChatGui.cs" />
+    <Compile Include="Photon\GlobalChatPeer.cs" />
     <Compile Include="Photon\RoomProperty.cs" />
+    <Compile Include="RC\Bombs\BombSettings.cs" />
+    <Compile Include="RC\Bombs\BombStatSetting.cs" />
+    <Compile Include="RC\Bombs\BombStats.cs" />
+    <Compile Include="RC\Bombs\BombStatsCalculator.cs" />
+    <Compile Include="RC\Bombs\DefaultBombStatsCalculator.cs" />
+    <Compile Include="SimpleJSONFixed\SimpleJSON.cs" />
+    <Compile Include="TLW\MapCeiling.cs" />
+    <Compile Include="TLW\TLWBombCalculatorV1.cs" />
     <Compile Include="Xffect\Affector.cs" />
     <Compile Include="Aottg\Colliders\AHSSShotGunCollider.cs" />
     <Compile Include="Anarchy\AnarchyAssets.cs" />
@@ -837,6 +848,10 @@
     <ProjectReference Include="..\Antis\Antis.csproj">
       <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
       <Name>Antis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
+      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
+      <Name>Photon3Unity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

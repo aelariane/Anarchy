@@ -21,7 +21,7 @@ namespace Optimization
             bld.Append(player.IsMasterClient ? "[MC] " : "");
             bld.Append(player.Dead ? $"[{ColorSet.color_red}]*dead* " : "");
             bld.Append(player.IsTitan ? $"[{ColorSet.color_titan_player}][T] " : (player.Team == 2 ? $"[{ColorSet.color_human_1}][A] " : $"[{ColorSet.color_human}][H] "));
-            bld.Append($"{(player.UIName.RemoveHTML())}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.Max_Dmg}/{player.Total_Dmg} ");
+            bld.Append($"{(player.UIName.RemoveHTML())}[FFFFFF]: {player.Kills}/{player.Deaths}/{player.MaximumDamage}/{player.TotalDamage} ");
             //if (player.AbuseInformation.InfiniteGas)
             //{
             //    bld.Append("[CB0000][GAS][-] ");
@@ -98,8 +98,8 @@ namespace Optimization
                     {
                         teamArray[0] += player.Kills;
                         teamArray[1] += player.Deaths;
-                        teamArray[2] += player.Max_Dmg;
-                        teamArray[3] += player.Total_Dmg;
+                        teamArray[2] += player.MaximumDamage;
+                        teamArray[3] += player.TotalDamage;
                     }
                     local.AppendLine(PlayerToString(PhotonNetwork.playerList[i]));
                 }

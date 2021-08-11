@@ -7,7 +7,8 @@
     BossFightCT,
     Trost,
     Tutorial,
-    RACING,
+    Racing,
     PVP_CAPTURE,
+    Bomb,
     None
 }

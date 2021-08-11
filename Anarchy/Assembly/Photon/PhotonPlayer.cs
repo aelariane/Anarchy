@@ -622,7 +622,7 @@ public class PhotonPlayer
         }
     }
 
-    public int Max_Dmg
+    public int MaximumDamage
     {
         get => Properties == null || !(Properties[PhotonPlayerProperty.max_dmg] is int max) ? -1 : max;
         set
@@ -748,7 +748,7 @@ public class PhotonPlayer
         }
     }
 
-    public int Total_Dmg
+    public int TotalDamage
     {
         get => Properties == null || !(Properties[PhotonPlayerProperty.total_dmg] is int total) ? -1 : total;
         set

@@ -106,7 +106,7 @@ namespace Anarchy
 
         public static bool AntiReviveAdd(int id)
         {
-            if (AntiReviveEnabled() && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING &&
+            if (AntiReviveEnabled() && IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing &&
                 FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH &&
                 FengGameManagerMKII.FGM.logic.RoundTime > 10f)
             {
@@ -520,7 +520,7 @@ namespace Anarchy
             {
                 foreach (PhotonPlayer player in PhotonNetwork.playerList)
                 {
-                    player.Kills = player.Deaths = player.Total_Dmg = player.Max_Dmg = 0;
+                    player.Kills = player.Deaths = player.TotalDamage = player.MaximumDamage = 0;
                 }
             }
         }

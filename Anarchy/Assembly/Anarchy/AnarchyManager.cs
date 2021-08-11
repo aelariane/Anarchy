@@ -22,7 +22,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.9.4.65");
+        public static readonly Version AnarchyVersion = new Version("0.9.5.0");
 
         /// <summary>
         /// Your version Custom name
@@ -127,7 +127,6 @@ namespace Anarchy
                                   $"{(reason == "" ? "" : $"reason: {reason}")}");
             };
         }
-
 
         /// <summary>
         /// Imports settings from RC mod
@@ -405,7 +404,7 @@ namespace Anarchy
             }
             catch(Exception ex)
             {
-                Debug.Log("Error occured on ApplicationQuit\n" + ex.Message + "\n" + ex.StackTrace);
+                UnityEngine.Debug.Log("Error occured on ApplicationQuit\n" + ex.Message + "\n" + ex.StackTrace);
             }
         }
 

@@ -19,7 +19,7 @@ public class LevelBottom : MonoBehaviour
                     {
                         if (other.gameObject.GetPhotonView().IsMine)
                         {
-                            other.gameObject.GetComponent<HERO>().NetDieSpecial(base.rigidbody.velocity * 50f, false, -1, IN_GAME_MAIN_CAMERA.GameMode == GameMode.RACING ? Anarchy.User.AkinaKillTrigger.PickRandomString() : Anarchy.User.ForestLavaKillTrigger.PickRandomString(), true);
+                            other.gameObject.GetComponent<HERO>().NetDieSpecial(base.rigidbody.velocity * 50f, false, -1, IN_GAME_MAIN_CAMERA.GameMode == GameMode.Racing ? Anarchy.User.AkinaKillTrigger.PickRandomString() : Anarchy.User.ForestLavaKillTrigger.PickRandomString(), true);
                         }
                     }
                     else

@@ -198,6 +198,22 @@ namespace Anarchy.Skins.Humans
                 case HumanParts.WeaponTrail:
                     break;
 
+                case HumanParts.Horse:
+                    GameObject horse = hero.myHorse;
+
+                    if (horse == null)
+                    {
+                        return null;
+                    }
+                    foreach (Renderer renderer in horse.GetComponentsInChildren<Renderer>())
+                    {
+                        if (renderer.name == "HORSE")
+                        {
+                            tmp.Add(renderer);
+                        }
+                    }
+                    break;
+
                 default:
                     return null;
             }

@@ -120,6 +120,55 @@ public class Room : RoomInfo
         }
     }
 
+    public RC.Bombs.BombStatsCalculator BombStatsCalculator
+    {
+        get
+        {
+            string name = CustomProperties["BombCalculator"] as string;
+
+            if (name == null)
+            {
+                return new RC.Bombs.DefaultBombStatsCalculator();
+            }
+            switch (name)
+            {
+                case "TLW v1":
+                    return new TLW.TLWBombCalculatorV1();
+
+                case "RC":
+                default:
+                    return new RC.Bombs.DefaultBombStatsCalculator();
+            }
+        }
+        set
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                throw new System.Exception("Not masterclient");
+            }
+            string name = "";
+            if(value == null)
+            {
+                name = "RC";
+            }
+            var type = value.GetType();
+            if(type == typeof(TLW.TLWBombCalculatorV1))
+            {
+                name = "TLW v1";
+            }
+            else if(type == typeof(RC.Bombs.BombStatsCalculator))
+            {
+                name = "RC";
+            }
+            else
+            {
+                name = "RC";
+            }
+
+            SetCustomProperties(new Hashtable() { { "BombCalculator", name } });
+        }
+    }
+
     public void SetCustomProperties(Hashtable propertiesToSet)
     {
         if (propertiesToSet == null)

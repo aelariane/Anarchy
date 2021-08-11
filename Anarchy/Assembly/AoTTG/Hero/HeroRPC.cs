@@ -186,7 +186,7 @@ public partial class HERO
         {
             Pool.NetworkEnable("hitMeat2", baseT.position, Quaternion.Euler(270f, 0f, 0f));
         }
-        else
+        else if(IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
         {
             Pool.Enable("hitMeat2", baseT.position, Quaternion.identity);
         }

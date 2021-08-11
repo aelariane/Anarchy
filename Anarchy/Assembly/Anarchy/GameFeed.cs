@@ -50,7 +50,7 @@ namespace Anarchy
                 return;
             }
 
-            AddLine(lang.Format("gameLoose", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
+            AddLine(lang.Format("gameLoose", FengGameManagerMKII.FGM.logic.CurrentRound.ToString()));
         }
 
         public void RoundWin()
@@ -60,7 +60,7 @@ namespace Anarchy
                 return;
             }
 
-            AddLine(lang.Format("gameWin", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
+            AddLine(lang.Format("gameWin", FengGameManagerMKII.FGM.logic.CurrentRound.ToString()));
         }
 
         public void RoundStart()
@@ -70,7 +70,7 @@ namespace Anarchy
                 return;
             }
 
-            AddLine(lang.Format("roundStart", FengGameManagerMKII.FGM.logic.RoundsCount.ToString()));
+            AddLine(lang.Format("roundStart", FengGameManagerMKII.FGM.logic.CurrentRound.ToString()));
         }
     }
 }

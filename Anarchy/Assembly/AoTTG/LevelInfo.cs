@@ -52,7 +52,7 @@ public class LevelInfo
         if (!initialized)
         {
             initialized = true;
-            Levels = new LevelInfo[32];
+            Levels = new LevelInfo[33];
             Levels[0] = new LevelInfo();
             Levels[1] = new LevelInfo();
             Levels[2] = new LevelInfo();
@@ -284,7 +284,7 @@ public class LevelInfo
             Levels[18].MapName = "track - akina";
             Levels[18].Description = string.Empty;
             Levels[18].EnemyNumber = 0;
-            Levels[18].Mode = GameMode.RACING;
+            Levels[18].Mode = GameMode.Racing;
             Levels[18].RespawnMode = RespawnMode.NEVER;
             Levels[18].Supply = false;
             Levels[18].DiscordName = "racing-akina";
@@ -294,7 +294,7 @@ public class LevelInfo
             Levels[19].MapName = "track - akina";
             Levels[19].Description = string.Empty;
             Levels[19].EnemyNumber = 0;
-            Levels[19].Mode = GameMode.RACING;
+            Levels[19].Mode = GameMode.Racing;
             Levels[19].RespawnMode = RespawnMode.NEVER;
             Levels[19].Supply = false;
             Levels[19].PVPEnabled = true;
@@ -442,7 +442,42 @@ public class LevelInfo
                 DiscordName = "custom",
                 LogicType = typeof(GameLogic.KillTitanLogic),
                 HasFog = true
-        };
+            };
+
+            Levels[31] = new LevelInfo
+            {
+                Name = "Racing - Custom",
+                MapName = "The Forest",
+                Description = "Custom map dedicated to use for Racing gamemode",
+                EnemyNumber = 0,
+                Mode = GameMode.Racing,
+                RespawnMode = RespawnMode.NEVER,
+                Supply = false,
+                TeamTitan = false,
+                PVPEnabled = false,
+                PunksEnabled = false,
+                DiscordName = "custom",
+                LogicType = typeof(GameLogic.CustomRacingLogic),
+                HasFog = true
+            }; 
+            
+            Levels[32] = new LevelInfo
+            {
+                Name = "Forest - Bomb",
+                MapName = "The Forest",
+                Description = "Custom map dedicated to use for Racing gamemode",
+                EnemyNumber = 0,
+                Mode = GameMode.Bomb,
+                RespawnMode = RespawnMode.NEVER,
+                Supply = true,
+                TeamTitan = false,
+                PVPEnabled = false,
+                PunksEnabled = false,
+                DiscordName = "forest",
+                LogicType = typeof(GameLogic.CustomRacingLogic),
+                HasFog = true
+            };
+
         }
     }
 }

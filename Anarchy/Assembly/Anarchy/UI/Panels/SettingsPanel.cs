@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using static Anarchy.UI.GUI;
+using RC.Bombs;
 
 namespace Anarchy.UI
 {
@@ -75,6 +76,40 @@ namespace Anarchy.UI
             UIManager.HUDScaleGUI.Value = (float)System.Math.Round(UIManager.HUDScaleGUI.Value, 2);
         }
 
+        public static float BombStatSlider(SmartRect position, float value, string label, float offset, float step, float min, float max, bool move = true)
+        {
+            if (offset > 0f)
+            {
+                UnityEngine.GUI.Label(position.ToRect(), label, Style.Label);
+                position.MoveOffsetX(offset);
+            }
+
+            value = UnityEngine.GUI.HorizontalSlider(position.ToRect(), value, min, max, Style.Slider, Style.SliderBody);
+            position.ResetX();
+            if (move)
+            {
+                position.MoveY();
+            }
+
+            if(step == 0.5f)
+            {
+                int low = Mathf.FloorToInt(value);
+                float diff = value - low;
+                if (diff >= 0.25f && diff < 0.75f)
+                {
+                    return low + 0.5f;
+                }
+                else
+                {
+                    return Mathf.RoundToInt(value);
+                }
+            }
+            else
+            {
+                return (int)value;
+            }
+        }
+
         protected override void DrawMainPart()
         {
             DrawSelectionButtons();
@@ -92,10 +127,25 @@ namespace Anarchy.UI
             {
                 case 0:
                     LabelCenter(rects[0], locale["bombStats"], true);
-                    localBombStats[0] = (int)HorizontalSlider(rects[0], localBombStats[0], locale.Format("bombRad", Mathf.RoundToInt(localBombStats[0]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
-                    localBombStats[1] = (int)HorizontalSlider(rects[0], localBombStats[1], locale.Format("bombRange", Mathf.RoundToInt(localBombStats[1]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
-                    localBombStats[2] = (int)HorizontalSlider(rects[0], localBombStats[2], locale.Format("bombSpeed", Mathf.RoundToInt(localBombStats[2]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
-                    localBombStats[3] = (int)HorizontalSlider(rects[0], localBombStats[3], locale.Format("bombCd", Mathf.RoundToInt(localBombStats[3]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
+                    bombStats.Radius = BombStatSlider(rects[0], bombStats.Radius, locale.Format("bombRad", bombStats.Radius.ToString()), 
+                        Style.LabelOffsetSlider, calculator.RadiusSetting.Step, calculator.RadiusSetting.MinimumLimit, calculator.RadiusSetting.MaximumLimit, true);
+
+
+                    bombStats.Range = BombStatSlider(rects[0], bombStats.Range, locale.Format("bombRange", bombStats.Range.ToString()),
+                        Style.LabelOffsetSlider, calculator.RangeSetting.Step, calculator.RangeSetting.MinimumLimit, calculator.RangeSetting.MaximumLimit, true);
+
+
+                    bombStats.Speed = BombStatSlider(rects[0], bombStats.Speed, locale.Format("bombSpeed", bombStats.Speed.ToString()),
+                        Style.LabelOffsetSlider, calculator.SpeedSetting.Step, calculator.SpeedSetting.MinimumLimit, calculator.SpeedSetting.MaximumLimit, true);
+
+
+                    bombStats.Cooldown = BombStatSlider(rects[0], bombStats.Cooldown, locale.Format("bombCd", bombStats.Cooldown.ToString()),
+                        Style.LabelOffsetSlider, calculator.CooldownSetting.Step, calculator.CooldownSetting.MinimumLimit, calculator.CooldownSetting.MaximumLimit, true);
+
+                    //localBombStats[0] = (int)HorizontalSlider(rects[0], localBombStats[0], locale.Format("bombRad", Mathf.RoundToInt(localBombStats[0]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
+                    //localBombStats[1] = (int)HorizontalSlider(rects[0], localBombStats[1], locale.Format("bombRange", Mathf.RoundToInt(localBombStats[1]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
+                    //localBombStats[2] = (int)HorizontalSlider(rects[0], localBombStats[2], locale.Format("bombSpeed", Mathf.RoundToInt(localBombStats[2]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
+                    //localBombStats[3] = (int)HorizontalSlider(rects[0], localBombStats[3], locale.Format("bombCd", Mathf.RoundToInt(localBombStats[3]).ToString()), 0f, 10f, Style.LabelOffsetSlider, true);
                     TextField(rects[0], Bomb.BombNameSetting, locale["bombName"], Style.LabelOffset, true);
 
                     LabelCenter(rects[1], locale["bombColor"], true);
@@ -110,31 +160,43 @@ namespace Anarchy.UI
         [GUIPage(Abilities, GUIPageType.DisableMethod)]
         private void DrawAbilityPageDisabled()
         {
+            if(bombStats != null)
+            {
+                BombStats toSave = calculator.ValidateStats(bombStats);
+                BombSettings.WriteToStorage(toSave, calculator.GetType());
+            }
+
             if (localBombStats != null)
             {
-                Bomb.MyBombRad.Value = Mathf.RoundToInt(localBombStats[0]);
-                Bomb.MyBombRange.Value = Mathf.RoundToInt(localBombStats[1]);
-                Bomb.MyBombSpeed.Value = Mathf.RoundToInt(localBombStats[2]);
-                Bomb.MyBombCD.Value = Mathf.RoundToInt(localBombStats[3]);
-                if (Bomb.MyBombRad.Value + Bomb.MyBombRange.Value + Bomb.MyBombSpeed.Value + Bomb.MyBombCD.Value > 20)
-                {
-                    Bomb.MyBombRad.Value = 5;
-                    Bomb.MyBombCD.Value = 5;
-                    Bomb.MyBombSpeed.Value = 5;
-                    Bomb.MyBombRange.Value = 5;
-                }
+                //Bomb.MyBombRad.Value = Mathf.RoundToInt(localBombStats[0]);
+                //Bomb.MyBombRange.Value = Mathf.RoundToInt(localBombStats[1]);
+                //Bomb.MyBombSpeed.Value = Mathf.RoundToInt(localBombStats[2]);
+                //Bomb.MyBombCD.Value = Mathf.RoundToInt(localBombStats[3]);
+                //if (Bomb.MyBombRad.Value + Bomb.MyBombRange.Value + Bomb.MyBombSpeed.Value + Bomb.MyBombCD.Value > 20)
+                //{
+                //    Bomb.MyBombRad.Value = 5;
+                //    Bomb.MyBombCD.Value = 5;
+                //    Bomb.MyBombSpeed.Value = 5;
+                //    Bomb.MyBombRange.Value = 5;
+                //}
                 localBombStats = null;
             }
         }
 
+        private BombStats bombStats;
+        private BombStatsCalculator calculator;
+
         [GUIPage(Abilities, GUIPageType.EnableMethod)]
         private void DrawAbilityPageEnabled()
         {
+            calculator = new TLW.TLWBombCalculatorV1();
+            bombStats = BombSettings.Load(typeof(TLW.TLWBombCalculatorV1));
+
             localBombStats = new float[4];
-            localBombStats[0] = Bomb.MyBombRad;
-            localBombStats[1] = Bomb.MyBombRange;
-            localBombStats[2] = Bomb.MyBombSpeed;
-            localBombStats[3] = Bomb.MyBombCD;
+            //localBombStats[0] = Bomb.MyBombRad;
+            //localBombStats[1] = Bomb.MyBombRange;
+            //localBombStats[2] = Bomb.MyBombSpeed;
+            //localBombStats[3] = Bomb.MyBombCD;
         }
 
         [GUIPage(Anarchy)]
@@ -404,6 +466,7 @@ namespace Anarchy.UI
                     rects[1].ResetX();
                     ToggleButton(rects[1], InputManager.LegacyGasRebind, locale["legacyBurstRebind"], true);
                     ToggleButton(rects[1], InputManager.DisableMouseReeling, locale["disableMouseReel"], true);
+                    ToggleButton(rects[1], InputManager.DisableBurstCooldown, locale["disableBurstCD"], true);
                     for (int i = (int)InputCodes.DefaultsCount; i < RebindCannon; i++)
                     {
                         RebindButton(rects[1], InputManager.AllKeys[i]);

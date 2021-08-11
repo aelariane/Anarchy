@@ -46,6 +46,7 @@ public partial class HERO : HeroBase
         }
     }
 
+    private DateTime _lastBurstTime = DateTime.Now;
     public int bladeReloads = 0;
     public float gasUsageMax = 0f;
     public float gasUsageTrack = 0f;
@@ -151,7 +152,7 @@ public partial class HERO : HeroBase
     public Transform myCannonPlayer;
     public CannonPropRegion myCannonRegion;
     public Group myGroup;
-    private GameObject myHorse;
+    public GameObject myHorse;
     private GameObject myNetWorkName;
     public float myScale = 1f;
     public int myTeam = 1;
@@ -342,10 +343,13 @@ public partial class HERO : HeroBase
         skillIDHUD = skillID;
         if (GameModes.BombMode.Enabled)
         {
-            var rad = Bomb.MyBombRad.Value;
-            var range = Bomb.MyBombRange.Value;
-            var bSpeed = Bomb.MyBombSpeed.Value;
-            var cd = Bomb.MyBombCD.Value;
+            RC.Bombs.BombStats stats = RC.Bombs.BombSettings.Load(typeof(TLW.TLWBombCalculatorV1));
+
+            float rad = stats.Radius;
+            float range = stats.Range;
+            float bSpeed = stats.Speed;
+            float cd = stats.Cooldown;
+
             var hash = new Hashtable();
             bombCD = cd * -0.4f + 5f;
             bombTimeMax = (range * 60f + 200f) / (bSpeed * 60f + 200f);
@@ -367,7 +371,7 @@ public partial class HERO : HeroBase
             }
         }
     }
-
+        
     private void BombUpdate()
     {
         if (InputManager.IsInputDown[InputCode.Attack1] && skillCDDuration <= 0f)
@@ -864,17 +868,12 @@ public partial class HERO : HeroBase
 
     private void Dash(float horizontal, float vertical)
     {
-        if (dashTime > 0f)
-        {
-            return;
-        }
-
-        if (currentGas <= 0f)
-        {
-            return;
-        }
-
-        if (isMounted)
+        DateTime now = DateTime.Now;
+        if (dashTime > 0f
+            || currentGas <= 0f
+            || isMounted
+            || (InputManager.DisableBurstCooldown.Value == false || GameModes.BombMode.Enabled)
+            && (now - _lastBurstTime) < TimeSpan.FromMilliseconds(300))
         {
             return;
         }
@@ -901,6 +900,7 @@ public partial class HERO : HeroBase
         State = HeroState.AirDodge;
         FalseAttack();
         baseR.AddForce(dashV * 40f, ForceMode.VelocityChange);
+        _lastBurstTime = now;
     }
 
     private void Dodge(bool offTheWall = false)
@@ -2405,7 +2405,7 @@ public partial class HERO : HeroBase
             crossT2.localPosition = crossT1.localPosition;
             var magnitude = (raycastHit.point - baseT.position).magnitude;
             string text = string.Empty;
-            if (FengGameManagerMKII.FGM.logic.Mode == GameMode.RACING && Settings.RacingTimerOnCrosshair.Value)
+            if (FengGameManagerMKII.FGM.logic.Mode == GameMode.Racing && Settings.RacingTimerOnCrosshair.Value)
             {
                 var raceLogic = FengGameManagerMKII.FGM.logic as GameLogic.RacingLogic;
                 if(raceLogic.RaceStart == false)
@@ -3048,7 +3048,7 @@ public partial class HERO : HeroBase
 
         BreakApart(v, isBite);
         IN_GAME_MAIN_CAMERA.MainCamera.gameOver = true;
-        if (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
+        if (IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing)
         {
             FengGameManagerMKII.FGM.GameLose();
         }
@@ -3676,7 +3676,7 @@ public partial class HERO : HeroBase
                     skillCDLast = 120f;
                     if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer)
                     {
-                        if (FengGameManagerMKII.Level.TeamTitan || FengGameManagerMKII.Level.Mode == GameMode.RACING ||
+                        if (FengGameManagerMKII.Level.TeamTitan || FengGameManagerMKII.Level.Mode == GameMode.Racing ||
                             FengGameManagerMKII.Level.Mode == GameMode.PVP_CAPTURE ||
                             FengGameManagerMKII.Level.Mode == GameMode.Trost)
                         {

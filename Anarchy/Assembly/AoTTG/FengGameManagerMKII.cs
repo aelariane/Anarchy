@@ -492,8 +492,8 @@ internal partial class FengGameManagerMKII : MonoBehaviour
     public void PlayerKillInfoUpdate(PhotonPlayer player, int dmg)
     {
         player.Kills++;
-        player.Max_Dmg = Mathf.Max(dmg, player.Max_Dmg);
-        player.Total_Dmg += dmg;
+        player.MaximumDamage = Mathf.Max(dmg, player.MaximumDamage);
+        player.TotalDamage += dmg;
     }
 
     public TITAN RandomSpawnOneTitan(int rate)

@@ -266,7 +266,7 @@ namespace GameLogic
 
                 if (GameModes.AutoPickNextMap.Enabled)
                 {
-                    if (RoundsCount % GameModes.AutoPickNextMap.GetInt(0) == 0)
+                    if (CurrentRound % GameModes.AutoPickNextMap.GetInt(0) == 0)
                     {
                         string[] fileNames = System.IO.Directory.GetFiles(Anarchy.UI.CustomPanel.MapsPath)
                             .Select(x => x)
@@ -386,7 +386,7 @@ namespace GameLogic
             {
                 topCenter = Lang["racingWaiting"] + "\n";
                 center = "";
-                if (Multiplayer && RoundsCount > 1 && GetFinishers().Length > 0)
+                if (Multiplayer && CurrentRound > 1 && GetFinishers().Length > 0)
                 {
                     center += Lang["racingLastResult"] + "\n";
                     center += GetFinishers();

@@ -311,6 +311,27 @@ internal partial class FengGameManagerMKII
                 CacheGameObject.Find("aot_supply_lava_position").transform.rotation;
         }
 
+        if (GameModes.BombMode.Enabled)
+        {
+            if (Level.Name.StartsWith("The Forest"))
+            {
+                // Added the creation of an empty gameobject with MapCeilingObject as a component - Thyme 02/28/21
+                GameObject mapCeiling = new GameObject("MapCeilingPrefab");
+                mapCeiling.AddComponent<TLW.MapCeiling>();
+                mapCeiling.transform.position = new Vector3(0f, 280f, 0f);
+                mapCeiling.transform.rotation = Quaternion.identity;
+                mapCeiling.transform.localScale = new Vector3(1320f, 20f, 1320f);
+            }
+            else if (Level.Name.StartsWith("The City"))
+            {
+                GameObject mapCeiling = new GameObject("MapCeilingPrefab");
+                mapCeiling.AddComponent<TLW.MapCeiling>();
+                mapCeiling.transform.position = new Vector3(0f, 210f, 0f);
+                mapCeiling.transform.rotation = Quaternion.identity;
+                mapCeiling.transform.localScale = new Vector3(1400f, 20f, 1400f);
+            }
+        }
+
         roomInformation.UpdateLabels();
         Resources.UnloadUnusedAssets();
     }
@@ -523,7 +544,7 @@ internal partial class FengGameManagerMKII
         player.RCIgnored = false;
         player.UIName = User.Name;
         player.GuildName = User.AllGuildNames;
-        player.Kills = player.Deaths = player.Max_Dmg = player.Total_Dmg = 0;
+        player.Kills = player.Deaths = player.MaximumDamage = player.TotalDamage = 0;
         player.RCteam = 0;
         player.Dead = true;
         player.IsTitan = false;

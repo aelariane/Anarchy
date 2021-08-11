@@ -47,6 +47,8 @@ namespace Anarchy.Configuration
         public static IntSetting TitanSkins = new IntSetting(nameof(TitanSkins), 1);
         public static StringSetting TitanSet = new StringSetting(nameof(TitanSet), StringSetting.NotDefine);
 
+        public static IntSetting RetriesCount = new IntSetting("SkinsRetriesCount", 2);
+
         public static bool SkinsCheck(IntSetting set)
         {
             return set.Value > 0 && (set.Value == 2 || IN_GAME_MAIN_CAMERA.GameType == GameType.Single || PhotonNetwork.IsMasterClient);

@@ -64,16 +64,25 @@ namespace Anarchy.Skins
                 Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
                 yield break;
             }
-            WWW www = new WWW(Path);
-            yield return www;
-            if (www.texture == null || www.size > AllowedSize)
+            int attempts = 1 + (SkinSettings.RetriesCount.Value > 0 ? SkinSettings.RetriesCount.Value : 2);
+            for(int i = 0; i < attempts; i++)
             {
-                Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
-                yield break;
+                WWW www = new WWW(Path);
+                yield return www;
+                if  (www.texture == null)
+                {
+                    Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
+                    continue;
+                }
+                else if (www.size > AllowedSize)
+                {
+                    Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.orange);
+                }
+                Texture = new Texture2D(4, 4, TextureFormat.ARGB32, VideoSettings.Mipmap.Value);
+                www.LoadImageIntoTexture(Texture);
+                www.Dispose();
+                break;
             }
-            Texture = new Texture2D(4, 4, TextureFormat.ARGB32, VideoSettings.Mipmap.Value);
-            www.LoadImageIntoTexture(Texture);
-            www.Dispose();
             Texture.Apply();
             IsDone = true;
             yield break;

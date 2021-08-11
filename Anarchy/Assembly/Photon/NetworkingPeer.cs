@@ -366,7 +366,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         }
         else
         {
-            if (MasterServerAddress.StartsWith("135.125.239.180") == false)
+            if(MasterServerAddress.StartsWith("135.125.239.180") == false)
             {
                 this.mGameserver = this.MasterServerAddress.Split(new char[] { ':' })[0] + ":" + this.mGameserver.Split(new char[] { ':' })[1];
             }
@@ -1104,7 +1104,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         OnNetworkMessage[msg] -= ev;
     }
 
-    internal void RPC(PhotonView view, string methodName, PhotonPlayer player, params object[] parameters)
+    internal void   RPC(PhotonView view, string methodName, PhotonPlayer player, params object[] parameters)
     {
         if (player == null)
         {

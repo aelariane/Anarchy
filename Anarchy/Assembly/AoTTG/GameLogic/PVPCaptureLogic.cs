@@ -19,12 +19,18 @@ namespace GameLogic
             if (this.PVPHumanScore >= this.PVPHumanScoreMax)
             {
                 this.PVPHumanScore = this.PVPHumanScoreMax;
-                this.GameWin();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    this.GameWin();
+                }
             }
             else if (this.PVPTitanScore >= this.PVPTitanScoreMax)
             {
                 this.PVPTitanScore = this.PVPTitanScoreMax;
-                this.GameLose();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    this.GameLose();
+                }
             }
         }
 
@@ -118,7 +124,10 @@ namespace GameLogic
 
         protected override void UpdateLogic()
         {
-            CheckPVPpts();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                CheckPVPpts();
+            }
         }
     }
 }

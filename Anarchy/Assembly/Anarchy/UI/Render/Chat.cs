@@ -103,8 +103,40 @@ namespace Anarchy.UI
             UnityEngine.GUI.FocusControl(string.Empty);
         }
 
+        private static string CheckForMention(string message)
+        {
+            string sentData = message;
+            if (message.Contains("@"))
+            {
+                var strings = message.Split(' ');
+                sentData = string.Empty;
+                for (int i = 0; i < strings.Length; i++)
+                {
+                    string str = strings[i];
+                    if (str.Contains("@") && str.Length > 1)
+                    {
+                        string id = str.Remove(str.IndexOf("@"), 1);
+                        if (int.TryParse(id, out int ID) && PhotonPlayer.Find(ID) != null)
+                        {
+                            sentData += (i == 0 ? "" : " ") + "<b>[" + id + "] " + PhotonPlayer.Find(ID).UIName.ToHTMLFormat() + "</b>";
+                        }
+                        else
+                        {
+                            sentData += (i == 0 ? "" : " ") + strings[i];
+                        }
+                    }
+                    else
+                    {
+                        sentData += (i == 0 ? "" : " ") + str;
+                    }
+                }
+            }
+            return sentData;
+        }
+
         public static void Send(string message)
         {
+            message = CheckForMention(message);
             FengGameManagerMKII.FGM.BasePV.RPC(ChatRPC, PhotonTargets.All, new object[] { User.ChatSend(message), "" });
         }
 

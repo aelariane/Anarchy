@@ -8,6 +8,7 @@
     {
         DisableBodyLean = 0b1,
         LegacyBurst = 0b10,
-        NewTPSCamera = 0b100
+        NewTPSCamera = 0b100,
+        DisableBurstCooldown = 0b1000
     }
 }

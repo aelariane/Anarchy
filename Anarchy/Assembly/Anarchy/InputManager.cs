@@ -130,6 +130,7 @@ namespace Anarchy
         public static IntSetting GasBurstType = new IntSetting(nameof(GasBurstType), 0);
         public static BoolSetting LegacyGasRebind = new BoolSetting(nameof(LegacyGasRebind), false);
         public static BoolSetting DisableMouseReeling = new BoolSetting(nameof(DisableMouseReeling), false);
+        public static BoolSetting DisableBurstCooldown = new BoolSetting(nameof(DisableBurstCooldown), false);
 
         public static List<KeySetting> AllKeys { get; private set; }
         public static int AnarchyKeyCodesLength => anarchyKeyCodes.Length;

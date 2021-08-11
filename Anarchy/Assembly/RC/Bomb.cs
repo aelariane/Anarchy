@@ -8,10 +8,10 @@ public class Bomb : Photon.MonoBehaviour
 {
     //!!!!NOT TESTED!!!!
 
-    internal static IntSetting MyBombCD = new IntSetting("MyBombCD", 5);
-    internal static IntSetting MyBombRad = new IntSetting("MyBombRad", 5);
-    internal static IntSetting MyBombRange = new IntSetting("MyBombRange", 5);
-    internal static IntSetting MyBombSpeed = new IntSetting("MyBombSpeed", 5);
+    //internal static IntSetting MyBombCD = new IntSetting("MyBombCD", 5);
+    //internal static IntSetting MyBombRad = new IntSetting("MyBombRad", 5);
+    //internal static IntSetting MyBombRange = new IntSetting("MyBombRange", 5);
+   // internal static IntSetting MyBombSpeed = new IntSetting("MyBombSpeed", 5);
     internal static FloatSetting MyBombColorR = new FloatSetting("MyBombColorR", 1f);
     internal static FloatSetting MyBombColorG = new FloatSetting("MyBombColorG", 1f);
     internal static FloatSetting MyBombColorB = new FloatSetting("MyBombColorB", 1f);
@@ -111,7 +111,8 @@ public class Bomb : Photon.MonoBehaviour
                 PhotonPlayer owner = this.BasePV.owner;
                 if (owner.IsLocal)
                 {
-                    this.myRad = MyBombRad * 4f + 20f;
+                    var stats = RC.Bombs.BombSettings.Load(typeof(TLW.TLWBombCalculatorV1));
+                    this.myRad = stats.Radius * 4f + 20f;
                 }
                 Color startColor = new Color(owner.RCBombR, owner.RCBombG, owner.RCBombB, Mathf.Max(0.5f, owner.RCBombA));
                 if (Anarchy.GameModes.TeamMode.Enabled)

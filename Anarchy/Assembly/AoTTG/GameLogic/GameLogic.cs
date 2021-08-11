@@ -20,7 +20,7 @@ namespace GameLogic
         public GameMode Mode => IN_GAME_MAIN_CAMERA.GameMode;
         public bool Multiplayer => IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer;
         public float ServerTime { get; set; }
-        public int RoundsCount { get; private set; } = 0;
+        public int CurrentRound { get; private set; } = 1;
         public float RoundTime { get => Round.Time; set => Round.Time = value; }
         public int HumanScore { get; set; }
         public int TitanScore { get; set; }
@@ -64,7 +64,7 @@ namespace GameLogic
             HumanScore = other.HumanScore;
             TitanScore = other.TitanScore;
             RoundTime = other.RoundTime;
-            RoundsCount = other.RoundsCount;
+            CurrentRound = other.CurrentRound;
         }
 
         public void GameLose()
@@ -172,7 +172,7 @@ namespace GameLogic
             }
             Round.Reset();
             Lang.Reload();
-            RoundsCount++;
+            CurrentRound++;
             OnRestart();
             GameModes.AntiReviveClear();
             Restarting = false;
@@ -298,8 +298,8 @@ namespace GameLogic
                 names += player.UIName + "\n";
                 kills += player.Kills + "\n";
                 deaths += player.Deaths + "\n";
-                maxs += player.Max_Dmg + "\n";
-                totals += player.Total_Dmg + "\n";
+                maxs += player.MaximumDamage + "\n";
+                totals += player.TotalDamage + "\n";
             }
             FengGameManagerMKII.FGM.BasePV.RPC("showResult", PhotonTargets.AllBuffered, new object[] { names, kills, deaths, maxs, totals, title });
         }

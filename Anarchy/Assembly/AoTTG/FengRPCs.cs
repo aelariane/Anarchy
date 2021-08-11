@@ -138,7 +138,7 @@ internal partial class FengGameManagerMKII
                 break;
 
             case 3:
-                IN_GAME_MAIN_CAMERA.GameMode = GameMode.RACING;
+                IN_GAME_MAIN_CAMERA.GameMode = GameMode.Racing;
                 if (!(logic is RacingLogic))
                 {
                     logic = new RacingLogic(logic);
@@ -181,7 +181,7 @@ internal partial class FengGameManagerMKII
     [RPC]
     private void getRacingResult(string player, float time, PhotonMessageInfo info = null)
     {
-        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !PhotonNetwork.IsMasterClient))
+        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing || !PhotonNetwork.IsMasterClient))
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(getRacingResult));
             AntisManager.Response(info.Sender.ID, true, string.Empty);
@@ -299,7 +299,7 @@ internal partial class FengGameManagerMKII
     [RPC]
     private void netGameWin(int score, PhotonMessageInfo info)
     {
-        if (info != null && !info.Sender.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
+        if (info != null && !info.Sender.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing)
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netGameWin));
             AntisManager.Response(info.Sender.ID, true, string.Empty);
@@ -312,7 +312,7 @@ internal partial class FengGameManagerMKII
     [RPC]
     private void netRefreshRacingResult(string tmp, PhotonMessageInfo info)
     {
-        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING || !info.Sender.IsMasterClient))
+        if (info != null && (IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing || !info.Sender.IsMasterClient))
         {
             Log.AddLine("RPCerror", MsgType.Error, info.Sender.ID.ToString(), nameof(netRefreshRacingResult));
             AntisManager.Response(info.Sender.ID, true, string.Empty);

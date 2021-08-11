@@ -8,7 +8,7 @@
 
         public override bool Execute(string[] args)
         {
-            if (FengGameManagerMKII.FGM.logic.Mode != GameMode.RACING)
+            if (FengGameManagerMKII.FGM.logic.Mode != GameMode.Racing)
             {
                 chatMessage = Lang["notRacingMode"];
                 return false;

@@ -90,6 +90,11 @@ public static class PhotonNetwork
             anarchyFlags |= (int)AnarchyFlags.NewTPSCamera;
         }
 
+        if (Anarchy.InputManager.DisableBurstCooldown.Value)
+        {
+            anarchyFlags |= (int)AnarchyFlags.DisableBurstCooldown;
+        }
+
         player.SetCustomProperties(new Hashtable() { { PhotonPlayerProperty.anarchyFlags, anarchyFlags }, {  PhotonPlayerProperty.anarchyAbuseFlags, abuseFlags} });
     }
 

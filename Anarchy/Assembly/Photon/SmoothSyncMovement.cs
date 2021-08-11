@@ -100,7 +100,7 @@ internal class SmoothSyncMovement : Photon.MonoBehaviour, IPunObservable
             float delta = Time.deltaTime * SmoothingDelay;
             baseT.position = Vector3.Lerp(baseT.position, correctPlayerPos, delta);
             baseT.rotation = Quaternion.Lerp(baseT.rotation, correctPlayerRot, delta);
-            if (PhotonNetwork.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING & FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && !Anarchy.GameModes.EndlessRespawn.Enabled && Anarchy.GameModes.AfkKill.Enabled && oldPlayerPos == correctPlayerPos && oldPlayerRot == correctPlayerRot)
+            if (PhotonNetwork.IsMasterClient && IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing & FengGameManagerMKII.Level.RespawnMode != RespawnMode.DEATHMATCH && !Anarchy.GameModes.EndlessRespawn.Enabled && Anarchy.GameModes.AfkKill.Enabled && oldPlayerPos == correctPlayerPos && oldPlayerRot == correctPlayerRot)
             {
                 activityTime += Time.deltaTime;
                 if (activityTime >= Anarchy.GameModes.AfkKill.GetInt(0))

@@ -31,7 +31,7 @@ namespace Optimization
             var bld = new StringBuilder();
             bld.AppendLine(lang.Format("time", (IN_GAME_MAIN_CAMERA.GameType == GameType.Single ? (FengGameManagerMKII.FGM.logic.RoundTime).ToString("F0") : (FengGameManagerMKII.FGM.logic.ServerTime).ToString("F0"))));
 
-            if (IN_GAME_MAIN_CAMERA.GameMode != GameMode.RACING)
+            if (IN_GAME_MAIN_CAMERA.GameMode != GameMode.Racing)
             {
                 bld.AppendLine(lang.Format("score", FengGameManagerMKII.FGM.logic.HumanScore.ToString(), FengGameManagerMKII.FGM.logic.TitanScore.ToString()));
                 string difficulty = (IN_GAME_MAIN_CAMERA.Difficulty >= 0) ? ((IN_GAME_MAIN_CAMERA.Difficulty != 0) ? ((IN_GAME_MAIN_CAMERA.Difficulty != 1) ? lang["abnormal"] : lang["hard"]) : lang["normal"]) : lang["training"];
