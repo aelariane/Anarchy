@@ -232,9 +232,6 @@
     <Compile Include="Aottg\Titans\TitanRPC.cs" />
     <Compile Include="Anarchy\UI\Panels\CreditsPanel.cs" />
     <Compile Include="Photon\ActorProperties.cs" />
-    <Compile Include="Photon\GlobalChatListener.cs" />
-    <Compile Include="Photon\GlobalChatGui.cs" />
-    <Compile Include="Photon\GlobalChatPeer.cs" />
     <Compile Include="Photon\RoomProperty.cs" />
     <Compile Include="RC\Bombs\BombSettings.cs" />
     <Compile Include="RC\Bombs\BombStatSetting.cs" />
