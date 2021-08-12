@@ -1,7 +1,8 @@
 
 <div>
 <a href="https://discord.gg/8wy5Pkm"><img alt="Discord" src="https://img.shields.io/discord/643822682617413652?label=Anarchy"></a>
-<a href ="https://discord.gg/8wy5Pkm">Discord server</a>
+<br>
+<a href ="https://discord.gg/8wy5Pkm">Click here to Join Discord server!</a>
 <img src="https://i.imgur.com/KSZH3p9.png" alt="by Ritis" width=256 height=256 align="right">
 </div>
 
