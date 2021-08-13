@@ -31,9 +31,9 @@ namespace RC.Bombs
             string key = calculatorType.Name;
 
             storage.SetFloat(key + "Radius", statsToWrite.Radius);
-            storage.GetFloat(key + "Range", statsToWrite.Range);
-            storage.GetFloat(key + "Speed", statsToWrite.Speed);
-            storage.GetFloat(key + "Cooldown", statsToWrite.Cooldown);
+            storage.SetFloat(key + "Range", statsToWrite.Range);
+            storage.SetFloat(key + "Speed", statsToWrite.Speed);
+            storage.SetFloat(key + "Cooldown", statsToWrite.Cooldown);
         }
     }
 }

@@ -112,6 +112,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\Mono.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3Unity3D, Version=4.1.2.14, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\Photon3Unity3D.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <HintPath>..\Assemblies\System.dll</HintPath>
     </Reference>
@@ -845,10 +849,6 @@
     <ProjectReference Include="..\Antis\Antis.csproj">
       <Project>{61ae834a-671a-4599-b3ca-80aa69f145fc}</Project>
       <Name>Antis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Photon\Photon3Unity3D.csproj">
-      <Project>{1b1b937e-a32e-44f7-8a04-ee4ce415bfa7}</Project>
-      <Name>Photon3Unity3D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
