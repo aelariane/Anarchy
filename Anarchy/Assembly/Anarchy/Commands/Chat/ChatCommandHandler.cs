@@ -30,6 +30,7 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("unpause", new PauseCommand(false));
             allCommands.Add("resetkd", new ResetKDCommand());
             allCommands.Add("revive", new ReviveCommand());
+            allCommands.Add("gas", new GasBurstAnimationCommand());
             //Temporarily removed from mod
             //allCommands.Add("spectate", new SpectateCommand());
             allCommands.Add("leave", new LeaveCommand());

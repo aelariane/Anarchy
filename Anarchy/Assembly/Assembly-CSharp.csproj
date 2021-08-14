@@ -142,6 +142,7 @@
     <Compile Include="Anarchy\Commands\Chat\ChangeTeamCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\CheckAnarchyUserCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\ClearCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\GasBurstAnimationCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\KillCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\MuteCommand.cs" />

@@ -45,7 +45,7 @@ public partial class HERO : HeroBase
             }
         }
     }
-
+    public string GasBurstAnimation = "FX/boost_smoke";
     private DateTime _lastBurstTime = DateTime.Now;
     public int bladeReloads = 0;
     public float gasUsageMax = 0f;
@@ -887,11 +887,11 @@ public partial class HERO : HeroBase
         targetRotation = rotation;
         if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
         {
-            Pool.Enable("FX/boost_smoke", baseT.position, baseT.rotation);
+            Pool.Enable(GasBurstAnimation, baseT.position, baseT.rotation);
         }
         else
         {
-            Pool.NetworkEnable("FX/boost_smoke", baseT.position, baseT.rotation);
+            Pool.NetworkEnable(GasBurstAnimation, baseT.position, baseT.rotation);
         }
 
         dashTime = 0.5f;
