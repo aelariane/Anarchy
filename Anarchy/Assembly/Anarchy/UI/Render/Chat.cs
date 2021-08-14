@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Aottg.Extensions.ChatCommands;
 
 namespace Anarchy.UI
 {
@@ -38,12 +39,20 @@ namespace Anarchy.UI
         private List<string> messages;
         private string inputLine = string.Empty;
 
-        internal Commands.Chat.ChatCommandHandler CMDHandler = new Commands.Chat.ChatCommandHandler();
+        //internal Commands.Chat.ChatCommandHandler CMDHandler = new Commands.Chat.ChatCommandHandler();
+        internal ChatCommandsHandler commandHandler;
 
         internal Chat() : base("Chat", GUILayers.Chat)
         {
             Instance = this;
             messages = new List<string>();
+
+            commandHandler = new ChatCommandsHandler
+            {
+                CommandPrefix = "/"
+            };
+            commandHandler.WithNetworkingPeer(PhotonNetwork.networkingPeer).WithGameManager(FengGameManagerMKII.FGM);
+            commandHandler.RegisterModule<AoTTG.Anarchy.Commands.NewCommandHandler>();
         }
 
         public static string GetLastMessages()
@@ -205,9 +214,10 @@ namespace Anarchy.UI
                         }
                         ((RCEvent)RC.RCManager.RCEvents["OnChatInput"]).checkEvent();
                     }
-                    if (inputLine.StartsWith("/"))
+                    if (inputLine.StartsWith("/")) //commands here
                     {
-                        CMDHandler.TryHandle(inputLine);
+                        commandHandler.TryExecuteCommand(inputLine);
+                        //CMDHandler.TryHandle(inputLine);
                     }
                     else
                     {

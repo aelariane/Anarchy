@@ -8,8 +8,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using Aottg.Extensions.Core.Interfaces;
+using Aottg.Extensions.Core;
 
-internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
+internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener, INetworkingPeer
 {
     internal static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort;
     private readonly Dictionary<string, int> rpcShortcuts;
@@ -2887,4 +2889,51 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         customOpParameters.Add(0xd0, parameters);
         return SendOperation(0xdb, customOpParameters, SendOptions.SendReliable);
     }
+    IPlayer[] INetworkingPeer.Players => PhotonNetwork.playerList;
+
+    IRoom INetworkingPeer.CurrentRoom => PhotonNetwork.room;
+
+    IPlayer INetworkingPeer.LocalPlayer => PhotonNetwork.player;
+
+    IPlayer INetworkingPeer.MasterClient => PhotonNetwork.masterClient;
+
+    bool INetworkingPeer.SendEvent(SendEventOptions options)
+    {
+        var reo = new RaiseEventOptions();
+        if (options.TargetActors != null)
+        {
+            reo.TargetActors = options.TargetActors;
+        }
+        return this.OpRaiseEvent(options.EventCode, options.Content, true, reo);
+    }
+
+    bool INetworkingPeer.SendRPC(SendRPCOptions options)
+    {
+        var pv = PhotonView.Find(options.ViewId.Value);
+        if (pv == null)
+        {
+            return false;
+        }
+        bool result = true;
+        if (options.TargetActor != null)
+        {
+            var target = PhotonPlayer.Find(options.TargetActor.Value);
+            if (target == null)
+            {
+                result = false;
+            }
+            else
+            {
+                RPC(pv, options.MethodName, target, options.Arguments);
+                result = true;
+            }
+        }
+        else
+        {
+            var targets = options.SendToAll ? PhotonTargets.All : PhotonTargets.Others;
+            RPC(pv, options.MethodName, targets, options.Arguments);
+        }
+        return result;
+    }
+
 }

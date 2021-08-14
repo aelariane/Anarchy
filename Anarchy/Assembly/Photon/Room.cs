@@ -1,7 +1,9 @@
-﻿using ExitGames.Client.Photon;
+﻿using Aottg.Extensions.Core.Interfaces;
+using ExitGames.Client.Photon;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : RoomInfo
+public class Room : RoomInfo, IRoom
 {
     internal Room(string roomName, RoomOptions options) : base(roomName, null)
     {
@@ -217,4 +219,24 @@ public class Room : RoomInfo
             base.CustomProperties.ToStringFull()
         });
     }
+    int IRoom.CurrentPlayers => PlayerCount;
+
+    IDictionary<object, object> IRoom.CustomProperties => CustomProperties;
+    bool IRoom.IsOpen { get => Open; set => Open = value; }
+    int IRoom.MaxPlayers
+    {
+        get => MaxPlayers;
+        set => MaxPlayers = value;
+    }
+    string IRoom.Name => Name;
+    void IRoom.SetCustomProperties(IDictionary<object, object> propertiesToSet)
+    {
+        var hash = new Hashtable();
+        foreach (var pair in propertiesToSet)
+        {
+            propertiesToSet.Add(pair.Key, pair.Value);
+        }
+        SetCustomProperties(hash);
+    }
+
 }

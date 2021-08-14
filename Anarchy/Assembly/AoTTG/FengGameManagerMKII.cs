@@ -7,6 +7,7 @@ using Anarchy.Skins;
 using Anarchy.Skins.Maps;
 using Anarchy.UI;
 using Antis;
+using Aottg.Extensions.Core.Interfaces;
 using GameLogic;
 using Optimization;
 using Optimization.Caching;
@@ -21,7 +22,7 @@ using MonoBehaviour = Photon.MonoBehaviour;
 [SuppressMessage("ReSharper", "CheckNamespace")]
 [SuppressMessage("ReSharper", "UnusedMember.Local")]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-internal partial class FengGameManagerMKII : MonoBehaviour
+internal partial class FengGameManagerMKII : MonoBehaviour, IGameManager
 {
     //Basic AoTTG ApplicationID
     //public const string ApplicationId = "f1f6195c-df4a-40f9-bae5-4744c32901ef";
@@ -1187,8 +1188,27 @@ internal partial class FengGameManagerMKII : MonoBehaviour
         oneTitanDown(titanName);
         PlayerKillInfoUpdate(PhotonNetwork.player, Damage);
     }
+    void IGameManager.SendChatMessage(string sender, string content, int[] targets)
+    {
+        if (targets == null)
+        {
+            foreach (int id in targets)
+            {
+                var player = PhotonPlayer.Find(id);
+                if (player != null)
+                {
+                    BasePV.RPC("Chat", player, new object[] { content, sender });
+                }
+            }
+        }
+        else
+        {
+            BasePV.RPC("Chat", PhotonTargets.All, new object[] { content, sender });
+        }
+    }
 
-#region Show UILabels
+
+    #region Show UILabels
 
     internal void ShowHUDInfoCenter(string content)
     {

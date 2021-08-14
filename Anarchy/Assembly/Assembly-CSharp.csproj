@@ -92,6 +92,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aottg.Extensions.ChatCommands">
+      <HintPath>..\Assemblies\Aottg.Extensions.ChatCommands.dll</HintPath>
+    </Reference>
+    <Reference Include="Aottg.Extensions.Core">
+      <HintPath>..\Assemblies\Aottg.Extensions.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assemblies\Assembly-CSharp-firstpass.dll</HintPath>
@@ -150,6 +156,7 @@
     <Compile Include="Anarchy\Commands\Chat\UnbanCommand.cs" />
     <Compile Include="Anarchy\Commands\CommandArgs.cs" />
     <Compile Include="Anarchy\Commands\CommandsExtensions.cs" />
+    <Compile Include="Anarchy\Commands\NewCommandHandler.cs" />
     <Compile Include="Anarchy\Configuration\AnarchyGameModeSetting.cs" />
     <Compile Include="Anarchy\Custom\Level\CustomAnarchyLevel.cs" />
     <Compile Include="Anarchy\Custom\Level\CustomLevelData.cs" />
