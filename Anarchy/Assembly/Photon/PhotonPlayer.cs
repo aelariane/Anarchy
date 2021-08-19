@@ -1,11 +1,13 @@
 ﻿using Antis.Spam;
+using Aottg.Extensions.Core.Interfaces;
 using ExitGames.Client.Photon;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PhotonPlayer
+
+public class PhotonPlayer : IPlayer
 {
     public class Abuse
     {
@@ -41,6 +43,23 @@ public class PhotonPlayer
     private bool rcSync = false;
     public ICounter<string> RPCSpam;
     private readonly int[] targetArray;
+
+    void IPlayer.SetCustomProperties(IDictionary<object, object> newProperties)
+    {
+        Hashtable hash = new Hashtable();
+        foreach (KeyValuePair<object, object> pair in newProperties)
+        {
+            hash.Add(pair.Key, pair.Value);
+        }
+        SetCustomProperties(hash);
+    }
+
+    IDictionary<object, object> IPlayer.CustomProperties { get => Properties; }
+
+    int IPlayer.ID => ID;
+    bool IPlayer.IsLocal => IsLocal;
+    bool IPlayer.IsMasterClient => IsMasterClient;
+
 
     public bool ModLocked { get; set; } = false;
 
