@@ -1,4 +1,5 @@
 ﻿using Anarchy.Configuration;
+using Anarchy.Inputs;
 using Anarchy.UI;
 using ExitGames.Client.Photon;
 using System;
@@ -22,7 +23,7 @@ namespace Anarchy
         //In case if you want to make sync only between YOUR version. Just set CustomName to something that not equals string.Empty or ""
 
         //And AnarchyVersion should match as well in ANY case if you want any kind of sync
-        public static readonly Version AnarchyVersion = new Version("0.9.5.1");
+        public static readonly Version AnarchyVersion = new Version("0.9.6.1");
 
         /// <summary>
         /// Your version Custom name
@@ -474,6 +475,7 @@ namespace Anarchy
             {
                 StatsPanel.DisableImmediate();
             }
+            
         }
 
         private IEnumerator OnGameWasOpened()
@@ -487,7 +489,7 @@ namespace Anarchy
 
         private void LateUpdate()
         {
-            if (InputManager.IsInputAnarchy((int)Inputs.InputAnarchy.DebugPanel))
+            if (InputManager.IsInputAnarchy((int)InputAnarchy.DebugPanel))
             {
                 if (DebugPanel.IsActive)
                 {
@@ -498,7 +500,7 @@ namespace Anarchy
                     DebugPanel.EnableImmediate();
                 }
             }
-            if (InputManager.IsInputAnarchy((int)Inputs.InputAnarchy.ChatHistoryPanel))
+            if (InputManager.IsInputAnarchy((int)InputAnarchy.ChatHistoryPanel))
             {
                 if (ChatHistory.IsActive)
                 {
@@ -509,12 +511,18 @@ namespace Anarchy
                     ChatHistory.EnableImmediate();
                 }
             }
-            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single && Input.GetKeyDown(KeyCode.Tab))
+            if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single && InputManager.IsInputAnarchyHolding((int)InputAnarchy.StatsPanel))
             {
                 InputManager.MenuOn = true;
                 Screen.showCursor = true;
                 Screen.lockCursor = false;
                 StatsPanel.EnableImmediate();
+            }
+
+            if (InputManager.IsInputAnarchy((int)InputAnarchy.Rejoin))
+            {
+                Network.NetworkManager.NeedRejoin = true;
+                PhotonNetwork.Disconnect();
             }
         }
     }

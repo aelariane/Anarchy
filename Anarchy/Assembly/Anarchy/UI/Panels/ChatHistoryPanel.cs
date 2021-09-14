@@ -32,6 +32,11 @@ namespace Anarchy.UI
             }
         }
 
+        public void ClearMessages()
+        {
+            messages.Clear();
+        }
+
         protected override void DrawMainPart()
         {
             rect.Reset();

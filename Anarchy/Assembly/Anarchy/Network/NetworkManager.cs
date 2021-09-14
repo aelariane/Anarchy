@@ -22,6 +22,7 @@ namespace Anarchy.Network
         private static readonly EventRoomList roomList = new EventRoomList();
         private static readonly EventRPC rpc = new EventRPC();
         private static readonly EventVC vc = new EventVC();
+        private static readonly EventDetectRRC rrcDetect = new EventDetectRRC();
 
         static NetworkManager()
         {

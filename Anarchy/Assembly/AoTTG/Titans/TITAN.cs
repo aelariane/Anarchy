@@ -122,8 +122,9 @@ public partial class TITAN : TitanBase
     private GameObject whoHasTauntMe;
 
     public string ShowName { get; private set; }
+    private bool continueAiCombo = false;
 
-    private void Attack(string type)
+    private void Attack(string type, float animationTime = 0f)
     {
         state = TitanState.Attack;
         attacked = false;
@@ -131,12 +132,12 @@ public partial class TITAN : TitanBase
         if (attackAnimation == type)
         {
             attackAnimation = type;
-            PlayAnimationAt("attack_" + type, 0f);
+            PlayAnimationAt("attack_" + type, animationTime);
         }
         else
         {
             attackAnimation = type;
-            PlayAnimationAt("attack_" + type, 0f);
+            PlayAnimationAt("attack_" + type, animationTime);
         }
 
         nextAttackAnimation = null;
@@ -180,9 +181,10 @@ public partial class TITAN : TitanBase
                 break;
 
             case "combo_2":
-                if (abnormalType != AbnormalType.Punk && !nonAI)
+                if (abnormalType != AbnormalType.Punk && (!nonAI || (nonAI && continueAiCombo)))
                 {
                     nextAttackAnimation = "combo_3";
+                    continueAiCombo = false;
                 }
 
                 attackCheckTimeA = 0.37f;
@@ -369,6 +371,26 @@ public partial class TITAN : TitanBase
         if (controller.grabnaper)
         {
             Grab("head_back_r");
+        }
+
+        if (controller.faceSlap)
+        {
+            Attack("slap_face", 0.35f);
+        }
+
+        if (controller.neckSlap)
+        {
+            Attack("slap_back", 0.35f);
+        }
+
+        if (controller.stomp)
+        {
+            Attack("stomp");
+        }
+
+        if (controller.kick)
+        {
+            Attack("kick");
         }
     }
 
@@ -3238,6 +3260,17 @@ public partial class TITAN : TitanBase
                     break;
 
                 case TitanState.Attack:
+                    if(nonAI && attackAnimation == "combo_1")
+                    {
+                        if (controller.isAttackDown)
+                        {
+                            if (attackAnimation == "combo_1")
+                            {
+                                continueAiCombo = true;
+                            }
+                            nonAIcombo = true;
+                        }
+                    }
                     if (attackAnimation == "combo")
                     {
                         if (nonAI)

@@ -379,7 +379,9 @@ internal partial class FengGameManagerMKII : MonoBehaviour
 
     public static bool IsPlayerAllDead()
     {
-        return PhotonNetwork.playerList.All(player => player.IsTitan || player.Dead);
+        return PhotonNetwork.playerList
+            .Where(x => x.IsTitan == false)
+            .All(player => player.Dead);
     }
 
     public bool IsTeamAllDead(int team)

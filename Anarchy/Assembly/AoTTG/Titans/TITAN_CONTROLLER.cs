@@ -31,6 +31,11 @@ public class TITAN_CONTROLLER : MonoBehaviour
     public bool choptr;
     public bool cover;
 
+    public bool faceSlap;
+    public bool neckSlap;
+    public bool kick;
+    public bool stomp;
+
     private void Awake()
     {
         view = GetComponent<PhotonView>();
@@ -173,6 +178,10 @@ public class TITAN_CONTROLLER : MonoBehaviour
             biter = false;
             cover = false;
             sit = false;
+            neckSlap = false;
+            faceSlap = false;
+            kick = false;
+            stomp = false;
             if (targetDirection != -874f)
             {
                 currentDirection = targetDirection;
@@ -230,25 +239,121 @@ public class TITAN_CONTROLLER : MonoBehaviour
             {
                 grabnapel = true;
             }
-            if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 >= 0f)
+
+            //Slap
+            if(InputManager.DisableDirectionalSlap.Value == false)
             {
-                choptr = true;
+                if (InputManager.InvertTitanSlapInput.Value)
+                {
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 >= 0f)
+                    {
+                        choptr = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 < 0f)
+                    {
+                        choptl = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlapLow) && num5 >= 0f)
+                    {
+                        chopr = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlapLow) && num5 < 0f)
+                    {
+                        chopl = true;
+                    }
+                }
+                else
+                {
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 < 0f)
+                    {
+                        choptr = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 >= 0f)
+                    {
+                        choptl = true;
+                    }
+
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlapLow) && num5 < 0f)
+                    {
+                        chopr = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanSlapLow) && num5 >= 0f)
+                    {
+                        chopl = true;
+                    }
+                }
             }
-            if (InputManager.IsInputTitan((int)InputTitan.TitanSlap) && num5 < 0f)
+            if (InputManager.IsInputTitan((int)InputTitan.TitanLeftSlap))
             {
                 choptl = true;
             }
-            if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 > 7.5f)
+            if (InputManager.IsInputTitan((int)InputTitan.TitanRightSlap))
             {
-                biter = true;
+                choptr = true;
             }
-            if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 < -7.5f)
+            if (InputManager.IsInputTitan((int)InputTitan.TitanLeftSlapLow))
+            {
+                chopl = true;
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanRightSlapLow))
+            {
+                chopr = true;
+            }
+
+            //Bite
+            if (InputManager.DisableDirectionalBite.Value == false)
+            {
+                if (InputManager.InvertTitanBiteInput.Value)
+                {
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 > 7.5f)
+                    {
+                        biter = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 < -7.5f)
+                    {
+                        bitel = true;
+                    }
+                }
+                else
+                {
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 < 7.5f)
+                    {
+                        biter = true;
+                    }
+                    if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 > -7.5f)
+                    {
+                        bitel = true;
+                    }
+                }
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanLeftBite))
             {
                 bitel = true;
             }
-            if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && num5 >= -7.5f && num5 <= 7.5f)
+            if (InputManager.IsInputTitan((int)InputTitan.TitanRightBite))
+            {
+                biter = true;
+            }
+
+            if (InputManager.IsInputTitan((int)InputTitan.TitanBite) && ((num5 >= -7.5f && num5 <= 7.5f) || InputManager.DisableDirectionalBite.Value))
             {
                 bite = true;
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanSlapFace))
+            {
+                faceSlap = true;
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanSlapNeck))
+            {
+                neckSlap = true;
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanStomp))
+            {
+                stomp = true;
+            }
+            if (InputManager.IsInputTitan((int)InputTitan.TitanKick))
+            {
+                kick = true;
             }
             isWALKDown = InputManager.IsInputTitanHolding((int)InputTitan.TitanWalk);
         }

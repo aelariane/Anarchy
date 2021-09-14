@@ -32,16 +32,16 @@ namespace RC.Bombs
             reset |= stats.Radius < RadiusSetting.MinimumLimit || stats.Radius > RadiusSetting.MaximumLimit;
 
 
-            statsCount += stats.Radius;
-            reset |= stats.Radius < RadiusSetting.MinimumLimit || stats.Radius > RadiusSetting.MaximumLimit;
+            statsCount += stats.Speed;
+            reset |= stats.Speed < SpeedSetting.MinimumLimit || stats.Speed > SpeedSetting.MaximumLimit;
 
 
-            statsCount += stats.Radius;
-            reset |= stats.Radius < RadiusSetting.MinimumLimit || stats.Radius > RadiusSetting.MaximumLimit;
+            statsCount += stats.Range;
+            reset |= stats.Range < RangeSetting.MinimumLimit || stats.Range > RangeSetting.MaximumLimit;
 
 
-            statsCount += stats.Radius;
-            reset |= stats.Radius < RadiusSetting.MinimumLimit || stats.Radius > RadiusSetting.MaximumLimit;
+            statsCount += stats.Cooldown;
+            reset |= stats.Cooldown < CooldownSetting.MinimumLimit || stats.Cooldown > CooldownSetting.MaximumLimit;
 
             reset |= statsCount > MaxTotalStats;
 

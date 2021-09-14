@@ -483,10 +483,21 @@ namespace Anarchy.UI
 
                 case RebindsTitan:
                     rects[0].MoveY();
-                    for (int i = CannonTitan; i < TitanHorse; i++)
+                    rects[1].MoveY();
+                    for (int i = CannonTitan; i < CannonTitan + 16; i++)
                     {
                         RebindButton(rects[0], InputManager.AllKeys[i]);
                     }
+                    for(int i = CannonTitan + 16; i < TitanHorse; i++)
+                    {
+                        RebindButton(rects[1], InputManager.AllKeys[i]);
+                    }
+
+                    LabelCenter(rects[1], locale["titanRebindOpions"], true);
+                    ToggleButton(rects[1], InputManager.InvertTitanSlapInput, locale["invertSlap"], true);
+                    ToggleButton(rects[1], InputManager.InvertTitanBiteInput, locale["invertBite"], true);
+                    ToggleButton(rects[1], InputManager.DisableDirectionalSlap, locale["disableDirectionalSlap"], true);
+                    ToggleButton(rects[1], InputManager.DisableDirectionalBite, locale["disableDirectionalBite"], true);
                     break;
 
                 case RebindsHorse:

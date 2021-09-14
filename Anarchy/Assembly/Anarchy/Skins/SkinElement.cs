@@ -7,6 +7,8 @@ namespace Anarchy.Skins
 {
     public class SkinElement
     {
+        private static Dictionary<string, Texture2D> _cache = new Dictionary<string, Texture2D>();
+
         private const int AllowedSize = 1000000;
         private bool _needReload;
 
@@ -46,6 +48,16 @@ namespace Anarchy.Skins
             NeedReload = !path.Equals(Path);
         }
 
+        public static void ClearCache()
+        {
+            //foreach(var texture in _cache.Values)
+            //{
+            //    UnityEngine.Object.Destroy(texture);
+            //}
+            _cache = new Dictionary<string, Texture2D>();
+        }
+
+
         public System.Collections.IEnumerator TryLoad()
         {
             NeedReload = false;
@@ -64,26 +76,35 @@ namespace Anarchy.Skins
                 Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
                 yield break;
             }
-            int attempts = 1 + (SkinSettings.RetriesCount.Value > 0 ? SkinSettings.RetriesCount.Value : 2);
-            for(int i = 0; i < attempts; i++)
+
+            if (_cache.ContainsKey(Path))
             {
-                WWW www = new WWW(Path);
-                yield return www;
-                if  (www.texture == null)
-                {
-                    Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
-                    continue;
-                }
-                else if (www.size > AllowedSize)
-                {
-                    Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.orange);
-                }
-                Texture = new Texture2D(4, 4, TextureFormat.ARGB32, VideoSettings.Mipmap.Value);
-                www.LoadImageIntoTexture(Texture);
-                www.Dispose();
-                break;
+                Texture = _cache[Path];
             }
-            Texture.Apply();
+            else
+            {
+                int attempts = 1 + (SkinSettings.RetriesCount.Value > 0 ? SkinSettings.RetriesCount.Value : 2);
+                for (int i = 0; i < attempts; i++)
+                {
+                    WWW www = new WWW(Path);
+                    yield return www;
+                    if (www.texture == null)
+                    {
+                        Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
+                        continue;
+                    }
+                    else if (www.size > AllowedSize)
+                    {
+                        Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.orange);
+                    }
+                    Texture = new Texture2D(4, 4, TextureFormat.ARGB32, VideoSettings.Mipmap.Value);
+                    www.LoadImageIntoTexture(Texture);
+                    www.Dispose();
+                    break;
+                }
+                Texture.Apply();
+                _cache.Add(Path, Texture);
+            }
             IsDone = true;
             yield break;
         }

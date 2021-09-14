@@ -1,4 +1,4 @@
-using Anarchy;
+﻿using Anarchy;
 using Anarchy.UI;
 using Optimization;
 using Optimization.Caching;
@@ -92,6 +92,7 @@ internal partial class FengGameManagerMKII
 
         gameStart = true;
         Pool.Clear();
+        Anarchy.Skins.SkinElement.ClearCache();
         RespawnPositions.Dispose();
         ShowHUDInfoCenter(string.Empty);
         var gameObject2 = (GameObject)Instantiate(CacheResources.Load("MainCamera_mono"),
@@ -482,6 +483,12 @@ internal partial class FengGameManagerMKII
 
     public void OnJoinedRoom(AOTEventArgs args)
     {
+        int[] groups = new int[255];
+        for (int i = 0; i < groups.Length; i++)
+        {
+            groups[i] = i + 1;
+        }
+        PhotonNetwork.SetReceivingEnabled(groups, new int[0]);
         Debug.Log("OnJoinedRoom >> " + PhotonNetwork.room.Name);
         var strArray = PhotonNetwork.room.Name.Split('`');
         gameTimesUp = false;

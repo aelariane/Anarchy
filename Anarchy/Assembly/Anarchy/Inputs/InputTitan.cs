@@ -18,5 +18,16 @@
         TitanBite,
         TitanCoverNape,
         TitanSit,
+        TitanStomp,
+        TitanKick,
+        TitanSlapFace,
+        TitanSlapNeck,
+        TitanLeftSlap,
+        TitanRightSlap,
+        TitanSlapLow,
+        TitanLeftSlapLow,
+        TitanRightSlapLow,
+        TitanLeftBite,
+        TitanRightBite
     }
 }

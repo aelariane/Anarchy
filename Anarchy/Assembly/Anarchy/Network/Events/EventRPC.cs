@@ -184,7 +184,7 @@ namespace Anarchy.Network.Events
             {
                 return true;
             }
-            if ((photonView.group != 0) && !PhotonNetwork.networkingPeer.allowedReceivingGroups.Contains(photonView.group))
+            if ((photonView.Group != 0) && !PhotonNetwork.networkingPeer.allowedReceivingGroups.Contains(photonView.Group))
             {
                 return true;
             }
@@ -280,6 +280,7 @@ namespace Anarchy.Network.Events
                                 }
                                 return false;
                             }
+                            //Log.AddLineRaw("Unknown RPC: " + name + " by ID " + sender.ID);
                         }
                     }
                 }

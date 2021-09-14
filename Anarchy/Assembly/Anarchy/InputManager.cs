@@ -86,10 +86,25 @@ namespace Anarchy
             new KeySetting("Titan Grab (nape)", KeyCode.Mouse1),
             new KeySetting("Titan Slap", KeyCode.Mouse0),
             new KeySetting("Titan Bite", KeyCode.Alpha2),
-            new KeySetting("Titan Cover nape",KeyCode.O),
-            new KeySetting("Titan Sit", KeyCode.X)
+            new KeySetting("Titan Cover nape", KeyCode.O),
+            new KeySetting("Titan Sit", KeyCode.X),
+            new KeySetting("Titan Stomp", KeyCode.None),
+            new KeySetting("Titan Kick", KeyCode.None),
+            new KeySetting("Titan FaceSlap", KeyCode.None),
+            new KeySetting("Titan NeckSlap", KeyCode.None),
+            new KeySetting("Titan LeftSlap", KeyCode.None),
+            new KeySetting("Titan RightSlap", KeyCode.None),
+            new KeySetting("Titan SlapLow", KeyCode.None),
+            new KeySetting("Titan LeftSlapLow", KeyCode.None),
+            new KeySetting("Titan RightSlapLow", KeyCode.None),
+            new KeySetting("Titan LeftBite", KeyCode.None),
+            new KeySetting("Titan RightBite", KeyCode.None)
         };
 
+        public static BoolSetting InvertTitanBiteInput = new BoolSetting(nameof(InvertTitanBiteInput), true);
+        public static BoolSetting InvertTitanSlapInput = new BoolSetting(nameof(InvertTitanSlapInput), true);
+        public static BoolSetting DisableDirectionalBite = new BoolSetting(nameof(DisableDirectionalBite), false);
+        public static BoolSetting DisableDirectionalSlap = new BoolSetting(nameof(DisableDirectionalSlap), false);
         #endregion Titans
 
         #region Horse
@@ -115,8 +130,9 @@ namespace Anarchy
             new KeySetting("RestartHotkey", KeyCode.F1), //Restarts game on press
             new KeySetting("PauseHotkey", KeyCode.F2), //Pause/Unpause game
             new KeySetting("DebugPanel", KeyCode.None), //Enables/Disables debug panel
-            new KeySetting("ChatHistory", KeyCode.F8) //Chat history panel
-            //new KeySetting("SingleStats", KeyCode.Tab)
+            new KeySetting("ChatHistory", KeyCode.F8), //Chat history panel
+            new KeySetting("SingleStats", KeyCode.Tab), //Singleplayer stats panel
+            new KeySetting("Rejoin", KeyCode.F12) //Fast rejoin
         };
 
         #endregion Anarchy

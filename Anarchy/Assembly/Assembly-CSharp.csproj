@@ -11,8 +11,7 @@
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -25,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>IDE0051;IDE0018;CS0649;</NoWarn>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -146,6 +145,7 @@
     <Compile Include="Anarchy\Commands\Chat\LeaveCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\MuteCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\RulesCommand.cs" />
+    <Compile Include="Anarchy\Commands\Chat\ScatterCommand.cs" />
     <Compile Include="Anarchy\Commands\Chat\UnbanCommand.cs" />
     <Compile Include="Anarchy\Commands\CommandArgs.cs" />
     <Compile Include="Anarchy\Commands\CommandsExtensions.cs" />
@@ -184,9 +184,11 @@
     <Compile Include="Anarchy\Network\Discord\SDK\LobbyManager.cs" />
     <Compile Include="Anarchy\Network\Discord\SDK\StorageManager.cs" />
     <Compile Include="Anarchy\Network\Discord\SDK\StoreManager.cs" />
+    <Compile Include="Anarchy\Network\Events\EventDetectRRC.cs" />
     <Compile Include="Anarchy\Network\Events\EventVC.cs" />
     <Compile Include="Anarchy\Network\ModNames.cs" />
     <Compile Include="Anarchy\Network\PropertiesChecker.cs" />
+    <Compile Include="Anarchy\Network\UdpSender.cs" />
     <Compile Include="Anarchy\Notifications\NotificationEvent.cs" />
     <Compile Include="Anarchy\Notifications\NotificationType.cs" />
     <Compile Include="Anarchy\Replays\AnimationPlayInformation.cs" />

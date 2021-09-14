@@ -26,7 +26,7 @@ public class PhotonPlayer
     private static PhotonPlayer[] vanillaUsersArray = new PhotonPlayer[0];
     private static PhotonPlayer[] notAnarchyUsersArray = new PhotonPlayer[0];
 
-    private bool _canReqiestVersion = true;
+
     private DateTime? _lastVersionRequest = null;
     private readonly Hashtable _localPropsToUpdate;
     private float _updateTimer;

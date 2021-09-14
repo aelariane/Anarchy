@@ -116,19 +116,13 @@ namespace Anarchy.UI
                     if (str.Contains("@") && str.Length > 1)
                     {
                         string id = str.Remove(str.IndexOf("@"), 1);
-                        if (int.TryParse(id, out int ID) && PhotonPlayer.Find(ID) != null)
+                        if (int.TryParse(id, out int ID))
                         {
-                            sentData += (i == 0 ? "" : " ") + "<b>[" + id + "] " + PhotonPlayer.Find(ID).UIName.ToHTMLFormat() + "</b>";
+                            sentData += (i == 0 ? "" : " ") + "<b>[" + id + "] " + PhotonPlayer.Find(System.Convert.ToInt32(ID)).UIName.ToHTMLFormat() + "</b>";
                         }
-                        else
-                        {
-                            sentData += (i == 0 ? "" : " ") + strings[i];
-                        }
+                        else sentData += (i == 0 ? "" : " ") + strings[i];
                     }
-                    else
-                    {
-                        sentData += (i == 0 ? "" : " ") + str;
-                    }
+                    else sentData += (i == 0 ? "" : " ") + str;
                 }
             }
             return sentData;

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using UnityEngine;
+using Anarchy;
 
 [AddComponentMenu("Miscellaneous/Photon View &v")]
 public sealed class PhotonView : Photon.MonoBehaviour
@@ -13,6 +14,18 @@ public sealed class PhotonView : Photon.MonoBehaviour
     internal object[] lastOnSerializeDataSent;
     internal bool mixedModeIsReliable;
     public int group;
+
+    public int Group
+    {
+        get
+        {
+            return group;
+        }
+        set
+        {
+            group = value;
+        }
+    }
     public int instantiationId;
     public Component observed;
     public OnSerializeRigidBody onSerializeRigidBodyOption = OnSerializeRigidBody.All;

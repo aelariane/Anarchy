@@ -62,7 +62,6 @@ namespace Antis.Spam
             lock (rpcList)
             {
                 rpcList.Lock();
-                rpcList.Clear();
                 foreach (var pair in rpcList)
                 {
                     if (pair.Value > checkCount)
@@ -70,6 +69,7 @@ namespace Antis.Spam
                         OnRPCSpamDetected(this, new SpamDetectedArgs<string>(pair.Key, pair.Value, Owner));
                     }
                 }
+                rpcList.Clear();
                 rpcList.Unlock();
             }
         }

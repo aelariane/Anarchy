@@ -7,8 +7,14 @@ namespace Antis.Collections
         public static void Lock(ISyncObject subject, Action action)
         {
             subject.Lock();
-            action();
-            subject.Unlock();
+            try
+            {
+                action();
+            }
+            finally
+            {
+                subject.Unlock();
+            }
         }
     }
 }

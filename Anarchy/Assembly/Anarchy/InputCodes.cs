@@ -4,7 +4,6 @@
     {
         //Defaults
         Forward,
-
         Backward,
         Left,
         Right,
@@ -30,13 +29,11 @@
 
         //Rebinds
         ReelIn,
-
         ReelOut,
         GasBurst,
 
         //Cannon
         CannonUp,
-
         CannongDown,
         CannonLeft,
         CannonRight,
@@ -46,7 +43,6 @@
 
         //Titan
         TitanForward,
-
         TitanBackward,
         TitanLeft,
         TitanRight,
@@ -60,10 +56,21 @@
         TitanGrabNape,
         TitanSlap,
         TitanCoverNape,
+        TitanSit,
+        TitanStomp,
+        TitanKick,
+        TitanSlapFace,
+        TitanSlapNeck,
+        TitanLeftSlap,
+        TitanRightSlap,
+        TitanSlapLow,
+        TitanLeftSlapLow,
+        TitanRightSlapLow,
+        TitanLeftBite,
+        TitanRightBite,
 
         //Horse
         HorseForward,
-
         HorseBackWard,
         HorseLeft,
         HorseRight,
@@ -72,10 +79,11 @@
         HorseMount,
 
         //Mod
-        ModCleanChat,
-
-        ModCleanConsole,
+        ModRestartKey,
+        ModPauseKey,
         ModDebugPanel,
-        ModStatsPanel
+        ModChatHistoryPanel,
+        ModStatsPanel,
+        ModRejoin
     }
 }

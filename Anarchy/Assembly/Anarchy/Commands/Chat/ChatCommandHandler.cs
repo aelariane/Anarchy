@@ -43,6 +43,7 @@ namespace Anarchy.Commands.Chat
             allCommands.Add("unmute", new MuteCommand(false));
             allCommands.Add("animate", new AnimateNameCommand());
             allCommands.Add("checkuser", new CheckAnarchyUserCommand());
+            allCommands.Add("scatter", new ScatterCommand());
         }
 
         private void NotFound(string name)

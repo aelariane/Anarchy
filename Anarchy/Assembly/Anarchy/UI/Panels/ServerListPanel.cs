@@ -396,7 +396,7 @@ namespace Anarchy.UI
             left.MoveX();
             if (Button(left, locale["presetRemove"], true))
             {
-                if (presets.Count > 0)
+                if (presets.Count > 1)
                 {
                     ServerPreset selected = null;
                     for (int i = 0; i < presets.Count; i++)
@@ -444,12 +444,35 @@ namespace Anarchy.UI
             if (Button(left, locale["btnCreation"], false))
             {
                 disconnectByJoin = true;
+                serverTime = serverTime.Trim();
+                int serverTimeInt;
+                if(!int.TryParse(serverTime, out serverTimeInt))
+                {
+                    serverTimeInt = 120;
+                }
+
+                daylight = daylight > 2 ? 0 : daylight;
+                difficulity = difficulity > 2 ? 0 : difficulity;
+
+                string mapName = string.Empty;
+
+                try
+                {
+                    mapName = maps[mapSelectionSetting];
+                }
+                catch(System.Exception ex)
+                {
+                    Debug.LogError("Room creation exception appeared: " + ex.Message + "\n" +  ex.StackTrace + $"\nSetting info: {mapSelectionSetting}");
+                    mapSelectionSetting.Value = 0;
+                    mapName = maps[mapSelectionSetting.Value];
+                }
+
                 string[] args = new string[]
                 {
                     serverName,
-                    maps[mapSelectionSetting],
+                    mapName,
                     new string[] { "normal", "hard", "abnormal" }[difficulity],
-                    serverTime,
+                    serverTimeInt.ToString(),
                     new string[] { "day", "dawn", "night" }[daylight],
                     password.Length > 0 ? new SimpleAES().Encrypt(password) : string.Empty,
                     UnityEngine.Random.Range(1000000, 10000000).ToString()

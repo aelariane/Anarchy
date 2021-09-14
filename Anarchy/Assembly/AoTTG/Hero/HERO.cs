@@ -872,8 +872,8 @@ public partial class HERO : HeroBase
         if (dashTime > 0f
             || currentGas <= 0f
             || isMounted
-            || (InputManager.DisableBurstCooldown.Value == false || GameModes.BombMode.Enabled)
-            && (now - _lastBurstTime) < TimeSpan.FromMilliseconds(300))
+            || ((InputManager.DisableBurstCooldown.Value == false || GameModes.BombMode.Enabled)
+            && (now - _lastBurstTime) < TimeSpan.FromMilliseconds(300)))
         {
             return;
         }

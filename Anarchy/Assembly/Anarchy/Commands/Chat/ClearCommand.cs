@@ -16,6 +16,10 @@
             {
                 UI.Log.Clear();
             }
+            else if(args[0] == "-h")
+            {
+                AnarchyManager.ChatHistory.ClearMessages();
+            }
             return true;
         }
     }

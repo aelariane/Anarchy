@@ -76,7 +76,7 @@ namespace Anarchy.Commands.Chat
                 {
                     anarchyFeatures.Add(Lang["newTpsAbuse"]);
                 }
-                if((anarchyInt & (int)AnarchyFlags.DisableBurstCooldown) == (int)AnarchyFlags.DisableBurstCooldown)
+                if((anarchyInt & (int)AnarchyFlags.NewTPSCamera) == (int)AnarchyFlags.NewTPSCamera)
                 {
                     anarchyFeatures.Add(Lang["disableBurstCD"]);
                 }

@@ -613,7 +613,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             Debug.LogError(string.Concat(new object[] { "Received OnSerialization for view ID ", viewID, " with prefix ", correctPrefix, ". Our prefix is ", photonView.prefix }));
         }
-        else if ((photonView.group == 0) || this.allowedReceivingGroups.Contains(photonView.group))
+        else if ((photonView.Group == 0) || this.allowedReceivingGroups.Contains(photonView.Group))
         {
             if (photonView.synchronization == ViewSynchronization.ReliableDeltaCompressed)
             {
@@ -1110,7 +1110,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             return;
         }
-        if (!this.blockSendingGroups.Contains(view.group))
+        if (!this.blockSendingGroups.Contains(view.Group))
         {
             if (view.viewID < 1)
             {
@@ -1157,7 +1157,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             return;
         }
-        if (!this.blockSendingGroups.Contains(view.group))
+        if (!this.blockSendingGroups.Contains(view.Group))
         {
             if (view.viewID < 1)
             {
@@ -1209,7 +1209,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
     internal void RPC(PhotonView view, string methodName, PhotonTargets target, params object[] parameters)
     {
-        if (blockSendingGroups.Contains(view.group))
+        if (blockSendingGroups.Contains(view.Group))
         {
             return;
         }
@@ -1248,12 +1248,12 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         switch (target)
         {
             case PhotonTargets.All:
-                options = new RaiseEventOptions { InterestGroup = (byte)view.group };
+                options = new RaiseEventOptions { InterestGroup = (byte)view.Group };
                 executeLocal = true;
                 break;
 
             case PhotonTargets.Others:
-                options = new RaiseEventOptions { InterestGroup = (byte)view.group };
+                options = new RaiseEventOptions { InterestGroup = (byte)view.Group };
                 break;
 
             case PhotonTargets.AllBuffered:
@@ -1275,11 +1275,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 break;
 
             case PhotonTargets.AllViaServer:
-                options = new RaiseEventOptions { InterestGroup = (byte)view.group, Receivers = ReceiverGroup.All };
+                options = new RaiseEventOptions { InterestGroup = (byte)view.Group, Receivers = ReceiverGroup.All };
                 break;
 
             case PhotonTargets.AllBufferedViaServer:
-                options = new RaiseEventOptions { Receivers = ReceiverGroup.All, InterestGroup = (byte)view.group, CachingOption = EventCaching.AddToRoomCache };
+                options = new RaiseEventOptions { Receivers = ReceiverGroup.All, InterestGroup = (byte)view.Group, CachingOption = EventCaching.AddToRoomCache };
                 break;
 
             case PhotonTargets.AnarchyUsers:
@@ -1656,7 +1656,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 {
                     Debug.Log("Received RPC: " + str);
                 }
-                if ((photonView.group == 0) || this.allowedReceivingGroups.Contains(photonView.group))
+                if ((photonView.Group == 0) || this.allowedReceivingGroups.Contains(photonView.Group))
                 {
                     System.Type[] callParameterTypes = new System.Type[0];
                     if (parameters.Length > 0)
@@ -1907,6 +1907,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                 sender.EventSpam.Count(photonEvent.Code);
             }
         }
+
+
         INetworkEvent curr = NetworkManager.GetEvent(photonEvent.Code);
         if (curr == null)
         {
@@ -2695,7 +2697,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         foreach (KeyValuePair<int, PhotonView> pair in photonViewList)
         {
             PhotonView view = pair.Value;
-            if (view.group == group)
+            if (view.Group == group)
             {
                 this.CleanRpcBufferIfMine(view);
             }
@@ -2711,7 +2713,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
             foreach (KeyValuePair<int, PhotonView> pair in photonViewList)
             {
                 PhotonView view = pair.Value;
-                if (((((view.observed != null) && (view.synchronization != ViewSynchronization.Off)) && ((view.ownerId == this.mLocalActor.ID) || (view.isSceneView && (mMasterClient == this.mLocalActor)))) && view.gameObject.activeInHierarchy) && !this.blockSendingGroups.Contains(view.group))
+                if (((((view.observed != null) && (view.synchronization != ViewSynchronization.Off)) && ((view.ownerId == this.mLocalActor.ID) || (view.isSceneView && (mMasterClient == this.mLocalActor)))) && view.gameObject.activeInHierarchy) && !this.blockSendingGroups.Contains(view.Group))
                 {
                     ExitGames.Client.Photon.Hashtable hashtable = this.OnSerializeWrite(view);
                     if (hashtable != null)
@@ -2720,31 +2722,31 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
                         {
                             if (hashtable.ContainsKey((byte)1) || hashtable.ContainsKey((byte)2))
                             {
-                                if (!dictionary.ContainsKey(view.group))
+                                if (!dictionary.ContainsKey(view.Group))
                                 {
-                                    dictionary[view.group] = new ExitGames.Client.Photon.Hashtable();
-                                    dictionary[view.group][(byte)0] = base.ServerTimeInMilliSeconds;
+                                    dictionary[view.Group] = new ExitGames.Client.Photon.Hashtable();
+                                    dictionary[view.Group][(byte)0] = base.ServerTimeInMilliSeconds;
                                     if (this.currentLevelPrefix >= 0)
                                     {
-                                        dictionary[view.group][(byte)1] = this.currentLevelPrefix;
+                                        dictionary[view.Group][(byte)1] = this.currentLevelPrefix;
                                     }
                                 }
-                                ExitGames.Client.Photon.Hashtable hashtable2 = dictionary[view.group];
+                                ExitGames.Client.Photon.Hashtable hashtable2 = dictionary[view.Group];
                                 hashtable2.Add((short)hashtable2.Count, hashtable);
                             }
                         }
                         else
                         {
-                            if (!dictionary2.ContainsKey(view.group))
+                            if (!dictionary2.ContainsKey(view.Group))
                             {
-                                dictionary2[view.group] = new ExitGames.Client.Photon.Hashtable();
-                                dictionary2[view.group][(byte)0] = base.ServerTimeInMilliSeconds;
+                                dictionary2[view.Group] = new ExitGames.Client.Photon.Hashtable();
+                                dictionary2[view.Group][(byte)0] = base.ServerTimeInMilliSeconds;
                                 if (this.currentLevelPrefix >= 0)
                                 {
-                                    dictionary2[view.group][(byte)1] = this.currentLevelPrefix;
+                                    dictionary2[view.Group][(byte)1] = this.currentLevelPrefix;
                                 }
                             }
-                            ExitGames.Client.Photon.Hashtable hashtable3 = dictionary2[view.group];
+                            ExitGames.Client.Photon.Hashtable hashtable3 = dictionary2[view.Group];
                             hashtable3.Add((short)hashtable3.Count, hashtable);
                         }
                     }

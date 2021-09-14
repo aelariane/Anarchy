@@ -278,7 +278,7 @@ namespace Anarchy.UI
             style.wordWrap = wordWrap;
             style.padding = new RectOffset(1, 1, 1, 1);
             style.margin = new RectOffset(Style.HorizontalMargin, Style.HorizontalMargin, Style.VerticalMargin, Style.VerticalMargin);
-            style.border = new RectOffset(2, 2, 2, 2);
+            style.border = new RectOffset(0, 0, 0, 0);
         }
 
         public static void ApplyStyle(this GUIStyle style, TextAnchor anchor, FontStyle fstyle, int fontSize, bool wordWrap, Color color)
