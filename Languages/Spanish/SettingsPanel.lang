@@ -230,8 +230,26 @@ hideOwnName:Hide your hero name/guild:
 noColorNames:Disable colored names:
 hideCrosshairArrows:Hide crosshair arrows:
 infGasPvp:Infinite gas in PvP:
-SingleStats:Single run stats:
+SingleStats:Single stats panel:
 disableFog:Disable fog:
 labelScale:Labels scale[{0}]:
 racingStartCrosshair:Race start timer on crosshair:
 bombCdCrosshair:Bomb CD on crosshair:
+disableBurstCD:Disable burst cooldown:
+Titan Stomp:Stomp
+Titan Kick:Kick
+Titan FaceSlap:Slap face
+Titan NeckSlap:Slap neck
+Titan LeftSlap:Slap left
+Titan RightSlap:Slap right
+Titan SlapLow:Lower slap
+Titan LeftSlapLow:Lower slap left
+Titan RightSlapLow:Lower slap right
+Titan LeftBite:Bite left side
+Titan RightBite:Bite right side
+titanRebindOptions:Advanced options
+invertSlap:Invert slap direction:
+invertBite:Invert bite direction:
+disableDirectionalSlap:Disable directional slaps:
+disableDirectionalBite:Disable directional bites:
+Rejoin:Rejoin to room:
