@@ -15,11 +15,13 @@ namespace Anarchy.Network.Events
         public bool CheckData(EventData data, PhotonPlayer sender, out string reason)
         {
             reason = string.Empty;
-
-            if(data.Parameters[245] is string str == false)
+            
+            string str = string.Empty;
+            if(data.Parameters[245] is string == false)
             {
                 return false;
             }
+            str = data.Parameters[245] as string;
 
             switch (str.ToLower())
             {
