@@ -29,7 +29,7 @@
 **What will you need?**
   * **.NET Framework** - Version 3.5.
   * **IDE** - IDE with C# 7.0 support. (Ex: **[Visual Studio 2019 Community](https://visualstudio.microsoft.com/ru/thank-you-downloading-visual-studio/?sku=community)**)
-  *  **Download [Modding-(Version).zip](https://github.com/Orrder/Anarchy/releases/download/BETA-9.6.1/Modding-9.6.2.zip) archieve (This link always refers to latest release)**
+  *  **Download [Modding-(Version).zip](https://github.com/Orrder/Anarchy/releases/download/BETA-9.6.2/Modding-9.6.2.zip) archieve (This link always refers to latest release)**
 <br/>
 
 After you installed IDE we can continue.<br/>
