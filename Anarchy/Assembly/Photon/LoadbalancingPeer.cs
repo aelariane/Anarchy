@@ -117,7 +117,6 @@ internal class LoadbalancingPeer : PhotonPeer
         if (!string.IsNullOrEmpty(roomName))
         {
             customOpParameters[ParameterCode.RoomName] = roomName;
-            customOpParameters[ParameterCode.EmptyRoomTTL] = 3000;
         }
         if (lobby != null)
         {
