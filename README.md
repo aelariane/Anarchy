@@ -36,6 +36,7 @@ After you installed IDE we can continue.<br/>
 **Start coding!**
    * **Extract archieve**
    * **Go to extracted folder and go to "Source" folder**
+   * **In order to have latest version, download latest source from here (https://github.com/aelariane/Anarchy/archive/refs/heads/master.zip) and replace everything in "Source" folder with content of the archive.
    * **Open Anarchy.sln file**
    * **Have fun!**
 <br/>
