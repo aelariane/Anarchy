@@ -368,7 +368,15 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
         {
             if(mGameserver.Contains("127.0.0.1"))
             {
-                this.mGameserver = this.MasterServerAddress.Split(new char[] { ':' })[0] + ":" + this.mGameserver.Split(new char[] { ':' })[1];
+                int addressIndex = TransportProtocol >= ConnectionProtocol.WebSocket ? 1 : 0;
+                string actualAddress = MasterServerAddress.Split(':')[addressIndex];
+
+                if (addressIndex > 0)
+                {
+                    actualAddress = actualAddress.Substring(2);
+                }
+
+                this.mGameserver = mGameserver.Replace("127.0.0.1", actualAddress);
             }
         }
 
