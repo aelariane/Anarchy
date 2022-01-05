@@ -51,7 +51,8 @@ Special thanks to following people: <br/>
 * **[Syne](https://github.com/DaLNakii) - for testing and advises**<br/>
 * **[Summer](https://github.com/alerithe) - for allowing to use her Guardian mod features**<br/>
 * **[Sadico](https://github.com/Mi-Sad) - for helping with code**<br/>
-* **[Shy](https://vk.com/shylime) - For help with Russian translation**
+* **[Shy](https://vk.com/shylime) - For help with Russian translation**<br/>
+* **[Jagerente](https://github.com/Jagerente) - For Blade Trails fix**
 
 # Contacts
 * Order - Order#1775
