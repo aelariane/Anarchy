@@ -103,7 +103,9 @@ namespace Anarchy.Skins
                     break;
                 }
                 Texture.Apply();
-                _cache.Add(Path, Texture);
+                //Needed since Running simultaneously (<- googled that word)
+                if (!_cache.ContainsKey(Path))
+                    _cache.Add(Path, Texture);
             }
             IsDone = true;
             yield break;

@@ -45,10 +45,10 @@ namespace Anarchy.Network
                 return false;
             }
             var urls = all_parts.Split(',');
-            if (urls.Length != length)
-            {
-                return false;
-            }
+            //if (urls.Length != length)
+            //{
+            //    return false;
+            //}
             Uri uri = null;
             for (int i = 0; i < urls.Length; i++)
             {
