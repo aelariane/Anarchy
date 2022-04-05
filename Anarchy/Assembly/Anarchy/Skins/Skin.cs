@@ -17,10 +17,11 @@ namespace Anarchy.Skins
         public Skin(GameObject owner, string[] data)
         {
             Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-            if (data.Length != DataLength)
-            {
-                throw new ArgumentException($"Invalid length of received data. Type {GetType().Name}, expected value: {DataLength}", nameof(data) + ".Length");
-            }
+            //if (data.Length != DataLength)
+            //{
+            //    Debug.Log($"Couldnt create the Skin because data.Length ({data.Length}) was bigger than allowed {DataLength}");
+            //    throw new ArgumentException($"Invalid length of received data. Type {GetType().Name}, expected value: {DataLength}", nameof(data) + ".Length");
+            //}
             elements = new Dictionary<int, SkinElement>();
             for (int i = 0; i < DataLength; i++)
             {
@@ -61,6 +62,9 @@ namespace Anarchy.Skins
 
         private static System.Collections.IEnumerator CheckRoutine(Skin skin, string[] newData)
         {
+            //Needed for Anarchy to not Crash on high TItanCount (Maybe increase?)
+            //The better the net the lower it can be ig
+            yield return new WaitForSeconds(5);
             if (skin.NeedReload(newData))
             {
                 yield return FengGameManagerMKII.FGM.StartCoroutine(skin.Reload(newData));
@@ -70,10 +74,10 @@ namespace Anarchy.Skins
 
         public virtual bool NeedReload(string[] data)
         {
-            if (data.Length != DataLength)
-            {
-                return false;
-            }
+            //if (data.Length != DataLength)
+            //{
+            //    return false;
+            //}
             int i = 0;
             foreach (SkinElement skin in elements.Values)
             {

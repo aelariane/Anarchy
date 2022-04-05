@@ -1656,7 +1656,8 @@ public partial class TITAN : TitanBase
 
     private IEnumerator loadskinRPCE(string body, string eye)
     {
-        while (!spawned)
+        //spawned will never be true unless MC
+        while (!spawned && PhotonNetwork.IsMasterClient)
         {
             yield return null;
         }
