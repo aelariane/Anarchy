@@ -525,7 +525,8 @@ namespace Anarchy.Configuration
                 return;
             }
             int i = 1;
-            state = ((int)hash[HashKeys[0]] != 0);
+            state = hash[HashKeys[0]] is int ? (int)hash[HashKeys[0]] != 0 : false;
+            state |= hash[HashKeys[0]] is bool ? (bool)hash[HashKeys[0]] : false;
             if (nextSelection >= 0)
             {
                 if (hash[HashKeys[0]] is int val)
