@@ -71,6 +71,10 @@ namespace Anarchy.Skins
                 IsDone = true;
                 yield break;
             }
+            if(Path.Trim() == "")
+            {
+                yield break;
+            }
             if (!Path.EndsWith(".jpg") && !Path.EndsWith(".jpeg") && !Path.EndsWith(".png"))
             {
                 Texture = Helper.RectAngle(4, 4, Optimization.Caching.Colors.white);
@@ -106,6 +110,8 @@ namespace Anarchy.Skins
                 //Needed since Running simultaneously (<- googled that word)
                 if (!_cache.ContainsKey(Path))
                     _cache.Add(Path, Texture);
+                else
+                    _cache[Path] = Texture;
             }
             IsDone = true;
             yield break;
