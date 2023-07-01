@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Optimization.Caching;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
+using Xft;
 
 namespace Anarchy.Skins.Humans
 {
@@ -46,6 +49,10 @@ namespace Anarchy.Skins.Humans
                         continue;
                     }
                     var element = elements[pair.Key];
+                    if(element.Texture == null)
+                    {
+                        continue;
+                    }
                     hero.leftbladetrail.MyMaterial.mainTexture = element.Texture;
                     hero.leftbladetrail2.MyMaterial.mainTexture = element.Texture;
                     hero.rightbladetrail.MyMaterial.mainTexture = element.Texture;
