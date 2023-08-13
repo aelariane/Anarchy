@@ -741,7 +741,7 @@ namespace Anarchy.UI
                 else if(selection == 4)
                 {
                     //soutyh america
-                    result = PhotonNetwork.ConnectToMaster("172.107.193.233", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
+                    result = PhotonNetwork.ConnectToMaster("108.181.69.221", NetworkingPeer.ProtocolToNameServerPort[PhotonNetwork.networkingPeer.UsedProtocol], string.Empty, UIMainReferences.ConnectField);
                 }
                 else
                 {
