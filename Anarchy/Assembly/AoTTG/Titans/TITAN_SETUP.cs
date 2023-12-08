@@ -27,11 +27,11 @@ public class TITAN_SETUP : Photon.MonoBehaviour
             part_hair.transform.localScale = this.hair_go_ref.transform.localScale;
             part_hair.renderer.material = CharacterMaterials.Materials[this.hair.texture];
         }
-        if (hairSkin != null)
+        if (part_hair != null)
         {
             hairSkin = new Anarchy.Skins.Titans.TitanSkinHair(part_hair, hairlink);
+            Anarchy.Skins.Skin.Check(hairSkin, new string[] { hairlink });
         }
-        Anarchy.Skins.Skin.Check(hairSkin, new string[] { hairlink });
         this.setFacialTexture(this.eye, eye);
     }
 

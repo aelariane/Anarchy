@@ -12,7 +12,10 @@ namespace Anarchy.Skins.Titans
 
         public override void Apply()
         {
-            TryApplyTexture(elements[0], Owner.renderer, true);
+            if (elements[0] != null && elements[0].IsDone)
+            {
+                TryApplyTexture(elements[0], Owner.renderer, true);
+            }
         }
     }
 }

@@ -30,17 +30,23 @@ namespace Anarchy.Skins.Titans
         {
             if (elements[1] != null && elements[1].IsDone)
             {
-                rend.material.mainTextureScale = new Vector2(rend.material.mainTextureScale.x * 4f, rend.material.mainTextureScale.y * 8f);
-                rend.material.mainTextureOffset = new Vector2(0f, 0f);
                 TryApplyTexture(elements[1], rend, true);
-                rend.material.mainTexture = elements[1].Texture;
+                //idk why it works with this but it does...
+                if (PhotonNetwork.IsMasterClient)
+                    rend.material.mainTextureScale = new Vector2(rend.material.mainTextureScale.x * 2f, rend.material.mainTextureScale.y * 3f);
+                else
+                    rend.material.mainTextureScale = new Vector2(rend.material.mainTextureScale.x * 4f, rend.material.mainTextureScale.y * 8f); //RC
+                rend.material.mainTextureOffset = new Vector2(0f, 0f);
             }
         }
 
         private void ApplyBody(Renderer rend)
         {
-            rend.material = Owner.GetComponent<TITAN>().mainMaterial.GetComponent<SkinnedMeshRenderer>().material;
-            TryApplyTexture(elements[0], rend);
+            //rend.material = Owner.GetComponent<TITAN>().mainMaterial.GetComponent<SkinnedMeshRenderer>().material;
+            if (elements[0] != null && elements[0].IsDone)
+            {
+                TryApplyTexture(elements[0], rend);
+            }
         }
     }
 }
