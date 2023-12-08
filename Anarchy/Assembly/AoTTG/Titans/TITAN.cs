@@ -2798,7 +2798,7 @@ public partial class TITAN : TitanBase
 
         if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
         {
-            BasePV.RPC("netSetAbnormalType", PhotonTargets.AllBuffered, num);
+            BasePV.RPC("netSetAbnormalType", PhotonTargets.OthersBuffered, num);
         }
         else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
         {

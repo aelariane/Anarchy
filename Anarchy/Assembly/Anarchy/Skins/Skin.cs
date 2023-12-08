@@ -34,10 +34,10 @@ namespace Anarchy.Skins
 
         public virtual void CheckReload(string[] data)
         {
-            if (data.Length != DataLength)
-            {
-                return;
-            }
+            //if (data.Length != DataLength)
+            //{
+            //    return;
+            //}
             int i = 0;
             foreach (KeyValuePair<int, SkinElement> el in elements)
             {
