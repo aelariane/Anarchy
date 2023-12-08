@@ -8,6 +8,7 @@ namespace Anarchy.Skins
 {
     internal abstract class Skin
     {
+        private static object LoadingSkin = false;
         public abstract int DataLength { get; }
 
         protected Dictionary<int, SkinElement> elements;
@@ -62,9 +63,6 @@ namespace Anarchy.Skins
 
         private static System.Collections.IEnumerator CheckRoutine(Skin skin, string[] newData)
         {
-            //Needed for Anarchy to not Crash on high TItanCount (Maybe increase?)
-            //The better the net the lower it can be ig
-            yield return new WaitForSeconds(5);
             if (skin.NeedReload(newData))
             {
                 yield return FengGameManagerMKII.FGM.StartCoroutine(skin.Reload(newData));
@@ -95,20 +93,29 @@ namespace Anarchy.Skins
 
         public virtual System.Collections.IEnumerator Reload(string[] newData)
         {
-            for (int i = 0; i < elements.Count; i++)
+            while ((bool)LoadingSkin)
             {
-                SkinElement skin = elements[i];
-                if (skin == null)
+                yield return new WaitForSeconds(0.05f);
+            }
+            lock (LoadingSkin)
+            {
+                LoadingSkin = true;
+                for (int i = 0; i < elements.Count; i++)
                 {
-                    continue;
-                }
-                if (skin.NeedReload || !skin.Path.Equals(newData[i]))
-                {
-                    SkinElement element = new SkinElement(newData[i], true);
-                    yield return FengGameManagerMKII.FGM.StartCoroutine(element.TryLoad());
-                    elements[i] = element;
+                    SkinElement skin = elements[i];
+                    if (skin == null)
+                    {
+                        continue;
+                    }
+                    if (skin.NeedReload || !skin.Path.Equals(newData[i]))
+                    {
+                        SkinElement element = new SkinElement(newData[i], true);
+                        yield return FengGameManagerMKII.FGM.StartCoroutine(element.TryLoad());
+                        elements[i] = element;
+                    }
                 }
             }
+            LoadingSkin = false;
             yield break;
         }
 
