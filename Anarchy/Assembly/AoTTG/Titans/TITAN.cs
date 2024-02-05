@@ -2791,7 +2791,7 @@ public partial class TITAN : TitanBase
                 if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
                     SkinSettings.TitanSkins.Value != 2)
                 {
-                    BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { set.Colossal });
+                    BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, body, eyes);
                 }
             }
         }
