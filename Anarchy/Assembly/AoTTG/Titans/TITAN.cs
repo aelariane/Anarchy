@@ -2791,14 +2791,14 @@ public partial class TITAN : TitanBase
                 if (IN_GAME_MAIN_CAMERA.GameType == GameType.MultiPlayer && PhotonNetwork.IsMasterClient &&
                     SkinSettings.TitanSkins.Value != 2)
                 {
-                    .OthBasePV.RPC("loadskinRPC", PhotonTargets.AllBuffered, body, eyes);
+                    BasePV.RPC("loadskinRPC", PhotonTargets.OthersBuffered, new object[] { set.Colossal });
                 }
             }
         }
 
         if (IN_GAME_MAIN_CAMERA.GameType != GameType.Single && BasePV.IsMine)
         {
-            BasePV.RPC("netSetAbnormalType", PhotonTargets.OthersBuffered, num);
+            BasePV.RPC("netSetAbnormalType", PhotonTargets.AllBuffered, num);
         }
         else if (IN_GAME_MAIN_CAMERA.GameType == GameType.Single)
         {
